@@ -140,7 +140,21 @@ export default async function AccountantSalaryPage() {
             ) : null}
             {accountantOccupationDetailPage?.salaryDistribution ? (
               <OccupationSalaryDistributionSection
-                distribution={accountantOccupationDetailPage.salaryDistribution}
+                distribution={{
+                  ...accountantOccupationDetailPage.salaryDistribution,
+                  women: accountantOccupationDetailPage.salaryDistribution.women
+                    ? {
+                        ...accountantOccupationDetailPage.salaryDistribution.women,
+                        average: currentSalaryWomen,
+                      }
+                    : undefined,
+                  men: accountantOccupationDetailPage.salaryDistribution.men
+                    ? {
+                        ...accountantOccupationDetailPage.salaryDistribution.men,
+                        average: currentSalaryMen,
+                      }
+                    : undefined,
+                }}
               />
             ) : null}
           </div>

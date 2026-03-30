@@ -133,7 +133,23 @@ export async function OccupationSalaryDetailPage({
               </div>
             ) : null}
             {detailPage.salaryDistribution ? (
-              <OccupationSalaryDistributionSection distribution={detailPage.salaryDistribution} />
+              <OccupationSalaryDistributionSection
+                distribution={{
+                  ...detailPage.salaryDistribution,
+                  women: detailPage.salaryDistribution.women
+                    ? {
+                        ...detailPage.salaryDistribution.women,
+                        average: currentSalaryWomen,
+                      }
+                    : undefined,
+                  men: detailPage.salaryDistribution.men
+                    ? {
+                        ...detailPage.salaryDistribution.men,
+                        average: currentSalaryMen,
+                      }
+                    : undefined,
+                }}
+              />
             ) : null}
           </div>
         </section>

@@ -12,6 +12,7 @@ export type OccupationSalaryQuartiles = {
   p25: number;
   median: number;
   p75: number;
+  average?: number;
 };
 
 export type OccupationSalaryDistribution = {
