@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { MainFooter } from "@/components/main-footer";
 import { MainHeader } from "@/components/main-header";
 import "./globals.css";
 
@@ -19,9 +20,10 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
-      <body>
+      <body className="flex min-h-screen flex-col">
         <MainHeader />
-        {children}
+        <div className="flex-1">{children}</div>
+        <MainFooter />
       </body>
     </html>
   );

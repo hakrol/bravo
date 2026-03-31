@@ -5,22 +5,6 @@ export type OccupationDetailPage = {
   href: string;
   summary: string;
   relatedOccupationCodes: string[];
-  salaryDistribution?: OccupationSalaryDistribution;
-};
-
-export type OccupationSalaryQuartiles = {
-  p25: number;
-  median: number;
-  p75: number;
-  average?: number;
-};
-
-export type OccupationSalaryDistribution = {
-  title?: string;
-  description?: string;
-  total?: OccupationSalaryQuartiles;
-  women?: OccupationSalaryQuartiles;
-  men?: OccupationSalaryQuartiles;
 };
 
 const OCCUPATION_SALARY_SUFFIX = "lonn";
@@ -51,26 +35,6 @@ export const occupationDetailPages: OccupationDetailPage[] = [
     summary:
       "Regnskapsforere forer regnskap, avstemmer tall og utarbeider rapporter og dokumentasjon for virksomheter. Mange jobber ogsa med lonn, skattemelding, arsoppgjor og okonomisk radgivning.",
     relatedOccupationCodes: ["2411", "2412", "2413"],
-    salaryDistribution: {
-      title: "Typisk lonnsspenn",
-      description:
-        "Midtre 50 prosent ligger mellom 25.- og 75.-persentilen, mens medianen markerer midtpunktet i fordelingen.",
-      total: {
-        p25: 58900,
-        median: 64800,
-        p75: 71900,
-      },
-      women: {
-        p25: 56200,
-        median: 61900,
-        p75: 67200,
-      },
-      men: {
-        p25: 62400,
-        median: 68700,
-        p75: 75400,
-      },
-    },
   },
   {
     occupationCode: "2411",

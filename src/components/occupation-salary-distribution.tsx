@@ -1,4 +1,7 @@
-import type { OccupationSalaryDistribution, OccupationSalaryQuartiles } from "@/lib/occupation-detail-pages";
+import type {
+  OccupationSalaryDistribution,
+  OccupationSalaryDistributionMetrics,
+} from "@/lib/types";
 
 type OccupationSalaryDistributionProps = {
   distribution: OccupationSalaryDistribution;
@@ -8,7 +11,7 @@ type DistributionRow = {
   id: "women" | "men";
   label: string;
   accentClassName: string;
-  quartiles: OccupationSalaryQuartiles;
+  metrics: OccupationSalaryDistributionMetrics;
 };
 
 const distributionLabels: Record<DistributionRow["id"], string> = {
@@ -34,10 +37,15 @@ export function OccupationSalaryDistributionSection({
   }
 
   const values = rows.flatMap((row) =>
-    [row.quartiles.p25, row.quartiles.median, row.quartiles.p75, row.quartiles.average].filter(
+    [row.metrics.p25, row.metrics.median, row.metrics.p75, row.metrics.average].filter(
       (value): value is number => Number.isFinite(value),
     ),
   );
+
+  if (values.length === 0) {
+    return null;
+  }
+
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
   const padding = Math.max(Math.round((maxValue - minValue) * 0.14), 2500);
@@ -48,22 +56,31 @@ export function OccupationSalaryDistributionSection({
   return (
     <section className="space-y-5">
       {rows.map((row) => {
-        const p25Position = toPercent(row.quartiles.p25, scaleMin, scaleRange);
-        const medianPosition = toPercent(row.quartiles.median, scaleMin, scaleRange);
-        const p75Position = toPercent(row.quartiles.p75, scaleMin, scaleRange);
-        const averagePosition =
-          row.quartiles.average !== undefined
-            ? toPercent(row.quartiles.average, scaleMin, scaleRange)
+        const p25Position =
+          row.metrics.p25 !== undefined ? toPercent(row.metrics.p25, scaleMin, scaleRange) : null;
+        const medianPosition =
+          row.metrics.median !== undefined
+            ? toPercent(row.metrics.median, scaleMin, scaleRange)
             : null;
+        const p75Position =
+          row.metrics.p75 !== undefined ? toPercent(row.metrics.p75, scaleMin, scaleRange) : null;
+        const averagePosition =
+          row.metrics.average !== undefined
+            ? toPercent(row.metrics.average, scaleMin, scaleRange)
+            : null;
+        const medianValue = row.metrics.median;
+        const averageValue = row.metrics.average;
         const averageOverlapsMedian =
-          averagePosition !== null && Math.abs(averagePosition - medianPosition) < 3.5;
+          averagePosition !== null &&
+          medianPosition !== null &&
+          Math.abs(averagePosition - medianPosition) < 3.5;
         const medianOffset = averageOverlapsMedian
-          ? row.quartiles.average >= row.quartiles.median
+          ? averageValue !== undefined && medianValue !== undefined && averageValue >= medianValue
             ? -36
             : 36
           : 0;
         const averageOffset = averageOverlapsMedian
-          ? row.quartiles.average >= row.quartiles.median
+          ? averageValue !== undefined && medianValue !== undefined && averageValue >= medianValue
             ? 36
             : -36
           : 0;
@@ -76,32 +93,38 @@ export function OccupationSalaryDistributionSection({
             <div className="relative px-1">
               <div className="relative h-20">
                 <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-slate-300" />
-                <div
-                  className={`absolute top-1/2 h-4 -translate-y-1/2 rounded-full bg-gradient-to-r ${row.accentClassName}`}
-                  style={{
-                    left: `${p25Position}%`,
-                    width: `${Math.max(p75Position - p25Position, 1)}%`,
-                  }}
-                />
-                <Marker
-                  label="25 %"
-                  value={row.quartiles.p25}
-                  position={p25Position}
-                  tone="bg-slate-700"
-                />
-                <Marker
-                  label="Median"
-                  value={row.quartiles.median}
-                  position={medianPosition}
-                  tone="bg-[var(--primary)]"
-                  offsetPx={medianOffset}
-                  labelOffsetY={averageOverlapsMedian ? -8 : 0}
-                  valueOffsetY={averageOverlapsMedian ? 8 : 0}
-                />
-                {averagePosition !== null && row.quartiles.average !== undefined ? (
+                {p25Position !== null && p75Position !== null ? (
+                  <div
+                    className={`absolute top-1/2 h-4 -translate-y-1/2 rounded-full bg-gradient-to-r ${row.accentClassName}`}
+                    style={{
+                      left: `${p25Position}%`,
+                      width: `${Math.max(p75Position - p25Position, 1)}%`,
+                    }}
+                  />
+                ) : null}
+                {p25Position !== null && row.metrics.p25 !== undefined ? (
+                  <Marker
+                    label="25 %"
+                    value={row.metrics.p25}
+                    position={p25Position}
+                    tone="bg-slate-700"
+                  />
+                ) : null}
+                {medianPosition !== null && row.metrics.median !== undefined ? (
+                  <Marker
+                    label="Median"
+                    value={row.metrics.median}
+                    position={medianPosition}
+                    tone="bg-[var(--primary)]"
+                    offsetPx={medianOffset}
+                    labelOffsetY={averageOverlapsMedian ? -8 : 0}
+                    valueOffsetY={averageOverlapsMedian ? 8 : 0}
+                  />
+                ) : null}
+                {averagePosition !== null && row.metrics.average !== undefined ? (
                   <Marker
                     label="Gjennomsnitt"
-                    value={row.quartiles.average}
+                    value={row.metrics.average}
                     position={averagePosition}
                     tone="bg-slate-500"
                     offsetPx={averageOffset}
@@ -109,12 +132,14 @@ export function OccupationSalaryDistributionSection({
                     valueOffsetY={averageOverlapsMedian ? 8 : 0}
                   />
                 ) : null}
-                <Marker
-                  label="75 %"
-                  value={row.quartiles.p75}
-                  position={p75Position}
-                  tone="bg-slate-700"
-                />
+                {p75Position !== null && row.metrics.p75 !== undefined ? (
+                  <Marker
+                    label="75 %"
+                    value={row.metrics.p75}
+                    position={p75Position}
+                    tone="bg-slate-700"
+                  />
+                ) : null}
               </div>
             </div>
           </article>
@@ -126,9 +151,9 @@ export function OccupationSalaryDistributionSection({
 
 function buildDistributionRow(
   id: DistributionRow["id"],
-  quartiles?: OccupationSalaryQuartiles,
+  metrics?: OccupationSalaryDistributionMetrics,
 ) {
-  if (!quartiles || !hasCompleteQuartiles(quartiles)) {
+  if (!metrics || !hasAnyDistributionMetric(metrics)) {
     return null;
   }
 
@@ -136,12 +161,14 @@ function buildDistributionRow(
     id,
     label: distributionLabels[id],
     accentClassName: distributionAccents[id],
-    quartiles,
+    metrics,
   };
 }
 
-function hasCompleteQuartiles(quartiles: OccupationSalaryQuartiles) {
-  return [quartiles.p25, quartiles.median, quartiles.p75].every((value) => Number.isFinite(value));
+function hasAnyDistributionMetric(metrics: OccupationSalaryDistributionMetrics) {
+  return [metrics.p25, metrics.median, metrics.p75, metrics.average].some((value) =>
+    Number.isFinite(value),
+  );
 }
 
 function Marker({

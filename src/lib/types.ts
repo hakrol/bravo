@@ -137,6 +137,7 @@ export type SsbSalaryTableKey =
   | "industryRegion"
   | "industrySectorRegion"
   | "occupationDetailed"
+  | "occupationEmployment"
   | "genderAge"
   | "industryGrowth"
   | "industryHiringFlows"
@@ -190,6 +191,89 @@ export type OccupationSalaryTimeSeries = {
   measureLabel: string;
   updated?: string;
   points: OccupationSalaryTimeSeriesPoint[];
+};
+
+export type OccupationSalaryDistributionMetrics = {
+  p25?: number;
+  median?: number;
+  p75?: number;
+  average?: number;
+};
+
+export type OccupationSalaryDistribution = {
+  occupationCode: string;
+  occupationLabel: string;
+  periodLabel?: string;
+  updated?: string;
+  total?: OccupationSalaryDistributionMetrics;
+  women?: OccupationSalaryDistributionMetrics;
+  men?: OccupationSalaryDistributionMetrics;
+};
+
+export type OccupationEmploymentLatest = {
+  occupationCode: string;
+  occupationLabel: string;
+  periodCode: string;
+  periodLabel: string;
+  value: number;
+  unit: string;
+  updated?: string;
+};
+
+export type OccupationEmploymentTimeSeriesPoint = {
+  periodCode: string;
+  periodLabel: string;
+  total?: number;
+  women?: number;
+  men?: number;
+};
+
+export type OccupationEmploymentGenderBreakdown = {
+  periodCode: string;
+  periodLabel: string;
+  total: number;
+  women: number;
+  men: number;
+  womenShare: number;
+  menShare: number;
+};
+
+export type OccupationEmploymentGrowth = {
+  latestPeriodCode: string;
+  latestPeriodLabel: string;
+  latestValue: number;
+  previousPeriodCode?: string;
+  previousPeriodLabel?: string;
+  previousValue?: number;
+  yearOverYearChange?: number;
+  baselinePeriodCode?: string;
+  baselinePeriodLabel?: string;
+  baselineValue?: number;
+  changeSinceBaseline?: number;
+};
+
+export type OccupationEmploymentContractType = {
+  periodCode: string;
+  periodLabel: string;
+  total?: number;
+  permanent?: number;
+  temporary?: number;
+  unspecified?: number;
+  permanentShare?: number;
+  temporaryShare?: number;
+  unspecifiedShare?: number;
+};
+
+export type OccupationLaborMarketStats = {
+  occupationCode: string;
+  occupationLabel: string;
+  updated?: string;
+  employmentUnit: string;
+  points: OccupationEmploymentTimeSeriesPoint[];
+  latest: OccupationEmploymentLatest | null;
+  genderBreakdown: OccupationEmploymentGenderBreakdown | null;
+  growth: OccupationEmploymentGrowth | null;
+  contractType: OccupationEmploymentContractType | null;
 };
 
 export type InflationQuarterPoint = {

@@ -88,12 +88,8 @@ export function OccupationPurchasingPowerTimeSeriesChart({
       <div className="flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
-            Reallønnsutvikling mot inflasjon
+            Vekst i gjennomsnittlig lønn mot inflasjon
           </h3>
-          <p className="mt-1 max-w-3xl text-sm text-[var(--muted)]">
-            Årsvekst for gjennomsnittlig lønn for begge kjønn sammenlignet med inflasjon i samme
-            kvartal. Grønt område betyr reallønnsvekst, rødt betyr at inflasjonen er høyere.
-          </p>
         </div>
 
         <div className="flex flex-wrap gap-4 text-sm text-slate-700">

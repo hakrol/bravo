@@ -7,11 +7,19 @@ import {
 } from "./client";
 import type {
   InflationQuarterPoint,
+  OccupationEmploymentContractType,
+  OccupationEmploymentGenderBreakdown,
+  OccupationEmploymentLatest,
+  OccupationEmploymentGrowth,
+  OccupationEmploymentTimeSeriesPoint,
+  OccupationLaborMarketStats,
   OccupationPurchasingPowerDetail,
   OccupationPurchasingPowerOverview,
   OccupationPurchasingPowerTimeSeries,
   OccupationPurchasingPowerTimeSeriesPoint,
   OccupationPurchasingPowerRow,
+  OccupationSalaryDistribution,
+  OccupationSalaryDistributionMetrics,
   OccupationSalaryTimeSeries,
   OccupationSalaryTimeSeriesPoint,
   SsbNormalizedDataset,
@@ -33,6 +41,9 @@ export const OCCUPATION_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
 
 export const ACCOUNTANT_OCCUPATION_CODE = "3313";
 export const SSB_INFLATION_TABLE_ID = "14700";
+export const SSB_OCCUPATION_DISTRIBUTION_TABLE_ID = "11418";
+export const SSB_OCCUPATION_EMPLOYMENT_TABLE_ID = "09792";
+export const SSB_OCCUPATION_CONTRACT_TABLE_ID = "14437";
 
 export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefinition> = {
   industryMonthly: {
@@ -69,6 +80,13 @@ export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefiniti
     title: "Lønn per yrke (4-siffer)",
     category: "core",
     description: "Detaljert lønn per yrke.",
+  },
+  occupationEmployment: {
+    key: "occupationEmployment",
+    id: SSB_OCCUPATION_EMPLOYMENT_TABLE_ID,
+    title: "Sysselsatte per yrke (4-siffer)",
+    category: "support",
+    description: "Antall sysselsatte per yrke i 1 000 personer.",
   },
   genderAge: {
     key: "genderAge",
@@ -117,6 +135,7 @@ export const CORE_SALARY_TABLE_KEYS: SsbSalaryTableKey[] = [
 ];
 
 export const SUPPORT_SALARY_TABLE_KEYS: SsbSalaryTableKey[] = [
+  "occupationEmployment",
   "industryGrowth",
   "industryHiringFlows",
   "salaryWorkforceFlows",
@@ -268,6 +287,91 @@ export async function getOccupationSalaryTimeSeries(
   });
 
   return buildOccupationSalaryTimeSeries(normalized, occupationCode);
+}
+
+export async function getOccupationSalaryDistribution(
+  occupationCode: string,
+  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+): Promise<OccupationSalaryDistribution | null> {
+  const tableId = SSB_OCCUPATION_DISTRIBUTION_TABLE_ID;
+  const metadata = await getTableMetadata(tableId, lang);
+  const distributionQuery = buildLatestQueryFromMetadata(metadata, {
+    ...filters,
+    MaaleMetode: ["01", "02", "051", "061"],
+    Yrke: occupationCode,
+    Sektor: "ALLE",
+    Kjonn: ["0", "1", "2"],
+    AvtaltVanlig: "0",
+    ContentsCode: "AvtaltManedslonn",
+  });
+  const [info, dataset] = await Promise.all([
+    getTableInfo(tableId, lang),
+    getTableData(tableId, distributionQuery, lang),
+  ]);
+
+  const normalized = normalizeDataset(dataset, {
+    tableId,
+    title: info.label,
+  });
+
+  return buildOccupationSalaryDistribution(normalized, occupationCode);
+}
+
+export async function getOccupationEmploymentLatest(
+  occupationCode: string,
+  lang: SsbLanguage = "no",
+): Promise<OccupationEmploymentLatest | null> {
+  const table = getSalaryTableDefinition("occupationEmployment");
+  const metadata = await getTableMetadata(table.id, lang);
+  const query = buildOccupationEmploymentLatestQuery(metadata, occupationCode);
+  const [info, dataset] = await Promise.all([
+    getTableInfo(table.id, lang),
+    getTableData(table.id, query, lang),
+  ]);
+
+  const normalized = normalizeDataset(dataset, {
+    tableId: table.id,
+    tableKey: table.key,
+    title: info.label,
+  });
+
+  return buildOccupationEmploymentLatest(normalized, occupationCode, {
+    unit: getMetricUnitFromMetadata(metadata) ?? "1 000 personer",
+  });
+}
+
+export async function getOccupationLaborMarketStats(
+  occupationCode: string,
+  lang: SsbLanguage = "no",
+): Promise<OccupationLaborMarketStats | null> {
+  const employmentTable = getSalaryTableDefinition("occupationEmployment");
+  const [employmentMetadata, contractMetadata] = await Promise.all([
+    getTableMetadata(employmentTable.id, lang),
+    getTableMetadata(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
+  ]);
+  const employmentQuery = buildOccupationEmploymentTimeSeriesQuery(employmentMetadata, occupationCode);
+  const contractQuery = buildOccupationContractTypeQuery(contractMetadata, occupationCode);
+  const [employmentInfo, contractInfo, employmentDataset, contractDataset] = await Promise.all([
+    getTableInfo(employmentTable.id, lang),
+    getTableInfo(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
+    getTableData(employmentTable.id, employmentQuery, lang),
+    getTableData(SSB_OCCUPATION_CONTRACT_TABLE_ID, contractQuery, lang),
+  ]);
+
+  const normalizedEmployment = normalizeDataset(employmentDataset, {
+    tableId: employmentTable.id,
+    tableKey: employmentTable.key,
+    title: employmentInfo.label,
+  });
+  const normalizedContract = normalizeDataset(contractDataset, {
+    tableId: SSB_OCCUPATION_CONTRACT_TABLE_ID,
+    title: contractInfo.label,
+  });
+
+  return buildOccupationLaborMarketStats(normalizedEmployment, normalizedContract, occupationCode, {
+    employmentUnit: getMetricUnitFromMetadata(employmentMetadata) ?? "1 000 personer",
+  });
 }
 
 export async function getOccupationPurchasingPowerOverview(
@@ -633,6 +737,215 @@ function buildInflationQuarterQuery(metadata: SsbTableMetadata): SsbQueryParams 
   return query;
 }
 
+function buildOccupationEmploymentLatestQuery(
+  metadata: SsbTableMetadata,
+  occupationCode: string,
+): SsbQueryParams {
+  const dimensions = metadata.id ?? Object.keys(metadata.dimension);
+  const timeDimensions = new Set(metadata.role?.time ?? []);
+  const metricDimensions = new Set(metadata.role?.metric ?? []);
+  const occupationDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["yrke", "occupation"],
+  );
+  const genderDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["kjonn", "kjønn", "sex"],
+  );
+
+  if (!occupationDimensionCode) {
+    throw new Error(`Fant ikke yrkesdimensjon i metadata for tabell ${SSB_OCCUPATION_EMPLOYMENT_TABLE_ID}.`);
+  }
+
+  const query: SsbQueryParams = {};
+
+  for (const dimension of dimensions) {
+    const metadataDimension = metadata.dimension[dimension];
+
+    if (dimension === occupationDimensionCode) {
+      query[`valueCodes[${dimension}]`] = occupationCode;
+      continue;
+    }
+
+    if (timeDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] = "top(1)";
+      continue;
+    }
+
+    if (genderDimensionCode && dimension === genderDimensionCode) {
+      query[`valueCodes[${dimension}]`] =
+        findCategoryCodeByLabel(
+          metadataDimension.category.label,
+          ["begge kjonn", "begge kjønn", "begge", "both sexes"],
+          [],
+        ) ?? "0";
+      continue;
+    }
+
+    if (metricDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] =
+        findCategoryCodeByLabel(
+          metadataDimension.category.label,
+          ["sysselsatte", "employed persons"],
+          [],
+        ) ?? Object.keys(metadataDimension.category.index)[0];
+      continue;
+    }
+
+    query[`valueCodes[${dimension}]`] =
+      findCategoryCodeByLabel(
+        metadataDimension.category.label,
+        ["ialt", "i alt", "alle", "all", "total"],
+        [],
+      ) ?? "*";
+  }
+
+  return query;
+}
+
+function buildOccupationEmploymentTimeSeriesQuery(
+  metadata: SsbTableMetadata,
+  occupationCode: string,
+): SsbQueryParams {
+  const dimensions = metadata.id ?? Object.keys(metadata.dimension);
+  const timeDimensions = new Set(metadata.role?.time ?? []);
+  const metricDimensions = new Set(metadata.role?.metric ?? []);
+  const occupationDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["yrke", "occupation"],
+  );
+  const genderDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["kjonn", "kjønn", "sex"],
+  );
+
+  if (!occupationDimensionCode) {
+    throw new Error(`Fant ikke yrkesdimensjon i metadata for tabell ${SSB_OCCUPATION_EMPLOYMENT_TABLE_ID}.`);
+  }
+
+  const query: SsbQueryParams = {};
+
+  for (const dimension of dimensions) {
+    const metadataDimension = metadata.dimension[dimension];
+
+    if (dimension === occupationDimensionCode) {
+      query[`valueCodes[${dimension}]`] = occupationCode;
+      continue;
+    }
+
+    if (timeDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] = "*";
+      continue;
+    }
+
+    if (genderDimensionCode && dimension === genderDimensionCode) {
+      query[`valueCodes[${dimension}]`] = ["0", "1", "2"];
+      continue;
+    }
+
+    if (metricDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] =
+        findCategoryCodeByLabel(
+          metadataDimension.category.label,
+          ["sysselsatte", "employed persons"],
+          [],
+        ) ?? Object.keys(metadataDimension.category.index)[0];
+      continue;
+    }
+
+    query[`valueCodes[${dimension}]`] = "*";
+  }
+
+  return query;
+}
+
+function buildOccupationContractTypeQuery(
+  metadata: SsbTableMetadata,
+  occupationCode: string,
+): SsbQueryParams {
+  const dimensions = metadata.id ?? Object.keys(metadata.dimension);
+  const timeDimensions = new Set(metadata.role?.time ?? []);
+  const metricDimensions = new Set(metadata.role?.metric ?? []);
+  const geoDimensions = new Set(metadata.role?.geo ?? []);
+  const occupationDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["yrke", "occupation"],
+  );
+  const ageDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["alder", "age"],
+  );
+  const contractDimensionCode = findDimensionCode(
+    dimensions,
+    metadata.dimension,
+    ["ansettelsesform", "ansettelsesforhold", "employment"],
+  );
+  const query: SsbQueryParams = {};
+
+  if (!occupationDimensionCode) {
+    throw new Error(`Fant ikke yrkesdimensjon i metadata for tabell ${SSB_OCCUPATION_CONTRACT_TABLE_ID}.`);
+  }
+
+  for (const dimension of dimensions) {
+    const metadataDimension = metadata.dimension[dimension];
+
+    if (dimension === occupationDimensionCode) {
+      query[`valueCodes[${dimension}]`] = occupationCode;
+      continue;
+    }
+
+    if (timeDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] = "top(1)";
+      continue;
+    }
+
+    if (geoDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] =
+        findCategoryCodeByLabel(
+          metadataDimension.category.label,
+          ["hele landet"],
+          [],
+        ) ?? "0";
+      continue;
+    }
+
+    if (ageDimensionCode && dimension === ageDimensionCode) {
+      query[`valueCodes[${dimension}]`] =
+        findCategoryCodeByLabel(
+          metadataDimension.category.label,
+          ["15-74"],
+          [],
+        ) ?? Object.keys(metadataDimension.category.index)[0];
+      continue;
+    }
+
+    if (contractDimensionCode && dimension === contractDimensionCode) {
+      query[`valueCodes[${dimension}]`] = ["0", "F", "M", "09"];
+      continue;
+    }
+
+    if (metricDimensions.has(dimension)) {
+      query[`valueCodes[${dimension}]`] =
+        findCategoryCodeByLabel(
+          metadataDimension.category.label,
+          ["sysselsatte"],
+          [],
+        ) ?? Object.keys(metadataDimension.category.index)[0];
+      continue;
+    }
+
+    query[`valueCodes[${dimension}]`] = "*";
+  }
+
+  return query;
+}
+
 function buildOccupationSalaryTimeSeries(
   dataset: SsbNormalizedDataset,
   occupationCode: string,
@@ -711,6 +1024,418 @@ function buildOccupationSalaryTimeSeries(
   };
 }
 
+function buildOccupationEmploymentLatest(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+  options: { unit: string },
+): OccupationEmploymentLatest | null {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "year",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !periodDimensionCode) {
+    throw new Error(`Fant ikke forventede dimensjoner for sysselsetting i tabell ${dataset.tableId}.`);
+  }
+
+  const relevantRows = dataset.rows.filter(
+    (row) =>
+      row.dimensions[occupationDimensionCode]?.code === occupationCode &&
+      row.value !== null,
+  );
+
+  if (relevantRows.length === 0) {
+    return null;
+  }
+
+  const latestRow = relevantRows
+    .slice()
+    .sort((left, right) =>
+      right.dimensions[periodDimensionCode].code.localeCompare(
+        left.dimensions[periodDimensionCode].code,
+        "nb-NO",
+      ),
+    )[0];
+  const period = latestRow.dimensions[periodDimensionCode];
+  const occupation = latestRow.dimensions[occupationDimensionCode];
+
+  return {
+    occupationCode,
+    occupationLabel: occupation?.label ?? occupationCode,
+    periodCode: period.code,
+    periodLabel: period.label,
+    value: latestRow.value ?? 0,
+    unit: options.unit,
+    updated: dataset.updated,
+  };
+}
+
+function buildOccupationLaborMarketStats(
+  employmentDataset: SsbNormalizedDataset,
+  contractDataset: SsbNormalizedDataset,
+  occupationCode: string,
+  options: { employmentUnit: string },
+): OccupationLaborMarketStats | null {
+  const points = buildOccupationEmploymentTimeSeries(employmentDataset, occupationCode);
+
+  if (points.length === 0) {
+    return null;
+  }
+
+  const latestPoint = points.at(-1);
+  const occupationLabel = findOccupationLabelFromDataset(employmentDataset, occupationCode) ?? occupationCode;
+
+  const latest = latestPoint?.total !== undefined
+    ? {
+        occupationCode,
+        occupationLabel,
+        periodCode: latestPoint.periodCode,
+        periodLabel: latestPoint.periodLabel,
+        value: latestPoint.total,
+        unit: options.employmentUnit,
+        updated: employmentDataset.updated,
+      }
+    : null;
+
+  return {
+    occupationCode,
+    occupationLabel,
+    updated: employmentDataset.updated,
+    employmentUnit: options.employmentUnit,
+    points,
+    latest,
+    genderBreakdown: buildOccupationEmploymentGenderBreakdown(points),
+    growth: buildOccupationEmploymentGrowth(points),
+    contractType: buildOccupationEmploymentContractType(contractDataset, occupationCode),
+  };
+}
+
+function buildOccupationEmploymentTimeSeries(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationEmploymentTimeSeriesPoint[] {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "kjønn",
+    "sex",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "year",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !periodDimensionCode) {
+    throw new Error(`Fant ikke forventede dimensjoner for sysselsetting i tabell ${dataset.tableId}.`);
+  }
+
+  const relevantRows = dataset.rows.filter(
+    (row) =>
+      row.dimensions[occupationDimensionCode]?.code === occupationCode &&
+      row.value !== null,
+  );
+
+  const pointsByPeriod = relevantRows.reduce((map, row) => {
+    const period = row.dimensions[periodDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+
+    if (!period || !gender) {
+      return map;
+    }
+
+    const point = map.get(period.code) ?? {
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+
+    if (gender.code === "0") {
+      point.total = row.value ?? undefined;
+    }
+
+    if (gender.code === "2") {
+      point.women = row.value ?? undefined;
+    }
+
+    if (gender.code === "1") {
+      point.men = row.value ?? undefined;
+    }
+
+    map.set(period.code, point);
+    return map;
+  }, new Map<string, OccupationEmploymentTimeSeriesPoint>());
+
+  return Array.from(pointsByPeriod.values()).sort((left, right) =>
+    left.periodCode.localeCompare(right.periodCode, "nb-NO"),
+  );
+}
+
+function buildOccupationEmploymentGenderBreakdown(
+  points: OccupationEmploymentTimeSeriesPoint[],
+): OccupationEmploymentGenderBreakdown | null {
+  const latestPoint = points.at(-1);
+
+  if (
+    !latestPoint ||
+    latestPoint.total === undefined ||
+    latestPoint.total === 0 ||
+    latestPoint.women === undefined ||
+    latestPoint.men === undefined
+  ) {
+    return null;
+  }
+
+  return {
+    periodCode: latestPoint.periodCode,
+    periodLabel: latestPoint.periodLabel,
+    total: latestPoint.total,
+    women: latestPoint.women,
+    men: latestPoint.men,
+    womenShare: (latestPoint.women / latestPoint.total) * 100,
+    menShare: (latestPoint.men / latestPoint.total) * 100,
+  };
+}
+
+function buildOccupationEmploymentGrowth(
+  points: OccupationEmploymentTimeSeriesPoint[],
+): OccupationEmploymentGrowth | null {
+  const totalPoints = points.filter((point) => point.total !== undefined);
+  const latestPoint = totalPoints.at(-1);
+
+  if (!latestPoint || latestPoint.total === undefined) {
+    return null;
+  }
+
+  const previousPoint = totalPoints.at(-2);
+  const baselinePoint =
+    totalPoints.find((point) => point.periodCode === "2021") ?? totalPoints[0];
+
+  return {
+    latestPeriodCode: latestPoint.periodCode,
+    latestPeriodLabel: latestPoint.periodLabel,
+    latestValue: latestPoint.total,
+    previousPeriodCode: previousPoint?.periodCode,
+    previousPeriodLabel: previousPoint?.periodLabel,
+    previousValue: previousPoint?.total,
+    yearOverYearChange:
+      previousPoint?.total && previousPoint.total !== 0
+        ? ((latestPoint.total - previousPoint.total) / previousPoint.total) * 100
+        : undefined,
+    baselinePeriodCode: baselinePoint?.periodCode,
+    baselinePeriodLabel: baselinePoint?.periodLabel,
+    baselineValue: baselinePoint?.total,
+    changeSinceBaseline:
+      baselinePoint?.total && baselinePoint.total !== 0
+        ? ((latestPoint.total - baselinePoint.total) / baselinePoint.total) * 100
+        : undefined,
+  };
+}
+
+function buildOccupationEmploymentContractType(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationEmploymentContractType | null {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const contractDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "ansettelsesform",
+    "ansettelsesforhold",
+    "employment",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "year",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !contractDimensionCode || !periodDimensionCode) {
+    return null;
+  }
+
+  const relevantRows = dataset.rows.filter(
+    (row) =>
+      row.dimensions[occupationDimensionCode]?.code === occupationCode &&
+      row.value !== null,
+  );
+
+  if (relevantRows.length === 0) {
+    return null;
+  }
+
+  const period = relevantRows[0].dimensions[periodDimensionCode];
+  const contract = relevantRows.reduce(
+    (result, row) => {
+      const contractCode = row.dimensions[contractDimensionCode]?.code;
+
+      if (contractCode === "0") {
+        result.total = row.value ?? undefined;
+      }
+
+      if (contractCode === "F") {
+        result.permanent = row.value ?? undefined;
+      }
+
+      if (contractCode === "M") {
+        result.temporary = row.value ?? undefined;
+      }
+
+      if (contractCode === "09") {
+        result.unspecified = row.value ?? undefined;
+      }
+
+      return result;
+    },
+    {
+      total: undefined as number | undefined,
+      permanent: undefined as number | undefined,
+      temporary: undefined as number | undefined,
+      unspecified: undefined as number | undefined,
+    },
+  );
+
+  const denominator =
+    contract.total ??
+    (contract.permanent ?? 0) + (contract.temporary ?? 0) + (contract.unspecified ?? 0);
+  const safeDenominator = denominator ?? 0;
+
+  return {
+    periodCode: period.code,
+    periodLabel: period.label,
+    total: contract.total,
+    permanent: contract.permanent,
+    temporary: contract.temporary,
+    unspecified: contract.unspecified,
+    permanentShare:
+      contract.permanent !== undefined && safeDenominator > 0
+        ? (contract.permanent / safeDenominator) * 100
+        : undefined,
+    temporaryShare:
+      contract.temporary !== undefined && safeDenominator > 0
+        ? (contract.temporary / safeDenominator) * 100
+        : undefined,
+    unspecifiedShare:
+      contract.unspecified !== undefined && safeDenominator > 0
+        ? (contract.unspecified / safeDenominator) * 100
+        : undefined,
+  };
+}
+
+function findOccupationLabelFromDataset(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+) {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+
+  if (!occupationDimensionCode) {
+    return undefined;
+  }
+
+  return dataset.rows.find(
+    (row) => row.dimensions[occupationDimensionCode]?.code === occupationCode,
+  )?.dimensions[occupationDimensionCode]?.label;
+}
+
+function buildOccupationSalaryDistribution(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationSalaryDistribution | null {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "sex",
+  ]);
+  const measureDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "maalemetode",
+    "statistikkmal",
+    "measure",
+    "contentscode",
+    "contents",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "quarter",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode) {
+    throw new Error("Fant ikke forventede dimensjoner for lonnsfordeling i tabell 11658.");
+  }
+
+  const relevantRows = dataset.rows.filter(
+    (row) => row.dimensions[occupationDimensionCode]?.code === occupationCode,
+  );
+
+  if (relevantRows.length === 0) {
+    return null;
+  }
+
+  const rowsByGender = relevantRows.reduce(
+    (map, row) => {
+      const gender = row.dimensions[genderDimensionCode];
+      const measure = row.dimensions[measureDimensionCode];
+
+      if (!gender || !measure || row.value === null) {
+        return map;
+      }
+
+      const existing = map.get(gender.code) ?? {};
+
+      if (measure.code === "02") {
+        existing.average = row.value;
+      }
+
+      if (measure.code === "01") {
+        existing.median = row.value;
+      }
+
+      if (measure.code === "051") {
+        existing.p25 = row.value;
+      }
+
+      if (measure.code === "061") {
+        existing.p75 = row.value;
+      }
+
+      map.set(gender.code, existing);
+      return map;
+    },
+    new Map<string, OccupationSalaryDistributionMetrics>(),
+  );
+
+  const distribution: OccupationSalaryDistribution = {
+    occupationCode,
+    occupationLabel: relevantRows[0]?.dimensions[occupationDimensionCode]?.label ?? occupationCode,
+    periodLabel: periodDimensionCode
+      ? relevantRows[0]?.dimensions[periodDimensionCode]?.label
+      : undefined,
+    updated: dataset.updated,
+    total: rowsByGender.get("0"),
+    women: rowsByGender.get("2"),
+    men: rowsByGender.get("1"),
+  };
+
+  return hasAnyDistributionMetrics(distribution.total) ||
+    hasAnyDistributionMetrics(distribution.women) ||
+    hasAnyDistributionMetrics(distribution.men)
+    ? distribution
+    : null;
+}
+
 function buildInflationQuarterSeries(dataset: SsbNormalizedDataset): InflationQuarterPoint[] {
   const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
     "tid",
@@ -768,6 +1493,15 @@ function buildInflationQuarterSeries(dataset: SsbNormalizedDataset): InflationQu
       yearOverYearChange,
     };
   });
+}
+
+function hasAnyDistributionMetrics(metrics?: OccupationSalaryDistributionMetrics) {
+  return Boolean(
+    metrics &&
+      [metrics.p25, metrics.median, metrics.p75, metrics.average].some((value) =>
+        Number.isFinite(value),
+      ),
+  );
 }
 
 function buildOccupationPurchasingPowerTimeSeriesPoints(
@@ -1053,6 +1787,27 @@ function findCategoryCodeByLabel(
 
     return matchesInclude && !matchesExclude;
   })?.[0];
+}
+
+function getMetricUnitFromMetadata(metadata: SsbTableMetadata) {
+  const metricDimensionCode = (metadata.role?.metric ?? []).find((dimensionCode) =>
+    Boolean(metadata.dimension[dimensionCode]),
+  );
+
+  if (!metricDimensionCode) {
+    return undefined;
+  }
+
+  const metricDimension = metadata.dimension[metricDimensionCode];
+  const firstMetricCode = Object.entries(metricDimension.category.index).sort(
+    (left, right) => left[1] - right[1],
+  )[0]?.[0];
+
+  if (!firstMetricCode) {
+    return undefined;
+  }
+
+  return metricDimension.category.unit?.[firstMetricCode]?.base;
 }
 
 function toQuarterFromMonthCode(periodCode: string) {
