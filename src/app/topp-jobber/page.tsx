@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Topp jobber | Lonnsdata Norge",
+  title: "Topp jobber | Lønnsdata Norge",
   description: "Planlagt side for å utforske de best betalte jobbene og lønnsvekst over tid.",
 };
 

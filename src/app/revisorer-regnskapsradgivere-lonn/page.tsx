@@ -4,7 +4,7 @@ import { getOccupationDetailPage } from "@/lib/occupation-detail-pages";
 
 const occupationCode = "2411";
 const detailPage = getOccupationDetailPage(occupationCode);
-const label = detailPage?.label ?? "Revisorer, regnskapsradgivere";
+const label = detailPage?.label ?? "Revisorer, regnskapsrådgivere";
 
 export const metadata: Metadata = {
   title: `${label} lønn`,

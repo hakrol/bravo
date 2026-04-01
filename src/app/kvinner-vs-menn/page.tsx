@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Kvinner vs menn | Lonnsdata Norge",
+  title: "Kvinner vs menn | Lønnsdata Norge",
   description: "Planlagt side for å utforske lønnsforskjeller mellom kvinner og menn.",
 };
 

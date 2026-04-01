@@ -133,17 +133,17 @@ function isFourDigitOccupationCode(code?: string) {
 
 function formatMeasureLabel(label?: string) {
   if (!label) {
-    return "Gjennomsnittlig avtalt manedslonn";
+    return "Gjennomsnittlig avtalt månedslønn";
   }
 
   const normalized = normalizeText(label);
 
   if (normalized.includes("avtalt") && normalized.includes("manedslonn")) {
-    return "Gjennomsnittlig avtalt manedslonn";
+    return "Gjennomsnittlig avtalt månedslønn";
   }
 
   if (normalized.includes("manedslonn")) {
-    return "Gjennomsnittlig manedslonn";
+    return "Gjennomsnittlig månedslønn";
   }
 
   return label;

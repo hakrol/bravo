@@ -12,7 +12,7 @@ const navItems = [
   { href: "/topp-jobber", label: "Topp jobber" },
   {
     href: accountantOccupationDetailPage?.href ?? "/yrker",
-    label: accountantOccupationDetailPage?.label ?? "Regnskapsforer",
+    label: accountantOccupationDetailPage?.label ?? "Regnskapsfører",
   },
 ] as const;
 

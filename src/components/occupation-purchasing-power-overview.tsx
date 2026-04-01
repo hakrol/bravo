@@ -24,15 +24,15 @@ export function OccupationPurchasingPowerOverviewTable({
       <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-xl border bg-[var(--surface)] p-6 shadow-sm sm:p-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
-            Kjop ekraft per yrke
+            Kjøpekraft per yrke
           </p>
           <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-            Lonnsvekst mot inflasjon
+            Lønnsvekst mot inflasjon
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--muted)]">
-            Oversikten sammenligner lonnsnivaa i {overview.latestPeriodLabel.toLowerCase()} med{" "}
+            Oversikten sammenligner lønnsnivået i {overview.latestPeriodLabel.toLowerCase()} med{" "}
             {overview.previousPeriodLabel.toLowerCase()} for samme yrke, og setter det opp mot KPI
-            fra SSB. Positiv reallonnsvekst betyr okt kjop ekraft.
+            fra SSB. Positiv reallønnsvekst betyr økt kjøpekraft.
           </p>
         </div>
 
@@ -41,8 +41,8 @@ export function OccupationPurchasingPowerOverviewTable({
             label="Inflasjon i perioden"
             value={`${percentFormatter.format(overview.inflationGrowth)} %`}
           />
-          <MetricCard label="Yrker med okt kjop ekraft" value={String(gainCount)} />
-          <MetricCard label="Yrker med tapt kjop ekraft" value={String(lossCount)} />
+          <MetricCard label="Yrker med økt kjøpekraft" value={String(gainCount)} />
+          <MetricCard label="Yrker med tapt kjøpekraft" value={String(lossCount)} />
         </div>
       </section>
 
@@ -53,7 +53,7 @@ export function OccupationPurchasingPowerOverviewTable({
               Siste sammenlignbare kvartal
             </h3>
             <p className="mt-1 text-sm text-[var(--muted)]">
-              Tabellen er sortert etter reallonnsvekst. Beregning: ((1 + lonnsvekst) / (1 +
+              Tabellen er sortert etter reallønnsvekst. Beregning: ((1 + lønnsvekst) / (1 +
               inflasjon)) - 1.
             </p>
           </div>
@@ -62,7 +62,7 @@ export function OccupationPurchasingPowerOverviewTable({
               {overview.previousPeriodLabel} til {overview.latestPeriodLabel}
             </p>
             <p className="text-sm text-[var(--muted)]">
-              Oppdatert lonn: {overview.salaryUpdated ?? "Ukjent"} | KPI:{" "}
+              Oppdatert lønn: {overview.salaryUpdated ?? "Ukjent"} | KPI:{" "}
               {overview.inflationUpdated ?? "Ukjent"}
             </p>
           </div>
@@ -73,11 +73,11 @@ export function OccupationPurchasingPowerOverviewTable({
             <thead className="sticky top-0 bg-[#f8f3ea] text-sm text-slate-700">
               <tr>
                 <th className="border-b px-6 py-3 font-semibold">Yrke</th>
-                <th className="border-b px-6 py-3 text-right font-semibold">Siste lonn</th>
-                <th className="border-b px-6 py-3 text-right font-semibold">Forrige ar</th>
-                <th className="border-b px-6 py-3 text-right font-semibold">Lonnsvekst</th>
+                <th className="border-b px-6 py-3 text-right font-semibold">Siste lønn</th>
+                <th className="border-b px-6 py-3 text-right font-semibold">Forrige år</th>
+                <th className="border-b px-6 py-3 text-right font-semibold">Lønnsvekst</th>
                 <th className="border-b px-6 py-3 text-right font-semibold">Inflasjon</th>
-                <th className="border-b px-6 py-3 text-right font-semibold">Reallonn</th>
+                <th className="border-b px-6 py-3 text-right font-semibold">Reallønn</th>
                 <th className="border-b px-6 py-3 font-semibold">Innsikt</th>
               </tr>
             </thead>

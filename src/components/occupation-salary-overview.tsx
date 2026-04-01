@@ -45,9 +45,7 @@ export function OccupationSalaryOverview({
               </h2>
               <DataInfoModal description={description} title={title} />
             </div>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              {description}
-            </p>
+            <p className="mt-1 text-sm text-[var(--muted)]">{description}</p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
             {formattedPeriodLabel ? (
@@ -55,9 +53,7 @@ export function OccupationSalaryOverview({
                 Periode: {formattedPeriodLabel}
               </p>
             ) : null}
-            <p className="text-sm text-[var(--muted)]">
-              Oppdatert: {lastUpdated ?? "Ukjent"}
-            </p>
+            <p className="text-sm text-[var(--muted)]">Oppdatert: {lastUpdated ?? "Ukjent"}</p>
           </div>
         </div>
 

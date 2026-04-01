@@ -18,15 +18,15 @@ export function MainFooter() {
             </span>
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
-                Lonnsdata
+                Lønnsdata
               </p>
-              <p className="text-sm text-[var(--muted)]">Nettside for lonnsinnsikt i Norge</p>
+              <p className="text-sm text-[var(--muted)]">Nettside for lønnsinnsikt i Norge</p>
             </div>
           </Link>
 
           <p className="mt-5 text-sm leading-7 text-[var(--muted)] sm:text-base">
-            Lonnsdata samler og presenterer oversiktlige lonnstall for ulike yrker, slik at det
-            blir enklere a utforske forskjeller i inntekt etter rolle, erfaring og kjonn.
+            Lønnsdata samler og presenterer oversiktlige lønnstall for ulike yrker, slik at det
+            blir enklere å utforske forskjeller i inntekt etter rolle, erfaring og kjønn.
           </p>
         </div>
 

@@ -29,29 +29,29 @@ export function buildOccupationSalarySlug(label: string) {
 export const occupationDetailPages: OccupationDetailPage[] = [
   {
     occupationCode: "3313",
-    label: "Regnskapsforer",
+    label: "Regnskapsfører",
     slug: buildOccupationSalarySlug("Regnskapsforer"),
     href: `/${buildOccupationSalarySlug("Regnskapsforer")}`,
     summary:
-      "Regnskapsforere forer regnskap, avstemmer tall og utarbeider rapporter og dokumentasjon for virksomheter. Mange jobber ogsa med lonn, skattemelding, arsoppgjor og okonomisk radgivning.",
+      "Regnskapsførere fører regnskap, avstemmer tall og utarbeider rapporter og dokumentasjon for virksomheter. Mange jobber også med lønn, skattemelding, årsoppgjør og økonomisk rådgivning.",
     relatedOccupationCodes: ["2411", "2412", "2413"],
   },
   {
     occupationCode: "2411",
-    label: "Revisorer, regnskapsradgivere",
+    label: "Revisorer, regnskapsrådgivere",
     slug: buildOccupationSalarySlug("Revisorer, regnskapsradgivere"),
     href: `/${buildOccupationSalarySlug("Revisorer, regnskapsradgivere")}`,
     summary:
-      "Revisorer og regnskapsradgivere kontrollerer regnskap, kvalitetssikrer etterlevelse og gir rad om bokforing, skatt og finansiell rapportering.",
+      "Revisorer og regnskapsrådgivere kontrollerer regnskap, kvalitetssikrer etterlevelse og gir råd om bokføring, skatt og finansiell rapportering.",
     relatedOccupationCodes: ["3313", "2412", "2413"],
   },
   {
     occupationCode: "2412",
-    label: "Finans- og investeringsradgivere",
+    label: "Finans- og investeringsrådgivere",
     slug: buildOccupationSalarySlug("Finans- og investeringsradgivere"),
     href: `/${buildOccupationSalarySlug("Finans- og investeringsradgivere")}`,
     summary:
-      "Finans- og investeringsradgivere gir rad om sparing, finansiering og kapitalplassering, og vurderer risiko, avkastning og kundens okonomiske mal.",
+      "Finans- og investeringsrådgivere gir råd om sparing, finansiering og kapitalplassering, og vurderer risiko, avkastning og kundens økonomiske mål.",
     relatedOccupationCodes: ["3313", "2411", "2413"],
   },
   {
@@ -60,7 +60,7 @@ export const occupationDetailPages: OccupationDetailPage[] = [
     slug: buildOccupationSalarySlug("Finansanalytikere"),
     href: `/${buildOccupationSalarySlug("Finansanalytikere")}`,
     summary:
-      "Finansanalytikere analyserer selskaper, markeder og investeringer, og bruker data og prognoser for a vurdere verdiutvikling og beslutningsgrunnlag.",
+      "Finansanalytikere analyserer selskaper, markeder og investeringer, og bruker data og prognoser for å vurdere verdiutvikling og beslutningsgrunnlag.",
     relatedOccupationCodes: ["3313", "2411", "2412"],
   },
 ];

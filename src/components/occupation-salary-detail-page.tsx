@@ -1,7 +1,12 @@
 ﻿import { notFound } from "next/navigation";
 import { InlineDefinitionModal } from "@/components/inline-definition-modal";
 import { MetricInfoButton } from "@/components/metric-info-button";
+import {
+  OccupationDetailSectionNav,
+  type OccupationDetailSectionNavItem,
+} from "@/components/occupation-detail-section-nav";
 import { OccupationPurchasingPowerTimeSeriesChart } from "@/components/occupation-purchasing-power-time-series";
+import { OccupationSalaryEstimate } from "@/components/occupation-salary-estimate";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import { RelatedOccupationSalaryComparison } from "@/components/related-occupation-salary-comparison";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
@@ -25,6 +30,8 @@ import {
 type OccupationSalaryDetailPageProps = {
   occupationCode: string;
 };
+
+const sectionAnchorClassName = "scroll-mt-32";
 
 export async function OccupationSalaryDetailPage({
   occupationCode,
@@ -73,16 +80,74 @@ export async function OccupationSalaryDetailPage({
       };
     })
     .filter((row) => row.salaryAll !== undefined);
+  const hasEstimate =
+    currentSalary !== undefined || currentSalaryWomen !== undefined || currentSalaryMen !== undefined;
+  const hasRelatedRows = relatedRows.length > 0;
+  const hasPurchasingPowerSeries = purchasingPowerSeries.points.length > 0;
+  const detailSections: OccupationDetailSectionNavItem[] = [
+    { id: "oversikt", label: "Oversikt" },
+    ...(hasEstimate ? [{ id: "lonnsutregning", label: "Lønnsutregning" }] : []),
+    ...(hasRelatedRows ? [{ id: "relaterte-yrker", label: "Relaterte yrker" }] : []),
+    { id: "lonnsutvikling", label: "Lønnsutvikling" },
+    ...(hasPurchasingPowerSeries ? [{ id: "kjopekraft", label: "Kjøpekraft" }] : []),
+    ...(laborMarketStats ? [{ id: "arbeidsmarked", label: "Arbeidsmarked" }] : []),
+  ];
 
   return (
     <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <section className="border-b border-black/10 pb-8">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
+        <aside className="hidden lg:block">
+          <div className="sticky top-28">
+            <OccupationDetailSectionNav sections={detailSections} variant="desktop" />
+          </div>
+        </aside>
+
+        <div className="flex min-w-0 flex-col gap-8">
+          <OccupationDetailSectionNav
+            className="lg:hidden"
+            sections={detailSections}
+            variant="mobile"
+          />
+          <section
+            aria-label="Oversikt"
+            className={`${sectionAnchorClassName} border-b border-black/10 pb-8`}
+            id="oversikt"
+          >
           <div className="space-y-8">
-            <div className="space-y-3">
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
-                {detailPage.label} lønn
-              </h1>
+            <div className="space-y-5">
+              <div className="flex items-start justify-between gap-6">
+                <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
+                  {detailPage.label} lønn
+                </h1>
+                <div className="hidden shrink-0 rounded-2xl border border-black/10 bg-white/70 p-3 shadow-[0_10px_30px_rgba(27,36,48,0.08)] sm:flex">
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#f4efe6_0%,#e6f0ea_100%)] text-[var(--primary-strong)]"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5 18.5h14M7 15.5V10.5M12 15.5V6.5M17 15.5V12.5"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                      />
+                      <path
+                        d="M6 8.5 10.2 5l3.6 3 4.2-3.5"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.8"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
               <div className="max-w-3xl text-base leading-7 text-slate-950">
                 <span>Viser </span>
                 <InlineDefinitionModal
@@ -102,7 +167,7 @@ export async function OccupationSalaryDetailPage({
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
                   <MetricStat
                     label="Lønnsvekst"
-                    description="Lønnsvekst viser hvor mye gjennomsnittlig månedslønn har økt fra samme kvartal året før til siste tilgjengelige kvartal."
+                    description={`Lønnsvekst viser hvor mye den gjennomsnittlige avtalte månedslønnen i yrket har endret seg fra ${purchasingPower.previousPeriodLabel.toLowerCase()} til ${purchasingPower.latestPeriodLabel.toLowerCase()}. Tallet er hentet fra SSB tabell 11658 og sammenligner samme kvartal i to påfølgende år, altså en 12-månedersendring.`}
                     value={`${purchasingPower.salaryGrowth.toLocaleString("nb-NO", {
                       maximumFractionDigits: 1,
                       minimumFractionDigits: 1,
@@ -110,7 +175,7 @@ export async function OccupationSalaryDetailPage({
                   />
                   <MetricStat
                     label="Inflasjon"
-                    description="Inflasjon viser prisveksten i samme 12-månedersperiode, basert på KPI fra SSB."
+                    description={`Inflasjon viser prisveksten i samme periode som lønnsveksten, fra ${purchasingPower.previousPeriodLabel.toLowerCase()} til ${purchasingPower.latestPeriodLabel.toLowerCase()}. Tallet er hentet fra KPI i SSB tabell 14700 og brukes her for å vise hvor mye prisnivået har steget i løpet av de siste 12 månedene.`}
                     value={`${purchasingPower.inflationGrowth.toLocaleString("nb-NO", {
                       maximumFractionDigits: 1,
                       minimumFractionDigits: 1,
@@ -118,7 +183,7 @@ export async function OccupationSalaryDetailPage({
                   />
                   <MetricStat
                     label={purchasingPower.realGrowth >= 0 ? "Reallønnsvekst" : "Reallønnsfall"}
-                    description="Reallønn viser forskjellen mellom lønnsvekst og inflasjon. Positiv verdi betyr at lønnen har økt mer enn prisene."
+                    description={`${purchasingPower.realGrowth >= 0 ? "Reallønnsvekst" : "Reallønnsfall"} viser hvordan lønnsutviklingen i yrket står seg mot prisveksten fra ${purchasingPower.previousPeriodLabel.toLowerCase()} til ${purchasingPower.latestPeriodLabel.toLowerCase()}. Tallet er beregnet ved å sammenligne lønnsvekst fra SSB tabell 11658 med inflasjon fra SSB tabell 14700. Positiv verdi betyr at lønnen har økt mer enn prisene, mens negativ verdi betyr at prisene har steget mer enn lønnen.`}
                     value={`${purchasingPower.realGrowth.toLocaleString("nb-NO", {
                       maximumFractionDigits: 1,
                       minimumFractionDigits: 1,
@@ -128,45 +193,78 @@ export async function OccupationSalaryDetailPage({
                   <MetricStat
                     label="Kvinner"
                     leadingSymbol="♀"
+                    description={`Kvinner viser gjennomsnittlig avtalt månedslønn i kroner for kvinner i dette yrket. Tallet er hentet fra SSB tabell 11658 og gjelder siste tilgjengelige periode, ${latestSalaryPoint?.periodLabel?.toLowerCase() ?? "ukjent periode"}. Dette er et gjennomsnitt for registrerte kvinner i yrket, ikke et anslag for en enkeltperson.`}
                     value={formatSalaryMetric(latestSalaryPoint?.valueWomen)}
+                    caption={formatAnnualSalaryCaption(latestSalaryPoint?.valueWomen)}
                   />
                   <MetricStat
                     label="Menn"
                     leadingSymbol="♂"
+                    description={`Menn viser gjennomsnittlig avtalt månedslønn i kroner for menn i dette yrket. Tallet er hentet fra SSB tabell 11658 og gjelder siste tilgjengelige periode, ${latestSalaryPoint?.periodLabel?.toLowerCase() ?? "ukjent periode"}. Dette er et gjennomsnitt for registrerte menn i yrket, ikke et anslag for en enkeltperson.`}
                     value={formatSalaryMetric(latestSalaryPoint?.valueMen)}
+                    caption={formatAnnualSalaryCaption(latestSalaryPoint?.valueMen)}
                   />
                   {employment ? (
                     <MetricStat
                       label="Sysselsatte"
-                      description="Antall sysselsatte i yrket fra SSBs arbeidskraftundersokelse. Tabellen dekker bare yrker med minst 5 000 sysselsatte."
+                      description={`Sysselsatte viser hvor mange personer som i gjennomsnitt var sysselsatt i dette yrket i ${employment.periodLabel}. Tallet er hentet fra SSBs arbeidskraftundersøkelse i tabell ${SSB_OCCUPATION_EMPLOYMENT_TABLE_ID}. Verdien vises som antall personer, og tabellen dekker bare yrker med minst 5 000 sysselsatte.`}
                       value={formatEmploymentMetric(employment.value, employment.unit)}
-                      caption={employment.periodLabel}
                     />
                   ) : null}
                 </div>
-                <p className="max-w-3xl text-sm leading-7 text-[var(--muted)]">
-                  Tallene viser utviklingen fra{" "}
-                  {purchasingPower.previousPeriodLabel.toLowerCase()} til{" "}
-                  {purchasingPower.latestPeriodLabel.toLowerCase()}, altså de siste 12 månedene.
-                </p>
               </div>
             ) : null}
             {distribution ? <OccupationSalaryDistributionSection distribution={distribution} /> : null}
           </div>
         </section>
 
-        <RelatedOccupationSalaryComparison
-          currentOccupationLabel={detailPage.label}
-          currentSalary={currentSalary}
-          currentSalaryWomen={currentSalaryWomen}
-          currentSalaryMen={currentSalaryMen}
-          periodLabel={overview.periodLabel}
-          rows={relatedRows}
-        />
-        <OccupationSalaryTimeSeriesChart series={series} />
-        <OccupationPurchasingPowerTimeSeriesChart series={purchasingPowerSeries} />
+        {hasEstimate ? (
+          <section
+            aria-label="Lønnsutregning"
+            className={sectionAnchorClassName}
+            id="lonnsutregning"
+          >
+            <OccupationSalaryEstimate
+              monthlySalary={currentSalary}
+              monthlySalaryMen={currentSalaryMen}
+              monthlySalaryWomen={currentSalaryWomen}
+              occupationLabel={detailPage.label}
+            />
+          </section>
+        ) : null}
+        {hasRelatedRows ? (
+          <section
+            aria-label="Relaterte yrker"
+            className={sectionAnchorClassName}
+            id="relaterte-yrker"
+          >
+            <RelatedOccupationSalaryComparison
+              currentOccupationLabel={detailPage.label}
+              currentSalary={currentSalary}
+              currentSalaryWomen={currentSalaryWomen}
+              currentSalaryMen={currentSalaryMen}
+              periodLabel={overview.periodLabel}
+              rows={relatedRows}
+            />
+          </section>
+        ) : null}
+        <section
+          aria-label="Lønnsutvikling"
+          className={sectionAnchorClassName}
+          id="lonnsutvikling"
+        >
+          <OccupationSalaryTimeSeriesChart series={series} />
+        </section>
+        {hasPurchasingPowerSeries ? (
+          <section aria-label="Kjøpekraft" className={sectionAnchorClassName} id="kjopekraft">
+            <OccupationPurchasingPowerTimeSeriesChart series={purchasingPowerSeries} />
+          </section>
+        ) : null}
         {laborMarketStats ? (
-          <section className="rounded-3xl border border-black/10 bg-white/70 px-6 py-6 shadow-[0_12px_40px_rgba(27,36,48,0.06)] sm:px-8">
+          <section
+            className={`${sectionAnchorClassName} rounded-3xl border border-black/10 bg-white/70 px-6 py-6 shadow-[0_12px_40px_rgba(27,36,48,0.06)] sm:px-8`}
+            id="arbeidsmarked"
+          >
             <div className="space-y-6">
               <div className="space-y-2">
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
@@ -275,44 +373,40 @@ export async function OccupationSalaryDetailPage({
           </section>
         ) : null}
 
-        <section className="rounded-2xl border border-black/10 bg-[#fcfaf6] px-6 py-6 sm:px-8">
-          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-                Ansvarsfraskrivelse
-              </p>
-              <p className="max-w-3xl text-sm leading-7 text-slate-700">
-                Tallene pa denne siden er ment som informasjon og sammenligningsgrunnlag. De viser
-                gjennomsnittlig avtalt manedslonn for registrerte personer i yrket, og er ikke et
-                konkret lonnstilbud eller en garanti for hva en enkelt person bor tjene.
-              </p>
-              <p className="max-w-3xl text-sm leading-7 text-slate-700">
-                Faktorer som erfaring, ansiennitet, arbeidssted, sektor, ansvar, utdanning og
-                lokale forhandlinger kan gi stor variasjon fra SSB-snittet.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-                Datakilder
-              </p>
-              <ul className="space-y-2 text-sm leading-7 text-slate-700">
-                <li>SSB tabell 11658: lonn per yrke (4-siffer) for tidsserie og siste lonnsniva.</li>
-                <li>SSB tabell 11418: lonnsfordeling per yrke for percentiler og spredning.</li>
-                <li>SSB tabell 14700: KPI fra SSB brukt i beregning av kjop ekraft og reallonn.</li>
-                <li>
-                  SSB tabell {SSB_OCCUPATION_EMPLOYMENT_TABLE_ID}: sysselsatte per yrke (4-siffer)
-                  i 1 000 personer. Tabellen dekker bare yrker med minst 5 000 sysselsatte.
-                </li>
-                <li>
-                  SSB tabell {SSB_OCCUPATION_CONTRACT_TABLE_ID}: fast og midlertidig stilling for
-                  sysselsatte i yrket.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
+
+      <section className="mx-auto mt-10 w-full max-w-5xl" id="datakilder">
+        <div className="grid gap-6 rounded-2xl border border-black/8 bg-white/45 px-5 py-5 shadow-[0_8px_24px_rgba(27,36,48,0.03)] sm:px-6 lg:grid-cols-[1fr_auto] lg:items-start lg:gap-10">
+          <div className="space-y-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+              Ansvarsfraskrivelse
+            </p>
+            <p className="max-w-2xl text-sm leading-6 text-slate-600">
+              Tallene på denne siden er ment som informasjon og sammenligningsgrunnlag. De viser
+              gjennomsnittlig avtalt månedslønn for registrerte personer i yrket, og er ikke et
+              konkret lønnstilbud eller en garanti for hva en enkelt person bør tjene.
+            </p>
+            <p className="max-w-2xl text-sm leading-6 text-slate-600">
+              Faktorer som erfaring, ansiennitet, arbeidssted, sektor, ansvar, utdanning og lokale
+              forhandlinger kan gi stor variasjon fra SSB-snittet.
+            </p>
+          </div>
+
+          <div className="space-y-3 lg:min-w-[220px]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+              Datakilder
+            </p>
+            <ul className="space-y-2 text-sm leading-6 text-slate-700">
+              <li>SSB tabell 11658</li>
+              <li>SSB tabell 11418</li>
+              <li>SSB tabell 14700</li>
+              <li>SSB tabell {SSB_OCCUPATION_EMPLOYMENT_TABLE_ID}</li>
+              <li>SSB tabell {SSB_OCCUPATION_CONTRACT_TABLE_ID}</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
@@ -344,18 +438,20 @@ function MetricStat({
       : "text-slate-950";
 
   return (
-    <div className="min-w-0 rounded-2xl border border-black/10 bg-white/60 p-5">
-      <div className="flex items-center gap-2">
+    <div className="min-w-0 px-1 py-2">
+      <div className="flex items-start">
         {leadingSymbol ? (
           <span
             aria-hidden="true"
-            className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#f4efe6] text-sm text-[var(--primary-strong)]"
+            className="mr-2 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#f4efe6] text-sm text-[var(--primary-strong)]"
           >
             {leadingSymbol}
           </span>
         ) : null}
-        <p className="text-sm uppercase tracking-[0.14em] text-[var(--muted)]">{label}</p>
-        {description ? <MetricInfoButton description={description} label={label} /> : null}
+        <div className="flex min-w-0 items-start gap-2">
+          <p className="min-w-0 text-sm uppercase tracking-[0.14em] text-[var(--muted)]">{label}</p>
+          {description ? <MetricInfoButton description={description} label={label} /> : null}
+        </div>
       </div>
       <p className={`mt-2 break-words text-3xl font-semibold tracking-[-0.04em] ${valueClasses}`}>
         {trendSymbol ? <span aria-hidden="true" className="text-2xl leading-none">{trendSymbol}</span> : null}
@@ -459,7 +555,7 @@ function formatEmploymentMetric(value: number, unit: string) {
 
     return `${fullValue.toLocaleString("nb-NO", {
       maximumFractionDigits: 0,
-    })} personer`;
+    })}`;
   }
 
   return `${value.toLocaleString("nb-NO", {
@@ -474,7 +570,7 @@ function formatEmploymentCount(value?: number) {
 
   return `${(value * 1000).toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
-  })} personer`;
+  })}`;
 }
 
 function formatExactPersonCount(value?: number) {
@@ -484,7 +580,7 @@ function formatExactPersonCount(value?: number) {
 
   return `${value.toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
-  })} personer`;
+  })}`;
 }
 
 function formatPercentage(value?: number) {
@@ -496,4 +592,14 @@ function formatPercentage(value?: number) {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
   })} %`;
+}
+
+function formatAnnualSalaryCaption(value?: number) {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return `Årslønn: ${(value * 12).toLocaleString("nb-NO", {
+    maximumFractionDigits: 0,
+  })} kr`;
 }

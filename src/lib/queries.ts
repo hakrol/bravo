@@ -483,7 +483,7 @@ export async function getOccupationPurchasingPowerDetail(
   const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
 
   if (!previousPeriodCode) {
-    throw new Error(`Fant ikke forrige ars periode for ${latestPeriodCode}.`);
+    throw new Error(`Fant ikke forrige års periode for ${latestPeriodCode}.`);
   }
 
   const latestSalaryPoint = series.points.find(
@@ -973,7 +973,7 @@ function buildOccupationSalaryTimeSeries(
   });
 
   if (relevantRows.length === 0) {
-    throw new Error(`Fant ingen lonnsdata for yrkeskode ${occupationCode}.`);
+    throw new Error(`Fant ingen lønnsdata for yrkeskode ${occupationCode}.`);
   }
 
   const pointsByPeriod = relevantRows.reduce((map, row) => {
@@ -1373,7 +1373,7 @@ function buildOccupationSalaryDistribution(
   ]);
 
   if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode) {
-    throw new Error("Fant ikke forventede dimensjoner for lonnsfordeling i tabell 11658.");
+    throw new Error("Fant ikke forventede dimensjoner for lønnsfordeling i tabell 11658.");
   }
 
   const relevantRows = dataset.rows.filter(
@@ -1577,7 +1577,7 @@ function buildOccupationPurchasingPowerRows(
   ]);
 
   if (!occupationDimensionCode || !genderDimensionCode || !periodDimensionCode) {
-    throw new Error("Fant ikke forventede dimensjoner for kjopekraftsoversikten.");
+    throw new Error("Fant ikke forventede dimensjoner for kjøpekraftsoversikten.");
   }
 
   const rowsByOccupation = dataset.rows.reduce((map, row) => {
@@ -1621,7 +1621,7 @@ function buildOccupationPurchasingPowerRows(
   )[0];
 
   if (!latestPeriodCode) {
-    throw new Error("Fant ingen sammenlignbar KPI-periode for kjopekraft.");
+    throw new Error("Fant ingen sammenlignbar KPI-periode for kjøpekraft.");
   }
 
   const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
@@ -1751,17 +1751,17 @@ function findDimensionCodeInRows(
 
 function formatMeasureLabel(label?: string) {
   if (!label) {
-    return "Gjennomsnittlig avtalt manedslonn";
+    return "Gjennomsnittlig avtalt månedslønn";
   }
 
   const normalized = normalizeText(label);
 
   if (normalized.includes("avtalt") && normalized.includes("manedslonn")) {
-    return "Gjennomsnittlig avtalt manedslonn";
+    return "Gjennomsnittlig avtalt månedslønn";
   }
 
   if (normalized.includes("manedslonn")) {
-    return "Gjennomsnittlig manedslonn";
+    return "Gjennomsnittlig månedslønn";
   }
 
   return label;
@@ -1877,14 +1877,14 @@ function formatQuarterLabel(periodCode: string) {
 
 function getPurchasingPowerInsight(realGrowth: number) {
   if (realGrowth > 0.25) {
-    return "Okt kjopskraft";
+    return "Økt kjøpekraft";
   }
 
   if (realGrowth < -0.25) {
-    return "Tapt kjopskraft";
+    return "Tapt kjøpekraft";
   }
 
-  return "Omtrent uendret kjopskraft";
+  return "Omtrent uendret kjøpekraft";
 }
 
 function isFourDigitOccupationCode(code?: string) {

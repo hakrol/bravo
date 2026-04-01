@@ -104,7 +104,7 @@ export function OccupationSalaryDistributionSection({
                 ) : null}
                 {p25Position !== null && row.metrics.p25 !== undefined ? (
                   <Marker
-                    label="25 %"
+                    label="25 % tjener mindre enn dette"
                     value={row.metrics.p25}
                     position={p25Position}
                     tone="bg-slate-700"
@@ -134,7 +134,7 @@ export function OccupationSalaryDistributionSection({
                 ) : null}
                 {p75Position !== null && row.metrics.p75 !== undefined ? (
                   <Marker
-                    label="75 %"
+                    label="25 % tjener mer enn dette"
                     value={row.metrics.p75}
                     position={p75Position}
                     tone="bg-slate-700"

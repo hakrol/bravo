@@ -9,8 +9,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Lonnsdata Norge",
-  description: "Finn lonnsniva etter yrke, region og erfaring.",
+  title: "Lønnsdata Norge",
+  description: "Finn lønnsnivå etter yrke, region og erfaring.",
 };
 
 type RootLayoutProps = Readonly<{

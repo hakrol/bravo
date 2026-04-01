@@ -13,10 +13,10 @@ export function MainHeader() {
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
-                  Lonnsdata
+                  Lønnsdata
                 </p>
                 <p className="truncate text-sm text-[var(--muted)]">
-                  Profesjonell lonnsinnsikt fra SSB
+                  Profesjonell lønnsinnsikt fra SSB
                 </p>
               </div>
             </div>
@@ -26,7 +26,7 @@ export function MainHeader() {
             className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-[var(--primary)] hover:text-[var(--primary-strong)] lg:hidden"
             href="/#yrke-sok"
           >
-            Start sok
+            Start søk
           </Link>
         </div>
 
@@ -36,7 +36,7 @@ export function MainHeader() {
             className="hidden items-center justify-center rounded-full bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--primary-strong)] lg:inline-flex"
             href="/#yrke-sok"
           >
-            Start sok
+            Start søk
           </Link>
         </div>
       </div>
