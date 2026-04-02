@@ -13,14 +13,6 @@ type OccupationDetailPageProps = {
   }>;
 };
 
-export async function generateStaticParams() {
-  const rows = await getDynamicOccupationRows();
-
-  return rows.map((row) => ({
-    slug: buildDynamicOccupationDetailPage(row.occupationCode, row.occupationLabel).slug,
-  }));
-}
-
 export async function generateMetadata({
   params,
 }: OccupationDetailPageProps): Promise<Metadata> {
