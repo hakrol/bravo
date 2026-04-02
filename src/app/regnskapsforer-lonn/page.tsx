@@ -1,11 +1,12 @@
 ﻿import type { Metadata } from "next";
 import { OccupationSalaryDetailPage } from "@/components/occupation-salary-detail-page";
-import {
-  getOccupationDetailPage,
-} from "@/lib/occupation-detail-pages";
+import { getOccupationDetailPage } from "@/lib/occupation-detail-pages";
+
+export const dynamic = "force-dynamic";
+
 const occupationCode = "3313";
 const detailPage = getOccupationDetailPage(occupationCode);
-const label = detailPage?.label ?? "Regnskapsfører";
+const label = detailPage?.label ?? "Regnskapsførere";
 
 export const metadata: Metadata = {
   title: `${label} lønn`,

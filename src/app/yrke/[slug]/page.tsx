@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { OccupationSalaryDetailPage } from "@/components/occupation-salary-detail-page";
 import { buildOccupationGroupSalaryOverview } from "@/lib/occupation-group-salary-overview";
 import { buildDynamicOccupationDetailPage } from "@/lib/occupation-detail-pages";
 import { getLatestSalaryDataset, OCCUPATION_MONTHLY_SALARY_FILTERS } from "@/lib/ssb";
+
+export const dynamic = "force-dynamic";
 
 type HandverkerDetailPageProps = {
   params: Promise<{

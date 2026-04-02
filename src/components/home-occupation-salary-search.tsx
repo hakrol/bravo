@@ -10,6 +10,16 @@ type HomeOccupationSalarySearchProps = {
   periodLabel?: string;
 };
 
+type HomeOccupationGroupFilter = {
+  code: string;
+  shortLabel: string;
+};
+
+const homeOccupationGroups: HomeOccupationGroupFilter[] = [
+  ...listOccupationGroups().map((group) => ({ code: group.code, shortLabel: group.shortLabel })),
+  { code: "3", shortLabel: "Høgskoleyrker" },
+];
+
 export function HomeOccupationSalarySearch({
   rows,
   lastUpdated,
@@ -22,7 +32,7 @@ export function HomeOccupationSalarySearch({
   const availableGroupCodes = new Set(
     rows.map((row) => getTopGroupCode(row.occupationCode)).filter(Boolean),
   );
-  const availableGroups = listOccupationGroups().filter((group) => availableGroupCodes.has(group.code));
+  const availableGroups = homeOccupationGroups.filter((group) => availableGroupCodes.has(group.code));
 
   const filteredRows = rows.filter((row) => {
     const matchesGroup =
@@ -42,11 +52,11 @@ export function HomeOccupationSalarySearch({
   });
 
   const activeGroupLabels = activeGroupCodes
-    .map((code) => getOccupationGroupByCode(code)?.shortLabel)
+    .map((code) => getOccupationGroupByCode(code)?.shortLabel ?? homeOccupationGroups.find((group) => group.code === code)?.shortLabel)
     .filter((label): label is string => Boolean(label));
 
   return (
-    <section className="grid gap-4">
+    <section className="relative z-10 grid gap-4">
       <div className="-mt-18 relative z-10 mx-auto w-full max-w-4xl px-1 sm:-mt-20" id="yrke-sok">
         <label className="grid gap-3" htmlFor="occupation-search">
           <span className="text-center text-sm font-semibold tracking-[-0.01em] text-[var(--primary-strong)]">
@@ -67,7 +77,7 @@ export function HomeOccupationSalarySearch({
       </div>
 
       {availableGroups.length > 0 ? (
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap justify-center gap-2 px-1">
+        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-wrap justify-center gap-2 px-1">
           {availableGroups.map((group) => {
             const active = activeGroupCodes.includes(group.code);
 

@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { OccupationSalaryDetailPage } from "@/components/occupation-salary-detail-page";
 import { getOccupationDetailPage } from "@/lib/occupation-detail-pages";
+
+export const dynamic = "force-dynamic";
 
 const occupationCode = "2412";
 const detailPage = getOccupationDetailPage(occupationCode);

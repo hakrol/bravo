@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { DinLonnTool } from "@/components/din-lonn-tool";
 import { buildDinLonnPageData } from "@/lib/din-lonn";
 import { buildOccupationSalaryOverview } from "@/lib/occupation-salary-overview";
@@ -7,6 +7,8 @@ import {
   getOccupationMedianSalaryOverview,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Din lønn | Lønnsdata Norge",

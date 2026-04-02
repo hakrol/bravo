@@ -22,13 +22,6 @@ const occupationGroups: OccupationGroup[] = [
     description: "Yrkesfeltet omfatter stillinger som vanligvis krever lang høyere utdanning.",
   },
   {
-    code: "3",
-    slug: "hogskoleyrker",
-    label: "Høgskoleyrker",
-    shortLabel: "Høgskoleyrker",
-    description: "Yrkesfeltet omfatter stillinger som vanligvis krever kortere høyere utdanning.",
-  },
-  {
     code: "4",
     slug: "kontoryrker",
     label: "Kontoryrker",
