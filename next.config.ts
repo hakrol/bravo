@@ -6,7 +6,6 @@ const workspaceRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  distDir: ".next-build",
   turbopack: {
     root: workspaceRoot
   }
