@@ -8,7 +8,7 @@ export type OccupationDetailPage = {
 };
 
 const OCCUPATION_SALARY_SUFFIX = "lonn";
-const HANDVERKER_DETAIL_BASE_PATH = "/yrke";
+const DYNAMIC_OCCUPATION_DETAIL_BASE_PATH = "/yrke";
 
 function normalizeOccupationLabel(value: string) {
   return value
@@ -27,8 +27,8 @@ export function buildOccupationSalarySlug(label: string) {
     : `${normalizedLabel}-${OCCUPATION_SALARY_SUFFIX}`;
 }
 
-export function isHandverkerOccupationCode(occupationCode: string) {
-  return /^\d{4}$/.test(occupationCode) && occupationCode.startsWith("7");
+export function isDynamicOccupationCode(occupationCode: string) {
+  return /^\d{4}$/.test(occupationCode);
 }
 
 export function buildDynamicOccupationDetailPage(
@@ -41,8 +41,8 @@ export function buildDynamicOccupationDetailPage(
     occupationCode,
     label,
     slug,
-    href: `${HANDVERKER_DETAIL_BASE_PATH}/${slug}`,
-    summary: `${label} er et handverksyrke i SSBs yrkesstatistikk. Her ser du lonnsniva, lonnsutvikling, kjonnsforskjeller og andre relevante nokkeltall for yrket.`,
+    href: `${DYNAMIC_OCCUPATION_DETAIL_BASE_PATH}/${slug}`,
+    summary: `${label} er et yrke i SSBs yrkesstatistikk. Her ser du lonnsniva, lonnsutvikling, kjonnsforskjeller og andre relevante nokkeltall for yrket.`,
     relatedOccupationCodes: [],
   };
 }
@@ -101,7 +101,7 @@ export function getOccupationDetailHref(occupationCode: string, label?: string) 
     return staticHref;
   }
 
-  if (label && isHandverkerOccupationCode(occupationCode)) {
+  if (label && isDynamicOccupationCode(occupationCode)) {
     return buildDynamicOccupationDetailPage(occupationCode, label).href;
   }
 

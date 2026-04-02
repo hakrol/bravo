@@ -7,16 +7,14 @@ import { getLatestSalaryDataset, OCCUPATION_MONTHLY_SALARY_FILTERS } from "@/lib
 
 export const dynamic = "force-dynamic";
 
-type HandverkerDetailPageProps = {
+type OccupationDetailPageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
 
-const HANDVERKER_GROUP_CODE = "7";
-
 export async function generateStaticParams() {
-  const rows = await getHandverkerRows();
+  const rows = await getDynamicOccupationRows();
 
   return rows.map((row) => ({
     slug: buildDynamicOccupationDetailPage(row.occupationCode, row.occupationLabel).slug,
@@ -25,9 +23,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: HandverkerDetailPageProps): Promise<Metadata> {
+}: OccupationDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const detail = await resolveHandverkerDetailBySlug(slug);
+  const detail = await resolveOccupationDetailBySlug(slug);
 
   if (!detail) {
     return {};
@@ -39,11 +37,11 @@ export async function generateMetadata({
   };
 }
 
-export default async function HandverkerDetailPage({
+export default async function OccupationDetailPage({
   params,
-}: HandverkerDetailPageProps) {
+}: OccupationDetailPageProps) {
   const { slug } = await params;
-  const detail = await resolveHandverkerDetailBySlug(slug);
+  const detail = await resolveOccupationDetailBySlug(slug);
 
   if (!detail) {
     notFound();
@@ -58,8 +56,8 @@ export default async function HandverkerDetailPage({
   );
 }
 
-async function resolveHandverkerDetailBySlug(slug: string) {
-  const rows = await getHandverkerRows();
+async function resolveOccupationDetailBySlug(slug: string) {
+  const rows = await getDynamicOccupationRows();
   const pages = rows.map((row) => buildDynamicOccupationDetailPage(row.occupationCode, row.occupationLabel));
   const currentIndex = pages.findIndex((page) => page.slug === slug);
 
@@ -73,10 +71,17 @@ async function resolveHandverkerDetailBySlug(slug: string) {
   };
 }
 
-async function getHandverkerRows() {
+async function getDynamicOccupationRows() {
   const dataset = await getLatestSalaryDataset("occupationDetailed", OCCUPATION_MONTHLY_SALARY_FILTERS);
-  const overview = buildOccupationGroupSalaryOverview(dataset, HANDVERKER_GROUP_CODE);
-  return overview.rows;
+  const groupCodes = ["1", "2", "3", "4", "5", "6", "7", "8", "9"] as const;
+
+  return groupCodes.flatMap((groupCode) => {
+    try {
+      return buildOccupationGroupSalaryOverview(dataset, groupCode).rows;
+    } catch {
+      return [];
+    }
+  });
 }
 
 function pickRelatedPages(
