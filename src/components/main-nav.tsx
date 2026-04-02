@@ -1,19 +1,21 @@
-"use client";
+﻿"use client";
 
+import { listOccupationGroups } from "@/lib/occupation-groups";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { accountantOccupationDetailPage } from "@/lib/occupation-detail-pages";
 
 const navItems = [
-  { href: "/", label: "Forside" },
-  { href: "/yrker", label: "Yrker" },
-  { href: "/kvinner-vs-menn", label: "Kvinner vs menn" },
-  { href: "/topp-jobber", label: "Topp jobber" },
   {
-    href: accountantOccupationDetailPage?.href ?? "/yrker",
-    label: accountantOccupationDetailPage?.label ?? "Regnskapsfører",
+    href: "/yrker",
+    label: "Yrker",
+    children: listOccupationGroups().map((group) => ({
+      href: `/yrker/${group.slug}`,
+      label: group.shortLabel,
+    })),
   },
+  { href: "/kvinner-vs-menn", label: "Kvinner vs menn" },
+  { href: "/din-lonn", label: "Din lønn" },
+  { href: "/topp-jobber", label: "Topp jobber" },
 ] as const;
 
 function isActivePath(pathname: string, href: string) {
@@ -26,26 +28,60 @@ function isActivePath(pathname: string, href: string) {
 
 export function MainNav() {
   const pathname = usePathname();
-  const [clientPathname, setClientPathname] = useState("");
-
-  useEffect(() => {
-    setClientPathname(pathname);
-  }, [pathname]);
 
   return (
-    <nav aria-label="Hovedmeny" className="flex flex-wrap items-center gap-2">
+    <nav
+      aria-label="Hovedmeny"
+      className="flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center"
+    >
       {navItems.map((item) => {
-        const active = clientPathname ? isActivePath(clientPathname, item.href) : false;
+        const active = pathname ? isActivePath(pathname, item.href) : false;
+
+        if ("children" in item) {
+          return (
+            <div key={item.href} className="group relative">
+              <Link
+                aria-current={active ? "page" : undefined}
+                className={[
+                  "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition duration-200",
+                  active
+                    ? "bg-[var(--primary)] text-white shadow-sm shadow-[rgba(20,83,45,0.18)]"
+                    : "text-[var(--foreground)] hover:bg-[var(--accent-soft)] hover:text-[var(--primary-strong)]",
+                ].join(" ")}
+                href={item.href}
+              >
+                {item.label}
+                <span aria-hidden="true" className="text-xs">
+                  ▾
+                </span>
+              </Link>
+
+              <div className="pt-2 sm:absolute sm:left-0 sm:top-full sm:z-30 sm:hidden sm:min-w-64 sm:group-hover:block sm:group-focus-within:block">
+                <div className="overflow-hidden rounded-3xl border border-[var(--border)] bg-white/95 p-2 shadow-[0_18px_48px_rgba(27,36,48,0.12)] backdrop-blur">
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      className="flex rounded-2xl px-4 py-3 text-sm font-medium text-[var(--foreground)] transition hover:bg-[var(--accent-soft)] hover:text-[var(--primary-strong)]"
+                      href={child.href}
+                    >
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        }
 
         return (
           <Link
             key={item.href}
             aria-current={active ? "page" : undefined}
             className={[
-              "inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition",
+              "inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition duration-200",
               active
-                ? "bg-[var(--primary)] text-white shadow-sm"
-                : "text-slate-700 hover:bg-white hover:text-slate-950",
+                ? "bg-[var(--primary)] text-white shadow-sm shadow-[rgba(20,83,45,0.18)]"
+                : "text-[var(--foreground)] hover:bg-[var(--accent-soft)] hover:text-[var(--primary-strong)]",
             ].join(" ")}
             href={item.href}
           >

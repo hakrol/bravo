@@ -220,12 +220,35 @@ export type OccupationEmploymentLatest = {
   updated?: string;
 };
 
+export type OccupationWorkforceLatest = {
+  occupationCode: string;
+  occupationLabel: string;
+  periodCode: string;
+  periodLabel: string;
+  employees?: number;
+  jobs?: number;
+  employeeUnit: string;
+  jobUnit: string;
+  updated?: string;
+};
+
 export type OccupationEmploymentTimeSeriesPoint = {
   periodCode: string;
   periodLabel: string;
   total?: number;
   women?: number;
   men?: number;
+};
+
+export type OccupationWorkforceTimeSeriesPoint = {
+  periodCode: string;
+  periodLabel: string;
+  employeesAll?: number;
+  employeesWomen?: number;
+  employeesMen?: number;
+  jobsAll?: number;
+  jobsWomen?: number;
+  jobsMen?: number;
 };
 
 export type OccupationEmploymentGenderBreakdown = {
@@ -264,16 +287,38 @@ export type OccupationEmploymentContractType = {
   unspecifiedShare?: number;
 };
 
+export type OccupationAgeTimeSeriesPoint = {
+  periodCode: string;
+  periodLabel: string;
+  averageAll?: number;
+  averageWomen?: number;
+  averageMen?: number;
+};
+
+export type OccupationAgeLatest = {
+  occupationCode: string;
+  occupationLabel: string;
+  periodCode: string;
+  periodLabel: string;
+  averageAll?: number;
+  averageWomen?: number;
+  averageMen?: number;
+  updated?: string;
+};
+
 export type OccupationLaborMarketStats = {
   occupationCode: string;
   occupationLabel: string;
   updated?: string;
-  employmentUnit: string;
-  points: OccupationEmploymentTimeSeriesPoint[];
-  latest: OccupationEmploymentLatest | null;
+  employeeUnit: string;
+  jobUnit: string;
+  workforcePoints: OccupationWorkforceTimeSeriesPoint[];
+  latest: OccupationWorkforceLatest | null;
   genderBreakdown: OccupationEmploymentGenderBreakdown | null;
   growth: OccupationEmploymentGrowth | null;
   contractType: OccupationEmploymentContractType | null;
+  age: OccupationAgeLatest | null;
+  ageSeries: OccupationAgeTimeSeriesPoint[];
 };
 
 export type InflationQuarterPoint = {
@@ -330,9 +375,13 @@ export type OccupationPurchasingPowerDetail = {
 export type OccupationPurchasingPowerTimeSeriesPoint = {
   periodCode: string;
   periodLabel: string;
-  salaryGrowth: number;
+  salaryGrowthAll?: number;
+  salaryGrowthWomen?: number;
+  salaryGrowthMen?: number;
   inflationGrowth: number;
-  realGrowth: number;
+  realGrowthAll?: number;
+  realGrowthWomen?: number;
+  realGrowthMen?: number;
 };
 
 export type OccupationPurchasingPowerTimeSeries = {

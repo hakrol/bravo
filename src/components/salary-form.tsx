@@ -11,7 +11,7 @@ type SalaryFormProps = {
 export function SalaryForm({ data }: SalaryFormProps) {
   return (
     <div className="grid gap-6">
-      <section className="grid gap-4 rounded-xl border bg-[var(--surface-strong)] p-6 shadow-sm">
+      <section className="grid gap-4 rounded-md border bg-[var(--surface-strong)] p-6 shadow-sm">
         <div>
           <h2 className="text-lg font-semibold">SSB-tabell</h2>
           <p className="text-sm text-slate-600">
@@ -26,7 +26,7 @@ export function SalaryForm({ data }: SalaryFormProps) {
         </div>
       </section>
 
-      <section className="grid gap-4 rounded-xl border bg-[var(--surface-strong)] p-6 shadow-sm">
+      <section className="grid gap-4 rounded-md border bg-[var(--surface-strong)] p-6 shadow-sm">
         <div>
           <h2 className="text-lg font-semibold">Variabler</h2>
           <p className="text-sm text-slate-600">Tabellen eksponerer disse variablene i metadata.</p>
@@ -34,14 +34,14 @@ export function SalaryForm({ data }: SalaryFormProps) {
 
         <ul className="grid gap-2 text-sm text-slate-700 md:grid-cols-2">
           {data.variableNames.map((variableName) => (
-            <li key={variableName} className="rounded-xl border bg-white px-4 py-3">
+            <li key={variableName} className="rounded-md border bg-white px-4 py-3">
               {variableName}
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="grid gap-4 rounded-xl border bg-[var(--surface-strong)] p-6 shadow-sm">
+      <section className="grid gap-4 rounded-md border bg-[var(--surface-strong)] p-6 shadow-sm">
         <div>
           <h2 className="text-lg font-semibold">Eksempelverdier</h2>
           <p className="text-sm text-slate-600">
@@ -70,7 +70,7 @@ type StatCardProps = {
 
 function StatCard({ label, value }: StatCardProps) {
   return (
-    <div className="rounded-xl border bg-slate-50 p-4">
+    <div className="rounded-md border bg-slate-50 p-4">
       <p className="text-sm text-slate-600">{label}</p>
       <p className="mt-2 text-2xl font-semibold text-slate-900">{value}</p>
     </div>

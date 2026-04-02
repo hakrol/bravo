@@ -82,7 +82,7 @@ export function OccupationDetailSectionNav({
       <nav
         aria-label="Seksjoner på siden"
         className={[
-          "rounded-2xl border border-black/10 bg-white/75 px-4 py-4 shadow-[0_10px_30px_rgba(27,36,48,0.05)]",
+          "rounded-md border border-black/10 bg-white/75 px-4 py-4 shadow-[0_10px_30px_rgba(27,36,48,0.05)]",
           className,
         ]
           .filter(Boolean)
@@ -101,7 +101,7 @@ export function OccupationDetailSectionNav({
                   key={section.id}
                   aria-current={active ? "location" : undefined}
                   className={[
-                    "inline-flex items-center rounded-full border px-3 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
+                    "inline-flex items-center rounded-md border px-3 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
                     active
                       ? "border-[var(--primary)] bg-[var(--primary)] text-white"
                       : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)] hover:text-[var(--primary-strong)]",
@@ -123,7 +123,7 @@ export function OccupationDetailSectionNav({
     <nav
       aria-label="Seksjoner på siden"
       className={[
-        "rounded-2xl border border-black/10 bg-white/55 p-3 shadow-[0_12px_30px_rgba(27,36,48,0.04)] backdrop-blur-sm",
+        "rounded-md border border-black/10 bg-white/55 p-3 shadow-[0_12px_30px_rgba(27,36,48,0.04)] backdrop-blur-sm",
         className,
       ]
         .filter(Boolean)
@@ -141,7 +141,7 @@ export function OccupationDetailSectionNav({
               key={section.id}
               aria-current={active ? "location" : undefined}
               className={[
-                "flex items-center rounded-xl px-3 py-2.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
+                "flex items-center rounded-md px-3 py-2.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
                 active
                   ? "bg-[rgba(20,83,45,0.1)] font-semibold text-[var(--primary-strong)]"
                   : "text-slate-700 hover:bg-white/80 hover:text-slate-950",

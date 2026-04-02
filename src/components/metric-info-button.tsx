@@ -28,7 +28,7 @@ export function MetricInfoButton({ label, description }: MetricInfoButtonProps) 
         >
           <div
             aria-modal="true"
-            className="w-full max-w-md rounded-xl border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
+            className="w-full max-w-md rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
           >

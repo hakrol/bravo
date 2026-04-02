@@ -4,16 +4,16 @@ type RelatedOccupationSalaryComparisonItem = {
   occupationCode: string;
   occupationLabel: string;
   href: string;
-  salaryAll?: number;
-  salaryWomen?: number;
-  salaryMen?: number;
+  medianAll?: number;
+  medianWomen?: number;
+  medianMen?: number;
 };
 
 type RelatedOccupationSalaryComparisonProps = {
   currentOccupationLabel: string;
-  currentSalary?: number;
-  currentSalaryWomen?: number;
-  currentSalaryMen?: number;
+  currentMedian?: number;
+  currentMedianWomen?: number;
+  currentMedianMen?: number;
   periodLabel?: string;
   rows: RelatedOccupationSalaryComparisonItem[];
 };
@@ -29,10 +29,10 @@ const percentFormatter = new Intl.NumberFormat("nb-NO", {
 
 export function RelatedOccupationSalaryComparison({
   currentOccupationLabel,
-  currentSalary,
-  currentSalaryWomen,
-  currentSalaryMen,
-  periodLabel: _periodLabel,
+  currentMedian,
+  currentMedianWomen,
+  currentMedianMen,
+  periodLabel,
   rows,
 }: RelatedOccupationSalaryComparisonProps) {
   if (rows.length === 0) {
@@ -40,15 +40,18 @@ export function RelatedOccupationSalaryComparison({
   }
 
   return (
-    <section className="rounded-xl border bg-[var(--surface)] px-5 py-5 shadow-sm sm:px-6">
+    <section className="rounded-md border bg-[var(--surface)] px-5 py-5 shadow-sm sm:px-6">
       <div className="flex flex-col gap-3 border-b border-black/10 pb-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <h2 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
-            {"L\u00F8nn sammenlignet med relaterte yrker"}
+            Medianlønn sammenlignet med relaterte yrker
           </h2>
-          <div className="text-sm text-[var(--muted)]">
-            {currentOccupationLabel}:{" "}
-            <span className="font-semibold text-slate-950">{formatSalary(currentSalary)}</span>
+          <div className="space-y-1 text-sm text-[var(--muted)]">
+            <div>
+              {currentOccupationLabel}:{" "}
+              <span className="font-semibold text-slate-950">{formatSalary(currentMedian)}</span>
+            </div>
+            {periodLabel ? <div>Basert på median for {periodLabel.toLowerCase()}</div> : null}
           </div>
         </div>
       </div>
@@ -58,8 +61,8 @@ export function RelatedOccupationSalaryComparison({
           <thead className="bg-[#f8f3ea] text-slate-700">
             <tr>
               <th className="border-b px-4 py-2.5 font-semibold">Yrke</th>
-              <th className="border-b px-4 py-2.5 text-right font-semibold">Kvinner</th>
-              <th className="border-b px-4 py-2.5 text-right font-semibold">Menn</th>
+              <th className="border-b px-4 py-2.5 text-right font-semibold">Median kvinner</th>
+              <th className="border-b px-4 py-2.5 text-right font-semibold">Median menn</th>
               <th className="border-b px-4 py-3 text-right font-semibold">Forskjell kvinner</th>
               <th className="border-b px-4 py-3 text-right font-semibold">Forskjell menn</th>
               <th className="border-b px-4 py-2.5 font-semibold">Detaljer</th>
@@ -67,8 +70,8 @@ export function RelatedOccupationSalaryComparison({
           </thead>
           <tbody className="bg-white/80">
             {rows.map((row) => {
-              const differenceWomen = getDifference(row.salaryWomen, currentSalaryWomen);
-              const differenceMen = getDifference(row.salaryMen, currentSalaryMen);
+              const differenceWomen = getDifference(row.medianWomen, currentMedianWomen);
+              const differenceMen = getDifference(row.medianMen, currentMedianMen);
               const toneClassesWomen =
                 differenceWomen === undefined
                   ? "text-slate-500"
@@ -90,16 +93,16 @@ export function RelatedOccupationSalaryComparison({
                 <tr key={row.occupationCode} className="odd:bg-white even:bg-[#fcfaf6]">
                   <td className="border-b px-4 py-3 text-slate-950">{row.occupationLabel}</td>
                   <td className="border-b px-4 py-3 text-right font-semibold text-slate-950">
-                    {formatSalary(row.salaryWomen)}
+                    {formatSalary(row.medianWomen)}
                   </td>
                   <td className="border-b px-4 py-3 text-right font-semibold text-slate-950">
-                    {formatSalary(row.salaryMen)}
+                    {formatSalary(row.medianMen)}
                   </td>
                   <td className={`border-b px-4 py-3 text-right font-semibold ${toneClassesWomen}`}>
-                    {formatDifference(differenceWomen, currentSalaryWomen)}
+                    {formatDifference(differenceWomen, currentMedianWomen)}
                   </td>
                   <td className={`border-b px-4 py-3 text-right font-semibold ${toneClassesMen}`}>
-                    {formatDifference(differenceMen, currentSalaryMen)}
+                    {formatDifference(differenceMen, currentMedianMen)}
                   </td>
                   <td className="border-b px-4 py-3">
                     <Link

@@ -22,7 +22,7 @@ export default async function OccupationSalaryPage() {
           </p>
         </div>
 
-        <section className="rounded-xl border bg-[var(--surface)] px-6 py-5 shadow-sm">
+        <section className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
           <p className="text-sm leading-7 text-slate-700">
             Kilde: Statistisk sentralbyrå. Siden bruker det sentrale SSB-laget i{" "}
             <code>src/lib</code>, velger siste tilgjengelige gjennomsnittlige avtalte

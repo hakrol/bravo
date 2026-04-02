@@ -8,6 +8,7 @@ export type OccupationDetailPage = {
 };
 
 const OCCUPATION_SALARY_SUFFIX = "lonn";
+const HANDVERKER_DETAIL_BASE_PATH = "/yrke";
 
 function normalizeOccupationLabel(value: string) {
   return value
@@ -24,6 +25,26 @@ export function buildOccupationSalarySlug(label: string) {
   return normalizedLabel.endsWith(`-${OCCUPATION_SALARY_SUFFIX}`)
     ? normalizedLabel
     : `${normalizedLabel}-${OCCUPATION_SALARY_SUFFIX}`;
+}
+
+export function isHandverkerOccupationCode(occupationCode: string) {
+  return /^\d{4}$/.test(occupationCode) && occupationCode.startsWith("7");
+}
+
+export function buildDynamicOccupationDetailPage(
+  occupationCode: string,
+  label: string,
+): OccupationDetailPage {
+  const slug = buildOccupationSalarySlug(label);
+
+  return {
+    occupationCode,
+    label,
+    slug,
+    href: `${HANDVERKER_DETAIL_BASE_PATH}/${slug}`,
+    summary: `${label} er et handverksyrke i SSBs yrkesstatistikk. Her ser du lonnsniva, lonnsutvikling, kjonnsforskjeller og andre relevante nokkeltall for yrket.`,
+    relatedOccupationCodes: [],
+  };
 }
 
 export const occupationDetailPages: OccupationDetailPage[] = [
@@ -73,8 +94,18 @@ export function getOccupationDetailPageBySlug(slug: string) {
   return occupationDetailPages.find((page) => page.slug === slug) ?? null;
 }
 
-export function getOccupationDetailHref(occupationCode: string) {
-  return getOccupationDetailPage(occupationCode)?.href ?? null;
+export function getOccupationDetailHref(occupationCode: string, label?: string) {
+  const staticHref = getOccupationDetailPage(occupationCode)?.href;
+
+  if (staticHref) {
+    return staticHref;
+  }
+
+  if (label && isHandverkerOccupationCode(occupationCode)) {
+    return buildDynamicOccupationDetailPage(occupationCode, label).href;
+  }
+
+  return null;
 }
 
 export function getRelatedOccupationDetailPages(occupationCode: string) {

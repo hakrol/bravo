@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { DataInfoModal } from "@/components/data-info-modal";
 import { getOccupationDetailHref } from "@/lib/occupation-detail-pages";
 
@@ -14,6 +14,7 @@ export type OccupationSalaryRow = {
 type OccupationSalaryOverviewProps = {
   rows: OccupationSalaryRow[];
   lastUpdated?: string;
+  showLastUpdated?: boolean;
   periodLabel?: string;
   title?: string;
   description?: string;
@@ -27,6 +28,7 @@ const currencyFormatter = new Intl.NumberFormat("nb-NO", {
 export function OccupationSalaryOverview({
   rows,
   lastUpdated,
+  showLastUpdated = true,
   periodLabel,
   title = "Siste gjennomsnittlige avtalte månedslønn for alle yrker",
   description = "Tabellen viser samme lønnsmål fordelt på begge kjønn, kvinner og menn, sortert etter kolonnen for begge kjønn.",
@@ -36,7 +38,7 @@ export function OccupationSalaryOverview({
 
   return (
     <section className="grid gap-6">
-      <section className="overflow-hidden rounded-xl border bg-[var(--surface)] shadow-sm">
+      <section className="overflow-hidden rounded-md border bg-[var(--surface)] shadow-sm">
         <div className="flex flex-col gap-2 border-b px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3">
@@ -49,11 +51,13 @@ export function OccupationSalaryOverview({
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
             {formattedPeriodLabel ? (
-              <p className="inline-flex rounded-full border border-[#d6e2d7] bg-white/85 px-3 py-1.5 text-sm font-semibold text-[var(--primary-strong)] shadow-sm">
+              <p className="inline-flex rounded-md border border-[#d6e2d7] bg-white/85 px-3 py-1.5 text-sm font-semibold text-[var(--primary-strong)] shadow-sm">
                 Periode: {formattedPeriodLabel}
               </p>
             ) : null}
-            <p className="text-sm text-[var(--muted)]">Oppdatert: {lastUpdated ?? "Ukjent"}</p>
+            {showLastUpdated ? (
+              <p className="text-sm text-[var(--muted)]">Oppdatert: {lastUpdated ?? "Ukjent"}</p>
+            ) : null}
           </div>
         </div>
 
@@ -77,7 +81,10 @@ export function OccupationSalaryOverview({
                 </tr>
               ) : (
                 rows.map((row) => {
-                  const detailHref = getOccupationDetailHref(row.occupationCode);
+                  const detailHref = getOccupationDetailHref(
+                    row.occupationCode,
+                    row.occupationLabel,
+                  );
 
                   return (
                     <tr key={row.rowKey} className="odd:bg-white even:bg-[#fcfaf6]">

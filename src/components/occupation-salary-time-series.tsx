@@ -1,45 +1,57 @@
-﻿import type { OccupationSalaryTimeSeries } from "@/lib/ssb";
+﻿'use client'
+
+import { useState } from "react";
+import type { OccupationSalaryTimeSeries } from "@/lib/ssb";
 
 const currencyFormatter = new Intl.NumberFormat("nb-NO", {
   maximumFractionDigits: 0,
 });
 
-const signedPercentFormatter = new Intl.NumberFormat("nb-NO", {
-  maximumFractionDigits: 1,
-  minimumFractionDigits: 1,
-  signDisplay: "always",
-});
-
 const seriesDefinitions = [
-  { key: "valueAll", label: "Begge kjønn", color: "#14532d" },
+  { key: "valueAll", label: "Begge kjonn", color: "#14532d" },
   { key: "valueWomen", label: "Kvinner", color: "#b45309" },
   { key: "valueMen", label: "Menn", color: "#1d4ed8" },
 ] as const;
 
+const filterOptions = [
+  { key: "valueAll", label: "Begge kjonn" },
+  { key: "valueWomen", label: "Kvinner" },
+  { key: "valueMen", label: "Menn" },
+] as const;
+
+type SeriesKey = (typeof seriesDefinitions)[number]["key"];
+type FilterKey = (typeof filterOptions)[number]["key"];
+
 type OccupationSalaryTimeSeriesProps = {
   series: OccupationSalaryTimeSeries;
-};
-
-type ChartPoint = {
-  x: number;
-  y: number;
-  label: string;
-  value: number;
-  growthPercent?: number;
-  color: string;
-  seriesKey: (typeof seriesDefinitions)[number]["key"];
+  title?: string;
+  description?: string;
 };
 
 export function OccupationSalaryTimeSeriesChart({
   series,
+  title,
+  description,
 }: OccupationSalaryTimeSeriesProps) {
-  const availableValues = series.points.flatMap((point) =>
-    [point.valueAll, point.valueWomen, point.valueMen].filter((value): value is number => {
-      return value !== undefined;
-    }),
-  );
-  const minValue = availableValues.length > 0 ? Math.min(...availableValues) : 0;
-  const maxValue = availableValues.length > 0 ? Math.max(...availableValues) : 0;
+  const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
+
+  const activeSeries = seriesDefinitions.filter((definition) => {
+    return activeFilter === definition.key;
+  });
+
+  const availableValues = series.points.flatMap((point) => {
+    return activeSeries.flatMap((definition) => {
+      const value = point[definition.key];
+      return value !== undefined ? [value] : [];
+    });
+  });
+
+  if (availableValues.length === 0) {
+    return null;
+  }
+
+  const minValue = Math.min(...availableValues);
+  const maxValue = Math.max(...availableValues);
   const chartMin = Math.floor(minValue / 1000) * 1000;
   const chartMax = Math.ceil(maxValue / 1000) * 1000;
   const chartRange = Math.max(chartMax - chartMin, 1);
@@ -57,70 +69,43 @@ export function OccupationSalaryTimeSeriesChart({
     return chartMin + (chartRange / axisTicks) * index;
   });
   const labelStride = series.points.length > 8 ? Math.ceil(series.points.length / 6) : 1;
-  const visibleGrowthLabels = seriesDefinitions.flatMap((definition) => {
-    const seriesPoints = series.points.flatMap((point, index) => {
-      const value = point[definition.key];
-
-      if (value === undefined) {
-        return [];
-      }
-
-      const x = paddingLeft + xStep * index;
-      const y = paddingTop + plotHeight - ((value - chartMin) / chartRange) * plotHeight;
-      const previousValue = index > 0 ? series.points[index - 1]?.[definition.key] : undefined;
-      const growthPercent =
-        previousValue !== undefined && previousValue !== 0
-          ? ((value - previousValue) / previousValue) * 100
-          : undefined;
-
-      return [
-        {
-          x,
-          y,
-          label: point.periodLabel,
-          value,
-          growthPercent,
-          color: definition.color,
-          seriesKey: definition.key,
-        },
-      ];
-    });
-
-    return seriesPoints.reduce<Array<ChartPoint>>((labels, point) => {
-      if (point.growthPercent === undefined) {
-        return labels;
-      }
-
-      const previousLabel = labels.at(-1);
-
-      if (previousLabel) {
-        const xDistance = Math.abs(point.x - previousLabel.x);
-        const yDistance = Math.abs(point.y - previousLabel.y);
-
-        if (xDistance < 48 && yDistance < 24) {
-          return labels;
-        }
-      }
-
-      return [...labels, point];
-    }, []);
-  });
 
   return (
     <section className="grid gap-6">
-      <section className="rounded-xl border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
-        <div className="flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
+      <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
+        <div className="flex flex-col gap-4 border-b pb-4">
           <div>
             <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
-              Tidsserie for {series.occupationLabel.toLowerCase()}
+              {title ?? series.measureLabel}
             </h3>
             <p className="mt-1 text-sm text-[var(--muted)]">
-              Kvartalsvis utvikling for samme lønnsmål gjennom hele tilgjengelige tidsserien.
+              {description ?? "Kvartalsvis utvikling for samme lønnsmal gjennom hele tilgjengelige tidsserien."}
             </p>
           </div>
 
+          <div className="flex flex-wrap gap-2">
+            {filterOptions.map((option) => {
+              const isActive = option.key === activeFilter;
+
+              return (
+                <button
+                  key={option.key}
+                  className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                    isActive
+                      ? "border-[var(--primary)] bg-[var(--primary)] text-white"
+                      : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                  }`}
+                  onClick={() => setActiveFilter(option.key)}
+                  type="button"
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+
           <div className="flex flex-wrap gap-3">
-            {seriesDefinitions.map((definition) => (
+            {activeSeries.map((definition) => (
               <div key={definition.key} className="flex items-center gap-2 text-sm text-slate-700">
                 <span
                   aria-hidden="true"
@@ -176,9 +161,9 @@ export function OccupationSalaryTimeSeriesChart({
               y2={paddingTop + plotHeight}
             />
 
-            {seriesDefinitions.map((definition) => {
+            {activeSeries.map((definition) => {
               const points = series.points.flatMap((point, index) => {
-                const value = point[definition.key];
+                const value = point[definition.key as SeriesKey];
 
                 if (value === undefined) {
                   return [];
@@ -220,20 +205,6 @@ export function OccupationSalaryTimeSeriesChart({
               );
             })}
 
-            {visibleGrowthLabels.map((point) => (
-              <text
-                key={`growth-${point.seriesKey}-${point.x}-${point.y}`}
-                fill={point.color}
-                fontSize="11"
-                fontWeight="600"
-                textAnchor="middle"
-                x={point.x}
-                y={Math.max(point.y - 10, paddingTop + 12)}
-              >
-                {formatPercent(point.growthPercent ?? 0)} %
-              </text>
-            ))}
-
             {series.points.map((point, index) => {
               if (index % labelStride !== 0 && index !== series.points.length - 1) {
                 return null;
@@ -267,45 +238,16 @@ function formatCurrency(value: number) {
   return `${currencyFormatter.format(value)} kr`;
 }
 
-function formatPercent(value: number) {
-  return signedPercentFormatter.format(value);
+function formatShortPeriodLabel(value: string) {
+  const match = value.match(/(\d{4})\s*K([1-4])/i) ?? value.match(/(\d{4})K([1-4])/i);
+
+  if (!match) {
+    return value;
+  }
+
+  return `${match[2]}.kv.${match[1]}`;
 }
 
-function formatPeriodLabel(label: string) {
-  const quarterMatch = getQuarterMatch(label);
-
-  if (!quarterMatch) {
-    return label;
-  }
-
-  const [, year, quarter] = quarterMatch;
-  return `${quarter}. kvartal ${year}`;
-}
-
-function formatShortPeriodLabel(label: string) {
-  const quarterMatch = getQuarterMatch(label);
-
-  if (!quarterMatch) {
-    return label;
-  }
-
-  const [, year, quarter] = quarterMatch;
-  return `${quarter}.kv. ${year.slice(2)}`;
-}
-
-function getQuarterMatch(label: string) {
-  const quarterCodeMatch = label.match(/^(\d{4})K([1-4])$/);
-
-  if (quarterCodeMatch) {
-    return quarterCodeMatch;
-  }
-
-  const quarterLabelMatch = label.match(/^([1-4])\.\s*kvartal\s*(\d{4})$/i);
-
-  if (!quarterLabelMatch) {
-    return null;
-  }
-
-  const [, quarter, year] = quarterLabelMatch;
-  return [quarterLabelMatch[0], year, quarter];
+function formatPeriodLabel(value: string) {
+  return value.replace(/\s+/g, " ").trim();
 }

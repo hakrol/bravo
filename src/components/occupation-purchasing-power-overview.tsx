@@ -22,7 +22,7 @@ export function OccupationPurchasingPowerOverviewTable({
   return (
     <section className="grid gap-6">
       <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-xl border bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+        <div className="rounded-md border bg-[var(--surface)] p-6 shadow-sm sm:p-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
             Kjøpekraft per yrke
           </p>
@@ -46,7 +46,7 @@ export function OccupationPurchasingPowerOverviewTable({
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-xl border bg-[var(--surface)] shadow-sm">
+      <section className="overflow-hidden rounded-md border bg-[var(--surface)] shadow-sm">
         <div className="flex flex-col gap-2 border-b px-6 py-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
@@ -58,7 +58,7 @@ export function OccupationPurchasingPowerOverviewTable({
             </p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
-            <p className="inline-flex rounded-full border border-[#d6e2d7] bg-white/85 px-3 py-1.5 text-sm font-semibold text-[var(--primary-strong)] shadow-sm">
+            <p className="inline-flex rounded-md border border-[#d6e2d7] bg-white/85 px-3 py-1.5 text-sm font-semibold text-[var(--primary-strong)] shadow-sm">
               {overview.previousPeriodLabel} til {overview.latestPeriodLabel}
             </p>
             <p className="text-sm text-[var(--muted)]">
@@ -122,7 +122,7 @@ type MetricCardProps = {
 
 function MetricCard({ label, value }: MetricCardProps) {
   return (
-    <div className="rounded-xl border bg-white/82 p-4 shadow-sm">
+    <div className="rounded-md border bg-white/82 p-4 shadow-sm">
       <p className="text-sm text-[var(--muted)]">{label}</p>
       <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">{value}</p>
     </div>
@@ -139,12 +139,12 @@ function formatPercent(value: number) {
 
 function getInsightClasses(realGrowth: number) {
   if (realGrowth > 0.25) {
-    return "inline-flex rounded-full bg-[#e7f5eb] px-3 py-1 text-xs font-semibold text-[#14532d]";
+    return "inline-flex rounded-md bg-[#e7f5eb] px-3 py-1 text-xs font-semibold text-[#14532d]";
   }
 
   if (realGrowth < -0.25) {
-    return "inline-flex rounded-full bg-[#fbe9e5] px-3 py-1 text-xs font-semibold text-[#9a3412]";
+    return "inline-flex rounded-md bg-[#fbe9e5] px-3 py-1 text-xs font-semibold text-[#9a3412]";
   }
 
-  return "inline-flex rounded-full bg-[#eef2f7] px-3 py-1 text-xs font-semibold text-slate-700";
+  return "inline-flex rounded-md bg-[#eef2f7] px-3 py-1 text-xs font-semibold text-slate-700";
 }

@@ -13,6 +13,9 @@ export const SSB_BASE_URL = "https://data.ssb.no/api/pxwebapi/v2";
 export const SSB_MAX_CELLS = 800000;
 export const SSB_MAX_REQUESTS_PER_MINUTE = 30;
 export const SSB_MAX_GET_URL_LENGTH = 2100;
+const SSB_RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const SSB_RETRY_ATTEMPTS = 2;
+const SSB_RETRY_BASE_DELAY_MS = 1500;
 
 type RequestOptions = {
   lang?: SsbLanguage;
@@ -56,19 +59,45 @@ export function buildSsbUrl(path: string, options: RequestOptions = {}) {
 
 export async function ssbGetJson<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const url = buildSsbUrl(path, options);
-  const response = await fetch(url, {
+  const init: RequestInit = {
     ...options.init,
     headers: {
       Accept: "application/json",
       ...options.init?.headers,
     },
-  });
+  };
+  const cacheKey = getSsbGetCacheKey(url.toString(), init);
+  const cachedValue = readCachedSsbGet<T>(cacheKey);
 
-  if (!response.ok) {
-    throw createSsbHttpError(response.status as SsbHttpErrorCode, url.toString());
+  if (cachedValue !== null) {
+    return cachedValue;
   }
 
-  return (await response.json()) as T;
+  const inFlightRequest = ssbGetInFlight.get(cacheKey);
+
+  if (inFlightRequest) {
+    return inFlightRequest as Promise<T>;
+  }
+
+  const request = (async () => {
+    const response = await fetchWithRetry(url, init);
+
+    if (!response.ok) {
+      throw createSsbHttpError(response.status as SsbHttpErrorCode, url.toString());
+    }
+
+    const payload = (await response.json()) as T;
+    writeCachedSsbGet(cacheKey, payload);
+    return payload;
+  })();
+
+  ssbGetInFlight.set(cacheKey, request);
+
+  try {
+    return await request;
+  } finally {
+    ssbGetInFlight.delete(cacheKey);
+  }
 }
 
 export async function ssbPostJson<T>(
@@ -77,7 +106,7 @@ export async function ssbPostJson<T>(
   options: RequestOptions = {},
 ): Promise<T> {
   const url = buildSsbUrl(path, options);
-  const response = await fetch(url, {
+  const response = await fetchWithRetry(url, {
     method: "POST",
     ...options.init,
     headers: {
@@ -93,6 +122,90 @@ export async function ssbPostJson<T>(
   }
 
   return (await response.json()) as T;
+}
+
+async function fetchWithRetry(url: URL, init: RequestInit) {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= SSB_RETRY_ATTEMPTS; attempt += 1) {
+    try {
+      await waitForSsbRequestSlot();
+      const response = await fetch(url, init);
+
+      if (
+        response.ok ||
+        (response.status !== 429 && response.status !== 503) ||
+        attempt === SSB_RETRY_ATTEMPTS
+      ) {
+        return response;
+      }
+
+      await delay(getRetryDelayMs(response, attempt));
+      continue;
+    } catch (error) {
+      lastError = error;
+
+      if (attempt === SSB_RETRY_ATTEMPTS) {
+        throw error;
+      }
+
+      await delay(getBackoffDelayMs(attempt));
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("SSB request failed.");
+}
+
+function getRetryDelayMs(response: Response, attempt: number) {
+  const retryAfterHeader = response.headers.get("retry-after");
+  const retryAfterSeconds = retryAfterHeader ? Number(retryAfterHeader) : Number.NaN;
+
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0) {
+    return retryAfterSeconds * 1000;
+  }
+
+  return getBackoffDelayMs(attempt);
+}
+
+function getBackoffDelayMs(attempt: number) {
+  return SSB_RETRY_BASE_DELAY_MS * (attempt + 1);
+}
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const ssbRequestTimestamps: number[] = [];
+let ssbRateLimiter = Promise.resolve();
+
+function waitForSsbRequestSlot() {
+  const reservation = ssbRateLimiter.then(async () => {
+    while (true) {
+      const now = Date.now();
+      pruneExpiredSsbRequestTimestamps(now);
+
+      if (ssbRequestTimestamps.length < SSB_MAX_REQUESTS_PER_MINUTE) {
+        ssbRequestTimestamps.push(now);
+        return;
+      }
+
+      const oldestRequestTimestamp = ssbRequestTimestamps[0];
+      const waitMs = oldestRequestTimestamp + SSB_RATE_LIMIT_WINDOW_MS - now + 50;
+      await delay(Math.max(waitMs, 50));
+    }
+  });
+
+  ssbRateLimiter = reservation.catch(() => undefined);
+  return reservation;
+}
+
+function pruneExpiredSsbRequestTimestamps(now: number) {
+  while (
+    ssbRequestTimestamps.length > 0 &&
+    now - ssbRequestTimestamps[0] >= SSB_RATE_LIMIT_WINDOW_MS
+  ) {
+    ssbRequestTimestamps.shift();
+  }
 }
 
 export async function listTables(query?: SsbQueryParams, lang: SsbLanguage = "no") {
@@ -154,4 +267,45 @@ function createSsbHttpError(status: SsbHttpErrorCode, url: string) {
     default:
       return new Error(`SSB request failed with status ${status}.`);
   }
+}
+const SSB_GET_CACHE_TTL_MS = 5 * 60 * 1000;
+
+type SsbGetCacheEntry = {
+  expiresAt: number;
+  value: unknown;
+};
+
+const ssbGetCache = new Map<string, SsbGetCacheEntry>();
+const ssbGetInFlight = new Map<string, Promise<unknown>>();
+
+function getSsbGetCacheKey(input: string, init?: RequestInit) {
+  return JSON.stringify({
+    input,
+    method: init?.method ?? "GET",
+    headers: init?.headers ?? null,
+    next: init?.next ?? null,
+    cache: init?.cache ?? null,
+  });
+}
+
+function readCachedSsbGet<T>(cacheKey: string) {
+  const cached = ssbGetCache.get(cacheKey);
+
+  if (!cached) {
+    return null;
+  }
+
+  if (Date.now() > cached.expiresAt) {
+    ssbGetCache.delete(cacheKey);
+    return null;
+  }
+
+  return cached.value as T;
+}
+
+function writeCachedSsbGet(cacheKey: string, value: unknown) {
+  ssbGetCache.set(cacheKey, {
+    value,
+    expiresAt: Date.now() + SSB_GET_CACHE_TTL_MS,
+  });
 }

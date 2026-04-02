@@ -1,3 +1,6 @@
+﻿'use client'
+
+import { useState } from "react";
 import type { OccupationPurchasingPowerTimeSeries } from "@/lib/ssb";
 
 const percentFormatter = new Intl.NumberFormat("nb-NO", {
@@ -5,25 +8,23 @@ const percentFormatter = new Intl.NumberFormat("nb-NO", {
   minimumFractionDigits: 1,
 });
 
-const salaryColor = "#14532d";
-const inflationColor = "#b91c1c";
-const gainFill = "rgba(22, 101, 52, 0.18)";
-const lossFill = "rgba(185, 28, 28, 0.18)";
+const positiveColor = "#166534";
+const negativeColor = "#b91c1c";
 
-type ComparisonPoint = {
-  x: number;
-  ySalary: number;
-  yInflation: number;
-  salaryGrowth: number;
-  inflationGrowth: number;
-  periodLabel: string;
-  periodCode: string;
-};
+const seriesDefinitions = [
+  { key: "realGrowthAll", label: "Begge kjonn" },
+  { key: "realGrowthWomen", label: "Kvinner" },
+  { key: "realGrowthMen", label: "Menn" },
+] as const;
 
-type FillPolygon = {
-  color: string;
-  points: Array<{ x: number; y: number }>;
-};
+const filterOptions = [
+  { key: "realGrowthAll", label: "Begge kjonn" },
+  { key: "realGrowthWomen", label: "Kvinner" },
+  { key: "realGrowthMen", label: "Menn" },
+] as const;
+
+type SeriesKey = (typeof seriesDefinitions)[number]["key"];
+type FilterKey = (typeof filterOptions)[number]["key"];
 
 type OccupationPurchasingPowerTimeSeriesChartProps = {
   series: OccupationPurchasingPowerTimeSeries;
@@ -32,81 +33,94 @@ type OccupationPurchasingPowerTimeSeriesChartProps = {
 export function OccupationPurchasingPowerTimeSeriesChart({
   series,
 }: OccupationPurchasingPowerTimeSeriesChartProps) {
+  const [activeFilter, setActiveFilter] = useState<FilterKey>("realGrowthAll");
+
   if (series.points.length === 0) {
     return null;
   }
 
-  const values = series.points.flatMap((point) => [point.salaryGrowth, point.inflationGrowth]);
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
-  const chartMin = Math.floor((minValue - 0.5) / 1) * 1;
-  const chartMax = Math.ceil((maxValue + 0.5) / 1) * 1;
-  const chartRange = Math.max(chartMax - chartMin, 1);
+  const activeSeries = seriesDefinitions.filter((definition) => {
+    return activeFilter === definition.key;
+  });
+
+  const values = series.points.flatMap((point) => {
+    return activeSeries.flatMap((definition) => {
+      const value = point[definition.key];
+      return value !== undefined ? [value] : [];
+    });
+  });
+
+  if (values.length === 0) {
+    return null;
+  }
+
   const chartWidth = 920;
-  const chartHeight = 320;
+  const chartHeight = 340;
   const paddingLeft = 56;
   const paddingRight = 24;
   const paddingTop = 20;
-  const paddingBottom = 48;
+  const paddingBottom = 52;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
-  const xStep = series.points.length > 1 ? plotWidth / (series.points.length - 1) : 0;
-  const labelStride = series.points.length > 8 ? Math.ceil(series.points.length / 6) : 1;
+  const chartMin = Math.floor((Math.min(...values, 0) - 0.5) / 1) * 1;
+  const chartMax = Math.ceil((Math.max(...values, 0) + 0.5) / 1) * 1;
+  const chartRange = Math.max(chartMax - chartMin, 1);
+  const groupWidth = series.points.length > 0 ? plotWidth / series.points.length : 0;
+  const zeroY = paddingTop + plotHeight - ((0 - chartMin) / chartRange) * plotHeight;
+  const labelStride = series.points.length > 12 ? Math.ceil(series.points.length / 8) : 1;
   const axisTicks = 4;
   const tickValues = Array.from({ length: axisTicks + 1 }, (_, index) => {
     return chartMin + (chartRange / axisTicks) * index;
   });
 
-  const comparisonPoints: ComparisonPoint[] = series.points.map((point, index) => {
-    const x = paddingLeft + xStep * index;
-    const ySalary =
-      paddingTop + plotHeight - ((point.salaryGrowth - chartMin) / chartRange) * plotHeight;
-    const yInflation =
-      paddingTop + plotHeight - ((point.inflationGrowth - chartMin) / chartRange) * plotHeight;
-
-    return {
-      x,
-      ySalary,
-      yInflation,
-      salaryGrowth: point.salaryGrowth,
-      inflationGrowth: point.inflationGrowth,
-      periodLabel: point.periodLabel,
-      periodCode: point.periodCode,
-    };
-  });
-
-  const fillPolygons = buildFillPolygons(comparisonPoints);
-  const salaryPath = buildLinePath(
-    comparisonPoints.map((point) => ({ x: point.x, y: point.ySalary })),
-  );
-  const inflationPath = buildLinePath(
-    comparisonPoints.map((point) => ({ x: point.x, y: point.yInflation })),
-  );
-
   return (
-    <section className="rounded-xl border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
-      <div className="flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
+      <div className="flex flex-col gap-4 border-b pb-4">
         <div>
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
-            Vekst i gjennomsnittlig lønn mot inflasjon
+            Reallonnsvekst
           </h3>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            Kvartalsvis reallonnsvekst etter inflasjon. Positive verdier vises over nullinjen i gront, negative under i rodt.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {filterOptions.map((option) => {
+            const isActive = option.key === activeFilter;
+
+            return (
+              <button
+                key={option.key}
+                className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                  isActive
+                    ? "border-[var(--primary)] bg-[var(--primary)] text-white"
+                    : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                }`}
+                onClick={() => setActiveFilter(option.key)}
+                type="button"
+              >
+                {option.label}
+              </button>
+            );
+          })}
         </div>
 
         <div className="flex flex-wrap gap-4 text-sm text-slate-700">
           <div className="flex items-center gap-2">
-            <span aria-hidden="true" className="h-3 w-3 rounded-full" style={{ backgroundColor: salaryColor }} />
-            <span>Lønnsvekst</span>
+            <span aria-hidden="true" className="h-3 w-3 rounded-full" style={{ backgroundColor: positiveColor }} />
+            <span>Positiv reallonnsvekst</span>
           </div>
           <div className="flex items-center gap-2">
-            <span aria-hidden="true" className="h-3 w-3 rounded-full" style={{ backgroundColor: inflationColor }} />
-            <span>Inflasjon</span>
+            <span aria-hidden="true" className="h-3 w-3 rounded-full" style={{ backgroundColor: negativeColor }} />
+            <span>Negativ reallonnsvekst</span>
           </div>
         </div>
       </div>
 
       <div className="mt-6 overflow-x-auto">
         <svg
-          aria-label={`Reallønnsutvikling for ${series.occupationLabel}`}
+          aria-label={`Reallonnsutvikling for ${series.occupationLabel}`}
           className="min-w-[760px] w-full"
           role="img"
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
@@ -117,9 +131,9 @@ export function OccupationPurchasingPowerTimeSeriesChart({
             return (
               <g key={tickValue}>
                 <line
-                  stroke="rgba(27, 36, 48, 0.09)"
-                  strokeDasharray="4 6"
-                  strokeWidth="1"
+                  stroke={tickValue === 0 ? "rgba(27, 36, 48, 0.2)" : "rgba(27, 36, 48, 0.09)"}
+                  strokeDasharray={tickValue === 0 ? undefined : "4 6"}
+                  strokeWidth={tickValue === 0 ? "1.5" : "1"}
                   x1={paddingLeft}
                   x2={chartWidth - paddingRight}
                   y1={y}
@@ -138,170 +152,73 @@ export function OccupationPurchasingPowerTimeSeriesChart({
             );
           })}
 
-          <line
-            stroke="rgba(27, 36, 48, 0.14)"
-            strokeWidth="1"
-            x1={paddingLeft}
-            x2={chartWidth - paddingRight}
-            y1={paddingTop + plotHeight}
-            y2={paddingTop + plotHeight}
-          />
-
-          {fillPolygons.map((polygon, index) => (
-            <polygon
-              key={`${polygon.color}-${index}`}
-              fill={polygon.color}
-              points={polygon.points.map((point) => `${point.x},${point.y}`).join(" ")}
-            />
-          ))}
-
-          <path
-            d={salaryPath}
-            fill="none"
-            stroke={salaryColor}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="3"
-          />
-          <path
-            d={inflationPath}
-            fill="none"
-            stroke={inflationColor}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="3"
-          />
-
-          {comparisonPoints.map((point) => (
-            <g key={point.periodCode}>
-              <circle cx={point.x} cy={point.ySalary} fill={salaryColor} r="3.5" />
-              <circle cx={point.x} cy={point.yInflation} fill={inflationColor} r="3.5" />
-              <title>
-                {`${formatPeriodLabel(point.periodLabel)}: lønnsvekst ${percentFormatter.format(point.salaryGrowth)} %, inflasjon ${percentFormatter.format(point.inflationGrowth)} %`}
-              </title>
-            </g>
-          ))}
-
           {series.points.map((point, index) => {
-            if (index % labelStride !== 0 && index !== series.points.length - 1) {
-              return null;
-            }
-
-            const x = paddingLeft + xStep * index;
+            const xStart = paddingLeft + groupWidth * index;
+            const visibleDefinitions = activeSeries.filter((definition) => point[definition.key] !== undefined);
+            const barGap = 4;
+            const innerWidth = Math.max(groupWidth - 8, 8);
+            const barWidth = Math.max((innerWidth - Math.max(visibleDefinitions.length - 1, 0) * barGap) / Math.max(visibleDefinitions.length, 1), 4);
+            const barsWidth = visibleDefinitions.length * barWidth + Math.max(visibleDefinitions.length - 1, 0) * barGap;
+            const offset = xStart + (groupWidth - barsWidth) / 2;
 
             return (
-              <text
-                key={point.periodCode}
-                fill="#5f6773"
-                fontSize="12"
-                textAnchor={
-                  index === 0
-                    ? "start"
-                    : index === series.points.length - 1
-                      ? "end"
-                      : "middle"
-                }
-                x={x}
-                y={chartHeight - 18}
-              >
-                {formatShortPeriodLabel(point.periodLabel)}
-              </text>
+              <g key={point.periodCode}>
+                {visibleDefinitions.map((definition, definitionIndex) => {
+                  const value = point[definition.key] as number | undefined;
+
+                  if (value === undefined) {
+                    return null;
+                  }
+
+                  const y = paddingTop + plotHeight - ((value - chartMin) / chartRange) * plotHeight;
+                  const barHeight = Math.abs(y - zeroY);
+                  const barX = offset + definitionIndex * (barWidth + barGap);
+                  const barY = value >= 0 ? y : zeroY;
+
+                  return (
+                    <g key={`${point.periodCode}-${definition.key}`}>
+                      <rect
+                        fill={value >= 0 ? positiveColor : negativeColor}
+                        height={Math.max(barHeight, 2)}
+                        rx="2"
+                        width={barWidth}
+                        x={barX}
+                        y={barY}
+                      />
+                      <title>
+                        {`${definition.label}, ${formatPeriodLabel(point.periodLabel)}: ${percentFormatter.format(value)} %`}
+                      </title>
+                    </g>
+                  );
+                })}
+
+                {(index % labelStride === 0 || index === series.points.length - 1) ? (
+                  <text
+                    fill="#5f6773"
+                    fontSize="12"
+                    textAnchor="middle"
+                    x={xStart + groupWidth / 2}
+                    y={chartHeight - 18}
+                  >
+                    {formatShortPeriodLabel(point.periodLabel)}
+                  </text>
+                ) : null}
+              </g>
             );
           })}
+
+          <line
+            stroke="rgba(27, 36, 48, 0.18)"
+            strokeWidth="1.5"
+            x1={paddingLeft}
+            x2={chartWidth - paddingRight}
+            y1={zeroY}
+            y2={zeroY}
+          />
         </svg>
       </div>
     </section>
   );
-}
-
-function buildFillPolygons(points: ComparisonPoint[]): FillPolygon[] {
-  const polygons: FillPolygon[] = [];
-
-  for (let index = 0; index < points.length - 1; index += 1) {
-    const current = points[index];
-    const next = points[index + 1];
-    const currentDiff = current.salaryGrowth - current.inflationGrowth;
-    const nextDiff = next.salaryGrowth - next.inflationGrowth;
-
-    if (currentDiff === 0 && nextDiff === 0) {
-      continue;
-    }
-
-    const currentColor = currentDiff >= 0 ? gainFill : lossFill;
-    const nextColor = nextDiff >= 0 ? gainFill : lossFill;
-
-    if (currentDiff === 0) {
-      polygons.push({
-        color: nextDiff > 0 ? gainFill : lossFill,
-        points: [
-          { x: current.x, y: current.ySalary },
-          { x: next.x, y: next.ySalary },
-          { x: next.x, y: next.yInflation },
-        ],
-      });
-      continue;
-    }
-
-    if (nextDiff === 0) {
-      polygons.push({
-        color: currentDiff > 0 ? gainFill : lossFill,
-        points: [
-          { x: current.x, y: current.ySalary },
-          { x: next.x, y: next.ySalary },
-          { x: current.x, y: current.yInflation },
-        ],
-      });
-      continue;
-    }
-
-    if (currentColor === nextColor) {
-      polygons.push({
-        color: currentColor,
-        points: [
-          { x: current.x, y: current.ySalary },
-          { x: next.x, y: next.ySalary },
-          { x: next.x, y: next.yInflation },
-          { x: current.x, y: current.yInflation },
-        ],
-      });
-      continue;
-    }
-
-    const intersection = interpolateIntersection(current, next);
-
-    polygons.push({
-      color: currentDiff > 0 ? gainFill : lossFill,
-      points: [
-        { x: current.x, y: current.ySalary },
-        { x: intersection.x, y: intersection.y },
-        { x: current.x, y: current.yInflation },
-      ],
-    });
-    polygons.push({
-      color: nextDiff > 0 ? gainFill : lossFill,
-      points: [
-        { x: next.x, y: next.ySalary },
-        { x: next.x, y: next.yInflation },
-        { x: intersection.x, y: intersection.y },
-      ],
-    });
-  }
-
-  return polygons;
-}
-
-function interpolateIntersection(current: ComparisonPoint, next: ComparisonPoint) {
-  const currentDiff = current.salaryGrowth - current.inflationGrowth;
-  const nextDiff = next.salaryGrowth - next.inflationGrowth;
-  const ratio = currentDiff / (currentDiff - nextDiff);
-  const x = current.x + (next.x - current.x) * ratio;
-  const y = current.ySalary + (next.ySalary - current.ySalary) * ratio;
-
-  return { x, y };
-}
-
-function buildLinePath(points: Array<{ x: number; y: number }>) {
-  return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
 }
 
 function formatPeriodLabel(label: string) {
@@ -323,7 +240,7 @@ function formatShortPeriodLabel(label: string) {
   }
 
   const [, year, quarter] = quarterMatch;
-  return `${quarter}.kv. ${year.slice(2)}`;
+  return `${quarter}.kv.${year}`;
 }
 
 function getQuarterMatch(label: string) {

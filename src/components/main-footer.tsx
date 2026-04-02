@@ -13,7 +13,7 @@ export function MainFooter() {
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-10 sm:px-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] lg:px-8 lg:py-14">
         <div className="max-w-2xl">
           <Link className="inline-flex items-center gap-3" href="/">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--primary)] text-sm font-bold tracking-[0.18em] text-white shadow-sm">
+            <span className="flex h-12 w-12 items-center justify-center rounded-md bg-[var(--primary)] text-sm font-bold tracking-[0.18em] text-white shadow-sm">
               LN
             </span>
             <div>

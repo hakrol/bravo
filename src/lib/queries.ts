@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import {
   getTableData,
   getTableInfo,
@@ -5,14 +6,18 @@ import {
   listTables,
   postTableData,
 } from "./client";
+import { buildOccupationMedianSalaryOverview } from "./occupation-salary-overview";
 import type {
   InflationQuarterPoint,
+  OccupationAgeLatest,
+  OccupationAgeTimeSeriesPoint,
   OccupationEmploymentContractType,
   OccupationEmploymentGenderBreakdown,
   OccupationEmploymentLatest,
   OccupationEmploymentGrowth,
   OccupationEmploymentTimeSeriesPoint,
   OccupationLaborMarketStats,
+  OccupationWorkforceTimeSeriesPoint,
   OccupationPurchasingPowerDetail,
   OccupationPurchasingPowerOverview,
   OccupationPurchasingPowerTimeSeries,
@@ -37,6 +42,21 @@ import type {
 export const OCCUPATION_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
   Alder: "999D",
   ContentsCode: "GjAvtaltMdlonn",
+};
+
+export const OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS: SsbSalaryFilters = {
+  Alder: "999D",
+  ContentsCode: "MedianAvtMndLonn",
+};
+
+export const OCCUPATION_AVERAGE_AGE_FILTERS: SsbSalaryFilters = {
+  Alder: "999D",
+  ContentsCode: "GjsnAlder",
+};
+
+export const OCCUPATION_WORKFORCE_FILTERS: SsbSalaryFilters = {
+  Alder: "999D",
+  ContentsCode: ["Lonsstakere", "AntArbForhold"],
 };
 
 export const ACCOUNTANT_OCCUPATION_CODE = "3313";
@@ -240,24 +260,36 @@ export function buildLatestQueryFromMetadata(
   return query;
 }
 
+const getLatestSalaryDatasetCached = unstable_cache(
+  async (
+    tableKey: SsbSalaryTableKey,
+    filters: SsbSalaryFilters = {},
+    lang: SsbLanguage = "no",
+  ): Promise<SsbNormalizedDataset> => {
+    const table = getSalaryTableDefinition(tableKey);
+    const metadata = await getTableMetadata(table.id, lang);
+    const query = buildLatestQueryFromMetadata(metadata, filters);
+    const [info, dataset] = await Promise.all([
+      getTableInfo(table.id, lang),
+      getTableData(table.id, query, lang),
+    ]);
+
+    return normalizeDataset(dataset, {
+      tableId: table.id,
+      tableKey: table.key,
+      title: info.label,
+    });
+  },
+  ["ssb-latest-salary-dataset"],
+  { revalidate: 300 },
+);
+
 export async function getLatestSalaryDataset(
   tableKey: SsbSalaryTableKey,
   filters: SsbSalaryFilters = {},
   lang: SsbLanguage = "no",
 ): Promise<SsbNormalizedDataset> {
-  const table = getSalaryTableDefinition(tableKey);
-  const metadata = await getTableMetadata(table.id, lang);
-  const query = buildLatestQueryFromMetadata(metadata, filters);
-  const [info, dataset] = await Promise.all([
-    getTableInfo(table.id, lang),
-    getTableData(table.id, query, lang),
-  ]);
-
-  return normalizeDataset(dataset, {
-    tableId: table.id,
-    tableKey: table.key,
-    title: info.label,
-  });
+  return getLatestSalaryDatasetCached(tableKey, filters, lang);
 }
 
 export async function getLatestSalaryDatasets(
@@ -265,28 +297,6 @@ export async function getLatestSalaryDatasets(
   lang: SsbLanguage = "no",
 ) {
   return Promise.all(tableKeys.map((tableKey) => getLatestSalaryDataset(tableKey, {}, lang)));
-}
-
-export async function getOccupationSalaryTimeSeries(
-  occupationCode: string,
-  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
-  lang: SsbLanguage = "no",
-): Promise<OccupationSalaryTimeSeries> {
-  const table = getSalaryTableDefinition("occupationDetailed");
-  const metadata = await getTableMetadata(table.id, lang);
-  const query = buildOccupationTimeSeriesQuery(metadata, occupationCode, filters);
-  const [info, dataset] = await Promise.all([
-    getTableInfo(table.id, lang),
-    getTableData(table.id, query, lang),
-  ]);
-
-  const normalized = normalizeDataset(dataset, {
-    tableId: table.id,
-    tableKey: table.key,
-    title: info.label,
-  });
-
-  return buildOccupationSalaryTimeSeries(normalized, occupationCode);
 }
 
 export async function getOccupationSalaryDistribution(
@@ -318,6 +328,77 @@ export async function getOccupationSalaryDistribution(
   return buildOccupationSalaryDistribution(normalized, occupationCode);
 }
 
+export async function getOccupationMedianSalaryOverview(
+  occupationCodes: string[],
+  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  const uniqueOccupationCodes = Array.from(new Set(occupationCodes)).filter(Boolean);
+
+  if (uniqueOccupationCodes.length === 0) {
+    return {
+      rows: [],
+      periodLabel: undefined,
+      measureLabel: "Median avtalt månedslønn",
+    };
+  }
+
+  const tableId = SSB_OCCUPATION_DISTRIBUTION_TABLE_ID;
+  const metadata = await getTableMetadata(tableId, lang);
+  const distributionQuery = buildLatestQueryFromMetadata(metadata, {
+    ...filters,
+    MaaleMetode: "01",
+    Yrke: uniqueOccupationCodes,
+    Sektor: "ALLE",
+    Kjonn: ["0", "1", "2"],
+    AvtaltVanlig: "0",
+    ContentsCode: "AvtaltManedslonn",
+  });
+  const distributionBody = buildPostBodyFromQueryParams(distributionQuery);
+  const [info, dataset] = await Promise.all([
+    getTableInfo(tableId, lang),
+    postTableData(
+      tableId,
+      distributionBody,
+      {
+        outputFormat: "json-stat2",
+      },
+      lang,
+    ),
+  ]);
+
+  const normalized = normalizeDataset(dataset, {
+    tableId,
+    title: info.label,
+  });
+
+  return buildOccupationMedianSalaryOverview(normalized, {
+    occupationCodes: uniqueOccupationCodes,
+  });
+}
+
+function buildPostBodyFromQueryParams(query: SsbQueryParams): SsbPostBody {
+  const selection = Object.entries(query).flatMap(([key, value]) => {
+    const match = key.match(/^valueCodes\[(.+)\]$/);
+
+    if (!match || value === undefined) {
+      return [];
+    }
+
+    const variableCode = match[1];
+    const valueCodes = Array.isArray(value) ? value.map(String) : [String(value)];
+
+    return [
+      {
+        variableCode,
+        valueCodes,
+      },
+    ];
+  });
+
+  return { selection };
+}
+
 export async function getOccupationEmploymentLatest(
   occupationCode: string,
   lang: SsbLanguage = "no",
@@ -341,37 +422,74 @@ export async function getOccupationEmploymentLatest(
   });
 }
 
+const getOccupationLaborMarketStatsCached = unstable_cache(
+  async (
+    occupationCode: string,
+    lang: SsbLanguage = "no",
+  ): Promise<OccupationLaborMarketStats | null> => {
+    const salaryTable = getSalaryTableDefinition("occupationDetailed");
+    const [salaryMetadata, contractMetadata] = await Promise.all([
+      getTableMetadata(salaryTable.id, lang),
+      getTableMetadata(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
+    ]);
+    const workforceQuery = buildOccupationTimeSeriesQuery(
+      salaryMetadata,
+      occupationCode,
+      {
+        ...OCCUPATION_WORKFORCE_FILTERS,
+        Kjonn: ["0", "1", "2"],
+      },
+    );
+    const contractQuery = buildOccupationContractTypeQuery(contractMetadata, occupationCode);
+    const ageQuery = buildOccupationTimeSeriesQuery(
+      salaryMetadata,
+      occupationCode,
+      OCCUPATION_AVERAGE_AGE_FILTERS,
+    );
+    const [salaryInfo, contractInfo, workforceDataset, contractDataset, ageDataset] =
+      await Promise.all([
+        getTableInfo(salaryTable.id, lang),
+        getTableInfo(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
+        getTableData(salaryTable.id, workforceQuery, lang),
+        getTableData(SSB_OCCUPATION_CONTRACT_TABLE_ID, contractQuery, lang),
+        getTableData(salaryTable.id, ageQuery, lang),
+      ]);
+
+    const normalizedWorkforce = normalizeDataset(workforceDataset, {
+      tableId: salaryTable.id,
+      tableKey: salaryTable.key,
+      title: salaryInfo.label,
+    });
+    const normalizedContract = normalizeDataset(contractDataset, {
+      tableId: SSB_OCCUPATION_CONTRACT_TABLE_ID,
+      title: contractInfo.label,
+    });
+    const normalizedAge = normalizeDataset(ageDataset, {
+      tableId: salaryTable.id,
+      tableKey: salaryTable.key,
+      title: salaryInfo.label,
+    });
+
+    return buildOccupationLaborMarketStats(
+      normalizedWorkforce,
+      normalizedContract,
+      normalizedAge,
+      occupationCode,
+      {
+        employeeUnit: "personer",
+        jobUnit: "arbeidsforhold",
+      },
+    );
+  },
+  ["ssb-occupation-labor-market-stats"],
+  { revalidate: 300 },
+);
+
 export async function getOccupationLaborMarketStats(
   occupationCode: string,
   lang: SsbLanguage = "no",
 ): Promise<OccupationLaborMarketStats | null> {
-  const employmentTable = getSalaryTableDefinition("occupationEmployment");
-  const [employmentMetadata, contractMetadata] = await Promise.all([
-    getTableMetadata(employmentTable.id, lang),
-    getTableMetadata(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
-  ]);
-  const employmentQuery = buildOccupationEmploymentTimeSeriesQuery(employmentMetadata, occupationCode);
-  const contractQuery = buildOccupationContractTypeQuery(contractMetadata, occupationCode);
-  const [employmentInfo, contractInfo, employmentDataset, contractDataset] = await Promise.all([
-    getTableInfo(employmentTable.id, lang),
-    getTableInfo(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
-    getTableData(employmentTable.id, employmentQuery, lang),
-    getTableData(SSB_OCCUPATION_CONTRACT_TABLE_ID, contractQuery, lang),
-  ]);
-
-  const normalizedEmployment = normalizeDataset(employmentDataset, {
-    tableId: employmentTable.id,
-    tableKey: employmentTable.key,
-    title: employmentInfo.label,
-  });
-  const normalizedContract = normalizeDataset(contractDataset, {
-    tableId: SSB_OCCUPATION_CONTRACT_TABLE_ID,
-    title: contractInfo.label,
-  });
-
-  return buildOccupationLaborMarketStats(normalizedEmployment, normalizedContract, occupationCode, {
-    employmentUnit: getMetricUnitFromMetadata(employmentMetadata) ?? "1 000 personer",
-  });
+  return getOccupationLaborMarketStatsCached(occupationCode, lang);
 }
 
 export async function getOccupationPurchasingPowerOverview(
@@ -435,7 +553,111 @@ export async function getOccupationPurchasingPowerDetail(
   filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
   lang: SsbLanguage = "no",
 ): Promise<OccupationPurchasingPowerDetail> {
-  const salaryTable = getSalaryTableDefinition("occupationDetailed");
+  const detailData = await getOccupationDetailTrendData(occupationCode, filters, lang);
+  return detailData.purchasingPower;
+}
+
+export async function getOccupationPurchasingPowerTimeSeries(
+  occupationCode: string,
+  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+): Promise<OccupationPurchasingPowerTimeSeries> {
+  const detailData = await getOccupationDetailTrendData(occupationCode, filters, lang);
+  return detailData.purchasingPowerSeries;
+}
+
+const getOccupationDetailTrendDataCached = unstable_cache(
+  async (
+    occupationCode: string,
+    filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+    lang: SsbLanguage = "no",
+  ) => {
+    const salaryTable = getSalaryTableDefinition("occupationDetailed");
+    const [salaryMetadata, inflationMetadata] = await Promise.all([
+      getTableMetadata(salaryTable.id, lang),
+      getTableMetadata(SSB_INFLATION_TABLE_ID, lang),
+    ]);
+
+    const salaryQuery = buildOccupationTimeSeriesQuery(salaryMetadata, occupationCode, filters);
+    const inflationQuery = buildInflationQuarterQuery(inflationMetadata);
+
+    const [salaryInfo, inflationInfo, salaryDataset, inflationDataset] = await Promise.all([
+      getTableInfo(salaryTable.id, lang),
+      getTableInfo(SSB_INFLATION_TABLE_ID, lang),
+      getTableData(salaryTable.id, salaryQuery, lang),
+      getTableData(SSB_INFLATION_TABLE_ID, inflationQuery, lang),
+    ]);
+
+    const normalizedSalaryDataset = normalizeDataset(salaryDataset, {
+      tableId: salaryTable.id,
+      tableKey: salaryTable.key,
+      title: salaryInfo.label,
+    });
+    const normalizedInflationDataset = normalizeDataset(inflationDataset, {
+      tableId: SSB_INFLATION_TABLE_ID,
+      title: inflationInfo.label,
+    });
+
+    const series = buildOccupationSalaryTimeSeries(normalizedSalaryDataset, occupationCode);
+    const inflationQuarterSeries = buildInflationQuarterSeries(normalizedInflationDataset);
+    const purchasingPower = buildOccupationPurchasingPowerDetailFromSeries(
+      series,
+      inflationQuarterSeries,
+      {
+        occupationCode,
+        salaryTableId: salaryTable.id,
+        inflationTableId: SSB_INFLATION_TABLE_ID,
+        salaryUpdated: normalizedSalaryDataset.updated,
+        inflationUpdated: normalizedInflationDataset.updated,
+      },
+    );
+    const points = buildOccupationPurchasingPowerTimeSeriesPoints(series, inflationQuarterSeries);
+
+    return {
+      series,
+      purchasingPower,
+      purchasingPowerSeries: {
+        occupationCode,
+        occupationLabel: series.occupationLabel,
+        salaryTableId: salaryTable.id,
+        inflationTableId: SSB_INFLATION_TABLE_ID,
+        salaryUpdated: normalizedSalaryDataset.updated,
+        inflationUpdated: normalizedInflationDataset.updated,
+        points,
+      },
+    };
+  },
+  ["ssb-occupation-detail-trend-data"],
+  { revalidate: 300 },
+);
+
+export async function getOccupationDetailTrendData(
+  occupationCode: string,
+  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  return getOccupationDetailTrendDataCached(occupationCode, filters, lang);
+}
+
+export async function getOccupationSalaryTimeSeries(
+  occupationCode: string,
+  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+): Promise<OccupationSalaryTimeSeries> {
+  const detailData = await getOccupationDetailTrendData(occupationCode, filters, lang);
+  return detailData.series;
+}
+
+async function getOccupationPurchasingPowerTimeSeriesOldRemoved(
+  occupationCode: string,
+  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+): Promise<OccupationPurchasingPowerTimeSeries> {
+  void occupationCode;
+  void filters;
+  void lang;
+  throw new Error("Ubrukt hjelpefunksjon.");
+  /* const salaryTable = getSalaryTableDefinition("occupationDetailed");
   const [salaryMetadata, inflationMetadata] = await Promise.all([
     getTableMetadata(salaryTable.id, lang),
     getTableMetadata(SSB_INFLATION_TABLE_ID, lang),
@@ -461,7 +683,7 @@ export async function getOccupationPurchasingPowerDetail(
     title: inflationInfo.label,
   });
 
-  const series = buildOccupationSalaryTimeSeries(normalizedSalaryDataset, occupationCode);
+  const salarySeries = buildOccupationSalaryTimeSeries(normalizedSalaryDataset, occupationCode);
   const inflationQuarterSeries = buildInflationQuarterSeries(normalizedInflationDataset);
   const inflationByPeriod = new Map(
     inflationQuarterSeries
@@ -509,68 +731,13 @@ export async function getOccupationPurchasingPowerDetail(
 
   return {
     occupationCode,
-    occupationLabel: series.occupationLabel,
-    latestPeriodCode,
-    latestPeriodLabel: formatQuarterLabel(latestPeriodCode),
-    previousPeriodCode,
-    previousPeriodLabel: formatQuarterLabel(previousPeriodCode),
-    salaryTableId: salaryTable.id,
-    inflationTableId: SSB_INFLATION_TABLE_ID,
-    salaryUpdated: normalizedSalaryDataset.updated,
-    inflationUpdated: normalizedInflationDataset.updated,
-    latestSalary: latestSalaryPoint.valueAll,
-    previousSalary: previousSalaryPoint.valueAll,
-    salaryGrowth,
-    inflationGrowth,
-    realGrowth,
-    purchasingPowerInsight: getPurchasingPowerInsight(realGrowth),
-  };
-}
-
-export async function getOccupationPurchasingPowerTimeSeries(
-  occupationCode: string,
-  filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
-  lang: SsbLanguage = "no",
-): Promise<OccupationPurchasingPowerTimeSeries> {
-  const salaryTable = getSalaryTableDefinition("occupationDetailed");
-  const [salaryMetadata, inflationMetadata] = await Promise.all([
-    getTableMetadata(salaryTable.id, lang),
-    getTableMetadata(SSB_INFLATION_TABLE_ID, lang),
-  ]);
-
-  const salaryQuery = buildOccupationTimeSeriesQuery(salaryMetadata, occupationCode, filters);
-  const inflationQuery = buildInflationQuarterQuery(inflationMetadata);
-
-  const [salaryInfo, inflationInfo, salaryDataset, inflationDataset] = await Promise.all([
-    getTableInfo(salaryTable.id, lang),
-    getTableInfo(SSB_INFLATION_TABLE_ID, lang),
-    getTableData(salaryTable.id, salaryQuery, lang),
-    getTableData(SSB_INFLATION_TABLE_ID, inflationQuery, lang),
-  ]);
-
-  const normalizedSalaryDataset = normalizeDataset(salaryDataset, {
-    tableId: salaryTable.id,
-    tableKey: salaryTable.key,
-    title: salaryInfo.label,
-  });
-  const normalizedInflationDataset = normalizeDataset(inflationDataset, {
-    tableId: SSB_INFLATION_TABLE_ID,
-    title: inflationInfo.label,
-  });
-
-  const salarySeries = buildOccupationSalaryTimeSeries(normalizedSalaryDataset, occupationCode);
-  const inflationQuarterSeries = buildInflationQuarterSeries(normalizedInflationDataset);
-  const points = buildOccupationPurchasingPowerTimeSeriesPoints(salarySeries, inflationQuarterSeries);
-
-  return {
-    occupationCode,
     occupationLabel: salarySeries.occupationLabel,
     salaryTableId: salaryTable.id,
     inflationTableId: SSB_INFLATION_TABLE_ID,
     salaryUpdated: normalizedSalaryDataset.updated,
     inflationUpdated: normalizedInflationDataset.updated,
     points,
-  };
+  }; */
 }
 
 export async function getSalaryTableSnapshot(
@@ -1076,42 +1243,227 @@ function buildOccupationEmploymentLatest(
 }
 
 function buildOccupationLaborMarketStats(
-  employmentDataset: SsbNormalizedDataset,
+  workforceDataset: SsbNormalizedDataset,
   contractDataset: SsbNormalizedDataset,
+  ageDataset: SsbNormalizedDataset,
   occupationCode: string,
-  options: { employmentUnit: string },
+  options: { employeeUnit: string; jobUnit: string },
 ): OccupationLaborMarketStats | null {
-  const points = buildOccupationEmploymentTimeSeries(employmentDataset, occupationCode);
+  const workforcePoints = buildOccupationWorkforceTimeSeries(workforceDataset, occupationCode);
+  const ageSeries = buildOccupationAgeTimeSeries(ageDataset, occupationCode);
 
-  if (points.length === 0) {
+  if (workforcePoints.length === 0) {
     return null;
   }
 
-  const latestPoint = points.at(-1);
-  const occupationLabel = findOccupationLabelFromDataset(employmentDataset, occupationCode) ?? occupationCode;
-
-  const latest = latestPoint?.total !== undefined
-    ? {
-        occupationCode,
-        occupationLabel,
-        periodCode: latestPoint.periodCode,
-        periodLabel: latestPoint.periodLabel,
-        value: latestPoint.total,
-        unit: options.employmentUnit,
-        updated: employmentDataset.updated,
-      }
-    : null;
+  const latestPoint = workforcePoints.at(-1);
+  const occupationLabel = findOccupationLabelFromDataset(workforceDataset, occupationCode) ?? occupationCode;
+  const latest =
+    latestPoint && (latestPoint.employeesAll !== undefined || latestPoint.jobsAll !== undefined)
+      ? {
+          occupationCode,
+          occupationLabel,
+          periodCode: latestPoint.periodCode,
+          periodLabel: latestPoint.periodLabel,
+          employees: latestPoint.employeesAll,
+          jobs: latestPoint.jobsAll,
+          employeeUnit: options.employeeUnit,
+          jobUnit: options.jobUnit,
+          updated: workforceDataset.updated,
+        }
+      : null;
 
   return {
     occupationCode,
     occupationLabel,
-    updated: employmentDataset.updated,
-    employmentUnit: options.employmentUnit,
-    points,
+    updated: workforceDataset.updated,
+    employeeUnit: options.employeeUnit,
+    jobUnit: options.jobUnit,
+    workforcePoints,
     latest,
-    genderBreakdown: buildOccupationEmploymentGenderBreakdown(points),
-    growth: buildOccupationEmploymentGrowth(points),
+    genderBreakdown: buildOccupationEmployeeGenderBreakdown(workforcePoints),
+    growth: buildOccupationEmployeeGrowth(workforcePoints),
     contractType: buildOccupationEmploymentContractType(contractDataset, occupationCode),
+    age: buildOccupationAgeLatest(ageSeries, occupationCode, occupationLabel, ageDataset.updated),
+    ageSeries,
+  };
+}
+
+function buildOccupationWorkforceTimeSeries(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationWorkforceTimeSeriesPoint[] {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "kjÃ¸nn",
+    "sex",
+  ]);
+  const measureDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "contentscode",
+    "contents",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "quarter",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode || !periodDimensionCode) {
+    return [];
+  }
+
+  const relevantRows = dataset.rows.filter(
+    (row) =>
+      row.dimensions[occupationDimensionCode]?.code === occupationCode &&
+      row.value !== null,
+  );
+
+  const pointsByPeriod = relevantRows.reduce((map, row) => {
+    const period = row.dimensions[periodDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+    const measure = row.dimensions[measureDimensionCode];
+
+    if (!period || !gender || !measure) {
+      return map;
+    }
+
+    const point = map.get(period.code) ?? {
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+
+    if (measure.code === "Lonsstakere") {
+      if (gender.code === "0") {
+        point.employeesAll = row.value ?? undefined;
+      }
+
+      if (gender.code === "2") {
+        point.employeesWomen = row.value ?? undefined;
+      }
+
+      if (gender.code === "1") {
+        point.employeesMen = row.value ?? undefined;
+      }
+    }
+
+    if (measure.code === "AntArbForhold") {
+      if (gender.code === "0") {
+        point.jobsAll = row.value ?? undefined;
+      }
+
+      if (gender.code === "2") {
+        point.jobsWomen = row.value ?? undefined;
+      }
+
+      if (gender.code === "1") {
+        point.jobsMen = row.value ?? undefined;
+      }
+    }
+
+    map.set(period.code, point);
+    return map;
+  }, new Map<string, OccupationWorkforceTimeSeriesPoint>());
+
+  return Array.from(pointsByPeriod.values()).sort((left, right) =>
+    left.periodCode.localeCompare(right.periodCode, "nb-NO"),
+  );
+}
+
+function buildOccupationAgeTimeSeries(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationAgeTimeSeriesPoint[] {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "kjÃ¸nn",
+    "sex",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "quarter",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !periodDimensionCode) {
+    return [];
+  }
+
+  const relevantRows = dataset.rows.filter(
+    (row) =>
+      row.dimensions[occupationDimensionCode]?.code === occupationCode &&
+      row.value !== null,
+  );
+
+  const pointsByPeriod = relevantRows.reduce((map, row) => {
+    const period = row.dimensions[periodDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+
+    if (!period || !gender) {
+      return map;
+    }
+
+    const point = map.get(period.code) ?? {
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+
+    if (gender.code === "0") {
+      point.averageAll = row.value ?? undefined;
+    }
+
+    if (gender.code === "2") {
+      point.averageWomen = row.value ?? undefined;
+    }
+
+    if (gender.code === "1") {
+      point.averageMen = row.value ?? undefined;
+    }
+
+    map.set(period.code, point);
+    return map;
+  }, new Map<string, OccupationAgeTimeSeriesPoint>());
+
+  return Array.from(pointsByPeriod.values()).sort((left, right) =>
+    left.periodCode.localeCompare(right.periodCode, "nb-NO"),
+  );
+}
+
+function buildOccupationAgeLatest(
+  points: OccupationAgeTimeSeriesPoint[],
+  occupationCode: string,
+  occupationLabel: string,
+  updated?: string,
+): OccupationAgeLatest | null {
+  const latestPoint = points
+    .filter(
+      (point) =>
+        point.averageAll !== undefined ||
+        point.averageWomen !== undefined ||
+        point.averageMen !== undefined,
+    )
+    .at(-1);
+
+  if (!latestPoint) {
+    return null;
+  }
+
+  return {
+    occupationCode,
+    occupationLabel,
+    periodCode: latestPoint.periodCode,
+    periodLabel: latestPoint.periodLabel,
+    averageAll: latestPoint.averageAll,
+    averageWomen: latestPoint.averageWomen,
+    averageMen: latestPoint.averageMen,
+    updated,
   };
 }
 
@@ -1178,17 +1530,17 @@ function buildOccupationEmploymentTimeSeries(
   );
 }
 
-function buildOccupationEmploymentGenderBreakdown(
-  points: OccupationEmploymentTimeSeriesPoint[],
+function buildOccupationEmployeeGenderBreakdown(
+  points: OccupationWorkforceTimeSeriesPoint[],
 ): OccupationEmploymentGenderBreakdown | null {
   const latestPoint = points.at(-1);
 
   if (
     !latestPoint ||
-    latestPoint.total === undefined ||
-    latestPoint.total === 0 ||
-    latestPoint.women === undefined ||
-    latestPoint.men === undefined
+    latestPoint.employeesAll === undefined ||
+    latestPoint.employeesAll === 0 ||
+    latestPoint.employeesWomen === undefined ||
+    latestPoint.employeesMen === undefined
   ) {
     return null;
   }
@@ -1196,27 +1548,35 @@ function buildOccupationEmploymentGenderBreakdown(
   return {
     periodCode: latestPoint.periodCode,
     periodLabel: latestPoint.periodLabel,
-    total: latestPoint.total,
-    women: latestPoint.women,
-    men: latestPoint.men,
-    womenShare: (latestPoint.women / latestPoint.total) * 100,
-    menShare: (latestPoint.men / latestPoint.total) * 100,
+    total: latestPoint.employeesAll,
+    women: latestPoint.employeesWomen,
+    men: latestPoint.employeesMen,
+    womenShare: (latestPoint.employeesWomen / latestPoint.employeesAll) * 100,
+    menShare: (latestPoint.employeesMen / latestPoint.employeesAll) * 100,
   };
 }
 
-function buildOccupationEmploymentGrowth(
-  points: OccupationEmploymentTimeSeriesPoint[],
+function buildOccupationEmployeeGrowth(
+  points: OccupationWorkforceTimeSeriesPoint[],
 ): OccupationEmploymentGrowth | null {
-  const totalPoints = points.filter((point) => point.total !== undefined);
+  const totalPoints = points
+    .filter((point) => point.employeesAll !== undefined)
+    .map((point) => ({
+      periodCode: point.periodCode,
+      periodLabel: point.periodLabel,
+      total: point.employeesAll as number,
+    }));
   const latestPoint = totalPoints.at(-1);
 
   if (!latestPoint || latestPoint.total === undefined) {
     return null;
   }
 
-  const previousPoint = totalPoints.at(-2);
+  const previousYearQuarterCode = getPreviousYearQuarterCode(latestPoint.periodCode);
+  const previousPoint =
+    totalPoints.find((point) => point.periodCode === previousYearQuarterCode) ?? totalPoints.at(-2);
   const baselinePoint =
-    totalPoints.find((point) => point.periodCode === "2021") ?? totalPoints[0];
+    totalPoints.find((point) => point.periodCode.startsWith("2021")) ?? totalPoints[0];
 
   return {
     latestPeriodCode: latestPoint.periodCode,
@@ -1504,6 +1864,81 @@ function hasAnyDistributionMetrics(metrics?: OccupationSalaryDistributionMetrics
   );
 }
 
+function buildOccupationPurchasingPowerDetailFromSeries(
+  series: OccupationSalaryTimeSeries,
+  inflationQuarterSeries: InflationQuarterPoint[],
+  options: {
+    occupationCode: string;
+    salaryTableId: string;
+    inflationTableId: string;
+    salaryUpdated?: string;
+    inflationUpdated?: string;
+  },
+): OccupationPurchasingPowerDetail {
+  const inflationByPeriod = new Map(
+    inflationQuarterSeries
+      .filter((point) => point.yearOverYearChange !== undefined)
+      .map((point) => [point.periodCode, point] as const),
+  );
+  const comparablePeriods = series.points
+    .map((point) => normalizeQuarterPeriodCode(point.periodCode, point.periodLabel))
+    .filter((periodCode): periodCode is string => Boolean(periodCode))
+    .filter((periodCode) => inflationByPeriod.has(periodCode))
+    .sort((left, right) => right.localeCompare(left, "nb-NO"));
+
+  const latestPeriodCode = comparablePeriods[0];
+
+  if (!latestPeriodCode) {
+    throw new Error(`Fant ingen sammenlignbar KPI-periode for yrkeskode ${options.occupationCode}.`);
+  }
+
+  const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
+
+  if (!previousPeriodCode) {
+    throw new Error(`Fant ikke forrige års periode for ${latestPeriodCode}.`);
+  }
+
+  const latestSalaryPoint = series.points.find(
+    (point) => normalizeQuarterPeriodCode(point.periodCode, point.periodLabel) === latestPeriodCode,
+  );
+  const previousSalaryPoint = series.points.find(
+    (point) => normalizeQuarterPeriodCode(point.periodCode, point.periodLabel) === previousPeriodCode,
+  );
+  const inflationPoint = inflationByPeriod.get(latestPeriodCode);
+
+  if (
+    latestSalaryPoint?.valueAll === undefined ||
+    previousSalaryPoint?.valueAll === undefined ||
+    inflationPoint?.yearOverYearChange === undefined
+  ) {
+    throw new Error(`Fant ikke nok sammenligningsdata for yrkeskode ${options.occupationCode}.`);
+  }
+
+  const salaryGrowth =
+    ((latestSalaryPoint.valueAll - previousSalaryPoint.valueAll) / previousSalaryPoint.valueAll) * 100;
+  const inflationGrowth = inflationPoint.yearOverYearChange;
+  const realGrowth = (((1 + salaryGrowth / 100) / (1 + inflationGrowth / 100)) - 1) * 100;
+
+  return {
+    occupationCode: options.occupationCode,
+    occupationLabel: series.occupationLabel,
+    latestPeriodCode,
+    latestPeriodLabel: formatQuarterLabel(latestPeriodCode),
+    previousPeriodCode,
+    previousPeriodLabel: formatQuarterLabel(previousPeriodCode),
+    salaryTableId: options.salaryTableId,
+    inflationTableId: options.inflationTableId,
+    salaryUpdated: options.salaryUpdated,
+    inflationUpdated: options.inflationUpdated,
+    latestSalary: latestSalaryPoint.valueAll,
+    previousSalary: previousSalaryPoint.valueAll,
+    salaryGrowth,
+    inflationGrowth,
+    realGrowth,
+    purchasingPowerInsight: getPurchasingPowerInsight(realGrowth),
+  };
+}
+
 function buildOccupationPurchasingPowerTimeSeriesPoints(
   salarySeries: OccupationSalaryTimeSeries,
   inflationQuarterSeries: InflationQuarterPoint[],
@@ -1533,29 +1968,58 @@ function buildOccupationPurchasingPowerTimeSeriesPoints(
 
       const previousSalaryPoint = salaryByPeriod.get(previousPeriodCode);
 
-      if (
-        salaryPoint.valueAll === undefined ||
-        previousSalaryPoint?.valueAll === undefined ||
-        previousSalaryPoint.valueAll === 0
-      ) {
+      if (!previousSalaryPoint) {
         return [];
       }
 
-      const salaryGrowth =
-        ((salaryPoint.valueAll - previousSalaryPoint.valueAll) / previousSalaryPoint.valueAll) * 100;
       const inflationGrowth = inflationPoint.yearOverYearChange;
-      const realGrowth = (((1 + salaryGrowth / 100) / (1 + inflationGrowth / 100)) - 1) * 100;
+      const salaryGrowthAll = calculateYearOverYearGrowth(
+        salaryPoint.valueAll,
+        previousSalaryPoint.valueAll,
+      );
+      const salaryGrowthWomen = calculateYearOverYearGrowth(
+        salaryPoint.valueWomen,
+        previousSalaryPoint.valueWomen,
+      );
+      const salaryGrowthMen = calculateYearOverYearGrowth(
+        salaryPoint.valueMen,
+        previousSalaryPoint.valueMen,
+      );
 
       return [
         {
           periodCode,
           periodLabel: formatQuarterLabel(periodCode),
-          salaryGrowth,
+          salaryGrowthAll,
+          salaryGrowthWomen,
+          salaryGrowthMen,
           inflationGrowth,
-          realGrowth,
+          realGrowthAll: calculateRealGrowth(salaryGrowthAll, inflationGrowth),
+          realGrowthWomen: calculateRealGrowth(salaryGrowthWomen, inflationGrowth),
+          realGrowthMen: calculateRealGrowth(salaryGrowthMen, inflationGrowth),
         },
       ];
     });
+}
+
+function calculateYearOverYearGrowth(current?: number, previous?: number) {
+  if (
+    current === undefined ||
+    previous === undefined ||
+    previous === 0
+  ) {
+    return undefined;
+  }
+
+  return ((current - previous) / previous) * 100;
+}
+
+function calculateRealGrowth(salaryGrowth?: number, inflationGrowth?: number) {
+  if (salaryGrowth === undefined || inflationGrowth === undefined) {
+    return undefined;
+  }
+
+  return (((1 + salaryGrowth / 100) / (1 + inflationGrowth / 100)) - 1) * 100;
 }
 
 function buildOccupationPurchasingPowerRows(
