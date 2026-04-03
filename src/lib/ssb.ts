@@ -1,8 +1,9 @@
-export type {
+﻿export type {
   JsonStat2Dataset,
   JsonStatDimension,
   JsonStatRole,
   InflationQuarterPoint,
+  OccupationDetailTrendData,
   OccupationEmploymentContractType,
   OccupationEmploymentGenderBreakdown,
   OccupationEmploymentLatest,
@@ -66,6 +67,7 @@ export {
   getOccupationDetailTrendData,
   getOccupationEmploymentLatest,
   getOccupationMedianSalaryOverview,
+  getLatestAndPreviousYearSalaryDatasets,
   getLatestSalaryDataset,
   getLatestSalaryDatasets,
   getOccupationSalaryDistribution,
@@ -99,3 +101,5 @@ export async function getSalaryData() {
 }
 
 export type SalaryResponse = import("./types").SalaryTableSnapshot;
+
+

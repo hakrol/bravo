@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState } from "react";
+import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationPurchasingPowerTimeSeries } from "@/lib/ssb";
 
 const percentFormatter = new Intl.NumberFormat("nb-NO", {
@@ -12,13 +13,13 @@ const positiveColor = "#166534";
 const negativeColor = "#b91c1c";
 
 const seriesDefinitions = [
-  { key: "realGrowthAll", label: "Begge kjonn" },
+  { key: "realGrowthAll", label: "Begge kjønn" },
   { key: "realGrowthWomen", label: "Kvinner" },
   { key: "realGrowthMen", label: "Menn" },
 ] as const;
 
 const filterOptions = [
-  { key: "realGrowthAll", label: "Begge kjonn" },
+  { key: "realGrowthAll", label: "Begge kjønn" },
   { key: "realGrowthWomen", label: "Kvinner" },
   { key: "realGrowthMen", label: "Menn" },
 ] as const;
@@ -67,23 +68,73 @@ export function OccupationPurchasingPowerTimeSeriesChart({
   const chartRange = Math.max(chartMax - chartMin, 1);
   const groupWidth = series.points.length > 0 ? plotWidth / series.points.length : 0;
   const zeroY = paddingTop + plotHeight - ((0 - chartMin) / chartRange) * plotHeight;
-  const labelStride = series.points.length > 12 ? Math.ceil(series.points.length / 8) : 1;
+  const yearTicks = buildYearTicks(series.points);
   const axisTicks = 4;
   const tickValues = Array.from({ length: axisTicks + 1 }, (_, index) => {
     return chartMin + (chartRange / axisTicks) * index;
   });
+  const latestValues = seriesDefinitions.filter((definition) => definition.key !== "realGrowthAll").flatMap((definition) => {
+    const latestPoint = getLatestSeriesPoint(series.points, definition.key);
+
+    if (!latestPoint) {
+      return [];
+    }
+
+    return [{
+      key: definition.key,
+      label: definition.label,
+      periodLabel: latestPoint.periodLabel,
+      value: latestPoint.value,
+    }];
+  });
+  const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
     <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
-      <div className="flex flex-col gap-4 border-b pb-4">
-        <div>
+      <div className="flex flex-col gap-4">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+            Reallønn
+          </p>
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
             Reallonnsvekst
           </h3>
-          <p className="mt-1 text-sm text-[var(--muted)]">
+          <p className="text-sm text-[var(--muted)]">
             Kvartalsvis reallonnsvekst etter inflasjon. Positive verdier vises over nullinjen i gront, negative under i rodt.
           </p>
         </div>
+
+        {latestValues.length > 0 ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                Siste data
+              </p>
+              <MetricInfoButton
+                description={`Her ser du siste registrerte reallønnsvekst for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er beregnet fra SSB tabell 11658 og SSB tabell 14700.`}
+                label="Siste data"
+              />
+            </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {latestPeriodLabel ? (
+                  <span className="rounded-md border border-black/10 bg-[#f7fafc] px-3 py-2 text-sm font-semibold text-slate-700">
+                    {formatPeriodLabel(latestPeriodLabel)}
+                  </span>
+                ) : null}
+                {latestValues.map((entry) => (
+                  <div
+                    key={`latest-${entry.key}`}
+                    className={`rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none ${
+                      entry.value > 0 ? "text-emerald-700" : entry.value < 0 ? "text-red-700" : "text-slate-700"
+                    }`}
+                  >
+                    <span className="text-[15px]">{entry.label}: </span>
+                    <span className="text-[15px] font-semibold">{percentFormatter.format(entry.value)} %</span>
+                  </div>
+                ))}
+              </div>
+          </div>
+        ) : null}
 
         <div className="flex flex-wrap gap-2">
           {filterOptions.map((option) => {
@@ -192,18 +243,24 @@ export function OccupationPurchasingPowerTimeSeriesChart({
                   );
                 })}
 
-                {(index % labelStride === 0 || index === series.points.length - 1) ? (
-                  <text
-                    fill="#5f6773"
-                    fontSize="12"
-                    textAnchor="middle"
-                    x={xStart + groupWidth / 2}
-                    y={chartHeight - 18}
-                  >
-                    {formatShortPeriodLabel(point.periodLabel)}
-                  </text>
-                ) : null}
               </g>
+            );
+          })}
+
+          {yearTicks.map((tick) => {
+            const x = paddingLeft + groupWidth * tick.index + groupWidth / 2;
+
+            return (
+              <text
+                key={`year-${tick.label}-${tick.index}`}
+                fill="#5f6773"
+                fontSize="12"
+                textAnchor="middle"
+                x={x}
+                y={chartHeight - 18}
+              >
+                {tick.label}
+              </text>
             );
           })}
 
@@ -232,17 +289,6 @@ function formatPeriodLabel(label: string) {
   return `${quarter}. kvartal ${year}`;
 }
 
-function formatShortPeriodLabel(label: string) {
-  const quarterMatch = getQuarterMatch(label);
-
-  if (!quarterMatch) {
-    return label;
-  }
-
-  const [, year, quarter] = quarterMatch;
-  return `${quarter}.kv.${year}`;
-}
-
 function getQuarterMatch(label: string) {
   const quarterCodeMatch = label.match(/^(\d{4})K([1-4])$/);
 
@@ -258,4 +304,48 @@ function getQuarterMatch(label: string) {
 
   const [, quarter, year] = quarterLabelMatch;
   return [quarterLabelMatch[0], year, quarter];
+}
+
+function buildYearTicks(points: Array<{ periodCode: string; periodLabel: string }>) {
+  const seenYears = new Set<string>();
+
+  return points.flatMap((point, index) => {
+    const year = extractYear(point.periodCode) ?? extractYear(point.periodLabel);
+
+    if (!year || seenYears.has(year)) {
+      return [];
+    }
+
+    seenYears.add(year);
+    return [{ index, label: year }];
+  });
+}
+
+function extractYear(value: string) {
+  const match = value.match(/(\d{4})/);
+  return match ? match[1] : null;
+}
+
+function getLatestSeriesPoint(
+  points: Array<{
+    periodLabel: string;
+    realGrowthAll?: number;
+    realGrowthWomen?: number;
+    realGrowthMen?: number;
+  }>,
+  key: SeriesKey,
+) {
+  for (let index = points.length - 1; index >= 0; index -= 1) {
+    const point = points[index];
+    const value = point[key];
+
+    if (value !== undefined) {
+      return {
+        periodLabel: point.periodLabel,
+        value,
+      };
+    }
+  }
+
+  return null;
 }

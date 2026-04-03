@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import {
   buildDinLonnReport,
   type DinLonnKjonn,
   type DinLonnPageData,
 } from "@/lib/din-lonn";
+import type { OccupationSalaryDistribution } from "@/lib/ssb";
 
 type DinLonnToolProps = {
   data: DinLonnPageData;
@@ -28,6 +30,9 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [submitted, setSubmitted] = useState<FormState | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [distribution, setDistribution] = useState<OccupationSalaryDistribution | null>(null);
+  const [distributionError, setDistributionError] = useState<string | null>(null);
+  const [isDistributionLoading, setIsDistributionLoading] = useState(false);
 
   const parsedSalary = submitted ? parseSalary(submitted.salary) : undefined;
   const report =
@@ -40,6 +45,56 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
         })
       : null;
   const optionsByGroup = groupOptions(data);
+  const activeDistributionRow = submitted?.gender === "mann" ? "men" : "women";
+
+  useEffect(() => {
+    if (!submitted?.occupationCode) {
+      setDistribution(null);
+      setDistributionError(null);
+      setIsDistributionLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    async function loadDistribution() {
+      try {
+        setIsDistributionLoading(true);
+        setDistributionError(null);
+
+        const response = await fetch(
+          `/api/occupation-distribution?occupationCode=${encodeURIComponent(submitted.occupationCode)}`,
+          { signal: controller.signal },
+        );
+
+        if (!response.ok) {
+          throw new Error("Kunne ikke hente lønnsfordelingen akkurat nå.");
+        }
+
+        const nextDistribution = (await response.json()) as OccupationSalaryDistribution | null;
+        setDistribution(nextDistribution);
+      } catch (fetchError) {
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setDistribution(null);
+        setDistributionError(
+          fetchError instanceof Error
+            ? fetchError.message
+            : "Kunne ikke hente lønnsfordelingen akkurat nå.",
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsDistributionLoading(false);
+        }
+      }
+    }
+
+    void loadDistribution();
+
+    return () => controller.abort();
+  }, [submitted?.occupationCode]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -180,7 +235,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                 Hva du får
               </p>
               <ul className="space-y-3 text-sm leading-7 text-slate-700">
-                <li>Du sammenlignes mot median og gjennomsnitt i yrket.</li>
+                <li>Du sammenlignes mot median avtalt månedslønn og gjennomsnitt i yrket.</li>
                 <li>Du ser hvordan lønnen din står seg mot hele arbeidsmarkedet.</li>
                 <li>Du får et raskt bilde av hvor høyt yrket ligger på lønnsskalaen.</li>
               </ul>
@@ -245,12 +300,46 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
             />
           </div>
 
+          <section className="rounded-md border border-black/10 bg-white px-6 py-6 shadow-sm">
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-slate-950">Plassering i lønnsfordelingen</h3>
+              <p className="text-sm leading-6 text-slate-600">
+                Her ser du hvor lønnen din ligger sammenlignet med 25-persentilen,
+                median avtalt månedslønn og 75-persentilen i yrket.
+              </p>
+            </div>
+
+            <div className="mt-5">
+              {isDistributionLoading ? (
+                <p className="text-sm leading-6 text-slate-600">Henter lønnsfordeling fra SSB ...</p>
+              ) : distribution ? (
+                <OccupationSalaryDistributionSection
+                  distribution={distribution}
+                  scaleMode="focusBand"
+                  userMarkers={{
+                    [activeDistributionRow]: {
+                      label: "Din lønn",
+                      value: report.salary,
+                    },
+                  }}
+                  visibleRows={[activeDistributionRow]}
+                />
+              ) : distributionError ? (
+                <p className="text-sm leading-6 text-slate-600">{distributionError}</p>
+              ) : (
+                <p className="text-sm leading-6 text-slate-600">
+                  Det finnes ikke nok fordelingsdata for å vise plasseringen akkurat nå.
+                </p>
+              )}
+            </div>
+          </section>
+
           <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
             <section className="rounded-md border border-black/10 bg-white px-6 py-6 shadow-sm">
               <h3 className="text-xl font-semibold text-slate-950">Slik står du i forhold til tallene</h3>
               <div className="mt-5 grid gap-4">
                 <InsightRow
-                  label="Mot yrkesmedian"
+                  label="Mot median avtalt månedslønn i yrket"
                   value={formatDifference(report.comparisonToMedian.difference)}
                   detail={formatPercent(report.comparisonToMedian.differencePercent)}
                 />
@@ -297,7 +386,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                     ).
                   </p>
                 ) : (
-                  <p>Det finnes ikke nok kjønnsdelte medianverdier til å vise et tydelig gap i yrket.</p>
+                  <p>Det finnes ikke nok kjønnsdelte tall for median avtalt månedslønn til å vise et tydelig gap i yrket.</p>
                 )}
                 <p>
                   Datagrunnlaget gjelder

@@ -77,41 +77,40 @@ export function HomeOccupationSalarySearch({
       </div>
 
       {availableGroups.length > 0 ? (
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-wrap justify-center gap-2 px-1">
-          {availableGroups.map((group) => {
-            const active = activeGroupCodes.includes(group.code);
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-1">
+          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:justify-center">
+            {availableGroups.map((group) => {
+              const active = activeGroupCodes.includes(group.code);
 
-            return (
-              <button
-                key={group.code}
-                aria-pressed={active}
-                className={[
-                  "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium transition",
-                  active
-                    ? "border-[var(--primary)] bg-[var(--primary)] text-white shadow-sm"
-                    : "border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[var(--primary)] hover:text-[var(--primary-strong)]",
-                ].join(" ")}
-                onClick={() =>
-                  setActiveGroupCodes((current) =>
-                    current.includes(group.code)
-                      ? current.filter((code) => code !== group.code)
-                      : [...current, group.code],
-                  )
-                }
-                type="button"
-              >
-                <span aria-hidden="true" className={active ? "rotate-90 transition" : "transition"}>
-                  ▸
-                </span>
-                {group.shortLabel}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={group.code}
+                  aria-pressed={active}
+                  className={[
+                    "inline-flex shrink-0 items-center rounded-full border px-3 py-2 text-sm font-medium whitespace-nowrap transition",
+                    active
+                      ? "border-[var(--primary)] bg-[var(--primary)] text-white shadow-sm"
+                      : "border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[var(--primary)] hover:text-[var(--primary-strong)]",
+                  ].join(" ")}
+                  onClick={() =>
+                    setActiveGroupCodes((current) =>
+                      current.includes(group.code)
+                        ? current.filter((code) => code !== group.code)
+                        : [...current, group.code],
+                    )
+                  }
+                  type="button"
+                >
+                  {group.shortLabel}
+                </button>
+              );
+            })}
+          </div>
         </div>
       ) : null}
 
       <OccupationSalaryOverview
-        description="Tabellen viser samme lønnsmål fordelt på begge kjønn, kvinner og menn. Søket filtrerer radene fortløpende."
+        description="Se månedslønn og vekst fordelt på yrker."
         emptyStateText="Ingen yrker matcher søket ditt akkurat nå."
         lastUpdated={lastUpdated}
         periodLabel={periodLabel}
@@ -139,7 +138,7 @@ function buildTitle(query: string, activeGroupLabels: string[]) {
     return `Yrker i ${activeGroupLabels.join(", ")}`;
   }
 
-  return "Siste gjennomsnittlige avtalte månedslønn for alle yrker";
+  return "Månedslønn for alle yrker";
 }
 
 function getTopGroupCode(occupationCode: string) {

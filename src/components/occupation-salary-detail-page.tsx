@@ -12,12 +12,11 @@ import { OccupationSalaryDistributionSection } from "@/components/occupation-sal
 import { RelatedOccupationSalaryComparison } from "@/components/related-occupation-salary-comparison";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
+import type { OccupationDetailPage } from "@/lib/occupation-detail-pages";
+import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
+import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import {
-  getOccupationDetailPage,
-  getRelatedOccupationDetailPages,
-  type OccupationDetailPage,
-} from "@/lib/occupation-detail-pages";
-import {
+  getLatestAndPreviousYearSalaryDatasets,
   getOccupationDetailTrendData,
   getOccupationLaborMarketStats,
   getOccupationMedianSalaryOverview,
@@ -30,27 +29,24 @@ import {
 
 type OccupationSalaryDetailPageProps = {
   occupationCode: string;
-  detailPageOverride?: OccupationDetailPage;
+  detailPageOverride: OccupationDetailPage;
   relatedPagesOverride?: OccupationDetailPage[];
 };
 
 const sectionAnchorClassName = "scroll-mt-32";
+void notFound;
 
 export async function OccupationSalaryDetailPage({
   occupationCode,
   detailPageOverride,
   relatedPagesOverride,
 }: OccupationSalaryDetailPageProps) {
-  const detailPage = detailPageOverride ?? getOccupationDetailPage(occupationCode);
-
-  if (!detailPage) {
-    notFound();
-  }
-
-  const relatedPages = relatedPagesOverride ?? getRelatedOccupationDetailPages(occupationCode);
+  const detailPage = detailPageOverride;
+  const relatedPages = relatedPagesOverride ?? [];
+  const formattedOccupationLabel = formatOccupationDisplayLabel(detailPage.label);
   const comparisonOccupationCodes = [occupationCode, ...relatedPages.map((page) => page.occupationCode)];
 
-  const [trendData, distribution, medianOverview, laborMarketStats, medianBasicSalarySeries] =
+  const [trendData, distribution, medianOverview, laborMarketStats, medianBasicSalarySeries, yearlyMedianDatasets] =
     await Promise.all([
       getOccupationDetailTrendData(occupationCode, OCCUPATION_MONTHLY_SALARY_FILTERS),
       getOccupationSalaryDistribution(occupationCode, OCCUPATION_MONTHLY_SALARY_FILTERS),
@@ -58,6 +54,10 @@ export async function OccupationSalaryDetailPage({
       getOccupationLaborMarketStats(occupationCode),
       getOccupationSalaryTimeSeries(
         occupationCode,
+        OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
+      ),
+      getLatestAndPreviousYearSalaryDatasets(
+        "occupationDetailed",
         OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
       ),
     ]);
@@ -72,21 +72,48 @@ export async function OccupationSalaryDetailPage({
   const currentSalary = currentMedianRow?.medianAll ?? distribution?.total?.median;
   const currentSalaryWomen = currentMedianRow?.medianWomen ?? distribution?.women?.median;
   const currentSalaryMen = currentMedianRow?.medianMen ?? distribution?.men?.median;
+  const salaryUpdatedLabel = formatUpdatedLabel(
+    distribution?.updated ?? medianBasicSalarySeries.updated ?? laborMarketStats?.updated,
+  );
+  const salarySourceText = buildSalarySourceText(medianPeriodLabel, salaryUpdatedLabel);
+  const topSummary = buildTopSummary({
+    occupationLabel: formattedOccupationLabel,
+    periodLabel: medianPeriodLabel,
+    updatedLabel: salaryUpdatedLabel,
+    womenMedian: currentSalaryWomen,
+    menMedian: currentSalaryMen,
+    womenP25: distribution?.women?.p25,
+    womenP75: distribution?.women?.p75,
+    menP25: distribution?.men?.p25,
+    menP75: distribution?.men?.p75,
+  });
+  const growthOverview = buildOccupationMedianGrowthOverview(
+    yearlyMedianDatasets.latestDataset,
+    yearlyMedianDatasets.previousDataset,
+    { occupationCodes: comparisonOccupationCodes },
+  );
+  const growthByOccupationCode = new Map(
+    growthOverview.rows.map((row) => [row.occupationCode, row] as const),
+  );
   const relatedRows = relatedPages
     .map((page) => {
       const row = medianRowsByCode.get(page.occupationCode);
+      const growthRow = growthByOccupationCode.get(page.occupationCode);
 
       return {
         occupationCode: page.occupationCode,
         occupationLabel: row?.occupationLabel ?? page.label,
         href: page.href,
-        medianAll: row?.medianAll,
         medianWomen: row?.medianWomen,
         medianMen: row?.medianMen,
+        growthWomen: growthRow?.growthWomen,
+        growthMen: growthRow?.growthMen,
+        groupCode: page.occupationCode.charAt(0),
       };
     })
     .filter((row) => row.occupationCode !== occupationCode)
-    .filter((row) => row.medianAll !== undefined);
+    .filter((row) => row.medianWomen !== undefined || row.medianMen !== undefined)
+    .slice(0, 6);
   const hasEstimate =
     currentSalary !== undefined || currentSalaryWomen !== undefined || currentSalaryMen !== undefined;
   const hasRelatedRows = relatedRows.length > 0;
@@ -125,7 +152,7 @@ export async function OccupationSalaryDetailPage({
             <div className="space-y-5">
               <div className="flex items-start justify-between gap-6">
                 <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
-                  {detailPage.label} lønn
+                  Lønn til {formattedOccupationLabel}
                 </h1>
                 <div className="hidden shrink-0 rounded-md border border-black/10 bg-white/70 p-3 shadow-[0_10px_30px_rgba(27,36,48,0.08)] sm:flex">
                   <span
@@ -157,7 +184,7 @@ export async function OccupationSalaryDetailPage({
                 </div>
               </div>
               <div className="max-w-3xl text-base leading-7 text-slate-950">
-                <span>Viser </span>
+                <span>Denne siden viser </span>
                 <InlineDefinitionModal
                   description="Dette er lønnsmålet som brukes for nivåtallene på denne siden."
                   label="median avtalt månedslønn"
@@ -165,10 +192,36 @@ export async function OccupationSalaryDetailPage({
                 />
                 <span>
                   {" "}
-                  for {detailPage.label.toLowerCase()}. Tallene viser bruttolønn før skatt, og
-                  inkluderer ikke overtid eller bonus. {detailPage.summary}
+                  for {formattedOccupationLabel.toLowerCase()}, lønnsutvikling og andre relevante
+                  nøkkeltall basert på siste tilgjengelige tall fra SSB. {detailPage.summary} Tallene
+                  viser bruttolønn før skatt og inkluderer ikke overtid eller bonus.
                 </span>
               </div>
+              {topSummary ? (
+                <div className="rounded-md border border-[var(--primary)]/20 bg-[linear-gradient(135deg,rgba(244,239,230,0.72)_0%,rgba(230,240,234,0.78)_100%)] px-5 py-5 shadow-[0_12px_36px_rgba(27,36,48,0.06)] sm:px-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+                    Kort oppsummert
+                  </p>
+                  <p className="mt-3 max-w-4xl text-lg leading-8 text-slate-950">
+                    {topSummary}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-700">
+                    <span className="rounded-full border border-black/10 bg-white/80 px-3 py-1.5">
+                      Kilde: SSB tabell 11418
+                    </span>
+                    {medianPeriodLabel ? (
+                      <span className="rounded-full border border-black/10 bg-white/80 px-3 py-1.5">
+                        Periode: {medianPeriodLabel}
+                      </span>
+                    ) : null}
+                    {salaryUpdatedLabel ? (
+                      <span className="rounded-full border border-black/10 bg-white/80 px-3 py-1.5">
+                        Oppdatert hos SSB: {salaryUpdatedLabel}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              ) : null}
             </div>
             {purchasingPower ? (
               <div className="space-y-4">
@@ -176,14 +229,14 @@ export async function OccupationSalaryDetailPage({
                   <MetricStat
                     label="Kvinner"
                     leadingSymbol="♀"
-                    description={`Kvinner viser median avtalt månedslønn i kroner for kvinner i dette yrket. Tallet er hentet fra SSB tabell 11418 og gjelder siste tilgjengelige periode, ${medianPeriodLabel?.toLowerCase() ?? "ukjent periode"}. Dette er medianen for registrerte kvinner i yrket, ikke et anslag for en enkeltperson.`}
+                    description={`Kvinner viser median avtalt månedslønn i kroner for kvinner i dette yrket. Tallet er hentet fra SSB tabell 11418 og gjelder siste tilgjengelige periode, ${medianPeriodLabel?.toLowerCase() ?? "ukjent periode"}. Dette er median avtalt månedslønn for registrerte kvinner i dette yrket, ikke et anslag for en enkeltperson.`}
                     value={formatSalaryMetric(currentSalaryWomen)}
                     caption={formatAnnualSalaryCaption(currentSalaryWomen)}
                   />
                   <MetricStat
                     label="Menn"
                     leadingSymbol="♂"
-                    description={`Menn viser median avtalt månedslønn i kroner for menn i dette yrket. Tallet er hentet fra SSB tabell 11418 og gjelder siste tilgjengelige periode, ${medianPeriodLabel?.toLowerCase() ?? "ukjent periode"}. Dette er medianen for registrerte menn i yrket, ikke et anslag for en enkeltperson.`}
+                    description={`Menn viser median avtalt månedslønn i kroner for menn i dette yrket. Tallet er hentet fra SSB tabell 11418 og gjelder siste tilgjengelige periode, ${medianPeriodLabel?.toLowerCase() ?? "ukjent periode"}. Dette er median avtalt månedslønn for registrerte menn i dette yrket, ikke et anslag for en enkeltperson.`}
                     value={formatSalaryMetric(currentSalaryMen)}
                     caption={formatAnnualSalaryCaption(currentSalaryMen)}
                   />
@@ -191,7 +244,7 @@ export async function OccupationSalaryDetailPage({
                     label="Lønnsvekst"
                     description={
                       medianGrowthMetrics
-                        ? `Lønnsvekst viser hvor mye median basic monthly earnings i yrket har endret seg fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}. Tallet er hentet fra SSB tabell 11658 og sammenligner samme kvartal i to påfølgende år.`
+                        ? `Lønnsvekst viser hvor mye median avtalt månedslønn i yrket har endret seg fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}. Tallet er hentet fra SSB tabell 11658 og sammenligner samme kvartal i to påfølgende år.`
                         : undefined
                     }
                     value={formatPercentage(medianGrowthMetrics?.salaryGrowth)}
@@ -216,7 +269,37 @@ export async function OccupationSalaryDetailPage({
                 </div>
               </div>
             ) : null}
-            {distribution ? <OccupationSalaryDistributionSection distribution={distribution} /> : null}
+            {distribution ? (
+              <section
+                aria-labelledby="lonnsfordeling-tittel"
+                className="space-y-4 rounded-md border border-black/10 bg-white/70 px-5 py-5 shadow-[0_12px_40px_rgba(27,36,48,0.06)] sm:px-6"
+              >
+                <div className="space-y-2">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+                    Lønnsfordeling
+                  </p>
+                  <h2
+                    className="text-2xl font-semibold tracking-[-0.03em] text-slate-950"
+                    id="lonnsfordeling-tittel"
+                  >
+                    Hvor i lønnsspennet de fleste ligger
+                  </h2>
+                  <p className="max-w-3xl text-sm leading-7 text-slate-700">
+                    Grafen under viser lønnsspennet for kvinner og menn i yrket. Midtpunktet er median
+                    avtalt månedslønn, mens feltet mellom 25- og 75-persentilen viser hvor de fleste
+                    lønnstakere ligger i siste tilgjengelige SSB-periode.
+                  </p>
+                </div>
+                <OccupationSalaryDistributionSection distribution={distribution} />
+                <div className="space-y-2 text-sm leading-7 text-slate-700">
+                  <p>
+                    Tallene viser bruttolønn før skatt og inkluderer ikke overtid eller bonus. For denne
+                    siden betyr "de fleste" lønnstakere mellom 25- og 75-persentilen.
+                  </p>
+                  <p>{salarySourceText}</p>
+                </div>
+              </section>
+            ) : null}
           </div>
         </section>
 
@@ -266,11 +349,6 @@ export async function OccupationSalaryDetailPage({
             id="relaterte-yrker"
           >
             <RelatedOccupationSalaryComparison
-              currentOccupationLabel={detailPage.label}
-              currentMedian={currentSalary}
-              currentMedianWomen={currentSalaryWomen}
-              currentMedianMen={currentSalaryMen}
-              periodLabel={medianOverview.periodLabel}
               rows={relatedRows}
             />
           </section>
@@ -281,9 +359,9 @@ export async function OccupationSalaryDetailPage({
           id="lonnsutvikling"
         >
           <OccupationSalaryTimeSeriesChart
-            description="Kvartalsvis utvikling i median basic monthly earnings gjennom hele tilgjengelige tidsserien."
+            description={`Se utviklingen i månedslønn for ${formattedOccupationLabel.toLowerCase()} per kvartal. Grafen viser median avtalt månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB.`}
             series={medianBasicSalarySeries}
-            title="Median basic monthly earnings"
+            title={`Utvikling i månedslønn for ${formattedOccupationLabel}`}
           />
         </section>
         {hasPurchasingPowerSeries ? (
@@ -311,72 +389,36 @@ export async function OccupationSalaryDetailPage({
               </div>
 
               <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Nivå nå
-                </p>
-                <LaborMarketCard
-                  title="Lønnstakere over tid"
-                  subtitle={laborMarketStats.latest?.periodLabel}
-                >
-                  <p className="text-4xl font-semibold tracking-[-0.05em] text-slate-950">
-                    {laborMarketStats.latest
+                <OccupationWorkforceTimeSeriesChart
+                  currentValue={
+                    laborMarketStats.latest
                       ? formatEmploymentMetric(
                           laborMarketStats.latest.employees,
                           laborMarketStats.latest.employeeUnit,
                         )
-                      : ":"}
-                  </p>
-                  <p className="mt-2 max-w-md text-sm leading-6 text-slate-600">
-                    Antall personer registrert som lønnstakere i midtmåneden i kvartalet.
-                  </p>
-                  <OccupationWorkforceTimeSeriesChart points={laborMarketStats.workforcePoints} />
+                      : ":"
+                  }
+                  description="Antall personer registrert som lønnstakere i midtmåneden i kvartalet."
+                  points={laborMarketStats.workforcePoints}
+                />
+
+                <LaborMarketCard
+                  title="Gjennomsnittsalder"
+                  subtitle={laborMarketStats.age?.periodLabel}
+                >
+                  {laborMarketStats.age ? (
+                    <div className="space-y-3">
+                      <SplitRow label="Alle" value={formatAgeMetric(laborMarketStats.age.averageAll)} />
+                      <SplitRow
+                        label="Kvinner"
+                        value={formatAgeMetric(laborMarketStats.age.averageWomen)}
+                      />
+                      <SplitRow label="Menn" value={formatAgeMetric(laborMarketStats.age.averageMen)} />
+                    </div>
+                  ) : (
+                    <p className="text-sm leading-7 text-slate-700">Ingen alderstall tilgjengelig.</p>
+                  )}
                 </LaborMarketCard>
-
-                <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                  <LaborMarketCard
-                    title="Antall jobber"
-                    subtitle={laborMarketStats.latest?.periodLabel}
-                  >
-                    {laborMarketStats.latest?.jobs !== undefined ? (
-                      <div className="space-y-3">
-                        <SplitRow
-                          label="Alle jobber"
-                          value={formatEmploymentMetric(
-                            laborMarketStats.latest.jobs,
-                            laborMarketStats.latest.jobUnit,
-                          )}
-                        />
-                        <SplitRow
-                          label="Per lønnstaker"
-                          value={formatJobsPerEmployee(
-                            laborMarketStats.latest.jobs,
-                            laborMarketStats.latest.employees,
-                          )}
-                        />
-                      </div>
-                    ) : (
-                      <p className="text-sm leading-7 text-slate-700">Ingen jobbtall tilgjengelig.</p>
-                    )}
-                  </LaborMarketCard>
-
-                  <LaborMarketCard
-                    title="Gjennomsnittsalder"
-                    subtitle={laborMarketStats.age?.periodLabel}
-                  >
-                    {laborMarketStats.age ? (
-                      <div className="space-y-3">
-                        <SplitRow label="Alle" value={formatAgeMetric(laborMarketStats.age.averageAll)} />
-                        <SplitRow
-                          label="Kvinner"
-                          value={formatAgeMetric(laborMarketStats.age.averageWomen)}
-                        />
-                        <SplitRow label="Menn" value={formatAgeMetric(laborMarketStats.age.averageMen)} />
-                      </div>
-                    ) : (
-                      <p className="text-sm leading-7 text-slate-700">Ingen alderstall tilgjengelig.</p>
-                    )}
-                  </LaborMarketCard>
-                </div>
               </div>
 
               <div className="space-y-4">
@@ -703,6 +745,95 @@ function formatAnnualSalaryCaption(value?: number) {
   return `Årslønn: ${(value * 12).toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
   })} kr`;
+}
+
+function formatSalaryRangeText(min?: number, max?: number) {
+  if (min === undefined || max === undefined) {
+    return null;
+  }
+
+  return `${formatSalaryMetric(min)} og ${formatSalaryMetric(max)}`;
+}
+
+function formatUpdatedLabel(value?: string) {
+  if (!value) {
+    return null;
+  }
+
+  const parsed = new Date(value);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return parsed.toLocaleDateString("nb-NO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function buildSalarySourceText(periodLabel?: string, updatedLabel?: string | null) {
+  const segments = [
+    "Kilde: SSB tabell 11418",
+    periodLabel ? `periode ${periodLabel}` : null,
+    updatedLabel ? `oppdatert hos SSB ${updatedLabel}` : null,
+  ].filter((segment): segment is string => Boolean(segment));
+
+  return `${segments.join(", ")}.`;
+}
+
+function buildTopSummary({
+  occupationLabel,
+  periodLabel,
+  updatedLabel,
+  womenMedian,
+  menMedian,
+  womenP25,
+  womenP75,
+  menP25,
+  menP75,
+}: {
+  occupationLabel: string;
+  periodLabel?: string;
+  updatedLabel?: string | null;
+  womenMedian?: number;
+  menMedian?: number;
+  womenP25?: number;
+  womenP75?: number;
+  menP25?: number;
+  menP75?: number;
+}) {
+  if (womenMedian === undefined && menMedian === undefined) {
+    return null;
+  }
+
+  const womenRange = formatSalaryRangeText(womenP25, womenP75);
+  const menRange = formatSalaryRangeText(menP25, menP75);
+  const medianSentence =
+    womenMedian !== undefined && menMedian !== undefined
+      ? `Median lønn for ${occupationLabel.toLowerCase()} i Norge er ${formatSalaryMetric(womenMedian)} for kvinner og ${formatSalaryMetric(menMedian)} for menn.`
+      : womenMedian !== undefined
+        ? `Median lønn for kvinner i ${occupationLabel.toLowerCase()} i Norge er ${formatSalaryMetric(womenMedian)}.`
+        : `Median lønn for menn i ${occupationLabel.toLowerCase()} i Norge er ${formatSalaryMetric(menMedian)}.`;
+
+  let rangeSentence: string | null = null;
+
+  if (womenRange && menRange) {
+    rangeSentence = `De fleste kvinner ligger mellom ${womenRange}, og de fleste menn ligger mellom ${menRange}`;
+  } else if (womenRange) {
+    rangeSentence = `De fleste kvinner ligger mellom ${womenRange}`;
+  } else if (menRange) {
+    rangeSentence = `De fleste menn ligger mellom ${menRange}`;
+  }
+
+  const sourceSentence = rangeSentence
+    ? `${rangeSentence}, ${periodLabel ? `basert på SSB-data for ${periodLabel.toLowerCase()}` : "basert på siste tilgjengelige SSB-data"}.`
+    : `${periodLabel ? `Basert på SSB-data for ${periodLabel.toLowerCase()}` : "Basert på siste tilgjengelige SSB-data"}.`;
+
+  return [medianSentence, sourceSentence]
+    .filter((part): part is string => Boolean(part))
+    .join(" ");
 }
 
 function buildMedianGrowthMetrics(series: {

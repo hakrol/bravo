@@ -10,8 +10,18 @@ export type OccupationDetailPage = {
 const OCCUPATION_SALARY_SUFFIX = "lonn";
 const DYNAMIC_OCCUPATION_DETAIL_BASE_PATH = "/yrke";
 
+function normalizeNorwegianLetters(value: string) {
+  return value
+    .replace(/\u00E6|\u00C6|Ã¦/g, "ae")
+    .replace(/\u00F8|\u00D8|Ã¸/g, "o")
+    .replace(/\u00E5|\u00C5|Ã¥/g, "a");
+}
+
 function normalizeOccupationLabel(value: string) {
   return value
+    .replace(/æ/gim, "ae")
+    .replace(/ø/gim, "o")
+    .replace(/å/gim, "a")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, "-")
@@ -21,10 +31,18 @@ function normalizeOccupationLabel(value: string) {
 }
 
 export function buildOccupationSalarySlug(label: string) {
-  const normalizedLabel = normalizeOccupationLabel(label);
+  const normalizedLabel = normalizeOccupationLabel(normalizeNorwegianLetters(label));
   return normalizedLabel.endsWith(`-${OCCUPATION_SALARY_SUFFIX}`)
     ? normalizedLabel
     : `${normalizedLabel}-${OCCUPATION_SALARY_SUFFIX}`;
+}
+
+export function formatOccupationDisplayLabel(label: string) {
+  return label
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join(" og ");
 }
 
 export function isDynamicOccupationCode(occupationCode: string) {
@@ -42,7 +60,7 @@ export function buildDynamicOccupationDetailPage(
     label,
     slug,
     href: `${DYNAMIC_OCCUPATION_DETAIL_BASE_PATH}/${slug}`,
-    summary: `${label} er et yrke i SSBs yrkesstatistikk. Her ser du lonnsniva, lonnsutvikling, kjonnsforskjeller og andre relevante nokkeltall for yrket.`,
+    summary: `${formatOccupationDisplayLabel(label)} er en yrkesgruppe i SSBs yrkesstatistikk som samler roller med lignende arbeidsoppgaver og kompetansekrav.`,
     relatedOccupationCodes: [],
   };
 }
@@ -86,39 +104,10 @@ export const occupationDetailPages: OccupationDetailPage[] = [
   },
 ];
 
-export function getOccupationDetailPage(occupationCode: string) {
-  return occupationDetailPages.find((page) => page.occupationCode === occupationCode) ?? null;
-}
-
-export function getOccupationDetailPageBySlug(slug: string) {
-  return occupationDetailPages.find((page) => page.slug === slug) ?? null;
-}
-
 export function getOccupationDetailHref(occupationCode: string, label?: string) {
-  const staticHref = getOccupationDetailPage(occupationCode)?.href;
-
-  if (staticHref) {
-    return staticHref;
-  }
-
   if (label && isDynamicOccupationCode(occupationCode)) {
     return buildDynamicOccupationDetailPage(occupationCode, label).href;
   }
 
   return null;
 }
-
-export function getRelatedOccupationDetailPages(occupationCode: string) {
-  const page = getOccupationDetailPage(occupationCode);
-
-  if (!page) {
-    return [];
-  }
-
-  const relatedCodes = new Set(page.relatedOccupationCodes);
-
-  return occupationDetailPages.filter((candidate) => relatedCodes.has(candidate.occupationCode));
-}
-
-export const accountantOccupationDetailPage =
-  occupationDetailPages.find((page) => page.occupationCode === "3313") ?? null;

@@ -1,4 +1,4 @@
-import { unstable_cache } from "next/cache";
+﻿import { unstable_cache } from "next/cache";
 import {
   getTableData,
   getTableInfo,
@@ -10,6 +10,7 @@ import { buildOccupationMedianSalaryOverview } from "./occupation-salary-overvie
 import type {
   InflationQuarterPoint,
   OccupationAgeLatest,
+  OccupationDetailTrendData,
   OccupationAgeTimeSeriesPoint,
   OccupationEmploymentContractType,
   OccupationEmploymentGenderBreakdown,
@@ -69,37 +70,37 @@ export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefiniti
   industryMonthly: {
     key: "industryMonthly",
     id: "13126",
-    title: "Månedlig lønn per næring (17 grupper)",
+    title: "MÃ¥nedlig lÃ¸nn per nÃ¦ring (17 grupper)",
     category: "core",
-    description: "Høyfrekvent lønnsutvikling per hovednæring.",
+    description: "HÃ¸yfrekvent lÃ¸nnsutvikling per hovednÃ¦ring.",
   },
   industryDetailed: {
     key: "industryDetailed",
     id: "12314",
-    title: "Lønn og indeks per næring (88 grupper)",
+    title: "LÃ¸nn og indeks per nÃ¦ring (88 grupper)",
     category: "core",
-    description: "Detaljert lønnsnivå og indeks per næring.",
+    description: "Detaljert lÃ¸nnsnivÃ¥ og indeks per nÃ¦ring.",
   },
   industryRegion: {
     key: "industryRegion",
     id: "11654",
-    title: "Lønn per næring og arbeidssted",
+    title: "LÃ¸nn per nÃ¦ring og arbeidssted",
     category: "core",
-    description: "Lønn per næring koblet mot arbeidssted og geografi.",
+    description: "LÃ¸nn per nÃ¦ring koblet mot arbeidssted og geografi.",
   },
   industrySectorRegion: {
     key: "industrySectorRegion",
     id: "11655",
-    title: "Lønn per næring, sektor og arbeidssted",
+    title: "LÃ¸nn per nÃ¦ring, sektor og arbeidssted",
     category: "core",
-    description: "Geografisk lønn med sektorsnitt.",
+    description: "Geografisk lÃ¸nn med sektorsnitt.",
   },
   occupationDetailed: {
     key: "occupationDetailed",
     id: "11658",
-    title: "Lønn per yrke (4-siffer)",
+    title: "LÃ¸nn per yrke (4-siffer)",
     category: "core",
-    description: "Detaljert lønn per yrke.",
+    description: "Detaljert lÃ¸nn per yrke.",
   },
   occupationEmployment: {
     key: "occupationEmployment",
@@ -111,37 +112,37 @@ export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefiniti
   genderAge: {
     key: "genderAge",
     id: "11652",
-    title: "Lønn etter kjønn og alder",
+    title: "LÃ¸nn etter kjÃ¸nn og alder",
     category: "core",
-    description: "Demografiske lønnsforskjeller.",
+    description: "Demografiske lÃ¸nnsforskjeller.",
   },
   industryGrowth: {
     key: "industryGrowth",
     id: "12316",
-    title: "Jobboppgang og jobbnedgang per næring",
+    title: "Jobboppgang og jobbnedgang per nÃ¦ring",
     category: "support",
-    description: "Markedsdynamikk per næring.",
+    description: "Markedsdynamikk per nÃ¦ring.",
   },
   industryHiringFlows: {
     key: "industryHiringFlows",
     id: "12821",
-    title: "Nyansettelser og avslutninger per næring",
+    title: "Nyansettelser og avslutninger per nÃ¦ring",
     category: "support",
-    description: "Temperaturmåling for arbeidsmarkedet.",
+    description: "TemperaturmÃ¥ling for arbeidsmarkedet.",
   },
   salaryWorkforceFlows: {
     key: "salaryWorkforceFlows",
     id: "13876",
-    title: "Arbeidskraftsstrømmer og lønn",
+    title: "ArbeidskraftsstrÃ¸mmer og lÃ¸nn",
     category: "support",
-    description: "Kombinerer lønn med mobilitet i arbeidsmarkedet.",
+    description: "Kombinerer lÃ¸nn med mobilitet i arbeidsmarkedet.",
   },
   industryDetailedDemographics: {
     key: "industryDetailedDemographics",
     id: "11656",
-    title: "Lønn per detaljert næring, kjønn og alder",
+    title: "LÃ¸nn per detaljert nÃ¦ring, kjÃ¸nn og alder",
     category: "support",
-    description: "Detaljert næring med demografisk segmentering.",
+    description: "Detaljert nÃ¦ring med demografisk segmentering.",
   },
 };
 
@@ -292,6 +293,79 @@ export async function getLatestSalaryDataset(
   return getLatestSalaryDatasetCached(tableKey, filters, lang);
 }
 
+const getLatestAndPreviousYearSalaryDatasetsCached = unstable_cache(
+  async (
+    tableKey: SsbSalaryTableKey,
+    filters: SsbSalaryFilters = {},
+    lang: SsbLanguage = "no",
+  ): Promise<{
+    latestDataset: SsbNormalizedDataset;
+    previousDataset: SsbNormalizedDataset | null;
+    latestPeriodCode?: string;
+    previousPeriodCode?: string;
+  }> => {
+    const table = getSalaryTableDefinition(tableKey);
+    const metadata = await getTableMetadata(table.id, lang);
+    const timeDimensionCode = metadata.role?.time?.[0];
+    const latestQuery = buildLatestQueryFromMetadata(metadata, filters);
+    const [info, latestDataset] = await Promise.all([
+      getTableInfo(table.id, lang),
+      getTableData(table.id, latestQuery, lang),
+    ]);
+
+    const normalizedLatestDataset = normalizeDataset(latestDataset, {
+      tableId: table.id,
+      tableKey: table.key,
+      title: info.label,
+    });
+
+    const latestPeriod = timeDimensionCode
+      ? normalizedLatestDataset.rows[0]?.dimensions[timeDimensionCode]
+      : undefined;
+    const latestPeriodCode = normalizeQuarterPeriodCode(latestPeriod?.code, latestPeriod?.label);
+    const previousPeriodCode = latestPeriodCode
+      ? getPreviousYearQuarterCode(latestPeriodCode)
+      : undefined;
+
+    if (!timeDimensionCode || !previousPeriodCode) {
+      return {
+        latestDataset: normalizedLatestDataset,
+        previousDataset: null,
+        latestPeriodCode,
+        previousPeriodCode,
+      };
+    }
+
+    const previousQuery = {
+      ...buildLatestQueryFromMetadata(metadata, filters),
+      [`valueCodes[${timeDimensionCode}]`]: previousPeriodCode,
+    };
+    const previousDataset = await getTableData(table.id, previousQuery, lang);
+    const normalizedPreviousDataset = normalizeDataset(previousDataset, {
+      tableId: table.id,
+      tableKey: table.key,
+      title: info.label,
+    });
+
+    return {
+      latestDataset: normalizedLatestDataset,
+      previousDataset: normalizedPreviousDataset,
+      latestPeriodCode,
+      previousPeriodCode,
+    };
+  },
+  ["ssb-latest-and-previous-year-salary-datasets"],
+  { revalidate: 300 },
+);
+
+export async function getLatestAndPreviousYearSalaryDatasets(
+  tableKey: SsbSalaryTableKey,
+  filters: SsbSalaryFilters = {},
+  lang: SsbLanguage = "no",
+) {
+  return getLatestAndPreviousYearSalaryDatasetsCached(tableKey, filters, lang);
+}
+
 export async function getLatestSalaryDatasets(
   tableKeys: SsbSalaryTableKey[] = CORE_SALARY_TABLE_KEYS,
   lang: SsbLanguage = "no",
@@ -339,7 +413,7 @@ export async function getOccupationMedianSalaryOverview(
     return {
       rows: [],
       periodLabel: undefined,
-      measureLabel: "Median avtalt månedslønn",
+      measureLabel: "Median avtalt mÃ¥nedslÃ¸nn",
     };
   }
 
@@ -552,7 +626,7 @@ export async function getOccupationPurchasingPowerDetail(
   occupationCode: string,
   filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
   lang: SsbLanguage = "no",
-): Promise<OccupationPurchasingPowerDetail> {
+): Promise<OccupationPurchasingPowerDetail | null> {
   const detailData = await getOccupationDetailTrendData(occupationCode, filters, lang);
   return detailData.purchasingPower;
 }
@@ -571,7 +645,7 @@ const getOccupationDetailTrendDataCached = unstable_cache(
     occupationCode: string,
     filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
     lang: SsbLanguage = "no",
-  ) => {
+  ): Promise<OccupationDetailTrendData> => {
     const salaryTable = getSalaryTableDefinition("occupationDetailed");
     const [salaryMetadata, inflationMetadata] = await Promise.all([
       getTableMetadata(salaryTable.id, lang),
@@ -600,17 +674,18 @@ const getOccupationDetailTrendDataCached = unstable_cache(
 
     const series = buildOccupationSalaryTimeSeries(normalizedSalaryDataset, occupationCode);
     const inflationQuarterSeries = buildInflationQuarterSeries(normalizedInflationDataset);
-    const purchasingPower = buildOccupationPurchasingPowerDetailFromSeries(
-      series,
-      inflationQuarterSeries,
-      {
-        occupationCode,
-        salaryTableId: salaryTable.id,
-        inflationTableId: SSB_INFLATION_TABLE_ID,
-        salaryUpdated: normalizedSalaryDataset.updated,
-        inflationUpdated: normalizedInflationDataset.updated,
-      },
-    );
+    const purchasingPower =
+      buildOccupationPurchasingPowerDetailFromSeries(
+        series,
+        inflationQuarterSeries,
+        {
+          occupationCode,
+          salaryTableId: salaryTable.id,
+          inflationTableId: SSB_INFLATION_TABLE_ID,
+          salaryUpdated: normalizedSalaryDataset.updated,
+          inflationUpdated: normalizedInflationDataset.updated,
+        },
+      ) ?? null;
     const points = buildOccupationPurchasingPowerTimeSeriesPoints(series, inflationQuarterSeries);
 
     return {
@@ -635,7 +710,7 @@ export async function getOccupationDetailTrendData(
   occupationCode: string,
   filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
   lang: SsbLanguage = "no",
-) {
+): Promise<OccupationDetailTrendData> {
   return getOccupationDetailTrendDataCached(occupationCode, filters, lang);
 }
 
@@ -705,7 +780,7 @@ async function getOccupationPurchasingPowerTimeSeriesOldRemoved(
   const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
 
   if (!previousPeriodCode) {
-    throw new Error(`Fant ikke forrige års periode for ${latestPeriodCode}.`);
+    throw new Error(`Fant ikke forrige Ã¥rs periode for ${latestPeriodCode}.`);
   }
 
   const latestSalaryPoint = series.points.find(
@@ -919,7 +994,7 @@ function buildOccupationEmploymentLatestQuery(
   const genderDimensionCode = findDimensionCode(
     dimensions,
     metadata.dimension,
-    ["kjonn", "kjønn", "sex"],
+    ["kjonn", "kjÃ¸nn", "sex"],
   );
 
   if (!occupationDimensionCode) {
@@ -945,7 +1020,7 @@ function buildOccupationEmploymentLatestQuery(
       query[`valueCodes[${dimension}]`] =
         findCategoryCodeByLabel(
           metadataDimension.category.label,
-          ["begge kjonn", "begge kjønn", "begge", "both sexes"],
+          ["begge kjonn", "begge kjÃ¸nn", "begge", "both sexes"],
           [],
         ) ?? "0";
       continue;
@@ -987,7 +1062,7 @@ function buildOccupationEmploymentTimeSeriesQuery(
   const genderDimensionCode = findDimensionCode(
     dimensions,
     metadata.dimension,
-    ["kjonn", "kjønn", "sex"],
+    ["kjonn", "kjÃ¸nn", "sex"],
   );
 
   if (!occupationDimensionCode) {
@@ -1140,7 +1215,7 @@ function buildOccupationSalaryTimeSeries(
   });
 
   if (relevantRows.length === 0) {
-    throw new Error(`Fant ingen lønnsdata for yrkeskode ${occupationCode}.`);
+    throw new Error(`Fant ingen lÃ¸nnsdata for yrkeskode ${occupationCode}.`);
   }
 
   const pointsByPeriod = relevantRows.reduce((map, row) => {
@@ -1299,7 +1374,7 @@ function buildOccupationWorkforceTimeSeries(
   ]);
   const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
     "kjonn",
-    "kjÃ¸nn",
+    "kjÃƒÂ¸nn",
     "sex",
   ]);
   const measureDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
@@ -1383,7 +1458,7 @@ function buildOccupationAgeTimeSeries(
   ]);
   const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
     "kjonn",
-    "kjÃ¸nn",
+    "kjÃƒÂ¸nn",
     "sex",
   ]);
   const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
@@ -1477,7 +1552,7 @@ function buildOccupationEmploymentTimeSeries(
   ]);
   const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
     "kjonn",
-    "kjønn",
+    "kjÃ¸nn",
     "sex",
   ]);
   const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
@@ -1733,7 +1808,7 @@ function buildOccupationSalaryDistribution(
   ]);
 
   if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode) {
-    throw new Error("Fant ikke forventede dimensjoner for lønnsfordeling i tabell 11658.");
+    throw new Error("Fant ikke forventede dimensjoner for lÃ¸nnsfordeling i tabell 11658.");
   }
 
   const relevantRows = dataset.rows.filter(
@@ -1874,7 +1949,7 @@ function buildOccupationPurchasingPowerDetailFromSeries(
     salaryUpdated?: string;
     inflationUpdated?: string;
   },
-): OccupationPurchasingPowerDetail {
+): OccupationPurchasingPowerDetail | null {
   const inflationByPeriod = new Map(
     inflationQuarterSeries
       .filter((point) => point.yearOverYearChange !== undefined)
@@ -1895,7 +1970,7 @@ function buildOccupationPurchasingPowerDetailFromSeries(
   const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
 
   if (!previousPeriodCode) {
-    throw new Error(`Fant ikke forrige års periode for ${latestPeriodCode}.`);
+    throw new Error(`Fant ikke forrige Ã¥rs periode for ${latestPeriodCode}.`);
   }
 
   const latestSalaryPoint = series.points.find(
@@ -1911,7 +1986,7 @@ function buildOccupationPurchasingPowerDetailFromSeries(
     previousSalaryPoint?.valueAll === undefined ||
     inflationPoint?.yearOverYearChange === undefined
   ) {
-    throw new Error(`Fant ikke nok sammenligningsdata for yrkeskode ${options.occupationCode}.`);
+    return null;
   }
 
   const salaryGrowth =
@@ -2041,7 +2116,7 @@ function buildOccupationPurchasingPowerRows(
   ]);
 
   if (!occupationDimensionCode || !genderDimensionCode || !periodDimensionCode) {
-    throw new Error("Fant ikke forventede dimensjoner for kjøpekraftsoversikten.");
+    throw new Error("Fant ikke forventede dimensjoner for kjÃ¸pekraftsoversikten.");
   }
 
   const rowsByOccupation = dataset.rows.reduce((map, row) => {
@@ -2085,7 +2160,7 @@ function buildOccupationPurchasingPowerRows(
   )[0];
 
   if (!latestPeriodCode) {
-    throw new Error("Fant ingen sammenlignbar KPI-periode for kjøpekraft.");
+    throw new Error("Fant ingen sammenlignbar KPI-periode for kjÃ¸pekraft.");
   }
 
   const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
@@ -2215,17 +2290,17 @@ function findDimensionCodeInRows(
 
 function formatMeasureLabel(label?: string) {
   if (!label) {
-    return "Gjennomsnittlig avtalt månedslønn";
+    return "Gjennomsnittlig avtalt mÃ¥nedslÃ¸nn";
   }
 
   const normalized = normalizeText(label);
 
   if (normalized.includes("avtalt") && normalized.includes("manedslonn")) {
-    return "Gjennomsnittlig avtalt månedslønn";
+    return "Gjennomsnittlig avtalt mÃ¥nedslÃ¸nn";
   }
 
   if (normalized.includes("manedslonn")) {
-    return "Gjennomsnittlig månedslønn";
+    return "Gjennomsnittlig mÃ¥nedslÃ¸nn";
   }
 
   return label;
@@ -2341,14 +2416,14 @@ function formatQuarterLabel(periodCode: string) {
 
 function getPurchasingPowerInsight(realGrowth: number) {
   if (realGrowth > 0.25) {
-    return "Økt kjøpekraft";
+    return "Ã˜kt kjÃ¸pekraft";
   }
 
   if (realGrowth < -0.25) {
-    return "Tapt kjøpekraft";
+    return "Tapt kjÃ¸pekraft";
   }
 
-  return "Omtrent uendret kjøpekraft";
+  return "Omtrent uendret kjÃ¸pekraft";
 }
 
 function isFourDigitOccupationCode(code?: string) {
@@ -2362,3 +2437,4 @@ function normalizeText(value: string) {
     .replace(/[^a-zA-Z0-9]+/g, "")
     .toLowerCase();
 }
+

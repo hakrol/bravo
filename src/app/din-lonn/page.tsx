@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Din lønn | Lønnsdata Norge",
   description:
-    "Sammenlign din brutto månedslønn med median og gjennomsnitt i yrket basert på SSB-data.",
+    "Sammenlign din brutto månedslønn med median avtalt månedslønn og gjennomsnitt i yrket basert på SSB-data.",
 };
 
 export default async function DinLonnPage() {

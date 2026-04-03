@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState } from "react";
+import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationSalaryTimeSeries } from "@/lib/ssb";
 
 const currencyFormatter = new Intl.NumberFormat("nb-NO", {
@@ -8,19 +9,25 @@ const currencyFormatter = new Intl.NumberFormat("nb-NO", {
 });
 
 const seriesDefinitions = [
-  { key: "valueAll", label: "Begge kjonn", color: "#14532d" },
+  { key: "valueAll", label: "Begge kjønn", color: "#14532d" },
   { key: "valueWomen", label: "Kvinner", color: "#b45309" },
   { key: "valueMen", label: "Menn", color: "#1d4ed8" },
 ] as const;
 
 const filterOptions = [
-  { key: "valueAll", label: "Begge kjonn" },
+  { key: "valueAll", label: "Begge kjønn" },
   { key: "valueWomen", label: "Kvinner" },
   { key: "valueMen", label: "Menn" },
 ] as const;
 
 type SeriesKey = (typeof seriesDefinitions)[number]["key"];
 type FilterKey = (typeof filterOptions)[number]["key"];
+
+const endLabelOffsets: Record<SeriesKey, number> = {
+  valueAll: -10,
+  valueWomen: 0,
+  valueMen: 10,
+};
 
 type OccupationSalaryTimeSeriesProps = {
   series: OccupationSalaryTimeSeries;
@@ -35,9 +42,10 @@ export function OccupationSalaryTimeSeriesChart({
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
 
-  const activeSeries = seriesDefinitions.filter((definition) => {
-    return activeFilter === definition.key;
-  });
+  const activeSeries =
+    activeFilter === "valueAll"
+      ? seriesDefinitions.filter((definition) => definition.key !== "valueAll")
+      : seriesDefinitions.filter((definition) => definition.key === activeFilter);
 
   const availableValues = series.points.flatMap((point) => {
     return activeSeries.flatMap((definition) => {
@@ -58,7 +66,7 @@ export function OccupationSalaryTimeSeriesChart({
   const chartWidth = 920;
   const chartHeight = 360;
   const paddingLeft = 56;
-  const paddingRight = 24;
+  const paddingRight = 112;
   const paddingTop = 16;
   const paddingBottom = 48;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
@@ -68,20 +76,69 @@ export function OccupationSalaryTimeSeriesChart({
   const tickValues = Array.from({ length: axisTicks + 1 }, (_, index) => {
     return chartMin + (chartRange / axisTicks) * index;
   });
-  const labelStride = series.points.length > 8 ? Math.ceil(series.points.length / 6) : 1;
+  const yearTicks = buildYearTicks(series.points);
+  const latestValues = seriesDefinitions.filter((definition) => definition.key !== "valueAll").flatMap((definition) => {
+    const latestPoint = getLatestSeriesPoint(series.points, definition.key);
+
+    if (!latestPoint) {
+      return [];
+    }
+
+    return [{
+      key: definition.key,
+      label: definition.label,
+      periodLabel: latestPoint.periodLabel,
+      value: latestPoint.value,
+    }];
+  });
+  const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
     <section className="grid gap-6">
       <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
-        <div className="flex flex-col gap-4 border-b pb-4">
-          <div>
+        <div className="flex flex-col gap-4">
+          <div className="space-y-2">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+              Utvikling
+            </p>
             <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
-              {title ?? series.measureLabel}
+              {title ?? `Utvikling i månedslønn for ${series.occupationLabel}`}
             </h3>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              {description ?? "Kvartalsvis utvikling for samme lønnsmal gjennom hele tilgjengelige tidsserien."}
+            <p className="text-sm text-[var(--muted)]">
+              {description ??
+                `${series.occupationLabel} lønnsutvikling per kvartal i Norge. Se median avtalt månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
             </p>
           </div>
+
+          {latestValues.length > 0 ? (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                  Siste data
+                </p>
+                <MetricInfoButton
+                  description={`Her ser du siste registrerte månedslønn for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`}
+                  label="Siste data"
+                />
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {latestPeriodLabel ? (
+                  <span className="rounded-md border border-black/10 bg-[#f7fafc] px-3 py-2 text-sm font-semibold text-slate-700">
+                    {formatPeriodLabel(latestPeriodLabel)}
+                  </span>
+                ) : null}
+                {latestValues.map((entry) => (
+                  <div
+                    key={`latest-${entry.key}`}
+                    className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none text-slate-700"
+                  >
+                    <span className="text-[15px]">{entry.label}: </span>
+                    <span className="text-[15px] font-semibold text-slate-950">{currencyFormatter.format(entry.value)} kr</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="flex flex-wrap gap-2">
             {filterOptions.map((option) => {
@@ -172,7 +229,7 @@ export function OccupationSalaryTimeSeriesChart({
                 const x = paddingLeft + xStep * index;
                 const y = paddingTop + plotHeight - ((value - chartMin) / chartRange) * plotHeight;
 
-                return [{ x, y, label: point.periodLabel, value }];
+                return [{ x, y, label: point.periodLabel, periodCode: point.periodCode, value }];
               });
 
               if (points.length === 0) {
@@ -194,36 +251,52 @@ export function OccupationSalaryTimeSeriesChart({
                     strokeWidth="3"
                   />
                   {points.map((point) => (
-                    <g key={`${definition.key}-${point.label}`}>
+                    <g key={`${definition.key}-${point.periodCode}`}>
                       <circle cx={point.x} cy={point.y} fill={definition.color} r="4" />
                       <title>
                         {`${definition.label}: ${formatCurrency(point.value)} (${formatPeriodLabel(point.label)})`}
                       </title>
                     </g>
                   ))}
+                  {points.length > 0 ? (
+                    <text
+                      fill={definition.color}
+                      fontSize="12"
+                      fontWeight="600"
+                      textAnchor="start"
+                      x={points[points.length - 1].x + 8}
+                      y={
+                        points[points.length - 1].y +
+                        4 +
+                        (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                      }
+                    >
+                      {currencyFormatter.format(points[points.length - 1].value)}
+                    </text>
+                  ) : null}
                 </g>
               );
             })}
 
-            {series.points.map((point, index) => {
-              if (index % labelStride !== 0 && index !== series.points.length - 1) {
-                return null;
-              }
-
-              const x = paddingLeft + xStep * index;
+            {yearTicks.map((tick) => {
+              const x = paddingLeft + xStep * tick.index;
 
               return (
                 <text
-                  key={point.periodCode}
+                  key={`year-${tick.label}-${tick.index}`}
                   fill="#5f6773"
                   fontSize="12"
                   textAnchor={
-                    index === 0 ? "start" : index === series.points.length - 1 ? "end" : "middle"
+                    tick.index === 0
+                      ? "start"
+                      : tick.index === series.points.length - 1
+                        ? "end"
+                        : "middle"
                   }
                   x={x}
                   y={chartHeight - 18}
                 >
-                  {formatShortPeriodLabel(point.periodLabel)}
+                  {tick.label}
                 </text>
               );
             })}
@@ -238,16 +311,67 @@ function formatCurrency(value: number) {
   return `${currencyFormatter.format(value)} kr`;
 }
 
-function formatShortPeriodLabel(value: string) {
-  const match = value.match(/(\d{4})\s*K([1-4])/i) ?? value.match(/(\d{4})K([1-4])/i);
+function formatPeriodLabel(value: string) {
+  const normalized = value.replace(/\s+/g, " ").trim();
+  const compactQuarterMatch = normalized.match(/^(\d{4})K([1-4])$/i);
+  const spacedQuarterMatch = normalized.match(/^(\d{4})\s*K([1-4])$/i);
+  const longQuarterMatch = normalized.match(/^([1-4])\.\s*kvartal\s*(\d{4})$/i);
 
-  if (!match) {
-    return value;
+  if (compactQuarterMatch) {
+    return `${compactQuarterMatch[2]}. kvartal ${compactQuarterMatch[1]}`;
   }
 
-  return `${match[2]}.kv.${match[1]}`;
+  if (spacedQuarterMatch) {
+    return `${spacedQuarterMatch[2]}. kvartal ${spacedQuarterMatch[1]}`;
+  }
+
+  if (longQuarterMatch) {
+    return `${longQuarterMatch[1]}. kvartal ${longQuarterMatch[2]}`;
+  }
+
+  return normalized;
 }
 
-function formatPeriodLabel(value: string) {
-  return value.replace(/\s+/g, " ").trim();
+function getLatestSeriesPoint(
+  points: Array<{
+    periodLabel: string;
+    valueAll?: number;
+    valueWomen?: number;
+    valueMen?: number;
+  }>,
+  key: SeriesKey,
+) {
+  for (let index = points.length - 1; index >= 0; index -= 1) {
+    const point = points[index];
+    const value = point[key];
+
+    if (value !== undefined) {
+      return {
+        periodLabel: point.periodLabel,
+        value,
+      };
+    }
+  }
+
+  return null;
+}
+
+function buildYearTicks(points: Array<{ periodCode: string; periodLabel: string }>) {
+  const seenYears = new Set<string>();
+
+  return points.flatMap((point, index) => {
+    const year = extractYear(point.periodCode) ?? extractYear(point.periodLabel);
+
+    if (!year || seenYears.has(year)) {
+      return [];
+    }
+
+    seenYears.add(year);
+    return [{ index, label: year }];
+  });
+}
+
+function extractYear(value: string) {
+  const match = value.match(/(\d{4})/);
+  return match ? match[1] : null;
 }

@@ -34,9 +34,6 @@ export function DataInfoModal({ title, description }: DataInfoModalProps) {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-                  Datagrunnlag
-                </p>
                 <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
                   {title}
                 </h3>
@@ -52,25 +49,10 @@ export function DataInfoModal({ title, description }: DataInfoModalProps) {
             </div>
 
             <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
-              <p>{description}</p>
               <p>
-                Tallene viser hva personer i et yrke i gjennomsnitt har avtalt i månedslønn på
-                måletidspunktet. Dette er altså et gjennomsnitt for alle registrerte personer i
-                yrket, ikke et lønnsforslag for én enkelt person.
-              </p>
-              <p>
-                Kolonnen for begge kjønn viser samlet gjennomsnitt for hele yrket, mens kolonnene
-                for kvinner og menn viser gjennomsnittet innen hver gruppe. Forskjeller mellom
-                kolonnene sier noe om hvordan lønnsnivået er fordelt i yrket.
-              </p>
-              <p>
-                Tallene bør leses som markedsnivåer og sammenligningsgrunnlag. De sier ikke alene
-                hva en bestemt person bør tjene, siden erfaring, ansiennitet, sektor, geografi og
-                ansvarsnivå også påvirker lønnen.
-              </p>
-              <p>
-                Kilden er SSB tabell 11658, og perioden i toppen av tabellen viser hvilket kvartal
-                gjennomsnittstallene gjelder for.
+                Tallene viser median avtalt månedslønn for yrkene i tabellen,
+                hentet fra SSB. Det betyr at halvparten tjener mer og
+                halvparten tjener mindre. Dette gir et bilde av det typiske lønnsnivået.
               </p>
             </div>
           </div>

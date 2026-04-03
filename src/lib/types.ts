@@ -393,3 +393,9 @@ export type OccupationPurchasingPowerTimeSeries = {
   inflationUpdated?: string;
   points: OccupationPurchasingPowerTimeSeriesPoint[];
 };
+
+export type OccupationDetailTrendData = {
+  series: OccupationSalaryTimeSeries;
+  purchasingPower: OccupationPurchasingPowerDetail | null;
+  purchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
+};

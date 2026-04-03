@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState } from "react";
+import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationAgeTimeSeriesPoint } from "@/lib/ssb";
 
 const ageFormatter = new Intl.NumberFormat("nb-NO", {
@@ -9,19 +10,25 @@ const ageFormatter = new Intl.NumberFormat("nb-NO", {
 });
 
 const seriesDefinitions = [
-  { key: "averageAll", label: "Begge kjonn", color: "#14532d" },
+  { key: "averageAll", label: "Begge kjønn", color: "#14532d" },
   { key: "averageWomen", label: "Kvinner", color: "#b45309" },
   { key: "averageMen", label: "Menn", color: "#1d4ed8" },
 ] as const;
 
 const filterOptions = [
-  { key: "averageAll", label: "Begge kjonn" },
+  { key: "averageAll", label: "Begge kjønn" },
   { key: "averageWomen", label: "Kvinner" },
   { key: "averageMen", label: "Menn" },
 ] as const;
 
 type SeriesKey = (typeof seriesDefinitions)[number]["key"];
 type FilterKey = (typeof filterOptions)[number]["key"];
+
+const endLabelOffsets: Record<SeriesKey, number> = {
+  averageAll: -10,
+  averageWomen: -2,
+  averageMen: 10,
+};
 
 type OccupationAgeTimeSeriesChartProps = {
   occupationLabel: string;
@@ -38,9 +45,10 @@ export function OccupationAgeTimeSeriesChart({
     return null;
   }
 
-  const activeSeries = seriesDefinitions.filter((series) => {
-    return activeFilter === series.key;
-  });
+  const activeSeries =
+    activeFilter === "averageAll"
+      ? seriesDefinitions.filter((series) => series.key !== "averageAll")
+      : seriesDefinitions.filter((series) => series.key === activeFilter);
 
   const availableValues = points.flatMap((point) => {
     return activeSeries.flatMap((series) => {
@@ -61,7 +69,7 @@ export function OccupationAgeTimeSeriesChart({
   const chartWidth = 920;
   const chartHeight = 320;
   const paddingLeft = 56;
-  const paddingRight = 24;
+  const paddingRight = 96;
   const paddingTop = 20;
   const paddingBottom = 48;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
@@ -71,19 +79,66 @@ export function OccupationAgeTimeSeriesChart({
   const tickValues = Array.from({ length: axisTicks + 1 }, (_, index) => {
     return chartMin + (chartRange / axisTicks) * index;
   });
-  const labelStride = points.length > 8 ? Math.ceil(points.length / 6) : 1;
+  const yearTicks = buildYearTicks(points);
+  const latestValues = seriesDefinitions.filter((definition) => definition.key !== "averageAll").flatMap((definition) => {
+    const latestPoint = getLatestSeriesPoint(points, definition.key);
+
+    if (!latestPoint) {
+      return [];
+    }
+
+    return [{
+      key: definition.key,
+      label: definition.label,
+      periodLabel: latestPoint.periodLabel,
+      value: latestPoint.value,
+    }];
+  });
+  const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
-    <section className="rounded-md border border-black/10 bg-[#fcfaf6] p-5">
-      <div className="flex flex-col gap-3 border-b border-black/8 pb-4">
-        <div className="space-y-1">
+    <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
+      <div className="flex flex-col gap-4">
+        <div className="space-y-2">
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
             Gjennomsnittsalder over tid
           </h3>
-          <p className="text-sm leading-6 text-[var(--muted)]">
+          <p className="text-sm text-[var(--muted)]">
             Kvartalsvis utvikling i gjennomsnittsalder for {occupationLabel.toLowerCase()}.
           </p>
         </div>
+
+        {latestValues.length > 0 ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                Siste data
+              </p>
+              <MetricInfoButton
+                description={`Her ser du siste registrerte gjennomsnittsalder for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`}
+                label="Siste data"
+              />
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {latestPeriodLabel ? (
+                <span className="rounded-md border border-black/10 bg-[#f7fafc] px-3 py-2 text-sm font-semibold text-slate-700">
+                  {formatPeriodLabel(latestPeriodLabel)}
+                </span>
+              ) : null}
+              {latestValues.map((entry) => (
+                <div
+                  key={`latest-${entry.key}`}
+                  className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none text-slate-700"
+                >
+                  <span className="text-[15px]">{entry.label}: </span>
+                  <span className="text-[15px] font-semibold text-slate-950">
+                    {ageFormatter.format(entry.value)} år
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="flex flex-wrap gap-2">
           {filterOptions.map((option) => {
@@ -203,27 +258,41 @@ export function OccupationAgeTimeSeriesChart({
                     </title>
                   </g>
                 ))}
+                {chartPoints.length > 0 ? (
+                  <text
+                    fill={definition.color}
+                    fontSize="12"
+                    fontWeight="600"
+                    textAnchor="start"
+                    x={chartPoints[chartPoints.length - 1].x + 8}
+                    y={
+                      chartPoints[chartPoints.length - 1].y +
+                      4 +
+                      (activeFilter === "averageAll" ? endLabelOffsets[definition.key] : 0)
+                    }
+                  >
+                    {ageFormatter.format(chartPoints[chartPoints.length - 1].value)}
+                  </text>
+                ) : null}
               </g>
             );
           })}
 
-          {points.map((point, index) => {
-            if (index % labelStride !== 0 && index !== points.length - 1) {
-              return null;
-            }
-
-            const x = paddingLeft + xStep * index;
+          {yearTicks.map((tick) => {
+            const x = paddingLeft + xStep * tick.index;
 
             return (
               <text
-                key={point.periodCode}
+                key={`year-${tick.label}-${tick.index}`}
                 fill="#5f6773"
                 fontSize="12"
-                textAnchor={index === 0 ? "start" : index === points.length - 1 ? "end" : "middle"}
+                textAnchor={
+                  tick.index === 0 ? "start" : tick.index === points.length - 1 ? "end" : "middle"
+                }
                 x={x}
                 y={chartHeight - 18}
               >
-                {formatShortPeriodLabel(point.periodLabel)}
+                {tick.label}
               </text>
             );
           })}
@@ -237,16 +306,67 @@ function formatAge(value: number) {
   return `${ageFormatter.format(value)} ar`;
 }
 
-function formatShortPeriodLabel(value: string) {
-  const match = value.match(/(\d{4})\s*K([1-4])/i) ?? value.match(/(\d{4})K([1-4])/i);
+function formatPeriodLabel(value: string) {
+  const normalized = value.replace(/\s+/g, " ").trim();
+  const compactQuarterMatch = normalized.match(/^(\d{4})K([1-4])$/i);
+  const spacedQuarterMatch = normalized.match(/^(\d{4})\s*K([1-4])$/i);
+  const longQuarterMatch = normalized.match(/^([1-4])\.\s*kvartal\s*(\d{4})$/i);
 
-  if (!match) {
-    return value;
+  if (compactQuarterMatch) {
+    return `${compactQuarterMatch[2]}. kvartal ${compactQuarterMatch[1]}`;
   }
 
-  return `${match[2]}.kv.${match[1]}`;
+  if (spacedQuarterMatch) {
+    return `${spacedQuarterMatch[2]}. kvartal ${spacedQuarterMatch[1]}`;
+  }
+
+  if (longQuarterMatch) {
+    return `${longQuarterMatch[1]}. kvartal ${longQuarterMatch[2]}`;
+  }
+
+  return normalized;
 }
 
-function formatPeriodLabel(value: string) {
-  return value.replace(/\s+/g, " ").trim();
+function buildYearTicks(points: Array<{ periodCode: string; periodLabel: string }>) {
+  const seenYears = new Set<string>();
+
+  return points.flatMap((point, index) => {
+    const year = extractYear(point.periodCode) ?? extractYear(point.periodLabel);
+
+    if (!year || seenYears.has(year)) {
+      return [];
+    }
+
+    seenYears.add(year);
+    return [{ index, label: year }];
+  });
+}
+
+function extractYear(value: string) {
+  const match = value.match(/(\d{4})/);
+  return match ? match[1] : null;
+}
+
+function getLatestSeriesPoint(
+  points: Array<{
+    periodLabel: string;
+    averageAll?: number;
+    averageWomen?: number;
+    averageMen?: number;
+  }>,
+  key: SeriesKey,
+) {
+  for (let index = points.length - 1; index >= 0; index -= 1) {
+    const point = points[index];
+    const value = point[key];
+
+    if (value !== undefined) {
+      return {
+        periodLabel: point.periodLabel,
+        value,
+      };
+    }
+  }
+
+  return null;
 }

@@ -1,4 +1,4 @@
-import type { SsbNormalizedDataset } from "@/lib/types";
+﻿import type { SsbNormalizedDataset } from "@/lib/types";
 
 export type OccupationSalaryRow = {
   rowKey: string;
@@ -16,6 +16,17 @@ export type OccupationMedianSalaryRow = {
   medianAll?: number;
   medianWomen?: number;
   medianMen?: number;
+};
+
+export type OccupationMedianGrowthRow = {
+  rowKey: string;
+  occupationCode: string;
+  occupationLabel: string;
+  medianAll?: number;
+  medianWomen?: number;
+  medianMen?: number;
+  growthWomen?: number;
+  growthMen?: number;
 };
 
 type BuildOccupationSalaryOverviewOptions = {
@@ -167,6 +178,142 @@ export function buildOccupationMedianSalaryOverview(
     periodLabel,
     measureLabel: "Median avtalt månedslønn",
   };
+}
+
+export function buildOccupationMedianGrowthOverview(
+  latestDataset: SsbNormalizedDataset,
+  previousDataset?: SsbNormalizedDataset | null,
+  options: BuildOccupationSalaryOverviewOptions = {},
+) {
+  const occupationDimensionCode = findDimensionCode(latestDataset.dimensions, latestDataset.rows, ["yrke"]);
+  const genderDimensionCode = findDimensionCode(latestDataset.dimensions, latestDataset.rows, ["kjonn"]);
+  const periodDimensionCode = findDimensionCode(latestDataset.dimensions, latestDataset.rows, ["tid"]);
+  const occupationCodes = options.occupationCodes ? new Set(options.occupationCodes) : null;
+
+  if (!occupationDimensionCode || !genderDimensionCode) {
+    throw new Error("Fant ikke forventede dimensjoner i SSB-datasettet for median basic monthly earnings.");
+  }
+
+  const previousValuesByOccupation = previousDataset
+    ? buildMedianValueMap(previousDataset, options)
+    : new Map<string, OccupationMedianGrowthRow>();
+
+  const rowMap = latestDataset.rows.reduce((map, row) => {
+    const occupation = row.dimensions[occupationDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+
+    if (
+      !occupation ||
+      !gender ||
+      !isFourDigitOccupationCode(occupation.code) ||
+      (occupationCodes && !occupationCodes.has(occupation.code))
+    ) {
+      return map;
+    }
+
+    const existing = map.get(occupation.code) ?? {
+      rowKey: occupation.code,
+      occupationCode: occupation.code,
+      occupationLabel: occupation.label,
+    };
+
+    if (row.value !== null) {
+      if (gender.code === "0") {
+        existing.medianAll = row.value;
+      }
+
+      if (gender.code === "2") {
+        existing.medianWomen = row.value;
+      }
+
+      if (gender.code === "1") {
+        existing.medianMen = row.value;
+      }
+    }
+
+    map.set(occupation.code, existing);
+    return map;
+  }, new Map<string, OccupationMedianGrowthRow>());
+
+  const rows = Array.from(rowMap.values())
+    .map((row) => {
+      const previousRow = previousValuesByOccupation.get(row.occupationCode);
+
+      return {
+        ...row,
+        growthWomen: calculateYearOverYearGrowth(row.medianWomen, previousRow?.medianWomen),
+        growthMen: calculateYearOverYearGrowth(row.medianMen, previousRow?.medianMen),
+      };
+    })
+    .sort((left, right) => left.occupationLabel.localeCompare(right.occupationLabel, "nb"));
+
+  const periodLabel = periodDimensionCode
+    ? latestDataset.rows[0]?.dimensions[periodDimensionCode]?.label
+    : undefined;
+
+  return {
+    rows,
+    periodLabel,
+    measureLabel: "Median avtalt månedslønn",
+  };
+}
+
+function buildMedianValueMap(
+  dataset: SsbNormalizedDataset,
+  options: BuildOccupationSalaryOverviewOptions = {},
+) {
+  const occupationDimensionCode = findDimensionCode(dataset.dimensions, dataset.rows, ["yrke"]);
+  const genderDimensionCode = findDimensionCode(dataset.dimensions, dataset.rows, ["kjonn"]);
+  const occupationCodes = options.occupationCodes ? new Set(options.occupationCodes) : null;
+
+  if (!occupationDimensionCode || !genderDimensionCode) {
+    return new Map<string, OccupationMedianGrowthRow>();
+  }
+
+  return dataset.rows.reduce((map, row) => {
+    const occupation = row.dimensions[occupationDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+
+    if (
+      !occupation ||
+      !gender ||
+      !isFourDigitOccupationCode(occupation.code) ||
+      (occupationCodes && !occupationCodes.has(occupation.code))
+    ) {
+      return map;
+    }
+
+    const existing = map.get(occupation.code) ?? {
+      rowKey: occupation.code,
+      occupationCode: occupation.code,
+      occupationLabel: occupation.label,
+    };
+
+    if (row.value !== null) {
+      if (gender.code === "0") {
+        existing.medianAll = row.value;
+      }
+
+      if (gender.code === "2") {
+        existing.medianWomen = row.value;
+      }
+
+      if (gender.code === "1") {
+        existing.medianMen = row.value;
+      }
+    }
+
+    map.set(occupation.code, existing);
+    return map;
+  }, new Map<string, OccupationMedianGrowthRow>());
+}
+
+function calculateYearOverYearGrowth(current?: number, previous?: number) {
+  if (current === undefined || previous === undefined || previous === 0) {
+    return undefined;
+  }
+
+  return ((current - previous) / previous) * 100;
 }
 
 function findDimensionCode(

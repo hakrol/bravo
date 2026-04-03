@@ -1,4 +1,5 @@
 import { MetricInfoButton } from "@/components/metric-info-button";
+import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
 type OccupationSalaryEstimateProps = {
   occupationLabel: string;
@@ -26,7 +27,7 @@ export function OccupationSalaryEstimate({
     return null;
   }
 
-  const formattedOccupationTitle = formatOccupationTitle(occupationLabel);
+  const formattedOccupationTitle = formatOccupationDisplayLabel(occupationLabel).toLowerCase();
   const womenEstimate =
     monthlySalaryWomen !== undefined ? buildEstimate(monthlySalaryWomen) : undefined;
   const menEstimate = monthlySalaryMen !== undefined ? buildEstimate(monthlySalaryMen) : undefined;
@@ -34,12 +35,15 @@ export function OccupationSalaryEstimate({
   return (
     <section className="rounded-md border border-black/10 bg-white/75 px-6 py-6 shadow-[0_12px_40px_rgba(27,36,48,0.06)] sm:px-8">
       <div className="space-y-6">
-        <div className="space-y-3">
+        <div className="space-y-2">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+            Lønnsestimat
+          </p>
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
             Hva er lønnen til {formattedOccupationTitle}?
           </h2>
           <p className="max-w-3xl text-sm leading-7 text-slate-700">
-            Vi har gjort et forenklet estimat basert på median månedslønn, vanlig heltidsstilling,
+            Vi har gjort et forenklet estimat basert på median avtalt månedslønn, vanlig heltidsstilling,
             standard feriepengesats og et fast skatteanslag.
           </p>
           <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
@@ -55,14 +59,14 @@ export function OccupationSalaryEstimate({
         <div className="grid gap-4 lg:grid-cols-2">
           {womenEstimate ? (
             <SalarySummaryCard
-              description="Median for kvinner i yrket."
+              description="Median avtalt månedslønn for kvinner i yrket."
               estimate={womenEstimate}
               title="Kvinner"
             />
           ) : null}
           {menEstimate ? (
             <SalarySummaryCard
-              description="Median for menn i yrket."
+              description="Median avtalt månedslønn for menn i yrket."
               estimate={menEstimate}
               title="Menn"
             />
@@ -108,7 +112,7 @@ function SalarySummaryCard({ title, description, estimate }: SalarySummaryCardPr
         </div>
 
         <div className="space-y-3">
-          <SummaryRow label="Median månedslønn" value={formatCurrency(estimate.monthlySalary)} strong />
+          <SummaryRow label="Median avtalt månedslønn" value={formatCurrency(estimate.monthlySalary)} strong />
           <SummaryRow label="Årslønn" value={formatCurrency(estimate.annualSalary)} />
           <SummaryRow label="Timelønn" value={formatCurrency(estimate.hourlySalary)} />
           <SummaryRow label="Daglønn (7,5 t)" value={formatCurrency(estimate.dailySalary)} />
@@ -134,7 +138,7 @@ function HolidayPayCard({ title, estimate }: HolidayPayCardProps) {
   return (
     <SummaryCard
       accent="warm"
-      footnote="Forenklet medianbasert estimat for årslønn i 100 % stilling minus ferietrekk. For nøyaktig beløp beregnes feriepengegrunnlaget av lønn som faktisk er opptjent året før."
+      footnote="Forenklet estimat basert på median avtalt månedslønn for årslønn i 100 % stilling minus ferietrekk. For nøyaktig beløp beregnes feriepengegrunnlaget av lønn som faktisk er opptjent året før."
       title={title}
       sections={[
         {
@@ -332,13 +336,4 @@ function formatDecimal(value: number) {
     minimumFractionDigits: value % 1 === 0 ? 0 : 1,
     maximumFractionDigits: 2,
   });
-}
-
-function formatOccupationTitle(value: string) {
-  return value
-    .toLowerCase()
-    .split(",")
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .join(" og ");
 }

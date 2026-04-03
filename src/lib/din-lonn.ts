@@ -168,7 +168,7 @@ export function buildDinLonnReport({
   const comparisonToMedian = buildComparison(
     salary,
     selectedMedian,
-    `Median for ${genderLabel} i yrket`,
+    `Median avtalt månedslønn for ${genderLabel} i yrket`,
   );
   const comparisonToAverage = buildComparison(
     salary,
@@ -263,10 +263,10 @@ function buildGenderGap(occupation: DinLonnOccupationOption) {
     differencePercent,
     label:
       difference > 0
-        ? "Medianen for menn er høyere enn for kvinner i dette yrket."
+        ? "Median avtalt månedslønn for menn er høyere enn for kvinner i dette yrket."
         : difference < 0
-          ? "Medianen for kvinner er høyere enn for menn i dette yrket."
-          : "Medianen er lik for kvinner og menn i dette yrket.",
+          ? "Median avtalt månedslønn for kvinner er høyere enn for menn i dette yrket."
+          : "Median avtalt månedslønn er lik for kvinner og menn i dette yrket.",
   };
 }
 
@@ -311,8 +311,8 @@ function buildSummary({
 }) {
   const medianSentence =
     median !== undefined && medianDifference !== undefined
-      ? `Med ${formatCurrency(salary)} i brutto månedslønn ligger du ${formatDifferenceText(medianDifference)} medianen for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
-      : `Med ${formatCurrency(salary)} i brutto månedslønn har vi ikke nok kjønnsdelt median til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
+      ? `Med ${formatCurrency(salary)} i brutto månedslønn ligger du ${formatDifferenceText(medianDifference)} median avtalt månedslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
+      : `Med ${formatCurrency(salary)} i brutto månedslønn har vi ikke nok kjønnsdelte tall for median avtalt månedslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
   const nationalSentence =
     nationalDifference !== undefined
       ? `Sammenlignet med alle yrker samlet ligger du ${formatDifferenceText(nationalDifference)} snittet på tvers av arbeidsmarkedet.`
