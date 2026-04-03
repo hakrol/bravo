@@ -57,6 +57,8 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
       return;
     }
 
+    const occupationCode = submittedOccupationCode;
+
     const controller = new AbortController();
 
     async function loadDistribution() {
@@ -65,7 +67,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
         setDistributionError(null);
 
         const response = await fetch(
-          `/api/occupation-distribution?occupationCode=${encodeURIComponent(submittedOccupationCode)}`,
+          `/api/occupation-distribution?occupationCode=${encodeURIComponent(occupationCode)}`,
           { signal: controller.signal },
         );
 
