@@ -27,13 +27,11 @@ const endLabelOffsets: Record<SeriesKey, number> = {
 
 type OccupationWorkforceTimeSeriesChartProps = {
   points: OccupationWorkforceTimeSeriesPoint[];
-  currentValue?: string;
   description?: string;
 };
 
 export function OccupationWorkforceTimeSeriesChart({
   points,
-  currentValue,
   description,
 }: OccupationWorkforceTimeSeriesChartProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("employeesAll");
@@ -98,6 +96,10 @@ export function OccupationWorkforceTimeSeriesChart({
       }];
     });
   const latestPeriodLabel = latestValues[0]?.periodLabel;
+  const latestOverallPoint = getLatestSeriesPoint(relevantPoints, "employeesAll");
+  const latestSummary = latestOverallPoint
+    ? `${formatPeriodLabel(latestOverallPoint.periodLabel)}: ${formatWorkforceCount(latestOverallPoint.value)} personer`
+    : null;
 
   return (
     <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
@@ -105,9 +107,9 @@ export function OccupationWorkforceTimeSeriesChart({
         <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
           Lønnstakere over tid
         </h3>
-        {currentValue ? (
+        {latestSummary ? (
           <p className="text-4xl font-semibold tracking-[-0.05em] text-slate-950">
-            {currentValue}
+            {latestSummary}
           </p>
         ) : null}
         <p className="text-sm text-[var(--muted)]">

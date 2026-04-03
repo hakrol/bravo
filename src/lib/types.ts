@@ -193,6 +193,27 @@ export type OccupationSalaryTimeSeries = {
   points: OccupationSalaryTimeSeriesPoint[];
 };
 
+export type OccupationSupplementTimeSeriesPoint = {
+  periodCode: string;
+  periodLabel: string;
+  bonusAll?: number;
+  bonusWomen?: number;
+  bonusMen?: number;
+  overtimeAll?: number;
+  overtimeWomen?: number;
+  overtimeMen?: number;
+  irregularAdditionsAll?: number;
+  irregularAdditionsWomen?: number;
+  irregularAdditionsMen?: number;
+};
+
+export type OccupationSupplementTimeSeries = {
+  occupationCode: string;
+  occupationLabel: string;
+  updated?: string;
+  points: OccupationSupplementTimeSeriesPoint[];
+};
+
 export type OccupationSalaryDistributionMetrics = {
   p25?: number;
   median?: number;

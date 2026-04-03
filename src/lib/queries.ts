@@ -26,6 +26,8 @@ import type {
   OccupationPurchasingPowerRow,
   OccupationSalaryDistribution,
   OccupationSalaryDistributionMetrics,
+  OccupationSupplementTimeSeries,
+  OccupationSupplementTimeSeriesPoint,
   OccupationSalaryTimeSeries,
   OccupationSalaryTimeSeriesPoint,
   SsbNormalizedDataset,
@@ -53,6 +55,14 @@ export const OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS: SsbSalaryFilters 
 export const OCCUPATION_AVERAGE_AGE_FILTERS: SsbSalaryFilters = {
   Alder: "999D",
   ContentsCode: "GjsnAlder",
+};
+
+export const OCCUPATION_SUPPLEMENT_FILTERS: SsbSalaryFilters = {
+  MaaleMetode: "02",
+  Sektor: "ALLE",
+  Kjonn: ["0", "1", "2"],
+  AvtaltVanlig: "0",
+  ContentsCode: ["Bonus", "Overtid", "Uregtil"],
 };
 
 export const OCCUPATION_WORKFORCE_FILTERS: SsbSalaryFilters = {
@@ -723,6 +733,27 @@ export async function getOccupationSalaryTimeSeries(
   return detailData.series;
 }
 
+export async function getOccupationSupplementTimeSeries(
+  occupationCode: string,
+  filters: SsbSalaryFilters = OCCUPATION_SUPPLEMENT_FILTERS,
+  lang: SsbLanguage = "no",
+): Promise<OccupationSupplementTimeSeries> {
+  const tableId = SSB_OCCUPATION_DISTRIBUTION_TABLE_ID;
+  const metadata = await getTableMetadata(tableId, lang);
+  const supplementQuery = buildOccupationTimeSeriesQuery(metadata, occupationCode, filters);
+  const [info, dataset] = await Promise.all([
+    getTableInfo(tableId, lang),
+    getTableData(tableId, supplementQuery, lang),
+  ]);
+
+  const normalized = normalizeDataset(dataset, {
+    tableId,
+    title: info.label,
+  });
+
+  return buildOccupationSupplementTimeSeries(normalized, occupationCode);
+}
+
 async function getOccupationPurchasingPowerTimeSeriesOldRemoved(
   occupationCode: string,
   filters: SsbSalaryFilters = OCCUPATION_MONTHLY_SALARY_FILTERS,
@@ -1264,6 +1295,126 @@ function buildOccupationSalaryTimeSeries(
       left.periodCode.localeCompare(right.periodCode, "nb-NO"),
     ),
   };
+}
+
+function buildOccupationSupplementTimeSeries(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationSupplementTimeSeries {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "sex",
+  ]);
+  const measureDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "contentscode",
+    "contents",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "year",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode || !periodDimensionCode) {
+    throw new Error(`Fant ikke forventede dimensjoner for tilleggsserie i tabell ${dataset.tableId}.`);
+  }
+
+  const relevantRows = dataset.rows.filter((row) => {
+    return row.dimensions[occupationDimensionCode]?.code === occupationCode;
+  });
+
+  if (relevantRows.length === 0) {
+    return {
+      occupationCode,
+      occupationLabel: occupationCode,
+      updated: dataset.updated,
+      points: [],
+    };
+  }
+
+  const pointsByPeriod = relevantRows.reduce((map, row) => {
+    const period = row.dimensions[periodDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+    const measure = row.dimensions[measureDimensionCode];
+
+    if (!period || !gender || !measure) {
+      return map;
+    }
+
+    const existing = map.get(period.code) ?? {
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+
+    if (row.value !== null) {
+      assignSupplementMetricValue(existing, measure.code, gender.code, row.value);
+    }
+
+    map.set(period.code, existing);
+    return map;
+  }, new Map<string, OccupationSupplementTimeSeriesPoint>());
+
+  return {
+    occupationCode,
+    occupationLabel: relevantRows[0]?.dimensions[occupationDimensionCode]?.label ?? occupationCode,
+    updated: dataset.updated,
+    points: Array.from(pointsByPeriod.values()).sort((left, right) =>
+      left.periodCode.localeCompare(right.periodCode, "nb-NO"),
+    ),
+  };
+}
+
+function assignSupplementMetricValue(
+  point: OccupationSupplementTimeSeriesPoint,
+  measureCode: string,
+  genderCode: string,
+  value: number,
+) {
+  if (measureCode === "Bonus") {
+    if (genderCode === "0") {
+      point.bonusAll = value;
+    }
+
+    if (genderCode === "2") {
+      point.bonusWomen = value;
+    }
+
+    if (genderCode === "1") {
+      point.bonusMen = value;
+    }
+  }
+
+  if (measureCode === "Overtid") {
+    if (genderCode === "0") {
+      point.overtimeAll = value;
+    }
+
+    if (genderCode === "2") {
+      point.overtimeWomen = value;
+    }
+
+    if (genderCode === "1") {
+      point.overtimeMen = value;
+    }
+  }
+
+  if (measureCode === "Uregtil") {
+    if (genderCode === "0") {
+      point.irregularAdditionsAll = value;
+    }
+
+    if (genderCode === "2") {
+      point.irregularAdditionsWomen = value;
+    }
+
+    if (genderCode === "1") {
+      point.irregularAdditionsMen = value;
+    }
+  }
 }
 
 function buildOccupationEmploymentLatest(

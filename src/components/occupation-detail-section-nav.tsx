@@ -82,7 +82,7 @@ export function OccupationDetailSectionNav({
       <nav
         aria-label="Seksjoner på siden"
         className={[
-          "rounded-md border border-black/10 bg-white/75 px-4 py-4 shadow-[0_10px_30px_rgba(27,36,48,0.05)]",
+          "rounded-md border border-black/10 bg-white/75 px-3 py-3 shadow-[0_10px_26px_rgba(27,36,48,0.05)]",
           className,
         ]
           .filter(Boolean)
@@ -91,7 +91,7 @@ export function OccupationDetailSectionNav({
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
           På denne siden
         </p>
-        <div className="-mx-1 mt-3 overflow-x-auto pb-1">
+        <div className="-mx-1 mt-2.5 overflow-x-auto pb-1">
           <div className="flex min-w-max gap-2 px-1">
             {visibleSections.map((section) => {
               const active = section.id === activeSectionId;
@@ -101,7 +101,7 @@ export function OccupationDetailSectionNav({
                   key={section.id}
                   aria-current={active ? "location" : undefined}
                   className={[
-                    "inline-flex items-center rounded-md border px-3 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
+                    "inline-flex items-center rounded-md border px-2.5 py-1.5 text-[13px] font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
                     active
                       ? "border-[var(--primary)] bg-[var(--primary)] text-white"
                       : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)] hover:text-[var(--primary-strong)]",
@@ -123,16 +123,16 @@ export function OccupationDetailSectionNav({
     <nav
       aria-label="Seksjoner på siden"
       className={[
-        "rounded-md border border-black/10 bg-white/55 p-3 shadow-[0_12px_30px_rgba(27,36,48,0.04)] backdrop-blur-sm",
+        "rounded-md border border-black/10 bg-white/55 p-2.5 shadow-[0_10px_24px_rgba(27,36,48,0.04)] backdrop-blur-sm",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <p className="px-2 pb-3 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+      <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
         På denne siden
       </p>
-      <div className="space-y-1">
+      <div className="space-y-0.5">
         {visibleSections.map((section) => {
           const active = section.id === activeSectionId;
 
@@ -141,7 +141,7 @@ export function OccupationDetailSectionNav({
               key={section.id}
               aria-current={active ? "location" : undefined}
               className={[
-                "flex items-center rounded-md px-3 py-2.5 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
+                "flex items-center rounded-md px-2.5 py-2 text-[13px] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2",
                 active
                   ? "bg-[rgba(20,83,45,0.1)] font-semibold text-[var(--primary-strong)]"
                   : "text-slate-700 hover:bg-white/80 hover:text-slate-950",

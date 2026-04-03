@@ -87,6 +87,10 @@ export async function OccupationSalaryDetailPage({
     menP25: distribution?.men?.p25,
     menP75: distribution?.men?.p75,
   });
+  const introText = buildOccupationIntroText({
+    occupationLabel: formattedOccupationLabel,
+    summary: detailPage.summary,
+  });
   const growthOverview = buildOccupationMedianGrowthOverview(
     yearlyMedianDatasets.latestDataset,
     yearlyMedianDatasets.previousDataset,
@@ -104,6 +108,7 @@ export async function OccupationSalaryDetailPage({
         occupationCode: page.occupationCode,
         occupationLabel: row?.occupationLabel ?? page.label,
         href: page.href,
+        medianAll: row?.medianAll,
         medianWomen: row?.medianWomen,
         medianMen: row?.medianMen,
         growthWomen: growthRow?.growthWomen,
@@ -133,6 +138,14 @@ export async function OccupationSalaryDetailPage({
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
         <aside className="hidden lg:block">
           <div className="sticky top-28">
+            <div className="mb-3 rounded-md border border-black/10 bg-[linear-gradient(135deg,rgba(244,239,230,0.72)_0%,rgba(230,240,234,0.78)_100%)] px-3 py-3 shadow-[0_10px_24px_rgba(27,36,48,0.04)]">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+                Yrke
+              </p>
+              <p className="mt-1 text-sm font-semibold leading-5 text-slate-950">
+                {formattedOccupationLabel}
+              </p>
+            </div>
             <OccupationDetailSectionNav sections={detailSections} variant="desktop" />
           </div>
         </aside>
@@ -145,7 +158,7 @@ export async function OccupationSalaryDetailPage({
           />
           <section
             aria-label="Oversikt"
-            className={`${sectionAnchorClassName} border-b border-black/10 pb-8`}
+            className={`${sectionAnchorClassName} pb-8`}
             id="oversikt"
           >
           <div className="space-y-8">
@@ -184,18 +197,19 @@ export async function OccupationSalaryDetailPage({
                 </div>
               </div>
               <div className="max-w-3xl text-base leading-7 text-slate-950">
-                <span>Denne siden viser </span>
-                <InlineDefinitionModal
-                  description="Dette er lønnsmålet som brukes for nivåtallene på denne siden."
-                  label="median avtalt månedslønn"
-                  title="Median avtalt månedslønn (kr)"
-                />
-                <span>
-                  {" "}
-                  for {formattedOccupationLabel.toLowerCase()}, lønnsutvikling og andre relevante
-                  nøkkeltall basert på siste tilgjengelige tall fra SSB. {detailPage.summary} Tallene
-                  viser bruttolønn før skatt og inkluderer ikke overtid eller bonus.
-                </span>
+                <p>
+                  <span>Se hva en {formattedOccupationLabel.toLowerCase()} tjener. Her finner du </span>
+                  <InlineDefinitionModal
+                    description="Dette er lønnsmålet som brukes for nivåtallene på denne siden."
+                    label="avtalt månedslønn"
+                    title="Median avtalt månedslønn (kr)"
+                  />
+                  <span>
+                    , lønnsutvikling over tid, lønnsfordeling, lønnsforskjeller mellom kvinner og menn
+                    og relaterte yrker basert på siste tilgjengelige tall fra SSB.
+                  </span>
+                </p>
+                <p className="mt-3">{introText} Tallene viser bruttolønn før skatt og inkluderer ikke overtid eller bonus.</p>
               </div>
               {topSummary ? (
                 <div className="rounded-md border border-[var(--primary)]/20 bg-[linear-gradient(135deg,rgba(244,239,230,0.72)_0%,rgba(230,240,234,0.78)_100%)] px-5 py-5 shadow-[0_12px_36px_rgba(27,36,48,0.06)] sm:px-6">
@@ -349,6 +363,8 @@ export async function OccupationSalaryDetailPage({
             id="relaterte-yrker"
           >
             <RelatedOccupationSalaryComparison
+              referenceMedianWomen={currentSalaryWomen}
+              referenceMedianMen={currentSalaryMen}
               rows={relatedRows}
             />
           </section>
@@ -383,25 +399,40 @@ export async function OccupationSalaryDetailPage({
                   SSB-tall for arbeidsmarkedet i yrket
                 </h2>
                 <p className="max-w-3xl text-sm leading-7 text-slate-700">
-                  Denne seksjonen viser utvikling i antall lønnstakere og jobber, fordeling mellom kvinner og menn,
-                  vekst i antall lønnstakere, ansettelsesform og gjennomsnittsalder for {detailPage.label.toLowerCase()}.
+                  Denne seksjonen viser utvikling i antall lønnstakere, kjønnsfordeling og gjennomsnittsalder for {detailPage.label.toLowerCase()}.
                 </p>
               </div>
 
               <div className="space-y-4">
                 <OccupationWorkforceTimeSeriesChart
-                  currentValue={
-                    laborMarketStats.latest
-                      ? formatEmploymentMetric(
-                          laborMarketStats.latest.employees,
-                          laborMarketStats.latest.employeeUnit,
-                        )
-                      : ":"
-                  }
-                  description="Antall personer registrert som lønnstakere i midtmåneden i kvartalet."
+                  description={`Utviklingen i hvor mange personer som er registrert som lønnstakere som ${detailPage.label.toLowerCase()} per kvartal, fordelt på kvinner og menn.`}
                   points={laborMarketStats.workforcePoints}
                 />
 
+                <LaborMarketCard
+                  title="Kjønnsfordeling blant lønnstakere"
+                  subtitle={laborMarketStats.genderBreakdown?.periodLabel}
+                >
+                  {laborMarketStats.genderBreakdown ? (
+                    <div className="space-y-3">
+                      <SplitRow
+                        label="Kvinner"
+                        value={formatWorkforceCount(laborMarketStats.genderBreakdown.women)}
+                        detail={formatPercentage(laborMarketStats.genderBreakdown.womenShare)}
+                      />
+                      <SplitRow
+                        label="Menn"
+                        value={formatWorkforceCount(laborMarketStats.genderBreakdown.men)}
+                        detail={formatPercentage(laborMarketStats.genderBreakdown.menShare)}
+                      />
+                    </div>
+                  ) : (
+                    <p className="text-sm leading-7 text-slate-700">Ingen kjønnsfordeling tilgjengelig.</p>
+                  )}
+                </LaborMarketCard>
+              </div>
+
+              <div className="space-y-4">
                 <LaborMarketCard
                   title="Gjennomsnittsalder"
                   subtitle={laborMarketStats.age?.periodLabel}
@@ -419,100 +450,14 @@ export async function OccupationSalaryDetailPage({
                     <p className="text-sm leading-7 text-slate-700">Ingen alderstall tilgjengelig.</p>
                   )}
                 </LaborMarketCard>
+
+                {hasAgeSeries ? (
+                  <OccupationAgeTimeSeriesChart
+                    occupationLabel={detailPage.label}
+                    points={laborMarketStats.ageSeries}
+                  />
+                ) : null}
               </div>
-
-              <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Fordeling og utvikling
-                </p>
-                <div className="grid gap-6 xl:grid-cols-2">
-                  <LaborMarketCard
-                    title="Kjønnsfordeling blant lønnstakere"
-                    subtitle={laborMarketStats.genderBreakdown?.periodLabel}
-                  >
-                    {laborMarketStats.genderBreakdown ? (
-                      <div className="space-y-3">
-                        <SplitRow
-                          label="Kvinner"
-                          value={formatWorkforceCount(laborMarketStats.genderBreakdown.women)}
-                          detail={formatPercentage(laborMarketStats.genderBreakdown.womenShare)}
-                        />
-                        <SplitRow
-                          label="Menn"
-                          value={formatWorkforceCount(laborMarketStats.genderBreakdown.men)}
-                          detail={formatPercentage(laborMarketStats.genderBreakdown.menShare)}
-                        />
-                      </div>
-                    ) : (
-                      <p className="text-sm leading-7 text-slate-700">Ingen kjønnsfordeling tilgjengelig.</p>
-                    )}
-                  </LaborMarketCard>
-
-                  <LaborMarketCard
-                    title="Vekst i lønnstakere"
-                    subtitle={laborMarketStats.growth?.latestPeriodLabel}
-                  >
-                    {laborMarketStats.growth ? (
-                      <div className="space-y-3">
-                        <SplitRow
-                          label="Siste år"
-                          value={formatPercentage(laborMarketStats.growth.yearOverYearChange)}
-                          detail={
-                            laborMarketStats.growth.previousValue !== undefined
-                              ? `${formatWorkforceCount(laborMarketStats.growth.previousValue)} til ${formatWorkforceCount(laborMarketStats.growth.latestValue)}`
-                              : undefined
-                          }
-                        />
-                        <SplitRow
-                          label="Siden 2021"
-                          value={formatPercentage(laborMarketStats.growth.changeSinceBaseline)}
-                          detail={
-                            laborMarketStats.growth.baselineValue !== undefined
-                              ? `${formatWorkforceCount(laborMarketStats.growth.baselineValue)} til ${formatWorkforceCount(laborMarketStats.growth.latestValue)}`
-                              : undefined
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <p className="text-sm leading-7 text-slate-700">Ingen veksttall tilgjengelig.</p>
-                    )}
-                  </LaborMarketCard>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-                  Ansettelsesform
-                </p>
-                <LaborMarketCard
-                  title="Fast og midlertidig"
-                  subtitle={laborMarketStats.contractType?.periodLabel}
-                >
-                  {laborMarketStats.contractType ? (
-                    <div className="grid gap-3 md:grid-cols-2">
-                      <SplitRow
-                        label="Fast stilling"
-                        value={formatExactPersonCount(laborMarketStats.contractType.permanent)}
-                        detail={formatPercentage(laborMarketStats.contractType.permanentShare)}
-                      />
-                      <SplitRow
-                        label="Midlertidig"
-                        value={formatExactPersonCount(laborMarketStats.contractType.temporary)}
-                        detail={formatPercentage(laborMarketStats.contractType.temporaryShare)}
-                      />
-                    </div>
-                  ) : (
-                    <p className="text-sm leading-7 text-slate-700">Ingen tall for ansettelsesform tilgjengelig.</p>
-                  )}
-                </LaborMarketCard>
-              </div>
-
-              {hasAgeSeries ? (
-                <OccupationAgeTimeSeriesChart
-                  occupationLabel={detailPage.label}
-                  points={laborMarketStats.ageSeries}
-                />
-              ) : null}
             </div>
           </section>
         ) : null}
@@ -694,16 +639,6 @@ function formatWorkforceCount(value?: number) {
   })}`;
 }
 
-function formatExactPersonCount(value?: number) {
-  if (value === undefined) {
-    return ":";
-  }
-
-  return `${value.toLocaleString("nb-NO", {
-    maximumFractionDigits: 0,
-  })}`;
-}
-
 function formatPercentage(value?: number) {
   if (value === undefined) {
     return ":";
@@ -834,6 +769,70 @@ function buildTopSummary({
   return [medianSentence, sourceSentence]
     .filter((part): part is string => Boolean(part))
     .join(" ");
+}
+
+function buildOccupationIntroText({
+  occupationLabel,
+  summary,
+}: {
+  occupationLabel: string;
+  summary: string;
+}) {
+  const cleanedSummary = cleanOccupationSummary(summary);
+
+  if (cleanedSummary) {
+    return cleanedSummary;
+  }
+
+  return buildGenericOccupationDescription(occupationLabel);
+}
+
+function cleanOccupationSummary(summary: string) {
+  const normalizedSummary = summary.trim();
+
+  if (!normalizedSummary) {
+    return "";
+  }
+
+  if (normalizedSummary.includes("yrkesgruppe i SSBs yrkesstatistikk")) {
+    return "";
+  }
+
+  return normalizedSummary;
+}
+
+function buildGenericOccupationDescription(occupationLabel: string) {
+  const normalizedLabel = occupationLabel.toLowerCase();
+
+  if (normalizedLabel.includes("direktør")) {
+    return `${occupationLabel} leder virksomheter, setter strategisk retning og har overordnet ansvar for drift, økonomi og resultater.`;
+  }
+
+  if (normalizedLabel.includes("leder")) {
+    return `${occupationLabel} har ofte ansvar for å planlegge, prioritere og følge opp medarbeidere, drift og resultater i en virksomhet.`;
+  }
+
+  if (normalizedLabel.includes("rådgiver")) {
+    return `${occupationLabel} jobber typisk med analyse, vurderinger og faglige råd til kunder, brukere eller virksomheter.`;
+  }
+
+  if (normalizedLabel.includes("ingeniør")) {
+    return `${occupationLabel} arbeider gjerne med tekniske løsninger, planlegging, utvikling og oppfølging av prosjekter eller systemer.`;
+  }
+
+  if (normalizedLabel.includes("operatør")) {
+    return `${occupationLabel} følger vanligvis opp drift, overvåking og kontroll av utstyr, prosesser eller tekniske anlegg.`;
+  }
+
+  if (normalizedLabel.includes("sykepleier")) {
+    return `${occupationLabel} gir helsehjelp, følger opp pasienter og samarbeider med annet helsepersonell i det daglige arbeidet.`;
+  }
+
+  if (normalizedLabel.includes("lærer")) {
+    return `${occupationLabel} planlegger undervisning, følger opp elevers læring og bidrar til faglig og sosial utvikling.`;
+  }
+
+  return `${occupationLabel} er et yrke der arbeidsoppgaver, ansvar og lønnsnivå kan variere etter erfaring, sektor og hvor i landet man jobber.`;
 }
 
 function buildMedianGrowthMetrics(series: {

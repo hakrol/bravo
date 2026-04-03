@@ -4,6 +4,7 @@ type RelatedOccupationSalaryComparisonItem = {
   occupationCode: string;
   occupationLabel: string;
   href: string;
+  medianAll?: number;
   medianWomen?: number;
   medianMen?: number;
   growthWomen?: number;
@@ -13,6 +14,8 @@ type RelatedOccupationSalaryComparisonItem = {
 
 type RelatedOccupationSalaryComparisonProps = {
   rows: RelatedOccupationSalaryComparisonItem[];
+  referenceMedianWomen?: number;
+  referenceMedianMen?: number;
 };
 
 const currencyFormatter = new Intl.NumberFormat("nb-NO", {
@@ -21,6 +24,8 @@ const currencyFormatter = new Intl.NumberFormat("nb-NO", {
 
 export function RelatedOccupationSalaryComparison({
   rows,
+  referenceMedianWomen,
+  referenceMedianMen,
 }: RelatedOccupationSalaryComparisonProps) {
   if (rows.length === 0) {
     return null;
@@ -45,15 +50,15 @@ export function RelatedOccupationSalaryComparison({
             className="min-w-[280px] max-w-[320px] flex-1 rounded-2xl border border-black/8 bg-white p-3 shadow-[0_8px_24px_rgba(15,23,42,0.06)]"
           >
             <div className={`rounded-xl px-3.5 py-3.5 ${getCardToneClassName(row.groupCode)}`}>
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex min-w-0 items-start justify-between gap-3">
                 <Link
-                  className="group inline-flex items-start gap-2 font-semibold text-slate-900 transition hover:text-[var(--primary)]"
+                  className="group flex min-w-0 flex-1 items-start gap-2 font-semibold text-slate-900 transition hover:text-[var(--primary)]"
                   href={row.href}
                 >
-                  <span className="line-clamp-2">{row.occupationLabel}</span>
+                  <span className="min-w-0 line-clamp-2">{row.occupationLabel}</span>
                   <span
                     aria-hidden="true"
-                    className="mt-[1px] text-base text-slate-700 transition-transform group-hover:translate-x-0.5"
+                    className="mt-[1px] shrink-0 text-base text-slate-700 transition-transform group-hover:translate-x-0.5"
                   >
                     &gt;
                   </span>
@@ -65,18 +70,24 @@ export function RelatedOccupationSalaryComparison({
                   <OccupationGroupIcon groupCode={row.groupCode} />
                 </span>
               </div>
-
-              <p className="mt-2 text-sm text-slate-600">Relatert yrke</p>
             </div>
 
             <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
               <div className="rounded-lg border border-black/8 bg-white px-3 py-2">
                 <dt className="text-[var(--muted)]">Månedslønn ♀</dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">{formatSalary(row.medianWomen)}</dd>
+                <DifferenceText
+                  referenceValue={referenceMedianWomen}
+                  value={row.medianWomen}
+                />
               </div>
               <div className="rounded-lg border border-black/8 bg-white px-3 py-2">
                 <dt className="text-[var(--muted)]">Månedslønn ♂</dt>
                 <dd className="mt-1 text-base font-semibold text-slate-950">{formatSalary(row.medianMen)}</dd>
+                <DifferenceText
+                  referenceValue={referenceMedianMen}
+                  value={row.medianMen}
+                />
               </div>
               <div className="rounded-lg border border-black/8 bg-white px-3 py-2">
                 <dt className="text-[var(--muted)]">Lønnsvekst ♀</dt>
@@ -105,6 +116,61 @@ function formatSalary(value?: number) {
   }
 
   return `${currencyFormatter.format(value)} kr`;
+}
+
+function getMedianDifferenceDisplay(value?: number, referenceValue?: number) {
+  if (value === undefined || referenceValue === undefined) {
+    return {
+      arrow: "•",
+      className: "text-slate-600",
+      label: ":",
+    };
+  }
+
+  const difference = value - referenceValue;
+
+  if (difference === 0) {
+    return {
+      arrow: "→",
+      className: "text-slate-600",
+      label: "0 kr",
+    };
+  }
+
+  const differenceLabel = `${currencyFormatter.format(Math.abs(difference))} kr`;
+
+  if (difference > 0) {
+    return {
+      arrow: "↑",
+      className: "text-emerald-700",
+      label: differenceLabel,
+    };
+  }
+
+  return {
+    arrow: "↓",
+    className: "text-red-700",
+    label: differenceLabel,
+  };
+}
+
+function DifferenceText({
+  value,
+  referenceValue,
+}: {
+  value?: number;
+  referenceValue?: number;
+}) {
+  const difference = getMedianDifferenceDisplay(value, referenceValue);
+
+  return (
+    <p className={`mt-1 text-xs font-medium ${difference.className}`}>
+      <span aria-hidden="true" className="mr-1">
+        {difference.arrow}
+      </span>
+      {difference.label}
+    </p>
+  );
 }
 
 function formatGrowth(value?: number) {
