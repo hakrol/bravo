@@ -1,21 +1,19 @@
 ﻿"use client";
 
-import { listOccupationGroups } from "@/lib/occupation-groups";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  {
-    href: "/yrker",
-    label: "Yrker",
-    children: listOccupationGroups().map((group) => ({
-      href: `/yrker/${group.slug}`,
-      label: group.shortLabel,
-    })),
-  },
-  { href: "/kvinner-vs-menn", label: "Kvinner vs menn" },
+  { href: "/blogg", label: "Blogg" },
   { href: "/din-lonn", label: "Din lønn" },
-  { href: "/topp-jobber", label: "Topp jobber" },
+  {
+    href: "/annet",
+    label: "Annet",
+    children: [
+      { href: "/kvinner-vs-menn", label: "Kvinner vs menn" },
+      { href: "/topp-jobber", label: "Topp jobber" },
+    ],
+  },
 ] as const;
 
 function isActivePath(pathname: string, href: string) {

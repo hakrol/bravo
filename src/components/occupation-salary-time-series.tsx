@@ -33,12 +33,18 @@ type OccupationSalaryTimeSeriesProps = {
   series: OccupationSalaryTimeSeries;
   title?: string;
   description?: string;
+  ariaLabel?: string;
+  latestDataDescription?: string;
+  valueDisplay?: "monthly" | "hourly";
 };
 
 export function OccupationSalaryTimeSeriesChart({
   series,
   title,
   description,
+  ariaLabel,
+  latestDataDescription,
+  valueDisplay = "monthly",
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
 
@@ -92,6 +98,9 @@ export function OccupationSalaryTimeSeriesChart({
     }];
   });
   const latestPeriodLabel = latestValues[0]?.periodLabel;
+  const valueFormatter = valueDisplay === "hourly" ? formatHourlyValue : formatCurrency;
+  const axisValueFormatter = valueDisplay === "hourly" ? formatHourlyAxisValue : formatAxisCurrency;
+  const endLabelFormatter = valueDisplay === "hourly" ? formatHourlyEndLabel : formatEndLabel;
 
   return (
     <section className="grid gap-6">
@@ -117,7 +126,10 @@ export function OccupationSalaryTimeSeriesChart({
                   Siste data
                 </p>
                 <MetricInfoButton
-                  description={`Her ser du siste registrerte månedslønn for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`}
+                  description={
+                    latestDataDescription ??
+                    `Her ser du siste registrerte månedslønn for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`
+                  }
                   label="Siste data"
                 />
               </div>
@@ -133,7 +145,7 @@ export function OccupationSalaryTimeSeriesChart({
                     className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none text-slate-700"
                   >
                     <span className="text-[15px]">{entry.label}: </span>
-                    <span className="text-[15px] font-semibold text-slate-950">{currencyFormatter.format(entry.value)} kr</span>
+                    <span className="text-[15px] font-semibold text-slate-950">{valueFormatter(entry.value)}</span>
                   </div>
                 ))}
               </div>
@@ -177,7 +189,7 @@ export function OccupationSalaryTimeSeriesChart({
 
         <div className="mt-6 overflow-x-auto">
           <svg
-            aria-label={`Tidsserie for ${series.occupationLabel}`}
+            aria-label={ariaLabel ?? `Tidsserie for ${series.occupationLabel}`}
             className="min-w-[760px] w-full"
             role="img"
             viewBox={`0 0 ${chartWidth} ${chartHeight}`}
@@ -197,13 +209,13 @@ export function OccupationSalaryTimeSeriesChart({
                     y2={y}
                   />
                   <text
-                    fill="#5f6773"
-                    fontSize="12"
-                    textAnchor="end"
-                    x={paddingLeft - 10}
-                    y={y + 4}
-                  >
-                    {currencyFormatter.format(Math.round(tickValue))}
+                  fill="#5f6773"
+                  fontSize="12"
+                  textAnchor="end"
+                  x={paddingLeft - 10}
+                  y={y + 4}
+                >
+                    {axisValueFormatter(tickValue)}
                   </text>
                 </g>
               );
@@ -254,7 +266,7 @@ export function OccupationSalaryTimeSeriesChart({
                     <g key={`${definition.key}-${point.periodCode}`}>
                       <circle cx={point.x} cy={point.y} fill={definition.color} r="4" />
                       <title>
-                        {`${definition.label}: ${formatCurrency(point.value)} (${formatPeriodLabel(point.label)})`}
+                        {`${definition.label}: ${valueFormatter(point.value)} (${formatPeriodLabel(point.label)})`}
                       </title>
                     </g>
                   ))}
@@ -271,7 +283,7 @@ export function OccupationSalaryTimeSeriesChart({
                         (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
                       }
                     >
-                      {currencyFormatter.format(points[points.length - 1].value)}
+                      {endLabelFormatter(points[points.length - 1].value)}
                     </text>
                   ) : null}
                 </g>
@@ -309,6 +321,26 @@ export function OccupationSalaryTimeSeriesChart({
 
 function formatCurrency(value: number) {
   return `${currencyFormatter.format(value)} kr`;
+}
+
+function formatAxisCurrency(value: number) {
+  return currencyFormatter.format(Math.round(value));
+}
+
+function formatEndLabel(value: number) {
+  return currencyFormatter.format(Math.round(value));
+}
+
+function formatHourlyValue(value: number) {
+  return `${Math.round(value).toLocaleString("nb-NO")} kr/time`;
+}
+
+function formatHourlyAxisValue(value: number) {
+  return Math.round(value).toLocaleString("nb-NO");
+}
+
+function formatHourlyEndLabel(value: number) {
+  return Math.round(value).toLocaleString("nb-NO");
 }
 
 function formatPeriodLabel(value: string) {

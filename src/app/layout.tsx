@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import { MainFooter } from "@/components/main-footer";
 import { MainHeader } from "@/components/main-header";
+import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -9,8 +10,28 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Lønnsdata Norge",
-  description: "Finn lønnsnivå etter yrke, region og erfaring.",
+  metadataBase: new URL(siteConfig.siteUrl),
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "nb_NO",
+    url: siteConfig.siteUrl,
+    siteName: siteConfig.name,
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
 };
 
 type RootLayoutProps = Readonly<{

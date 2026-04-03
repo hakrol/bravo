@@ -97,6 +97,7 @@ export function OccupationWorkforceTimeSeriesChart({
     });
   const latestPeriodLabel = latestValues[0]?.periodLabel;
   const latestOverallPoint = getLatestSeriesPoint(relevantPoints, "employeesAll");
+  const latestTotal = latestOverallPoint?.value;
   const latestSummary = latestOverallPoint
     ? `${formatPeriodLabel(latestOverallPoint.periodLabel)}: ${formatWorkforceCount(latestOverallPoint.value)} personer`
     : null;
@@ -141,7 +142,7 @@ export function OccupationWorkforceTimeSeriesChart({
               >
                 <span className="text-[15px]">{entry.label}: </span>
                 <span className="text-[15px] font-semibold text-slate-950">
-                  {formatWorkforceCount(entry.value)}
+                  {formatLatestWorkforceValue(entry.value, latestTotal)}
                 </span>
               </div>
             ))}
@@ -333,6 +334,32 @@ function formatWorkforceCount(value?: number) {
   return `${value.toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
   })}`;
+}
+
+function formatLatestWorkforceValue(value?: number, total?: number) {
+  if (value === undefined) {
+    return ":";
+  }
+
+  const formattedCount = formatWorkforceCount(value);
+
+  if (total === undefined || total <= 0) {
+    return formattedCount;
+  }
+
+  const share = (value / total) * 100;
+  return `${formattedCount} (${formatPercentage(share)})`;
+}
+
+function formatPercentage(value?: number) {
+  if (value === undefined) {
+    return ":";
+  }
+
+  return `${value.toLocaleString("nb-NO", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  })} %`;
 }
 
 function formatQuarterCodeLabel(value: string) {

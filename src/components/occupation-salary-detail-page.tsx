@@ -408,49 +408,9 @@ export async function OccupationSalaryDetailPage({
                   description={`Utviklingen i hvor mange personer som er registrert som lønnstakere som ${detailPage.label.toLowerCase()} per kvartal, fordelt på kvinner og menn.`}
                   points={laborMarketStats.workforcePoints}
                 />
-
-                <LaborMarketCard
-                  title="Kjønnsfordeling blant lønnstakere"
-                  subtitle={laborMarketStats.genderBreakdown?.periodLabel}
-                >
-                  {laborMarketStats.genderBreakdown ? (
-                    <div className="space-y-3">
-                      <SplitRow
-                        label="Kvinner"
-                        value={formatWorkforceCount(laborMarketStats.genderBreakdown.women)}
-                        detail={formatPercentage(laborMarketStats.genderBreakdown.womenShare)}
-                      />
-                      <SplitRow
-                        label="Menn"
-                        value={formatWorkforceCount(laborMarketStats.genderBreakdown.men)}
-                        detail={formatPercentage(laborMarketStats.genderBreakdown.menShare)}
-                      />
-                    </div>
-                  ) : (
-                    <p className="text-sm leading-7 text-slate-700">Ingen kjønnsfordeling tilgjengelig.</p>
-                  )}
-                </LaborMarketCard>
               </div>
 
               <div className="space-y-4">
-                <LaborMarketCard
-                  title="Gjennomsnittsalder"
-                  subtitle={laborMarketStats.age?.periodLabel}
-                >
-                  {laborMarketStats.age ? (
-                    <div className="space-y-3">
-                      <SplitRow label="Alle" value={formatAgeMetric(laborMarketStats.age.averageAll)} />
-                      <SplitRow
-                        label="Kvinner"
-                        value={formatAgeMetric(laborMarketStats.age.averageWomen)}
-                      />
-                      <SplitRow label="Menn" value={formatAgeMetric(laborMarketStats.age.averageMen)} />
-                    </div>
-                  ) : (
-                    <p className="text-sm leading-7 text-slate-700">Ingen alderstall tilgjengelig.</p>
-                  )}
-                </LaborMarketCard>
-
                 {hasAgeSeries ? (
                   <OccupationAgeTimeSeriesChart
                     occupationLabel={detailPage.label}
