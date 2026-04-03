@@ -398,7 +398,7 @@ function SortableHeader({
   );
 }
 
-function OccupationLink({ href, label }: { href?: string; label: string }) {
+function OccupationLink({ href, label }: { href?: string | null; label: string }) {
   if (!href) {
     return <span className="font-semibold text-slate-900">{label}</span>;
   }
