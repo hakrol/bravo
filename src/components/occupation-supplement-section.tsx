@@ -54,7 +54,10 @@ const filterOptions = [
 
 type SupplementKey = (typeof supplementFilterOptions)[number]["key"];
 type FilterKey = (typeof filterOptions)[number]["key"];
-type ValueKey = keyof OccupationSupplementTimeSeriesPoint;
+type ValueKey = Exclude<
+  keyof OccupationSupplementTimeSeriesPoint,
+  "periodCode" | "periodLabel"
+>;
 
 type OccupationSupplementSectionProps = {
   occupationLabel: string;
