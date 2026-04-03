@@ -72,7 +72,7 @@ export function HomeOccupationSalarySearch({
           />
         </label>
         <p className="mt-3 text-center text-sm text-[var(--muted)]">
-          Tabellen filtreres fortløpende mens du skriver.
+          Oversikten filtreres fortløpende mens du skriver.
         </p>
       </div>
 
@@ -117,6 +117,7 @@ export function HomeOccupationSalarySearch({
         rows={filteredRows}
         showLastUpdated={false}
         title={buildTitle(query.trim(), activeGroupLabels)}
+        variant="cards"
       />
     </section>
   );
