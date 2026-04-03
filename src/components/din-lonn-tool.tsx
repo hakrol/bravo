@@ -48,7 +48,9 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
   const activeDistributionRow = submitted?.gender === "mann" ? "men" : "women";
 
   useEffect(() => {
-    if (!submitted?.occupationCode) {
+    const submittedOccupationCode = submitted?.occupationCode;
+
+    if (!submittedOccupationCode) {
       setDistribution(null);
       setDistributionError(null);
       setIsDistributionLoading(false);
@@ -63,7 +65,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
         setDistributionError(null);
 
         const response = await fetch(
-          `/api/occupation-distribution?occupationCode=${encodeURIComponent(submitted.occupationCode)}`,
+          `/api/occupation-distribution?occupationCode=${encodeURIComponent(submittedOccupationCode)}`,
           { signal: controller.signal },
         );
 
