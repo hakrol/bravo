@@ -115,12 +115,18 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
     const controller = new AbortController();
 
     async function loadDistribution() {
+      const occupationCode = submittedOccupationCode;
+
+      if (!occupationCode) {
+        return;
+      }
+
       try {
         setIsDistributionLoading(true);
         setDistributionError(null);
 
         const response = await fetch(
-          `/api/occupation-distribution?occupationCode=${encodeURIComponent(submittedOccupationCode)}`,
+          `/api/occupation-distribution?occupationCode=${encodeURIComponent(occupationCode)}`,
           { signal: controller.signal },
         );
 
@@ -168,12 +174,18 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
     const controller = new AbortController();
 
     async function loadInsights() {
+      const occupationCode = submittedOccupationCode;
+
+      if (!occupationCode) {
+        return;
+      }
+
       try {
         setIsPurchasingPowerLoading(true);
         setPurchasingPowerError(null);
 
         const response = await fetch(
-          `/api/occupation-insights?occupationCode=${encodeURIComponent(submittedOccupationCode)}`,
+          `/api/occupation-insights?occupationCode=${encodeURIComponent(occupationCode)}`,
           { signal: controller.signal },
         );
 
