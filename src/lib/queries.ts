@@ -1172,7 +1172,13 @@ export function buildInflationQuarterQuery(metadata: SsbTableMetadata): SsbQuery
     const metadataDimension = metadata.dimension[dimension];
 
     if (timeDimensions.has(dimension)) {
-      query[`valueCodes[${dimension}]`] = "*";
+      const earliestTimeCode = getEarliestDimensionCode(metadata, dimension);
+
+      if (!earliestTimeCode) {
+        throw new Error(`Fant ikke tidligste periode i KPI-tabell ${SSB_INFLATION_TABLE_ID}.`);
+      }
+
+      query[`valueCodes[${dimension}]`] = `from(${earliestTimeCode})`;
       continue;
     }
 
@@ -2733,6 +2739,20 @@ function getMetricUnitFromMetadata(metadata: SsbTableMetadata) {
   }
 
   return metricDimension.category.unit?.[firstMetricCode]?.base;
+}
+
+function getEarliestDimensionCode(
+  metadata: SsbTableMetadata,
+  dimensionCode: string,
+) {
+  const dimension = metadata.dimension[dimensionCode];
+
+  if (!dimension) {
+    return undefined;
+  }
+
+  return Object.entries(dimension.category.index)
+    .sort((left, right) => left[1] - right[1])[0]?.[0];
 }
 
 function toQuarterFromMonthCode(periodCode: string) {
