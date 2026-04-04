@@ -1,16 +1,20 @@
-# Blogginnlegg
+# Blogginnhold
 
-Frontmatter skal følge dette formatet:
+Legg nye innlegg som `.mdx`-filer i denne mappen.
+
+Hvert innlegg skal ha frontmatter øverst:
 
 ```md
 ---
 title: "Tittel"
-description: "Kort ingress"
+description: "Kort beskrivelse"
 slug: "min-slug"
-publishedAt: "2026-01-01"
-coverImage: "/blogg/min-slug/cover.svg"
-author: "Lønnsinnsikt"
+publishedAt: "2026-04-03"
+coverImage: "/blogg/min-slug/cover.jpg"
+author: "Lønnsdata Norge"
 seoTitle: "Valgfri SEO-tittel"
 seoDescription: "Valgfri SEO-beskrivelse"
 ---
 ```
+
+Deretter skriver du selve innholdet i MDX.

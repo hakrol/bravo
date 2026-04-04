@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import { MainFooter } from "@/components/main-footer";
-import { MainHeader } from "@/components/main-header";
+import { AppShell } from "@/components/app-shell";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -58,9 +57,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
       <body className="flex min-h-screen flex-col">
-        <MainHeader />
-        <div className="flex-1">{children}</div>
-        <MainFooter />
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
