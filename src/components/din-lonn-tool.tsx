@@ -789,6 +789,8 @@ type UserPurchasingPowerSectionProps = {
 };
 
 function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps) {
+  const cumulativeInflationValue = formatPercent(insight.cumulativeInflationPercent) ?? "Mangler data";
+  const differencePercentValue = formatPercent(insight.differencePercent) ?? "Mangler data";
   const trendTone = getTone(insight.differenceFromAdjustedStart);
   const trendValueClassName =
     trendTone === "positive"
@@ -828,7 +830,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
             className={`inline-flex items-center gap-2 text-3xl font-semibold tracking-[-0.04em] ${trendValueClassName}`}
           >
             <TrendArrowIcon direction={trendTone === "negative" ? "down" : "up"} />
-            {formatPercent(insight.differencePercent)}
+            {differencePercentValue}
           </div>
         </div>
       </div>
@@ -837,7 +839,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
         <ReportCard
           detail={`Sammenlignet med ${insight.startYear}`}
           label="Prisvekst siden start"
-          value={formatPercent(insight.cumulativeInflationPercent)}
+          value={cumulativeInflationValue}
         />
         <ReportCard
           detail="Inflasjonsjustert startnivå i dagens kroner"
@@ -848,7 +850,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
           detail={`${formatDifference(insight.differenceFromAdjustedStart)} mot inflasjonsjustert startnivå`}
           label="Endring i kjøpekraft"
           tone={trendTone}
-          value={formatPercent(insight.differencePercent)}
+          value={differencePercentValue}
         />
       </div>
 
@@ -860,7 +862,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
         </p>
         <p className="mt-2">
           Med lønnen du har lagt inn ligger du {formatDifferenceTextLong(insight.differenceFromAdjustedStart)} det
-          inflasjonsjusterte nivået, som tilsvarer {formatPercent(insight.differencePercent)}.
+          inflasjonsjusterte nivået, som tilsvarer {differencePercentValue}.
         </p>
       </div>
     </div>
