@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/blogg", label: "Blogg" },
-  { href: "/din-lonn", label: "Din lønn" },
+  { href: "/din-lonn", label: "Lønnssjekk" },
   {
     href: "/annet",
-    label: "Annet",
+    label: "Analyse",
     children: [
       { href: "/kvinner-vs-menn", label: "Kvinner vs menn" },
       { href: "/topp-jobber", label: "Topp jobber" },
@@ -41,10 +41,10 @@ export function MainNav() {
               <Link
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition duration-200",
+                  "inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold transition duration-200",
                   active
-                    ? "bg-[var(--primary)] text-white shadow-sm shadow-[rgba(20,83,45,0.18)]"
-                    : "text-[var(--foreground)] hover:bg-[var(--accent-soft)] hover:text-[var(--primary-strong)]",
+                    ? "text-[var(--primary-strong)]"
+                    : "text-[var(--foreground)] hover:text-[var(--primary-strong)]",
                 ].join(" ")}
                 href={item.href}
               >
@@ -59,7 +59,7 @@ export function MainNav() {
                   {item.children.map((child) => (
                     <Link
                       key={child.href}
-                      className="flex rounded-2xl px-4 py-3 text-sm font-medium text-[var(--foreground)] transition hover:bg-[var(--accent-soft)] hover:text-[var(--primary-strong)]"
+                      className="flex px-4 py-3 text-sm font-medium text-[var(--foreground)] transition hover:text-[var(--primary-strong)]"
                       href={child.href}
                     >
                       {child.label}
@@ -76,10 +76,10 @@ export function MainNav() {
             key={item.href}
             aria-current={active ? "page" : undefined}
             className={[
-              "inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition duration-200",
+              "inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold transition duration-200",
               active
-                ? "bg-[var(--primary)] text-white shadow-sm shadow-[rgba(20,83,45,0.18)]"
-                : "text-[var(--foreground)] hover:bg-[var(--accent-soft)] hover:text-[var(--primary-strong)]",
+                ? "text-[var(--primary-strong)]"
+                : "text-[var(--foreground)] hover:text-[var(--primary-strong)]",
             ].join(" ")}
             href={item.href}
           >

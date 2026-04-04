@@ -7,13 +7,30 @@ import {
   getOccupationMedianSalaryOverview,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
+import { siteConfig } from "@/lib/site-config";
 
-export const dynamic = "force-dynamic";
+const description =
+  "Sammenlign din brutto månedslønn med median avtalt månedslønn og gjennomsnitt i yrket basert på SSB-data.";
 
 export const metadata: Metadata = {
-  title: "Din lønn | Lønnsdata Norge",
-  description:
-    "Sammenlign din brutto månedslønn med median avtalt månedslønn og gjennomsnitt i yrket basert på SSB-data.",
+  title: "Din lønn",
+  description,
+  alternates: {
+    canonical: "/din-lonn",
+  },
+  openGraph: {
+    type: "website",
+    locale: "nb_NO",
+    url: "/din-lonn",
+    siteName: siteConfig.name,
+    title: `Din lønn | ${siteConfig.name}`,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Din lønn | ${siteConfig.name}`,
+    description,
+  },
 };
 
 export default async function DinLonnPage() {

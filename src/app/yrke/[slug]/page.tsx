@@ -14,8 +14,6 @@ import {
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
 
-export const dynamic = "force-dynamic";
-
 type OccupationDetailPageProps = {
   params: Promise<{
     slug: string;

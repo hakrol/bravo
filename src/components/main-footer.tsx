@@ -18,14 +18,14 @@ export function MainFooter() {
             </span>
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
-                Lønnsdata
+                Lønnsinnsikt
               </p>
-              <p className="text-sm text-[var(--muted)]">Nettside for lønnsinnsikt i Norge</p>
+              <p className="text-sm text-[var(--muted)]">Lønnsinnsikt for norske yrker</p>
             </div>
           </Link>
 
           <p className="mt-5 text-sm leading-7 text-[var(--muted)] sm:text-base">
-            Lønnsdata samler og presenterer oversiktlige lønnstall for ulike yrker, slik at det
+            Lønnsinnsikt samler og presenterer oversiktlige lønnstall for ulike yrker, slik at det
             blir enklere å utforske forskjeller i inntekt etter rolle, erfaring og kjønn.
           </p>
         </div>

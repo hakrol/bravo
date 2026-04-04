@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
 import { getBlogPostBySlug, getBlogPostSlugs, getBlogPostUrl } from "@/lib/blog";
-import { getAbsoluteUrl } from "@/lib/site-config";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -41,7 +41,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     },
     openGraph: {
       type: "article",
+      locale: "nb_NO",
       url: canonicalUrl,
+      siteName: siteConfig.name,
       title,
       description,
       publishedTime: post.publishedAt,

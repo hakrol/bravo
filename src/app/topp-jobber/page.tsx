@@ -1,8 +1,27 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/lib/site-config";
+
+const description = "Planlagt side for å utforske de best betalte jobbene og lønnsvekst over tid.";
 
 export const metadata: Metadata = {
-  title: "Topp jobber | Lønnsdata Norge",
-  description: "Planlagt side for å utforske de best betalte jobbene og lønnsvekst over tid.",
+  title: "Topp jobber",
+  description,
+  alternates: {
+    canonical: "/topp-jobber",
+  },
+  openGraph: {
+    type: "website",
+    locale: "nb_NO",
+    url: "/topp-jobber",
+    siteName: siteConfig.name,
+    title: `Topp jobber | ${siteConfig.name}`,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Topp jobber | ${siteConfig.name}`,
+    description,
+  },
 };
 
 const focusAreas = [

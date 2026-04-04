@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
 import { BlogCard } from "@/components/blog-card";
 import { getAllBlogPosts } from "@/lib/blog";
+import { siteConfig } from "@/lib/site-config";
+
+const description =
+  "Artikler om lønn, statistikk, forhandlinger og hvordan du bruker lønnsdata bedre.";
 
 export const metadata: Metadata = {
   title: "Blogg",
-  description: "Artikler om lønn, statistikk, forhandlinger og hvordan du bruker lønnsdata bedre.",
+  description,
   alternates: {
     canonical: "/blogg",
   },
   openGraph: {
-    title: "Blogg",
-    description: "Artikler om lønn, statistikk, forhandlinger og hvordan du bruker lønnsdata bedre.",
-    url: "/blogg",
     type: "website",
+    locale: "nb_NO",
+    url: "/blogg",
+    siteName: siteConfig.name,
+    title: `Blogg | ${siteConfig.name}`,
+    description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blogg",
-    description: "Artikler om lønn, statistikk, forhandlinger og hvordan du bruker lønnsdata bedre.",
+    title: `Blogg | ${siteConfig.name}`,
+    description,
   },
 };
 

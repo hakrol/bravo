@@ -177,6 +177,37 @@ export type SsbNormalizedDataset = {
   rows: SsbObservation[];
 };
 
+export type GeneratedSsbDatasetKey =
+  | "occupationLatestAverage"
+  | "occupationLatestMedian"
+  | "occupationPreviousMedian"
+  | "occupationAverageTimeSeries"
+  | "occupationMedianTimeSeries"
+  | "occupationDistributionLatest"
+  | "occupationSupplementTimeSeries"
+  | "occupationWorkforceTimeSeries"
+  | "occupationAgeTimeSeries"
+  | "occupationContractLatest"
+  | "inflationQuarterSeries";
+
+export type GeneratedSsbDatasetManifestEntry = {
+  key: GeneratedSsbDatasetKey;
+  fileName: string;
+  tableId: string;
+  tableKey?: SsbSalaryTableKey;
+  title: string;
+  updated?: string;
+  rowCount: number;
+  dimensions: string[];
+};
+
+export type GeneratedSsbManifest = {
+  version: number;
+  generatedAt: string;
+  source: "ssb";
+  datasets: GeneratedSsbDatasetManifestEntry[];
+};
+
 export type OccupationSalaryTimeSeriesPoint = {
   periodCode: string;
   periodLabel: string;

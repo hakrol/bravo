@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts, getBlogPostUrl } from "@/lib/blog";
-import { siteConfig } from "@/lib/site-config";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllBlogPosts();
@@ -12,25 +12,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${siteConfig.siteUrl}/blogg`,
+      url: getAbsoluteUrl("/blogg"),
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${siteConfig.siteUrl}/din-lonn`,
+      url: getAbsoluteUrl("/din-lonn"),
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: `${siteConfig.siteUrl}/kvinner-vs-menn`,
+      url: getAbsoluteUrl("/kvinner-vs-menn"),
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: `${siteConfig.siteUrl}/topp-jobber`,
+      url: getAbsoluteUrl("/topp-jobber"),
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(post.publishedAt),
     changeFrequency: "monthly",
     priority: 0.8,
-    images: [post.coverImage.startsWith("http") ? post.coverImage : `${siteConfig.siteUrl}${post.coverImage}`],
+    images: [post.coverImage.startsWith("http") ? post.coverImage : getAbsoluteUrl(post.coverImage)],
   }));
 
   return [...staticRoutes, ...blogRoutes];
