@@ -1,26 +1,25 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { cache } from "react";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
-import { blogMdxComponents } from "@/components/blog-mdx-components";
+import { cache } from "react";
 import { siteConfig } from "@/lib/site-config";
 
-const BLOG_CONTENT_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
+const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
 
-export type BlogPostFrontmatter = {
+export type BlogFrontmatter = {
   title: string;
   description: string;
   slug: string;
   publishedAt: string;
-  coverImage: string;
-  author: string;
+  coverImage?: string;
+  author?: string;
   seoTitle?: string;
   seoDescription?: string;
 };
 
-export type BlogPostPreview = BlogPostFrontmatter & {
+export type BlogPostPreview = BlogFrontmatter & {
   readingTimeMinutes: number;
 };
 
@@ -28,7 +27,11 @@ export type BlogPost = BlogPostPreview & {
   content: ReactNode;
 };
 
-function assertString(value: unknown, fieldName: keyof BlogPostFrontmatter) {
+function trimOptionalString(value: unknown) {
+  return typeof value === "string" && value.trim().length > 0 ? value.trim() : undefined;
+}
+
+function assertRequiredString(value: unknown, fieldName: keyof BlogFrontmatter) {
   if (typeof value !== "string" || value.trim().length === 0) {
     throw new Error(`Blogginnlegget mangler gyldig felt: ${fieldName}`);
   }
@@ -36,25 +39,22 @@ function assertString(value: unknown, fieldName: keyof BlogPostFrontmatter) {
   return value.trim();
 }
 
-function normalizeFrontmatter(data: unknown): BlogPostFrontmatter {
-  if (!data || typeof data !== "object") {
+function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
+  if (!frontmatter || typeof frontmatter !== "object") {
     throw new Error("Blogginnlegget mangler frontmatter.");
   }
 
-  const frontmatter = data as Record<string, unknown>;
+  const data = frontmatter as Record<string, unknown>;
 
   return {
-    title: assertString(frontmatter.title, "title"),
-    description: assertString(frontmatter.description, "description"),
-    slug: assertString(frontmatter.slug, "slug"),
-    publishedAt: assertString(frontmatter.publishedAt, "publishedAt"),
-    coverImage: assertString(frontmatter.coverImage, "coverImage"),
-    author: assertString(frontmatter.author, "author"),
-    seoTitle: typeof frontmatter.seoTitle === "string" ? frontmatter.seoTitle.trim() : undefined,
-    seoDescription:
-      typeof frontmatter.seoDescription === "string"
-        ? frontmatter.seoDescription.trim()
-        : undefined,
+    title: assertRequiredString(data.title, "title"),
+    description: assertRequiredString(data.description, "description"),
+    slug: assertRequiredString(data.slug, "slug"),
+    publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
+    coverImage: trimOptionalString(data.coverImage),
+    author: trimOptionalString(data.author),
+    seoTitle: trimOptionalString(data.seoTitle),
+    seoDescription: trimOptionalString(data.seoDescription),
   };
 }
 
@@ -68,34 +68,17 @@ function calculateReadingTimeMinutes(source: string) {
   return Math.max(1, Math.ceil(wordCount / 220));
 }
 
-async function getBlogPostFileNames() {
-  const entries = await fs.readdir(BLOG_CONTENT_DIRECTORY, { withFileTypes: true });
-
-  return entries
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".mdx"))
-    .map((entry) => entry.name);
-}
-
-async function readBlogPostSource(slug: string) {
-  const filePath = path.join(BLOG_CONTENT_DIRECTORY, `${slug}.mdx`);
-
-  return fs.readFile(filePath, "utf8");
-}
-
-export function formatBlogDate(dateString: string) {
-  return new Intl.DateTimeFormat("nb-NO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(dateString));
+async function getBlogFileNames() {
+  const entries = await fs.readdir(BLOG_DIRECTORY, { withFileTypes: true });
+  return entries.filter((entry) => entry.isFile() && entry.name.endsWith(".mdx")).map((entry) => entry.name);
 }
 
 export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
-  const fileNames = await getBlogPostFileNames();
+  const fileNames = await getBlogFileNames();
 
   const posts = await Promise.all(
     fileNames.map(async (fileName) => {
-      const source = await fs.readFile(path.join(BLOG_CONTENT_DIRECTORY, fileName), "utf8");
+      const source = await fs.readFile(path.join(BLOG_DIRECTORY, fileName), "utf8");
       const { data, content } = matter(source);
       const frontmatter = normalizeFrontmatter(data);
 
@@ -107,17 +90,15 @@ export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
   );
 
   return posts.sort(
-    (first, second) =>
-      new Date(second.publishedAt).getTime() - new Date(first.publishedAt).getTime(),
+    (left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime(),
   );
 });
 
 export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
   try {
-    const source = await readBlogPostSource(slug);
-    const { content, frontmatter } = await compileMDX<BlogPostFrontmatter>({
+    const source = await fs.readFile(path.join(BLOG_DIRECTORY, `${slug}.mdx`), "utf8");
+    const { content, frontmatter } = await compileMDX<BlogFrontmatter>({
       source,
-      components: blogMdxComponents,
       options: {
         parseFrontmatter: true,
       },
@@ -141,8 +122,15 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
 
 export async function getBlogPostSlugs() {
   const posts = await getAllBlogPosts();
-
   return posts.map((post) => post.slug);
+}
+
+export function formatBlogDate(dateString: string) {
+  return new Intl.DateTimeFormat("nb-NO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(dateString));
 }
 
 export function getBlogPostUrl(slug: string) {

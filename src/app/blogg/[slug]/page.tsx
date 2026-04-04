@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BlogPostHeader } from "@/components/blog-post-header";
-import { BlogProse } from "@/components/blog-prose";
-import { getBlogPostBySlug, getBlogPostSlugs, getBlogPostUrl } from "@/lib/blog";
+import { formatBlogDate, getBlogPostBySlug, getBlogPostSlugs, getBlogPostUrl } from "@/lib/blog";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type BlogPostPageProps = {
@@ -16,7 +14,6 @@ export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const slugs = await getBlogPostSlugs();
-
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -30,36 +27,24 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
   const title = post.seoTitle ?? post.title;
   const description = post.seoDescription ?? post.description;
-  const canonicalUrl = getBlogPostUrl(post.slug);
-  const imageUrl = getAbsoluteUrl(post.coverImage);
+  const imageUrl = post.coverImage ? getAbsoluteUrl(post.coverImage) : undefined;
 
   return {
     title,
     description,
     alternates: {
-      canonical: canonicalUrl,
+      canonical: getBlogPostUrl(post.slug),
     },
     openGraph: {
       type: "article",
       locale: "nb_NO",
-      url: canonicalUrl,
+      url: getBlogPostUrl(post.slug),
       siteName: siteConfig.name,
       title,
       description,
       publishedTime: post.publishedAt,
-      authors: [post.author],
-      images: [
-        {
-          url: imageUrl,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [imageUrl],
+      authors: post.author ? [post.author] : undefined,
+      images: imageUrl ? [{ url: imageUrl, alt: post.title }] : undefined,
     },
   };
 }
@@ -73,19 +58,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
-        <Link className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]" href="/blogg">
-          ← Tilbake til blogg
+    <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+      <article className="mx-auto max-w-3xl rounded-[2rem] border border-[var(--border)] bg-white/95 px-6 py-8 shadow-sm sm:px-8">
+        <Link className="text-sm font-medium text-[var(--primary-strong)] transition hover:opacity-80" href="/blogg">
+          Tilbake til blogg
         </Link>
 
-        <article className="space-y-12">
-          <BlogPostHeader post={post} />
-          <div className="mx-auto max-w-3xl pt-2">
-            <BlogProse>{post.content}</BlogProse>
-          </div>
-        </article>
-      </div>
+        <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-[var(--muted)]">
+          <span>{formatBlogDate(post.publishedAt)}</span>
+          <span>·</span>
+          <span>{post.readingTimeMinutes} min lesetid</span>
+          {post.author ? (
+            <>
+              <span>·</span>
+              <span>{post.author}</span>
+            </>
+          ) : null}
+        </div>
+
+        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
+          {post.title}
+        </h1>
+        <p className="mt-4 text-base leading-8 text-[var(--muted)] sm:text-lg">{post.description}</p>
+
+        <div className="prose prose-slate mt-10 max-w-none">{post.content}</div>
+      </article>
     </main>
   );
 }

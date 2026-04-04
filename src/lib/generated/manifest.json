@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-03T20:04:47.102Z",
+  "generatedAt": "2026-04-04T00:00:00.000Z",
   "source": "ssb",
   "datasets": [
     {
@@ -11,13 +11,7 @@
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 1749,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationLatestMedian",
@@ -27,13 +21,7 @@
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 1749,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationPreviousMedian",
@@ -43,13 +31,7 @@
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 1749,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationAverageTimeSeries",
@@ -59,13 +41,7 @@
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 69960,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationMedianTimeSeries",
@@ -75,13 +51,7 @@
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 69960,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationDistributionLatest",
@@ -90,15 +60,7 @@
       "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 6984,
-      "dimensions": [
-        "MaaleMetode",
-        "Yrke",
-        "Sektor",
-        "Kjonn",
-        "AvtaltVanlig",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["MaaleMetode", "Yrke", "Sektor", "Kjonn", "AvtaltVanlig", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationSupplementTimeSeries",
@@ -107,15 +69,7 @@
       "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 57618,
-      "dimensions": [
-        "MaaleMetode",
-        "Yrke",
-        "Sektor",
-        "Kjonn",
-        "AvtaltVanlig",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["MaaleMetode", "Yrke", "Sektor", "Kjonn", "AvtaltVanlig", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationWorkforceTimeSeries",
@@ -124,14 +78,8 @@
       "tableKey": "occupationDetailed",
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 139920,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "rowCount": 69960,
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationAgeTimeSeries",
@@ -141,13 +89,7 @@
       "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 69960,
-      "dimensions": [
-        "Kjonn",
-        "Alder",
-        "Yrke",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Kjonn", "Alder", "Yrke", "ContentsCode", "Tid"]
     },
     {
       "key": "occupationContractLatest",
@@ -156,27 +98,16 @@
       "title": "14437: Ansettelsesform blant sysselsatte, etter yrke (4-siffernivå) og alder. 4 kvartal (F) 2021-2025",
       "updated": "2026-02-26T07:00:00Z",
       "rowCount": 4664,
-      "dimensions": [
-        "Region",
-        "Ansettelsesforhold",
-        "Yrke",
-        "Alder",
-        "ContentsCode",
-        "Tid"
-      ]
+      "dimensions": ["Region", "Ansettelsesforhold", "Yrke", "Alder", "ContentsCode", "Tid"]
     },
     {
       "key": "inflationQuarterSeries",
       "fileName": "inflation-quarter-series.json",
       "tableId": "14700",
-      "title": "14700: Konsumprisindeks, etter vare- og tjenestegruppe (2025=100) 2000M01-2026M02",
-      "updated": "2026-03-10T07:00:00Z",
-      "rowCount": 314,
-      "dimensions": [
-        "VareTjenesteGrp",
-        "ContentsCode",
-        "Tid"
-      ]
+      "title": "14700: Konsumprisindeks, månedstall",
+      "updated": "2026-02-10T07:00:00Z",
+      "rowCount": 24,
+      "dimensions": ["ContentsCode", "Tid"]
     }
   ]
 }
