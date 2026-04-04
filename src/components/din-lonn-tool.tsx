@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import {
   buildDinLonnReport,
@@ -31,6 +30,8 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [submitted, setSubmitted] = useState<FormState | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [occupationQuery, setOccupationQuery] = useState("");
+  const [isOccupationMenuOpen, setIsOccupationMenuOpen] = useState(false);
   const [distribution, setDistribution] = useState<OccupationSalaryDistribution | null>(null);
   const [distributionError, setDistributionError] = useState<string | null>(null);
   const [isDistributionLoading, setIsDistributionLoading] = useState(false);
@@ -45,7 +46,12 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
           data,
         })
       : null;
-  const optionsByGroup = groupOptions(data);
+  const deferredOccupationQuery = useDeferredValue(occupationQuery);
+  const occupationOptions = useMemo(() => flattenOccupationOptions(data), [data]);
+  const filteredOccupationOptions = filterOccupationOptions(
+    occupationOptions,
+    deferredOccupationQuery,
+  ).slice(0, 8);
   const activeDistributionRow = submitted?.gender === "mann" ? "men" : "women";
 
   useEffect(() => {
@@ -118,11 +124,21 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
     setSubmitted(form);
   }
 
+  function handleOccupationSelect(option: { occupationCode: string; occupationLabel: string }) {
+    setForm((current) => ({
+      ...current,
+      occupationCode: option.occupationCode,
+    }));
+    setOccupationQuery(option.occupationLabel);
+    setIsOccupationMenuOpen(false);
+    setError(null);
+  }
+
   return (
     <div className="grid gap-8">
-      <section className="fade-up overflow-hidden rounded-[5px] border border-black/10 bg-white/90 shadow-[0_18px_60px_rgba(27,36,48,0.08)]">
-        <div className="grid gap-8 px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
-          <div className="space-y-6">
+      <section className="fade-up">
+        <div className="px-6 py-8 sm:px-8 sm:py-10">
+          <div className="mx-auto max-w-3xl space-y-6">
             <div className="space-y-4">
               <h1 className="text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
                 Lønnsjekk
@@ -132,6 +148,10 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                 yrke, og få en tydelig sammenligning mot nivået i yrket ditt basert på oppdaterte
                 tall fra SSB.
               </p>
+              <div className="max-w-2xl rounded-[5px] border border-black/8 bg-[var(--surface)] px-4 py-4 text-sm leading-7 text-slate-700">
+                <p>Periode: {formatPeriodLabel(data.periodLabel)}</p>
+                <p>Kilde: SSB</p>
+              </div>
             </div>
 
             <form
@@ -161,6 +181,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                 <div className="grid gap-3 sm:grid-cols-2">
                   <GenderButton
                     active={form.gender === "kvinne"}
+                    icon={<FemaleIcon />}
                     label="Kvinne"
                     onClick={() =>
                       setForm((current) => ({
@@ -172,6 +193,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                   />
                   <GenderButton
                     active={form.gender === "mann"}
+                    icon={<MaleIcon />}
                     label="Mann"
                     onClick={() =>
                       setForm((current) => ({
@@ -182,36 +204,58 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                     type="button"
                   />
                 </div>
-                <p className="text-sm leading-6 text-[var(--muted)]">
-                  SSB-tabellene på denne siden er delt inn i kvinner og menn.
-                </p>
               </fieldset>
 
-              <label className="grid gap-2" htmlFor="occupationCode">
+              <div className="grid gap-2">
                 <span className="text-sm font-semibold text-slate-900">Yrke</span>
-                <select
-                  id="occupationCode"
-                  className="min-h-14 rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      occupationCode: event.target.value,
-                    }))
-                  }
-                  value={form.occupationCode}
-                >
-                  <option value="">Velg yrke</option>
-                  {optionsByGroup.map((group) => (
-                    <optgroup key={group.label} label={group.label}>
-                      {group.options.map((option) => (
-                        <option key={option.occupationCode} value={option.occupationCode}>
-                          {option.occupationLabel}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>
-              </label>
+                <div className="relative">
+                  <input
+                    id="occupation-search"
+                    autoComplete="off"
+                    className="h-14 w-full rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
+                    onChange={(event) => {
+                      const nextValue = event.target.value;
+                      setOccupationQuery(nextValue);
+                      setIsOccupationMenuOpen(true);
+                      setForm((current) => ({
+                        ...current,
+                        occupationCode: "",
+                      }));
+                    }}
+                    onFocus={() => setIsOccupationMenuOpen(true)}
+                    placeholder="Skriv f.eks. regnskapsfører"
+                    type="search"
+                    value={occupationQuery}
+                  />
+
+                  {isOccupationMenuOpen && filteredOccupationOptions.length > 0 ? (
+                    <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-[5px] border border-black/10 bg-white shadow-[0_18px_40px_rgba(27,36,48,0.12)]">
+                      <ul className="max-h-72 overflow-y-auto py-2">
+                        {filteredOccupationOptions.map((option) => (
+                          <li key={option.occupationCode}>
+                            <button
+                              className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-[#f8faf8] hover:text-slate-950"
+                              onClick={() => handleOccupationSelect(option)}
+                              type="button"
+                            >
+                              <span>{option.occupationLabel}</span>
+                              <span className="shrink-0 text-xs text-[var(--muted)]">
+                                {option.groupLabel}
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </div>
+
+                {occupationQuery.trim().length > 0 && filteredOccupationOptions.length === 0 ? (
+                  <p className="text-sm leading-6 text-[var(--muted)]">
+                    Ingen yrker matcher søket ditt akkurat nå.
+                  </p>
+                ) : null}
+              </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <button
@@ -220,9 +264,6 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                 >
                   Sjekk lønn
                 </button>
-                <p className="text-sm leading-6 text-[var(--muted)]">
-                  Rapporten bruker siste tilgjengelige SSB-tall for valgt yrke.
-                </p>
               </div>
 
               {error ? (
@@ -232,53 +273,6 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
               ) : null}
             </form>
           </div>
-
-          <aside className="overflow-hidden rounded-[5px] border border-black/8 bg-[linear-gradient(135deg,rgba(244,239,230,0.88)_0%,rgba(230,240,234,0.94)_100%)] p-5 shadow-[0_14px_40px_rgba(27,36,48,0.06)] sm:p-6">
-            <div className="space-y-5">
-              <div className="space-y-3">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-                  Om lønnsjekk
-                </p>
-                <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950">
-                  Et raskt lønnsbilde, uten støy
-                </h2>
-                <p className="text-sm leading-7 text-slate-700 sm:text-base">
-                  Lønnsjekk gir deg en rask og konkret vurdering av hvor du ligger i markedet, så
-                  du lettere kan forberede lønnssamtale eller bare få oversikt.
-                </p>
-              </div>
-
-              <div className="overflow-hidden rounded-[5px] border border-white/70 bg-white/70">
-                <div className="relative aspect-[16/10]">
-                  <Image
-                    alt="Illustrasjon av lønnsanalyse og sammenligning"
-                    className="object-cover"
-                    fill
-                    priority
-                    sizes="(min-width: 1024px) 32rem, 100vw"
-                    src="/blogg/forsta-lonnsstatistikk/cover.svg"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                <BenefitPill label="Median og snitt i yrket" />
-                <BenefitPill label="Sammenligning mot alle yrker" />
-                <BenefitPill label="Raskt bilde av lønnsnivå" />
-                <BenefitPill label="Basert på siste SSB-data" />
-              </div>
-
-              <div className="rounded-[5px] border border-white/70 bg-white/80 p-4">
-                <p className="text-sm font-semibold text-slate-900">Kilde SSB</p>
-                <p className="mt-2 text-sm text-slate-700">
-                  Tallgrunnlag: {data.periodLabel ?? "Siste periode"}
-                </p>
-                <p className="mt-1 text-sm text-slate-700">
-                  Antall yrker i sammenligningen: {data.totalOccupations.toLocaleString("nb-NO")}
-                </p>
-              </div>
-            </div>
-          </aside>
         </div>
       </section>
 
@@ -419,37 +413,27 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
   );
 }
 
-type BenefitPillProps = {
-  label: string;
-};
-
-function BenefitPill({ label }: BenefitPillProps) {
-  return (
-    <div className="rounded-[5px] border border-white/80 bg-white/80 px-4 py-3 text-sm font-medium text-slate-800 shadow-[0_6px_20px_rgba(27,36,48,0.05)]">
-      {label}
-    </div>
-  );
-}
-
 type GenderButtonProps = {
   active: boolean;
+  icon: React.ReactNode;
   label: string;
   onClick: () => void;
   type: "button";
 };
 
-function GenderButton({ active, label, onClick, type }: GenderButtonProps) {
+function GenderButton({ active, icon, label, onClick, type }: GenderButtonProps) {
   return (
     <button
       className={[
-        "inline-flex h-12 items-center justify-center rounded-full border px-4 text-sm font-semibold transition",
+        "inline-flex h-12 items-center justify-center gap-2 rounded-full border px-4 text-sm font-semibold transition",
         active
-          ? "border-[var(--primary)] bg-[var(--primary)] text-white"
-          : "border-black/10 bg-white text-slate-800 hover:border-[var(--primary)]/35 hover:text-[var(--primary-strong)]",
+          ? "border-[var(--primary)] bg-[var(--primary)] text-white shadow-[0_10px_24px_rgba(20,83,45,0.18)]"
+          : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/30 hover:text-[var(--primary-strong)]",
       ].join(" ")}
       onClick={onClick}
       type={type}
     >
+      <span className={active ? "text-white" : "text-[var(--primary-strong)]"}>{icon}</span>
       {label}
     </button>
   );
@@ -497,23 +481,33 @@ function InsightRow({ label, value, detail }: InsightRowProps) {
   );
 }
 
-function groupOptions(data: DinLonnPageData) {
-  const groups = data.options.reduce(
-    (map, option) => {
-      const existing = map.get(option.groupLabel) ?? [];
-      existing.push(option);
-      map.set(option.groupLabel, existing);
-      return map;
-    },
-    new Map<string, DinLonnPageData["options"]>(),
+function flattenOccupationOptions(data: DinLonnPageData) {
+  return [...data.options].sort((left, right) =>
+    left.occupationLabel.localeCompare(right.occupationLabel, "nb-NO"),
   );
+}
 
-  return Array.from(groups.entries())
-    .map(([label, options]) => ({
-      label,
-      options,
-    }))
-    .sort((left, right) => left.label.localeCompare(right.label, "nb-NO"));
+function filterOccupationOptions(
+  options: DinLonnPageData["options"],
+  query: string,
+) {
+  const normalizedQuery = normalizeText(query.trim());
+
+  if (!normalizedQuery) {
+    return options;
+  }
+
+  return options.filter((option) => {
+    const occupationLabel = normalizeText(option.occupationLabel);
+    const occupationCode = normalizeText(option.occupationCode);
+    const groupLabel = normalizeText(option.groupLabel);
+
+    return (
+      occupationLabel.includes(normalizedQuery) ||
+      occupationCode.includes(normalizedQuery) ||
+      groupLabel.includes(normalizedQuery)
+    );
+  });
 }
 
 function parseSalary(value: string) {
@@ -575,4 +569,44 @@ function getTone(value?: number) {
   }
 
   return value > 0 ? "positive" : "negative";
+}
+
+function normalizeText(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]+/g, "")
+    .toLowerCase();
+}
+
+function formatPeriodLabel(periodLabel?: string) {
+  if (!periodLabel) {
+    return "Siste tilgjengelige periode";
+  }
+
+  const match = periodLabel.match(/^(\d{4})K([1-4])$/);
+
+  if (!match) {
+    return periodLabel;
+  }
+
+  return `${match[2]}. kvartal ${match[1]}`;
+}
+
+function FemaleIcon() {
+  return (
+    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
+      <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 8v6M5.5 11h5" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function MaleIcon() {
+  return (
+    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
+      <circle cx="6" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8.5 7.5 13 3M10 3h3v3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    </svg>
+  );
 }
