@@ -7,7 +7,7 @@ const navItems = [
   { href: "/blogg", label: "Blogg" },
   { href: "/din-lonn", label: "Lønnssjekk" },
   {
-    href: "/annet",
+    href: "/analyse",
     label: "Analyse",
     children: [
       { href: "/kvinner-vs-menn", label: "Kvinner vs menn" },
