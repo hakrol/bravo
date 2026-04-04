@@ -31,7 +31,7 @@ export default async function BlogPage() {
   const posts = await getAllBlogPosts();
 
   return (
-    <main className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+    <div className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12">
         <section className="fade-up grid gap-8 border-b border-[var(--border)] pb-10 lg:grid-cols-[minmax(0,1.1fr)_220px] lg:items-end">
           <div>
@@ -57,6 +57,6 @@ export default async function BlogPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

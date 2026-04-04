@@ -134,7 +134,7 @@ export async function OccupationSalaryDetailPage({
   ];
 
   return (
-    <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10">
         <aside className="hidden lg:block">
           <div className="sticky top-28">
@@ -456,7 +456,7 @@ export async function OccupationSalaryDetailPage({
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

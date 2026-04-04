@@ -7,7 +7,7 @@ export default async function OccupationSalaryPage() {
   const overview = buildOccupationSalaryOverview(dataset);
 
   return (
-    <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <div className="space-y-2">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
@@ -36,6 +36,6 @@ export default async function OccupationSalaryPage() {
           periodLabel={overview.periodLabel}
         />
       </div>
-    </main>
+    </div>
   );
 }
