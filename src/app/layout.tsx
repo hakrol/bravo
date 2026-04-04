@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { AppShell } from "@/components/app-shell";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="no" className={manrope.className}>
       <body className="flex min-h-screen flex-col">
         <AppShell>{children}</AppShell>
+        <Analytics />
       </body>
     </html>
   );
