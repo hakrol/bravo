@@ -52,10 +52,10 @@ export default async function DinLonnPage() {
   });
 
   return (
-    <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <DinLonnTool data={data} />
       </div>
-    </main>
+    </div>
   );
 }

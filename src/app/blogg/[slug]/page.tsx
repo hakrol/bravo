@@ -73,7 +73,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <main className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+    <div className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
         <Link className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]" href="/blogg">
           ← Tilbake til blogg
@@ -86,6 +86,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </article>
       </div>
-    </main>
+    </div>
   );
 }

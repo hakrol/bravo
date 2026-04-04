@@ -52,7 +52,7 @@ export default async function HourlySalaryPage({ params }: HourlySalaryPageProps
   }
 
   return (
-    <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex max-w-4xl flex-col gap-8">
         <section className="rounded-[2rem] border border-[var(--border)] bg-white/95 px-6 py-8 shadow-sm sm:px-8">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">Timelønn</p>
@@ -76,6 +76,6 @@ export default async function HourlySalaryPage({ params }: HourlySalaryPageProps
           </Link>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

@@ -51,7 +51,7 @@ export default async function OccupationGroupPage({
   const overview = buildOccupationGroupSalaryOverview(dataset, group.code);
 
   return (
-    <main className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <div className="space-y-3">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
@@ -104,7 +104,7 @@ export default async function OccupationGroupPage({
           emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat nå.`}
         />
       </div>
-    </main>
+    </div>
   );
 }
 

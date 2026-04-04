@@ -13,7 +13,7 @@ export default async function HomePage() {
   const overview = buildOccupationMedianGrowthOverview(latestDataset, previousDataset);
 
   return (
-    <main className="min-h-screen px-5 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
+    <div className="min-h-screen px-5 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <section className="fade-up relative overflow-hidden px-6 pt-10 pb-16 sm:px-10 sm:pt-12 sm:pb-20 lg:px-12 lg:pt-14 lg:pb-24">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(20,83,45,0.12),transparent_45%)]" />
@@ -41,6 +41,6 @@ export default async function HomePage() {
           rows={overview.rows}
         />
       </div>
-    </main>
+    </div>
   );
 }
