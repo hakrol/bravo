@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import { cache } from "react";
+import { blogMdxComponents } from "@/components/blog-mdx-components";
 import { siteConfig } from "@/lib/site-config";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
@@ -13,8 +14,8 @@ export type BlogFrontmatter = {
   description: string;
   slug: string;
   publishedAt: string;
-  coverImage?: string;
-  author?: string;
+  coverImage: string;
+  author: string;
   seoTitle?: string;
   seoDescription?: string;
 };
@@ -51,8 +52,8 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     description: assertRequiredString(data.description, "description"),
     slug: assertRequiredString(data.slug, "slug"),
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
-    coverImage: trimOptionalString(data.coverImage),
-    author: trimOptionalString(data.author),
+    coverImage: assertRequiredString(data.coverImage, "coverImage"),
+    author: assertRequiredString(data.author, "author"),
     seoTitle: trimOptionalString(data.seoTitle),
     seoDescription: trimOptionalString(data.seoDescription),
   };
@@ -99,6 +100,7 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
     const source = await fs.readFile(path.join(BLOG_DIRECTORY, `${slug}.mdx`), "utf8");
     const { content, frontmatter } = await compileMDX<BlogFrontmatter>({
       source,
+      components: blogMdxComponents,
       options: {
         parseFrontmatter: true,
       },

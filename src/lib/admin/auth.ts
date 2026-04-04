@@ -65,11 +65,19 @@ function decodeSessionValue(value: string) {
   }
 }
 
+export function isAdminAvailable() {
+  return process.env.NODE_ENV !== "production";
+}
+
 export function isAdminAuthConfigured() {
-  return readAdminCredentials() !== null;
+  return isAdminAvailable() && readAdminCredentials() !== null;
 }
 
 export async function validateAdminLogin(username: string, password: string) {
+  if (!isAdminAvailable()) {
+    return false;
+  }
+
   const credentials = readAdminCredentials();
 
   if (!credentials) {
@@ -80,6 +88,10 @@ export async function validateAdminLogin(username: string, password: string) {
 }
 
 export async function createAdminSession(username: string) {
+  if (!isAdminAvailable()) {
+    throw new Error("Admin er deaktivert i produksjon.");
+  }
+
   const credentials = readAdminCredentials();
 
   if (!credentials) {
@@ -104,6 +116,10 @@ export async function clearAdminSession() {
 }
 
 export async function getAdminSession(): Promise<AdminSession | null> {
+  if (!isAdminAvailable()) {
+    return null;
+  }
+
   const credentials = readAdminCredentials();
 
   if (!credentials) {
@@ -141,6 +157,10 @@ export async function getAdminSession(): Promise<AdminSession | null> {
 }
 
 export async function requireAdminSession() {
+  if (!isAdminAvailable()) {
+    redirect("/");
+  }
+
   const session = await getAdminSession();
 
   if (!session) {

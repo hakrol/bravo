@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { isAdminAvailable } from "@/lib/admin/auth";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -21,5 +23,9 @@ type AdminRootLayoutProps = Readonly<{
 }>;
 
 export default function AdminRootLayout({ children }: AdminRootLayoutProps) {
+  if (!isAdminAvailable()) {
+    notFound();
+  }
+
   return children;
 }

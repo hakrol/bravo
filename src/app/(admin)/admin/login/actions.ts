@@ -4,11 +4,16 @@ import { redirect } from "next/navigation";
 import {
   clearAdminSession,
   createAdminSession,
+  isAdminAvailable,
   isAdminAuthConfigured,
   validateAdminLogin,
 } from "@/lib/admin/auth";
 
 export async function loginAdmin(formData: FormData) {
+  if (!isAdminAvailable()) {
+    redirect("/");
+  }
+
   const username = String(formData.get("username") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
@@ -27,6 +32,10 @@ export async function loginAdmin(formData: FormData) {
 }
 
 export async function logoutAdmin() {
+  if (!isAdminAvailable()) {
+    redirect("/");
+  }
+
   await clearAdminSession();
   redirect("/admin/login");
 }
