@@ -274,6 +274,16 @@ async function fetchNormalizedDataset(options: {
 }): Promise<SsbNormalizedDataset> {
   const estimatedCells = estimateCellCount(options.metadata, options.query);
 
+  if (queryRequiresGetTransport(options.query)) {
+    const dataset = await options.client.getTableData(options.tableId, options.query, "no");
+
+    return options.queries.normalizeDataset(dataset, {
+      tableId: options.tableId,
+      tableKey: options.tableKey,
+      title: options.title,
+    });
+  }
+
   if (estimatedCells <= options.client.SSB_MAX_CELLS) {
     const dataset = await options.client.postTableData(
       options.tableId,
@@ -313,6 +323,16 @@ async function fetchNormalizedDataset(options: {
     tableId: options.tableId,
     tableKey: options.tableKey,
     title: options.title,
+  });
+}
+
+function queryRequiresGetTransport(query: SsbQueryParams) {
+  return Object.values(query).some((value) => {
+    if (Array.isArray(value)) {
+      return value.some((entry) => /^(top|from)\(/i.test(String(entry)));
+    }
+
+    return /^(top|from)\(/i.test(String(value));
   });
 }
 
@@ -533,7 +553,13 @@ function buildSsbSyncHelpers() {
       const metadataDimension = metadata.dimension[dimension];
 
       if (timeDimensions.has(dimension)) {
-        query[`valueCodes[${dimension}]`] = "*";
+        const earliestTimeCode = getEarliestDimensionCode(metadata, dimension);
+
+        if (!earliestTimeCode) {
+          throw new Error("Fant ikke tidligste periode i KPI-tabell 14700.");
+        }
+
+        query[`valueCodes[${dimension}]`] = `from(${earliestTimeCode})`;
         continue;
       }
 
@@ -695,6 +721,20 @@ function buildSsbSyncHelpers() {
       dimensions,
       rows,
     };
+  }
+
+  function getEarliestDimensionCode(
+    metadata: SsbTableMetadata,
+    dimensionCode: string,
+  ) {
+    const dimension = metadata.dimension[dimensionCode];
+
+    if (!dimension) {
+      return undefined;
+    }
+
+    return Object.entries(dimension.category.index)
+      .sort((left, right) => left[1] - right[1])[0]?.[0];
   }
 
   return {
