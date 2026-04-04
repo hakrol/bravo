@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
@@ -57,8 +58,6 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
       return;
     }
 
-    const occupationCode = submittedOccupationCode;
-
     const controller = new AbortController();
 
     async function loadDistribution() {
@@ -67,7 +66,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
         setDistributionError(null);
 
         const response = await fetch(
-          `/api/occupation-distribution?occupationCode=${encodeURIComponent(occupationCode)}`,
+          `/api/occupation-distribution?occupationCode=${encodeURIComponent(submittedOccupationCode)}`,
           { signal: controller.signal },
         );
 
@@ -121,28 +120,29 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
 
   return (
     <div className="grid gap-8">
-      <section className="fade-up overflow-hidden rounded-md border border-black/10 bg-white/85 shadow-[0_18px_60px_rgba(27,36,48,0.08)]">
-        <div className="grid gap-8 px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-          <div className="space-y-5">
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
-                Ny tjeneste
-              </p>
+      <section className="fade-up overflow-hidden rounded-[5px] border border-black/10 bg-white/90 shadow-[0_18px_60px_rgba(27,36,48,0.08)]">
+        <div className="grid gap-8 px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[1.12fr_0.88fr] lg:items-start">
+          <div className="space-y-6">
+            <div className="space-y-4">
               <h1 className="text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-                Din lønn
+                Lønnsjekk
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">
-                Skriv inn brutto månedslønn, kjønn og yrke, og få en enkel rapport som viser om
-                du ligger over eller under nivået i yrket.
+              <p className="max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
+                Finn ut hvordan lønnen din faktisk står seg. Legg inn brutto månedslønn, kjønn og
+                yrke, og få en tydelig sammenligning mot nivået i yrket ditt basert på oppdaterte
+                tall fra SSB.
               </p>
             </div>
 
-            <form className="grid gap-5" onSubmit={handleSubmit}>
-              <label className="grid gap-2" htmlFor="salary">
+            <form
+              className="grid gap-5 rounded-[5px] border border-black/8 bg-[linear-gradient(180deg,rgba(248,250,252,0.96)_0%,rgba(255,255,255,0.98)_100%)] p-5 shadow-[0_12px_36px_rgba(27,36,48,0.06)] sm:p-6"
+              onSubmit={handleSubmit}
+            >
+              <label className="grid gap-2.5" htmlFor="salary">
                 <span className="text-sm font-semibold text-slate-900">Brutto månedslønn</span>
                 <input
                   id="salary"
-                  className="h-14 rounded-md border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
+                  className="h-14 rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
                   inputMode="numeric"
                   onChange={(event) =>
                     setForm((current) => ({
@@ -191,7 +191,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                 <span className="text-sm font-semibold text-slate-900">Yrke</span>
                 <select
                   id="occupationCode"
-                  className="min-h-14 rounded-md border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
+                  className="min-h-14 rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
                   onChange={(event) =>
                     setForm((current) => ({
                       ...current,
@@ -226,33 +226,55 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
               </div>
 
               {error ? (
-                <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <p className="rounded-[5px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                   {error}
                 </p>
               ) : null}
             </form>
           </div>
 
-          <aside className="rounded-md border border-black/8 bg-[linear-gradient(135deg,rgba(244,239,230,0.85)_0%,rgba(230,240,234,0.92)_100%)] p-6">
-            <div className="space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-                Hva du får
-              </p>
-              <ul className="space-y-3 text-sm leading-7 text-slate-700">
-                <li>Du sammenlignes mot median avtalt månedslønn og gjennomsnitt i yrket.</li>
-                <li>Du ser hvordan lønnen din står seg mot hele arbeidsmarkedet.</li>
-                <li>Du får et raskt bilde av hvor høyt yrket ligger på lønnsskalaen.</li>
-              </ul>
-              <div className="rounded-md border border-white/70 bg-white/70 p-4">
-                <p className="text-sm text-slate-700">
-                  Tallgrunnlag:
-                  {" "}
-                  {data.periodLabel ?? "Siste periode"}
+          <aside className="overflow-hidden rounded-[5px] border border-black/8 bg-[linear-gradient(135deg,rgba(244,239,230,0.88)_0%,rgba(230,240,234,0.94)_100%)] p-5 shadow-[0_14px_40px_rgba(27,36,48,0.06)] sm:p-6">
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
+                  Om lønnsjekk
+                </p>
+                <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950">
+                  Et raskt lønnsbilde, uten støy
+                </h2>
+                <p className="text-sm leading-7 text-slate-700 sm:text-base">
+                  Lønnsjekk gir deg en rask og konkret vurdering av hvor du ligger i markedet, så
+                  du lettere kan forberede lønnssamtale eller bare få oversikt.
+                </p>
+              </div>
+
+              <div className="overflow-hidden rounded-[5px] border border-white/70 bg-white/70">
+                <div className="relative aspect-[16/10]">
+                  <Image
+                    alt="Illustrasjon av lønnsanalyse og sammenligning"
+                    className="object-cover"
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 32rem, 100vw"
+                    src="/blogg/forsta-lonnsstatistikk/cover.svg"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <BenefitPill label="Median og snitt i yrket" />
+                <BenefitPill label="Sammenligning mot alle yrker" />
+                <BenefitPill label="Raskt bilde av lønnsnivå" />
+                <BenefitPill label="Basert på siste SSB-data" />
+              </div>
+
+              <div className="rounded-[5px] border border-white/70 bg-white/80 p-4">
+                <p className="text-sm font-semibold text-slate-900">Kilde SSB</p>
+                <p className="mt-2 text-sm text-slate-700">
+                  Tallgrunnlag: {data.periodLabel ?? "Siste periode"}
                 </p>
                 <p className="mt-1 text-sm text-slate-700">
-                  Antall yrker i sammenligningen:
-                  {" "}
-                  {data.totalOccupations.toLocaleString("nb-NO")}
+                  Antall yrker i sammenligningen: {data.totalOccupations.toLocaleString("nb-NO")}
                 </p>
               </div>
             </div>
@@ -308,8 +330,8 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
             <div className="space-y-2">
               <h3 className="text-xl font-semibold text-slate-950">Plassering i lønnsfordelingen</h3>
               <p className="text-sm leading-6 text-slate-600">
-                Her ser du hvor lønnen din ligger sammenlignet med 25-persentilen,
-                median avtalt månedslønn og 75-persentilen i yrket.
+                Her ser du hvor lønnen din ligger sammenlignet med 25-persentilen, median avtalt
+                månedslønn og 75-persentilen i yrket.
               </p>
             </div>
 
@@ -369,41 +391,42 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
               <h3 className="text-xl font-semibold text-slate-950">Interessante fakta</h3>
               <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
                 <p>
-                  <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span>
-                  {" "}
-                  ligger i
-                  {" "}
-                  {formatTopPercent(report.occupationPlacement.percentile)}
-                  {" "}
-                  av yrkene når vi rangerer etter gjennomsnittlig avtalt månedslønn.
+                  <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span>{" "}
+                  ligger i {formatTopPercent(report.occupationPlacement.percentile)} av yrkene når vi
+                  rangerer etter gjennomsnittlig avtalt månedslønn.
                 </p>
                 {report.genderGap ? (
                   <p>
-                    {report.genderGap.label}
-                    {" "}
-                    Forskjellen er
-                    {" "}
-                    {formatCurrency(report.genderGap.difference)}
-                    {" "}
-                    (
-                    {formatPercent(report.genderGap.differencePercent)}
-                    ).
+                    {report.genderGap.label} Forskjellen er {formatCurrency(report.genderGap.difference)} (
+                    {formatPercent(report.genderGap.differencePercent)}).
                   </p>
                 ) : (
-                  <p>Det finnes ikke nok kjønnsdelte tall for median avtalt månedslønn til å vise et tydelig gap i yrket.</p>
+                  <p>
+                    Det finnes ikke nok kjønnsdelte tall for median avtalt månedslønn til å vise et
+                    tydelig gap i yrket.
+                  </p>
                 )}
                 <p>
-                  Datagrunnlaget gjelder
-                  {" "}
-                  {report.periodLabel?.toLowerCase() ?? "siste tilgjengelige periode"}
-                  {" "}
-                  og viser brutto månedslønn før skatt.
+                  Datagrunnlaget gjelder {report.periodLabel?.toLowerCase() ?? "siste tilgjengelige periode"} og
+                  viser brutto månedslønn før skatt.
                 </p>
               </div>
             </section>
           </div>
         </section>
       ) : null}
+    </div>
+  );
+}
+
+type BenefitPillProps = {
+  label: string;
+};
+
+function BenefitPill({ label }: BenefitPillProps) {
+  return (
+    <div className="rounded-[5px] border border-white/80 bg-white/80 px-4 py-3 text-sm font-medium text-slate-800 shadow-[0_6px_20px_rgba(27,36,48,0.05)]">
+      {label}
     </div>
   );
 }
