@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { MainNav } from "@/components/main-nav";
+﻿import { MainNav } from "@/components/main-nav";
+import { SiteBrand } from "@/components/site-brand";
 
 export function MainHeader() {
   return (
@@ -8,21 +8,7 @@ export function MainHeader() {
         <div className="rounded-[5px] rounded-[2rem] border border-[var(--border)] bg-[linear-gradient(135deg,rgba(255,255,255,0.96),rgba(255,250,243,0.92))] shadow-[0_18px_48px_rgba(27,36,48,0.08)]">
           <div className="flex flex-col gap-4 px-4 py-4 sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:px-6">
             <div className="flex items-center justify-between gap-4">
-              <Link className="min-w-0" href="/">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--primary),var(--primary-strong))] text-sm font-bold tracking-[0.18em] text-white shadow-sm">
-                    LN
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
-                      Lønnsinnsikt
-                    </p>
-                    <p className="truncate text-sm text-[var(--muted)]">
-                      Oppdatert lønnsinnsikt fra SSB
-                    </p>
-                  </div>
-                </div>
-              </Link>
+              <SiteBrand size="header" />
             </div>
 
             <div className="flex flex-col gap-3 lg:flex-1 lg:flex-row lg:items-center lg:justify-end">

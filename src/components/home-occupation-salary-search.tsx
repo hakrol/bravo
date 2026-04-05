@@ -26,7 +26,7 @@ export function HomeOccupationSalarySearch({
   periodLabel,
 }: HomeOccupationSalarySearchProps) {
   const [query, setQuery] = useState("");
-  const [activeGroupCodes, setActiveGroupCodes] = useState<string[]>([]);
+  const [activeGroupCode, setActiveGroupCode] = useState("");
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = normalizeText(deferredQuery.trim());
   const availableGroupCodes = new Set(
@@ -35,8 +35,7 @@ export function HomeOccupationSalarySearch({
   const availableGroups = homeOccupationGroups.filter((group) => availableGroupCodes.has(group.code));
 
   const filteredRows = rows.filter((row) => {
-    const matchesGroup =
-      activeGroupCodes.length === 0 || activeGroupCodes.includes(getTopGroupCode(row.occupationCode));
+    const matchesGroup = !activeGroupCode || activeGroupCode === getTopGroupCode(row.occupationCode);
 
     if (!matchesGroup) {
       return false;
@@ -51,9 +50,9 @@ export function HomeOccupationSalarySearch({
     return occupationLabel.includes(normalizedQuery) || occupationCode.includes(normalizedQuery);
   });
 
-  const activeGroupLabels = activeGroupCodes
-    .map((code) => getOccupationGroupByCode(code)?.shortLabel ?? homeOccupationGroups.find((group) => group.code === code)?.shortLabel)
-    .filter((label): label is string => Boolean(label));
+  const activeGroupLabel =
+    getOccupationGroupByCode(activeGroupCode)?.shortLabel ??
+    homeOccupationGroups.find((group) => group.code === activeGroupCode)?.shortLabel;
 
   return (
     <section className="relative z-10 grid gap-4">
@@ -78,34 +77,24 @@ export function HomeOccupationSalarySearch({
 
       {availableGroups.length > 0 ? (
         <div className="relative z-10 mx-auto w-full max-w-6xl px-1">
-          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:justify-center">
-            {availableGroups.map((group) => {
-              const active = activeGroupCodes.includes(group.code);
-
-              return (
-                <button
-                  key={group.code}
-                  aria-pressed={active}
-                  className={[
-                    "inline-flex shrink-0 items-center rounded-full border px-3 py-2 text-sm font-medium whitespace-nowrap transition",
-                    active
-                      ? "border-[var(--primary)] bg-[var(--primary)] text-white shadow-sm"
-                      : "border-[var(--border)] bg-white text-[var(--foreground)] hover:border-[var(--primary)] hover:text-[var(--primary-strong)]",
-                  ].join(" ")}
-                  onClick={() =>
-                    setActiveGroupCodes((current) =>
-                      current.includes(group.code)
-                        ? current.filter((code) => code !== group.code)
-                        : [...current, group.code],
-                    )
-                  }
-                  type="button"
-                >
+          <label className="mx-auto grid max-w-sm gap-2" htmlFor="occupation-group-filter">
+            <span className="text-sm font-semibold text-[var(--primary-strong)]">
+              Velg yrkesgruppe
+            </span>
+            <select
+              id="occupation-group-filter"
+              className="h-12 rounded-md border border-[var(--border)] bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
+              onChange={(event) => setActiveGroupCode(event.target.value)}
+              value={activeGroupCode}
+            >
+              <option value="">Alle yrkesgrupper</option>
+              {availableGroups.map((group) => (
+                <option key={group.code} value={group.code}>
                   {group.shortLabel}
-                </button>
-              );
-            })}
-          </div>
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       ) : null}
 
@@ -116,27 +105,27 @@ export function HomeOccupationSalarySearch({
         periodLabel={periodLabel}
         rows={filteredRows}
         showLastUpdated={false}
-        title={buildTitle(query.trim(), activeGroupLabels)}
+        title={buildTitle(query.trim(), activeGroupLabel)}
         variant="cards"
       />
     </section>
   );
 }
 
-function buildTitle(query: string, activeGroupLabels: string[]) {
+function buildTitle(query: string, activeGroupLabel?: string) {
   const hasQuery = query.length > 0;
-  const hasGroups = activeGroupLabels.length > 0;
+  const hasGroup = Boolean(activeGroupLabel);
 
-  if (hasQuery && hasGroups) {
-    return `Treff for "${query}" i ${activeGroupLabels.join(", ")}`;
+  if (hasQuery && hasGroup) {
+    return `Treff for "${query}" i ${activeGroupLabel}`;
   }
 
   if (hasQuery) {
     return `Treff for "${query}"`;
   }
 
-  if (hasGroups) {
-    return `Yrker i ${activeGroupLabels.join(", ")}`;
+  if (hasGroup) {
+    return `Yrker i ${activeGroupLabel}`;
   }
 
   return "Månedslønn for alle yrker";

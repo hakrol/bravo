@@ -83,14 +83,14 @@ export function OccupationSalaryOverview({
               <h2 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
                 {title}
               </h2>
-              <DataInfoModal description={description} title={title} />
+              <DataInfoModal description={description} title="Månedslønn" />
             </div>
             <p className="mt-1 text-sm text-[var(--muted)]">{description}</p>
           </div>
           <div className="flex flex-col items-start gap-2 sm:items-end">
             {formattedPeriodLabel ? (
               <p className="inline-flex rounded-md border border-[#d6e2d7] bg-white/85 px-3 py-1.5 text-sm font-semibold text-[var(--primary-strong)] shadow-sm">
-                Periode: {formattedPeriodLabel}
+                Kilde SSB. Siste data: {formattedPeriodLabel}
               </p>
             ) : null}
             {showLastUpdated ? (
@@ -99,7 +99,7 @@ export function OccupationSalaryOverview({
           </div>
         </div>
 
-        <div className="max-h-[70vh] overflow-auto">
+        <div className={variant === "cards" ? "overflow-hidden" : "max-h-[70vh] overflow-y-auto overflow-x-hidden overscroll-contain"}>
           {variant === "cards" ? (
             <CardsOverview
               emptyStateText={emptyStateText}
@@ -230,8 +230,8 @@ function CardsOverview({
   onSort,
 }: OverviewContentProps) {
   return (
-    <div className="bg-white/45">
-      <div className="sticky top-0 z-10 border-b bg-[#f8f3ea]/95 px-4 py-2 backdrop-blur sm:px-6">
+    <div className="flex h-[70vh] min-h-0 flex-col overflow-hidden bg-white/45">
+      <div className="shrink-0 border-b bg-[#f8f3ea]/95 px-4 py-2 sm:px-6">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 lg:hidden">
           {sortOptions.map((option) => {
             const active = sortKey === option.key;
@@ -297,9 +297,12 @@ function CardsOverview({
       </div>
 
       {rows.length === 0 ? (
-        <div className="px-6 py-8 text-sm text-[var(--muted)]">{emptyStateText}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-8 text-sm text-[var(--muted)]">
+          {emptyStateText}
+        </div>
       ) : (
-        <div className="grid gap-3 px-3 py-3 sm:px-4">
+        <div className="relative isolate min-h-0 flex-1 overflow-y-auto overflow-x-clip overscroll-contain">
+          <div className="flex flex-col gap-3 px-3 py-3 sm:px-4">
           {rows.map((row) => {
             const detailHref = getOccupationDetailHref(row.occupationCode, row.occupationLabel);
 
@@ -334,6 +337,7 @@ function CardsOverview({
               </article>
             );
           })}
+          </div>
         </div>
       )}
     </div>

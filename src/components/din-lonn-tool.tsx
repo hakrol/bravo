@@ -276,8 +276,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
                 tall fra SSB.
               </p>
               <div className="max-w-2xl rounded-[5px] border border-black/8 bg-[var(--surface)] px-4 py-4 text-sm leading-7 text-slate-700">
-                <p>Periode: {formatPeriodLabel(data.periodLabel)}</p>
-                <p>Kilde: SSB</p>
+                <p>Kilde SSB. Siste data: {formatPeriodLabel(data.periodLabel)}</p>
               </div>
             </div>
 
