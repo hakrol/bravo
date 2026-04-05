@@ -13,8 +13,7 @@ import {
   OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
-import { getGeneratedOccupationDescription } from "@/lib/utdanning";
-import type { GeneratedOccupationDescription } from "@/lib/utdanning-types";
+import { getOccupationDescription, type OccupationDescription } from "@/lib/occupation-descriptions";
 
 type OccupationDetailPageProps = {
   params: Promise<{
@@ -32,7 +31,7 @@ type DynamicOccupationPageEntry = {
 type ResolvedOccupationDetail = {
   page: ReturnType<typeof buildDynamicOccupationDetailPage>;
   relatedPages: ReturnType<typeof buildDynamicOccupationDetailPage>[];
-  generatedDescription: GeneratedOccupationDescription | null;
+  occupationDescription: OccupationDescription | null;
 };
 
 export async function generateMetadata({
@@ -46,11 +45,11 @@ export async function generateMetadata({
   }
 
   const occupationLabel = formatOccupationDisplayLabel(detail.page.label);
-  const generatedDescription = detail.generatedDescription?.intro;
+  const occupationDescription = detail.occupationDescription?.intro;
 
   return {
     title: `Lønn til ${occupationLabel}`,
-    description: `Se lønn, lønnsutvikling og andre nøkkeltall for ${occupationLabel.toLowerCase()} med siste tilgjengelige tall fra SSB. ${generatedDescription ?? detail.page.summary}`,
+    description: `Se lønn, lønnsutvikling og andre nøkkeltall for ${occupationLabel.toLowerCase()} med siste tilgjengelige tall fra SSB. ${occupationDescription ?? detail.page.summary}`,
   };
 }
 
@@ -68,7 +67,7 @@ export default async function OccupationDetailPage({
     <OccupationSalaryDetailPage
       occupationCode={detail.page.occupationCode}
       detailPageOverride={detail.page}
-      generatedDescription={detail.generatedDescription}
+      occupationDescription={detail.occupationDescription}
       relatedPagesOverride={detail.relatedPages}
     />
   );
@@ -83,9 +82,6 @@ async function resolveOccupationDetailBySlug(slug: string) {
   }
 
   const page = pageEntries[currentIndex].page;
-  const [generatedDescription] = await Promise.all([
-    getGeneratedOccupationDescription(page.occupationCode, page.label),
-  ]);
 
   return {
     page,
@@ -93,7 +89,7 @@ async function resolveOccupationDetailBySlug(slug: string) {
       pageEntries,
       currentIndex,
     ),
-    generatedDescription,
+    occupationDescription: getOccupationDescription(page.occupationCode),
   } satisfies ResolvedOccupationDetail;
 }
 
