@@ -12,6 +12,7 @@ import { OccupationSalaryDistributionSection } from "@/components/occupation-sal
 import { RelatedOccupationSalaryComparison } from "@/components/related-occupation-salary-comparison";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
+import type { OccupationDescription } from "@/lib/occupation-descriptions";
 import type { OccupationDetailPage } from "@/lib/occupation-detail-pages";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
@@ -26,12 +27,11 @@ import {
   OCCUPATION_MONTHLY_SALARY_FILTERS,
   SSB_OCCUPATION_CONTRACT_TABLE_ID,
 } from "@/lib/ssb";
-import type { GeneratedOccupationDescription } from "@/lib/utdanning-types";
 
 type OccupationSalaryDetailPageProps = {
   occupationCode: string;
   detailPageOverride: OccupationDetailPage;
-  generatedDescription?: GeneratedOccupationDescription | null;
+  occupationDescription?: OccupationDescription | null;
   relatedPagesOverride?: OccupationDetailPage[];
 };
 
@@ -41,7 +41,7 @@ void notFound;
 export async function OccupationSalaryDetailPage({
   occupationCode,
   detailPageOverride,
-  generatedDescription,
+  occupationDescription,
   relatedPagesOverride,
 }: OccupationSalaryDetailPageProps) {
   const detailPage = detailPageOverride;
@@ -93,7 +93,7 @@ export async function OccupationSalaryDetailPage({
   const introText = buildOccupationIntroText({
     occupationLabel: formattedOccupationLabel,
     summary: detailPage.summary,
-    generatedDescription,
+    occupationDescription,
   });
   const growthOverview = buildOccupationMedianGrowthOverview(
     yearlyMedianDatasets.latestDataset,
@@ -710,14 +710,14 @@ function buildTopSummary({
 function buildOccupationIntroText({
   occupationLabel,
   summary,
-  generatedDescription,
+  occupationDescription,
 }: {
   occupationLabel: string;
   summary: string;
-  generatedDescription?: GeneratedOccupationDescription | null;
+  occupationDescription?: OccupationDescription | null;
 }) {
-  if (generatedDescription?.intro) {
-    return generatedDescription.intro;
+  if (occupationDescription?.intro) {
+    return occupationDescription.intro;
   }
 
   const cleanedSummary = cleanOccupationSummary(summary);
