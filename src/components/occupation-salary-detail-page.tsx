@@ -171,49 +171,20 @@ export async function OccupationSalaryDetailPage({
                 <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
                   Lønn til {formattedOccupationLabel}
                 </h1>
-                <div className="hidden shrink-0 rounded-md border border-black/10 bg-white/70 p-3 shadow-[0_10px_30px_rgba(27,36,48,0.08)] sm:flex">
-                  <span
-                    aria-hidden="true"
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-[linear-gradient(135deg,#f4efe6_0%,#e6f0ea_100%)] text-[var(--primary-strong)]"
-                  >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 18.5h14M7 15.5V10.5M12 15.5V6.5M17 15.5V12.5"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.8"
-                      />
-                      <path
-                        d="M6 8.5 10.2 5l3.6 3 4.2-3.5"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.8"
-                      />
-                    </svg>
-                  </span>
-                </div>
               </div>
               <div className="max-w-3xl text-base leading-7 text-slate-950">
-                <p>
-                  <span>Se hva en {formattedOccupationLabel.toLowerCase()} tjener. Her finner du </span>
+                <div>
+                  <span>Se lønnen til {formattedOccupationLabel.toLowerCase()}. Her finner du </span>
                   <InlineDefinitionModal
                     description="Dette er lønnsmålet som brukes for nivåtallene på denne siden."
                     label="avtalt månedslønn"
                     title="Median avtalt månedslønn (kr)"
                   />
                   <span>
-                    , lønnsutvikling over tid, lønnsfordeling, lønnsforskjeller mellom kvinner og menn
+                    , lønnsutvikling over tid, lønnsfordeling, lønnsforskjeller mellom kvinner og menn,
                     og relaterte yrker basert på siste tilgjengelige tall fra SSB.
                   </span>
-                </p>
-                <p className="mt-3">{introText} Tallene viser bruttolønn før skatt og inkluderer ikke overtid eller bonus.</p>
+                </div>
               </div>
               {topSummary ? (
                 <div className="rounded-md border border-[var(--primary)]/20 bg-[linear-gradient(135deg,rgba(244,239,230,0.72)_0%,rgba(230,240,234,0.78)_100%)] px-5 py-5 shadow-[0_12px_36px_rgba(27,36,48,0.06)] sm:px-6">
@@ -225,13 +196,8 @@ export async function OccupationSalaryDetailPage({
                   </p>
                   <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-700">
                     <span className="rounded-full border border-black/10 bg-white/80 px-3 py-1.5">
-                      Kilde: SSB tabell 11418
+                      Kilde: SSB
                     </span>
-                    {medianPeriodLabel ? (
-                      <span className="rounded-full border border-black/10 bg-white/80 px-3 py-1.5">
-                        Periode: {medianPeriodLabel}
-                      </span>
-                    ) : null}
                     {salaryUpdatedLabel ? (
                       <span className="rounded-full border border-black/10 bg-white/80 px-3 py-1.5">
                         Oppdatert hos SSB: {salaryUpdatedLabel}
@@ -287,6 +253,12 @@ export async function OccupationSalaryDetailPage({
                 </div>
               </div>
             ) : null}
+            <div className="max-w-4xl text-base leading-8 text-slate-800">
+              <p>
+                <strong>Hva gjør {formattedOccupationLabel.toLowerCase()}?</strong>{" "}
+                {introText}
+              </p>
+            </div>
             {distribution ? (
               <section
                 aria-labelledby="lonnsfordeling-tittel"
@@ -806,6 +778,10 @@ function buildGenericOccupationDescription(occupationLabel: string) {
 
   if (normalizedLabel.includes("psykolog") || normalizedLabel.includes("psykologi")) {
     return `${occupationLabel} jobber ofte med vurdering, samtaler, oppfølging og faglige tiltak knyttet til psykisk helse, utvikling eller menneskelig atferd. Rollen kan også innebære utredning, rådgivning, behandling eller tverrfaglig samarbeid.`;
+  }
+
+  if (normalizedLabel.includes("politiker")) {
+    return `${occupationLabel} representerer velgere og arbeider med å foreslå, behandle og vedta politiske saker. Rollen innebærer ofte møter, utvalgsarbeid, prioriteringer av ressurser, dialog med innbyggere og samarbeid med partier, administrasjon og andre beslutningstakere.`;
   }
 
   if (normalizedLabel.includes("helse") || normalizedLabel.includes("omsorg")) {
