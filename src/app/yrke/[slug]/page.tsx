@@ -13,6 +13,8 @@ import {
   OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
+import { getGeneratedOccupationDescription } from "@/lib/utdanning";
+import type { GeneratedOccupationDescription } from "@/lib/utdanning-types";
 
 type OccupationDetailPageProps = {
   params: Promise<{
@@ -27,6 +29,12 @@ type DynamicOccupationPageEntry = {
   medianMen?: number;
 };
 
+type ResolvedOccupationDetail = {
+  page: ReturnType<typeof buildDynamicOccupationDetailPage>;
+  relatedPages: ReturnType<typeof buildDynamicOccupationDetailPage>[];
+  generatedDescription: GeneratedOccupationDescription | null;
+};
+
 export async function generateMetadata({
   params,
 }: OccupationDetailPageProps): Promise<Metadata> {
@@ -38,10 +46,11 @@ export async function generateMetadata({
   }
 
   const occupationLabel = formatOccupationDisplayLabel(detail.page.label);
+  const generatedDescription = detail.generatedDescription?.intro;
 
   return {
     title: `Lønn til ${occupationLabel}`,
-    description: `Se lønn, lønnsutvikling og andre nøkkeltall for ${occupationLabel.toLowerCase()} med siste tilgjengelige tall fra SSB. ${detail.page.summary}`,
+    description: `Se lønn, lønnsutvikling og andre nøkkeltall for ${occupationLabel.toLowerCase()} med siste tilgjengelige tall fra SSB. ${generatedDescription ?? detail.page.summary}`,
   };
 }
 
@@ -59,6 +68,7 @@ export default async function OccupationDetailPage({
     <OccupationSalaryDetailPage
       occupationCode={detail.page.occupationCode}
       detailPageOverride={detail.page}
+      generatedDescription={detail.generatedDescription}
       relatedPagesOverride={detail.relatedPages}
     />
   );
@@ -72,13 +82,19 @@ async function resolveOccupationDetailBySlug(slug: string) {
     return null;
   }
 
+  const page = pageEntries[currentIndex].page;
+  const [generatedDescription] = await Promise.all([
+    getGeneratedOccupationDescription(page.occupationCode, page.label),
+  ]);
+
   return {
-    page: pageEntries[currentIndex].page,
+    page,
     relatedPages: pickRelatedPages(
       pageEntries,
       currentIndex,
     ),
-  };
+    generatedDescription,
+  } satisfies ResolvedOccupationDetail;
 }
 
 async function getDynamicOccupationPageEntries(): Promise<DynamicOccupationPageEntry[]> {
