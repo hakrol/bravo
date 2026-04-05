@@ -19,8 +19,8 @@ export type DinLonnOccupationOption = {
   medianSalaryAll?: number;
   medianSalaryWomen?: number;
   medianSalaryMen?: number;
-  averageRank: number;
-  percentile: number;
+  medianRank: number;
+  medianPercentile: number;
 };
 
 export type DinLonnPageData = {
@@ -99,12 +99,12 @@ export function buildDinLonnPageData({
   const medianRowsByCode = new Map(
     medianRows.map((row) => [row.occupationCode, row] as const),
   );
-  const rankedAverageRows = averageRows
-    .filter((row) => row.salaryAll !== undefined)
-    .sort((left, right) => (right.salaryAll ?? -1) - (left.salaryAll ?? -1));
-  const totalOccupations = rankedAverageRows.length;
+  const rankedMedianRows = medianRows
+    .filter((row) => row.medianAll !== undefined)
+    .sort((left, right) => (right.medianAll ?? -1) - (left.medianAll ?? -1));
+  const totalOccupations = rankedMedianRows.length;
   const rankByCode = new Map(
-    rankedAverageRows.map((row, index) => [row.occupationCode, index + 1] as const),
+    rankedMedianRows.map((row, index) => [row.occupationCode, index + 1] as const),
   );
 
   const options = averageRows
@@ -112,8 +112,8 @@ export function buildDinLonnPageData({
       const medianRow = medianRowsByCode.get(row.occupationCode);
       const groupCode = row.occupationCode.charAt(0);
       const groupLabel = getOccupationGroupByCode(groupCode)?.label ?? "Andre yrker";
-      const averageRank = rankByCode.get(row.occupationCode) ?? totalOccupations;
-      const percentile = calculatePercentile(averageRank, totalOccupations);
+      const medianRank = rankByCode.get(row.occupationCode) ?? totalOccupations;
+      const medianPercentile = calculatePercentile(medianRank, totalOccupations);
 
       return {
         occupationCode: row.occupationCode,
@@ -127,8 +127,8 @@ export function buildDinLonnPageData({
         medianSalaryAll: medianRow?.medianAll,
         medianSalaryWomen: medianRow?.medianWomen,
         medianSalaryMen: medianRow?.medianMen,
-        averageRank,
-        percentile,
+        medianRank,
+        medianPercentile,
       } satisfies DinLonnOccupationOption;
     })
     .sort((left, right) => {
@@ -168,12 +168,12 @@ export function buildDinLonnReport({
   const comparisonToMedian = buildComparison(
     salary,
     selectedMedian,
-    `Median avtalt månedslønn for ${genderLabel} i yrket`,
+    `Median avtalt månedslønn (${genderLabel})`,
   );
   const comparisonToAverage = buildComparison(
     salary,
     selectedAverage,
-    `Gjennomsnitt for ${genderLabel} i yrket`,
+    `Gjennomsnittlig månedslønn (${genderLabel})`,
   );
   const comparisonToNationalAverage = buildComparison(
     salary,
@@ -181,10 +181,10 @@ export function buildDinLonnReport({
     "Gjennomsnitt for alle yrker",
   );
   const occupationPlacement = {
-    rank: occupation.averageRank,
+    rank: occupation.medianRank,
     total: data.totalOccupations,
-    percentile: occupation.percentile,
-    label: getPlacementLabel(occupation.percentile),
+    percentile: occupation.medianPercentile,
+    label: getPlacementLabel(occupation.medianPercentile),
   };
   const genderGap = buildGenderGap(occupation);
   const headline = buildHeadline(comparisonToMedian.differencePercent);
@@ -194,7 +194,6 @@ export function buildDinLonnReport({
     genderLabel,
     median: comparisonToMedian.value,
     medianDifference: comparisonToMedian.difference,
-    nationalDifference: comparisonToNationalAverage.difference,
   });
 
   return {
@@ -300,25 +299,16 @@ function buildSummary({
   genderLabel,
   median,
   medianDifference,
-  nationalDifference,
 }: {
   salary: number;
   occupationLabel: string;
   genderLabel: string;
   median?: number;
   medianDifference?: number;
-  nationalDifference?: number;
 }) {
-  const medianSentence =
-    median !== undefined && medianDifference !== undefined
-      ? `Med ${formatCurrency(salary)} i brutto månedslønn ligger du ${formatDifferenceText(medianDifference)} median avtalt månedslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
-      : `Med ${formatCurrency(salary)} i brutto månedslønn har vi ikke nok kjønnsdelte tall for median avtalt månedslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
-  const nationalSentence =
-    nationalDifference !== undefined
-      ? `Sammenlignet med alle yrker samlet ligger du ${formatDifferenceText(nationalDifference)} snittet på tvers av arbeidsmarkedet.`
-      : "Vi mangler akkurat nå et samlet snitt for alle yrker.";
-
-  return `${medianSentence} ${nationalSentence}`;
+  return median !== undefined && medianDifference !== undefined
+    ? `Med ${formatCurrency(salary)} i brutto månedslønn ligger du ${formatDifferenceText(medianDifference)} median avtalt månedslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
+    : `Med ${formatCurrency(salary)} i brutto månedslønn har vi ikke nok kjønnsdelte tall for median avtalt månedslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
 }
 
 function getPlacementLabel(percentile: number) {
