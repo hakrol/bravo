@@ -26,10 +26,12 @@ import {
   OCCUPATION_MONTHLY_SALARY_FILTERS,
   SSB_OCCUPATION_CONTRACT_TABLE_ID,
 } from "@/lib/ssb";
+import type { GeneratedOccupationDescription } from "@/lib/utdanning-types";
 
 type OccupationSalaryDetailPageProps = {
   occupationCode: string;
   detailPageOverride: OccupationDetailPage;
+  generatedDescription?: GeneratedOccupationDescription | null;
   relatedPagesOverride?: OccupationDetailPage[];
 };
 
@@ -39,6 +41,7 @@ void notFound;
 export async function OccupationSalaryDetailPage({
   occupationCode,
   detailPageOverride,
+  generatedDescription,
   relatedPagesOverride,
 }: OccupationSalaryDetailPageProps) {
   const detailPage = detailPageOverride;
@@ -90,6 +93,7 @@ export async function OccupationSalaryDetailPage({
   const introText = buildOccupationIntroText({
     occupationLabel: formattedOccupationLabel,
     summary: detailPage.summary,
+    generatedDescription,
   });
   const growthOverview = buildOccupationMedianGrowthOverview(
     yearlyMedianDatasets.latestDataset,
@@ -734,10 +738,16 @@ function buildTopSummary({
 function buildOccupationIntroText({
   occupationLabel,
   summary,
+  generatedDescription,
 }: {
   occupationLabel: string;
   summary: string;
+  generatedDescription?: GeneratedOccupationDescription | null;
 }) {
+  if (generatedDescription?.intro) {
+    return generatedDescription.intro;
+  }
+
   const cleanedSummary = cleanOccupationSummary(summary);
 
   if (cleanedSummary) {
@@ -763,6 +773,52 @@ function cleanOccupationSummary(summary: string) {
 
 function buildGenericOccupationDescription(occupationLabel: string) {
   const normalizedLabel = occupationLabel.toLowerCase();
+  const singularLabel = toSingularOccupationLabel(occupationLabel);
+  const singularNormalizedLabel = singularLabel.toLowerCase();
+
+  if (normalizedLabel.startsWith("spesialister i ")) {
+    const field = normalizedLabel.replace(/^spesialister i\s+/, "");
+
+    return `Spesialister i ${field} arbeider vanligvis med faglig fordypning, veiledning, analyse og utviklingsarbeid innen ${field}. Rollen kan omfatte oppfølging av mennesker, vurdering av behov, rådgivning til kolleger eller ledelse og arbeid med å utvikle gode faglige løsninger i praksis.`;
+  }
+
+  if (normalizedLabel.startsWith("ledere av ")) {
+    const field = normalizedLabel.replace(/^ledere av\s+/, "");
+
+    return `Ledere av ${field} har gjerne ansvar for å planlegge drift, prioritere ressurser, følge opp medarbeidere og sikre kvalitet i tjenestene eller leveransene. Arbeidet kombinerer ofte faglig forståelse med personalansvar, økonomioppfølging og utvikling av arbeidsprosesser.`;
+  }
+
+  if (normalizedLabel.startsWith("rådgivere innen ")) {
+    const field = normalizedLabel.replace(/^rådgivere innen\s+/, "");
+
+    return `Rådgivere innen ${field} arbeider ofte med vurderinger, faglige anbefalinger og oppfølging av saker innen ${field}. Jobben kan innebære analyse, veiledning, koordinering og samarbeid med brukere, kunder eller andre fagmiljøer.`;
+  }
+
+  if (normalizedLabel.startsWith("konsulenter innen ")) {
+    const field = normalizedLabel.replace(/^konsulenter innen\s+/, "");
+
+    return `Konsulenter innen ${field} hjelper ofte virksomheter eller brukere med faglige vurderinger, forbedringsarbeid og gjennomføring innen ${field}. Arbeidet kan bestå av analyse, rådgivning, prosjektarbeid og oppfølging av konkrete tiltak eller leveranser.`;
+  }
+
+  if (normalizedLabel.includes("pedagogikk")) {
+    return `${occupationLabel} arbeider gjerne med læring, utvikling, tilrettelegging og faglig veiledning i ulike deler av utdannings- og oppvekstfeltet. Arbeidsoppgavene kan omfatte kartlegging, planlegging av tiltak, oppfølging av barn, elever eller voksne og samarbeid med andre fagpersoner.`;
+  }
+
+  if (normalizedLabel.includes("psykolog") || normalizedLabel.includes("psykologi")) {
+    return `${occupationLabel} jobber ofte med vurdering, samtaler, oppfølging og faglige tiltak knyttet til psykisk helse, utvikling eller menneskelig atferd. Rollen kan også innebære utredning, rådgivning, behandling eller tverrfaglig samarbeid.`;
+  }
+
+  if (normalizedLabel.includes("helse") || normalizedLabel.includes("omsorg")) {
+    return `${occupationLabel} arbeider typisk med oppfølging, behandling, pleie eller koordinering av tjenester innen helse og omsorg. Arbeidet krever ofte faglige vurderinger, samarbeid med brukere og pårørende og tett samhandling med annet helsepersonell.`;
+  }
+
+  if (normalizedLabel.includes("barnevern")) {
+    return `${occupationLabel} arbeider ofte med oppfølging, veiledning og vurderinger knyttet til barn, unge og familier. Jobben kan innebære samarbeid med ulike tjenester, dokumentasjon, samtaler og tiltak som skal bidra til trygghet og god utvikling.`;
+  }
+
+  if (normalizedLabel.includes("undervisning") || normalizedLabel.includes("opplæring")) {
+    return `${occupationLabel} jobber gjerne med å planlegge, gjennomføre og følge opp læringsløp for barn, unge eller voksne. Rollen kan også innebære vurdering, tilrettelegging, faglig utviklingsarbeid og samarbeid med kolleger og foresatte.`;
+  }
 
   if (normalizedLabel.includes("direktør")) {
     return `${occupationLabel} leder virksomheter, setter strategisk retning og har overordnet ansvar for drift, økonomi og resultater.`;
@@ -792,7 +848,59 @@ function buildGenericOccupationDescription(occupationLabel: string) {
     return `${occupationLabel} planlegger undervisning, følger opp elevers læring og bidrar til faglig og sosial utvikling.`;
   }
 
-  return `${occupationLabel} er et yrke der arbeidsoppgaver, ansvar og lønnsnivå kan variere etter erfaring, sektor og hvor i landet man jobber.`;
+  if (isPluralOccupationLabel(occupationLabel)) {
+    return `${occupationLabel} arbeider innen et fagområde der oppgaver og ansvar varierer mellom ulike arbeidsplasser, men jobben handler ofte om å bruke fagkunnskap i praktisk arbeid, vurderinger og samarbeid med andre. Rollen kan innebære både daglig oppfølging, dokumentasjon, planlegging og utvikling av tjenester eller leveranser.`;
+  }
+
+  return `${singularLabel} arbeider vanligvis med oppgaver som krever fagkunnskap, vurderingsevne og samarbeid med andre. Hva jobben innebærer i praksis varierer mellom arbeidsplasser, men rollen handler ofte om å planlegge, følge opp og gjennomføre oppgaver innen sitt fagområde.`;
+}
+
+function isPluralOccupationLabel(value: string) {
+  const normalized = value.trim().toLowerCase();
+
+  return (
+    normalized.startsWith("spesialister ") ||
+    normalized.startsWith("ledere ") ||
+    normalized.startsWith("rådgivere ") ||
+    normalized.startsWith("konsulenter ") ||
+    normalized.endsWith("ere") ||
+    normalized.endsWith("ister") ||
+    normalized.endsWith("orer")
+  );
+}
+
+function toSingularOccupationLabel(value: string) {
+  const trimmed = value.trim();
+
+  if (trimmed.startsWith("Spesialister i ")) {
+    return trimmed.replace(/^Spesialister i /, "Spesialist i ");
+  }
+
+  if (trimmed.startsWith("Ledere av ")) {
+    return trimmed.replace(/^Ledere av /, "Leder av ");
+  }
+
+  if (trimmed.startsWith("Rådgivere innen ")) {
+    return trimmed.replace(/^Rådgivere innen /, "Rådgiver innen ");
+  }
+
+  if (trimmed.startsWith("Konsulenter innen ")) {
+    return trimmed.replace(/^Konsulenter innen /, "Konsulent innen ");
+  }
+
+  if (trimmed.endsWith("ere")) {
+    return `${trimmed.slice(0, -1)}`;
+  }
+
+  if (trimmed.endsWith("orer")) {
+    return `${trimmed.slice(0, -2)}`;
+  }
+
+  if (trimmed.endsWith("ister")) {
+    return `${trimmed.slice(0, -1)}`;
+  }
+
+  return trimmed;
 }
 
 function buildMedianGrowthMetrics(series: {
