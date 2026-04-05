@@ -359,7 +359,7 @@ function extractListItems(value?: string) {
     return [];
   }
 
-  return Array.from(value.matchAll(/<li[^>]*>(.*?)<\/li>/gis))
+  return Array.from(value.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi))
     .map((match) => htmlToText(match[1]))
     .map((entry) => cleanInlineText(entry))
     .filter((entry): entry is string => Boolean(entry));
