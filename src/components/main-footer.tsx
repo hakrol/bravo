@@ -1,32 +1,22 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import { SiteBrand } from "@/components/site-brand";
 
 const footerLinks = [
   { href: "#", label: "Om tjenesten" },
   { href: "#", label: "Personvern" },
   { href: "#", label: "Kontakt" },
-  { href: "#", label: "Ofte stilte spørsmål" },
+  { href: "#", label: "Ofte stilte sp\u00f8rsm\u00e5l" },
 ] as const;
 
 export function MainFooter() {
   return (
-    <footer className="border-t border-black/5 bg-[rgba(255,250,243,0.88)]">
+    <footer className="relative z-20 border-t border-black/5 bg-[#fffaf3]">
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-5 py-10 sm:px-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] lg:px-8 lg:py-14">
         <div className="max-w-2xl">
-          <Link className="inline-flex items-center gap-3" href="/">
-            <span className="flex h-12 w-12 items-center justify-center rounded-md bg-[var(--primary)] text-sm font-bold tracking-[0.18em] text-white shadow-sm">
-              LN
-            </span>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
-                Lønnsinnsikt
-              </p>
-              <p className="text-sm text-[var(--muted)]">Lønnsinnsikt for norske yrker</p>
-            </div>
-          </Link>
+          <SiteBrand size="footer" />
 
           <p className="mt-5 text-sm leading-7 text-[var(--muted)] sm:text-base">
-            Lønnsinnsikt samler og presenterer oversiktlige lønnstall for ulike yrker, slik at det
-            blir enklere å utforske forskjeller i inntekt etter rolle, erfaring og kjønn.
+            {"L\u00f8nnsinnsikt samler og presenterer oversiktlige l\u00f8nnstall for ulike yrker, slik at det blir enklere \u00e5 utforske forskjeller i inntekt etter rolle, erfaring og kj\u00f8nn."}
           </p>
         </div>
 
