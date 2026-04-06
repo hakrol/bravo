@@ -313,20 +313,29 @@ export async function OccupationSalaryDetailPage({
             className={sectionAnchorClassName}
           >
             <div className="rounded-md border border-dashed border-[var(--primary)]/35 bg-[linear-gradient(135deg,rgba(244,239,230,0.85)_0%,rgba(230,240,234,0.85)_100%)] px-6 py-6 shadow-[0_12px_40px_rgba(27,36,48,0.06)] sm:px-8">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div className="space-y-2">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                <div className="space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-                    Annonseplassholder
+                    Annonse
                   </p>
                   <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-                    Reklame kommer her
+                    Vil du lære mer om investering?
                   </h2>
                   <p className="max-w-3xl text-sm leading-7 text-slate-700">
-                    Dette er en midlertidig filler-boks mellom lønnsestimatet og relaterte yrker.
+                    Besøk Investorkurs for kurs og ressurser som hjelper deg å forstå investering,
+                    markedet og hvordan du kan bygge mer kunnskap om personlig økonomi over tid.
                   </p>
+                  <a
+                    className="inline-flex items-center rounded-full border border-[var(--primary)] bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+                    href="https://www.investorkurs.no"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Gå til investorkurs.no
+                  </a>
                 </div>
                 <div className="rounded-full border border-black/10 bg-white/70 px-4 py-2 text-xs font-medium uppercase tracking-[0.14em] text-slate-600">
-                  320 x 250 / responsiv
+                  www.investorkurs.no
                 </div>
               </div>
             </div>
