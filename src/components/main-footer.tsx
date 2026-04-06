@@ -3,9 +3,7 @@ import { SiteBrand } from "@/components/site-brand";
 
 const footerLinks = [
   { href: "/om", label: "Om" },
-  { href: "#", label: "Personvern" },
-  { href: "#", label: "Kontakt" },
-  { href: "#", label: "Ofte stilte sp\u00f8rsm\u00e5l" },
+  { href: "/personvern", label: "Personvern" },
 ] as const;
 
 export function MainFooter() {
