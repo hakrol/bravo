@@ -36,6 +36,7 @@ type OccupationSalaryTimeSeriesProps = {
   ariaLabel?: string;
   latestDataDescription?: string;
   valueDisplay?: "monthly" | "hourly";
+  containerClassName?: string;
 };
 
 export function OccupationSalaryTimeSeriesChart({
@@ -45,6 +46,7 @@ export function OccupationSalaryTimeSeriesChart({
   ariaLabel,
   latestDataDescription,
   valueDisplay = "monthly",
+  containerClassName,
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
 
@@ -66,8 +68,15 @@ export function OccupationSalaryTimeSeriesChart({
 
   const minValue = Math.min(...availableValues);
   const maxValue = Math.max(...availableValues);
-  const chartMin = Math.floor(minValue / 1000) * 1000;
-  const chartMax = Math.ceil(maxValue / 1000) * 1000;
+  const axisStep = valueDisplay === "hourly" ? getHourlyAxisStep(minValue, maxValue) : 1000;
+  const chartMin =
+    valueDisplay === "hourly"
+      ? Math.max(0, Math.floor((minValue - axisStep) / axisStep) * axisStep)
+      : Math.max(0, Math.floor(minValue / axisStep) * axisStep);
+  const chartMax =
+    valueDisplay === "hourly"
+      ? Math.ceil((maxValue + axisStep) / axisStep) * axisStep
+      : Math.ceil(maxValue / axisStep) * axisStep;
   const chartRange = Math.max(chartMax - chartMin, 1);
   const chartWidth = 920;
   const chartHeight = 360;
@@ -104,7 +113,7 @@ export function OccupationSalaryTimeSeriesChart({
 
   return (
     <section className="grid gap-6">
-      <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
+      <section className={`border bg-[var(--surface)] p-5 shadow-sm sm:p-6 ${containerClassName ?? "rounded-md"}`}>
         <div className="flex flex-col gap-4">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
@@ -341,6 +350,28 @@ function formatHourlyAxisValue(value: number) {
 
 function formatHourlyEndLabel(value: number) {
   return Math.round(value).toLocaleString("nb-NO");
+}
+
+function getHourlyAxisStep(minValue: number, maxValue: number) {
+  const range = Math.max(maxValue - minValue, 1);
+
+  if (range <= 40) {
+    return 10;
+  }
+
+  if (range <= 80) {
+    return 20;
+  }
+
+  if (range <= 160) {
+    return 25;
+  }
+
+  if (range <= 300) {
+    return 50;
+  }
+
+  return 100;
 }
 
 function formatPeriodLabel(value: string) {
