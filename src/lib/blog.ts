@@ -53,7 +53,7 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     slug: assertRequiredString(data.slug, "slug"),
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
-    author: assertRequiredString(data.author, "author"),
+    author: "Kristian",
     seoTitle: trimOptionalString(data.seoTitle),
     seoDescription: trimOptionalString(data.seoDescription),
   };
