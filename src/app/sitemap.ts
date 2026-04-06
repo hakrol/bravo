@@ -2,6 +2,8 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
+import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
+import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 import { getAbsoluteUrl } from "@/lib/site-config";
 
 const staticRoutes = [
@@ -14,7 +16,11 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogPosts = await getAllBlogPosts().catch(() => []);
+  const [blogPosts, occupationPages, hourlySalaryPages] = await Promise.all([
+    getAllBlogPosts().catch(() => []),
+    getDynamicOccupationPageEntries().catch(() => []),
+    getHourlySalaryPages().catch(() => []),
+  ]);
 
   const routes = staticRoutes
     .filter((route) => {
@@ -40,5 +46,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     images: post.coverImage ? [getAbsoluteUrl(post.coverImage)] : undefined,
   }));
 
-  return [...routes, ...blogRoutes];
+  const occupationRoutes: MetadataRoute.Sitemap = occupationPages.map((entry) => ({
+    url: getAbsoluteUrl(entry.page.href),
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  const hourlySalaryRoutes: MetadataRoute.Sitemap = hourlySalaryPages.map((page) => ({
+    url: getAbsoluteUrl(page.href),
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [...routes, ...blogRoutes, ...occupationRoutes, ...hourlySalaryRoutes];
 }

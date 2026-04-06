@@ -1,7 +1,6 @@
-import {
-  buildDynamicOccupationDetailPage,
-  formatOccupationDisplayLabel,
-} from "@/lib/occupation-detail-pages";
+import { cache } from "react";
+import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
+import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 
 export type HourlySalaryPage = {
   slug: string;
@@ -10,55 +9,49 @@ export type HourlySalaryPage = {
   titleOccupationLabel: string;
   title: string;
   description: string;
-  intro: string;
   href: string;
   detailHref: string;
 };
 
-const hourlySalaryPages: HourlySalaryPage[] = [
-  createHourlySalaryPage({
-    slug: "elektriker",
-    occupationCode: "7411",
-    occupationLabel: "Elektrikere",
-    titleOccupationLabel: "elektriker",
-    intro:
-      "Denne siden viser estimert timelønn for elektriker basert på median avtalt månedslønn fra SSB. Du får nivå i siste periode og utvikling over tid for begge kjønn, kvinner og menn.",
-  }),
-];
+const HOURLY_SALARY_BASE_PATH = "/timelonn";
 
-export function getHourlySalaryPages() {
-  return hourlySalaryPages;
+const getResolvedHourlySalaryPages = cache(async () => {
+  const entries = await getDynamicOccupationPageEntries();
+  return entries.map((entry) => createHourlySalaryPage(entry));
+});
+
+export async function getHourlySalaryPages() {
+  return getResolvedHourlySalaryPages();
 }
 
-export function getHourlySalaryPageBySlug(slug: string) {
-  return hourlySalaryPages.find((page) => page.slug === slug) ?? null;
-}
+export const resolveHourlySalaryPageBySlug = cache(async (slug: string) => {
+  const pages = await getResolvedHourlySalaryPages();
+  return pages.find((page) => page.slug === slug) ?? null;
+});
 
-function createHourlySalaryPage({
-  slug,
-  occupationCode,
-  occupationLabel,
-  titleOccupationLabel,
-  intro,
-}: {
-  slug: string;
-  occupationCode: string;
-  occupationLabel: string;
-  titleOccupationLabel: string;
-  intro: string;
-}): HourlySalaryPage {
-  const formattedOccupationLabel = formatOccupationDisplayLabel(occupationLabel);
-  const detailPage = buildDynamicOccupationDetailPage(occupationCode, occupationLabel);
+function createHourlySalaryPage(
+  entry: Awaited<ReturnType<typeof getDynamicOccupationPageEntries>>[number],
+): HourlySalaryPage {
+  const formattedOccupationLabel = formatOccupationDisplayLabel(entry.page.label);
+  const titleOccupationLabel = formattedOccupationLabel.toLowerCase();
+  const slug = buildHourlySalarySlugFromOccupationSlug(entry.page.slug);
 
   return {
     slug,
-    occupationCode,
-    occupationLabel,
+    occupationCode: entry.page.occupationCode,
+    occupationLabel: entry.page.label,
     titleOccupationLabel,
     title: `Timelønn for ${titleOccupationLabel}`,
-    description: `Se estimert timelønn for ${titleOccupationLabel} med utvikling over tid for begge kjønn, kvinner og menn. Beregnet fra median avtalt månedslønn i SSB for ${formattedOccupationLabel.toLowerCase()}.`,
-    intro,
-    href: `/timelonn/${slug}`,
-    detailHref: detailPage.href,
+    description: `Se estimert timelønn for ${titleOccupationLabel} med utvikling over tid, lønnsspredning og nivå for kvinner og menn. Beregnet fra lønnsdata i SSB for ${titleOccupationLabel}.`,
+    href: `${HOURLY_SALARY_BASE_PATH}/${slug}`,
+    detailHref: entry.page.href,
   };
+}
+
+function buildHourlySalarySlugFromOccupationSlug(occupationSlug: string) {
+  if (occupationSlug.endsWith("-lonn")) {
+    return `${occupationSlug.slice(0, -"-lonn".length)}-timelonn`;
+  }
+
+  return `${occupationSlug}-timelonn`;
 }

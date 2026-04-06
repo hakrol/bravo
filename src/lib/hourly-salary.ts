@@ -1,4 +1,8 @@
-import type { OccupationSalaryTimeSeries, OccupationSalaryTimeSeriesPoint } from "@/lib/ssb";
+import type {
+  OccupationSalaryTimeSeries,
+  OccupationSalaryTimeSeriesPoint,
+  OccupationSalaryDistribution,
+} from "@/lib/ssb";
 
 export const STANDARD_HOURS_PER_YEAR = 1950;
 const MONTHS_PER_YEAR = 12;
@@ -25,9 +29,35 @@ export function buildEstimatedHourlySalaryTimeSeries(
   };
 }
 
-export function getLatestPointWithValues(
-  points: OccupationSalaryTimeSeriesPoint[],
-) {
+export function buildEstimatedHourlySalaryDistribution(
+  distribution: OccupationSalaryDistribution | null,
+): OccupationSalaryDistribution | null {
+  if (!distribution) {
+    return null;
+  }
+
+  return {
+    ...distribution,
+    total: convertDistributionMetrics(distribution.total),
+    women: convertDistributionMetrics(distribution.women),
+    men: convertDistributionMetrics(distribution.men),
+  };
+}
+
+function convertDistributionMetrics(metrics?: OccupationSalaryDistribution["women"]) {
+  if (!metrics) {
+    return undefined;
+  }
+
+  return {
+    p25: metrics.p25 !== undefined ? convertMonthlySalaryToHourly(metrics.p25) : undefined,
+    median: metrics.median !== undefined ? convertMonthlySalaryToHourly(metrics.median) : undefined,
+    p75: metrics.p75 !== undefined ? convertMonthlySalaryToHourly(metrics.p75) : undefined,
+    average: metrics.average !== undefined ? convertMonthlySalaryToHourly(metrics.average) : undefined,
+  };
+}
+
+export function getLatestPointWithValues(points: OccupationSalaryTimeSeriesPoint[]) {
   for (let index = points.length - 1; index >= 0; index -= 1) {
     const point = points[index];
 
