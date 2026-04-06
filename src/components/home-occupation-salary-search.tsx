@@ -78,7 +78,7 @@ export function HomeOccupationSalarySearch({
       {availableGroups.length > 0 ? (
         <div className="relative z-10 mx-auto w-full max-w-6xl px-1">
           <label className="mx-auto grid max-w-sm gap-2" htmlFor="occupation-group-filter">
-            <span className="text-sm font-semibold text-[var(--primary-strong)]">
+            <span className="text-center text-sm font-semibold text-[var(--primary-strong)]">
               Velg yrkesgruppe
             </span>
             <select
