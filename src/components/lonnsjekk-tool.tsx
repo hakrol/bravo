@@ -42,6 +42,7 @@ const initialFormState: FormState = {
 };
 
 const HOURS_PER_YEAR = 1950;
+const HOURS_PER_WEEK = 37.5;
 const ESTIMATED_TAX_RATE = 30;
 const HOLIDAY_PAY_RATE = 12;
 const VACATION_WEEKS = 5;
@@ -495,8 +496,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             <div className="space-y-2">
               <h3 className="text-xl font-semibold text-slate-950">Plassering i lønnsfordelingen</h3>
               <p className="text-sm leading-6 text-slate-600">
-                Her ser du hvor lønnen din ligger sammenlignet med 25-persentilen, median avtalt
-                månedslønn og 75-persentilen i yrket.
+                Her ser du om lønnen din ligger i den lave, midtre eller høye delen av lønnsnivået i yrket.
               </p>
             </div>
 
@@ -527,36 +527,6 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
           <EstimateSection report={report} />
 
-          {submittedStartYear !== undefined ? (
-            <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
-              <div className="space-y-2">
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-                  Kjøpekraft
-                </p>
-                <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-                  Din kjøpekraft siden {submittedStartYear}
-                </h3>
-                <p className="text-sm leading-7 text-slate-700">
-                  {buildUserPurchasingPowerSectionIntro(submittedStartYear, report.occupation.occupationLabel)}
-                </p>
-              </div>
-
-              <div className="mt-5">
-                {isPurchasingPowerLoading ? (
-                  <p className="text-sm leading-6 text-slate-600">Henter kjøpekraft fra SSB ...</p>
-                ) : userPurchasingPowerInsight ? (
-                  <UserPurchasingPowerSection insight={userPurchasingPowerInsight} />
-                ) : purchasingPowerError ? (
-                  <p className="text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
-                ) : (
-                  <p className="text-sm leading-6 text-slate-600">
-                    Vi har ikke nok historiske data til å analysere kjøpekraften fra valgt startår.
-                  </p>
-                )}
-              </div>
-            </section>
-          ) : null}
-
           {submittedAge !== undefined ? (
             <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
               <div className="space-y-2">
@@ -567,7 +537,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   Din alder sammenlignet med yrket
                 </h3>
                 <p className="text-sm leading-7 text-slate-700">
-                  Denne sammenligningen bruker siste tilgjengelige snittalder i yrket og matcher valgt kjønn når det finnes tall.
+                  Denne sammenligningen bruker siste tilgjengelige snittalder for valgt kjønn i yrket.
                 </p>
               </div>
 
@@ -580,16 +550,16 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   <p className="text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
                 ) : (
                   <p className="text-sm leading-6 text-slate-600">
-                    Vi har ikke nok aldersdata til å sammenligne deg med yrket akkurat nå.
+                    Vi har ikke nok aldersdata for valgt kjønn til å sammenligne deg med yrket akkurat nå.
                   </p>
                 )}
               </div>
             </section>
           ) : null}
 
-          <section className="rounded-[5px] border border-black/10 bg-[#fcfaf6] px-6 py-6 shadow-sm">
+          <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
             <h3 className="text-xl font-semibold text-slate-950">Interessante fakta</h3>
-            <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
+            <div className="mt-5 space-y-4 text-base leading-8 text-slate-700">
               <p>
                 <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span>{" "}
                 ligger i {formatTopPercent(report.occupationPlacement.percentile)} av yrkene når vi
@@ -679,7 +649,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
 
   return (
     <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
-      <div className="space-y-2">
+      <div className="space-y-6">
         <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
           Lønnsestimat
         </p>
@@ -690,33 +660,61 @@ function EstimateSection({ report }: EstimateSectionProps) {
           Her ser du et forenklet estimat for yrket basert på median avtalt månedslønn, og et eget
           estimat basert på lønnen du har lagt inn.
         </p>
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
+          <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
+          <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
+          <span>{ESTIMATED_TAX_RATE} % estimert skatt</span>
+          <span>{HOLIDAY_PAY_RATE} % feriepengesats</span>
+          <span>{VACATION_WEEKS} uker ferie</span>
+        </div>
       </div>
 
-      <div className="mt-5 grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         {medianEstimate ? (
-          <EstimateCard
-            description="Forenklet estimat basert på median avtalt månedslønn i yrket."
+          <EstimateSummaryCard
+            description="Median avtalt månedslønn i yrket."
             estimate={medianEstimate}
+            salaryLabel="Median avtalt månedslønn"
             title="Basert på median i yrket"
           />
         ) : null}
-        <EstimateCard
-          description="Forenklet estimat basert på brutto månedslønnen du har lagt inn."
+        <EstimateSummaryCard
+          description="Brutto månedslønnen du har lagt inn."
           estimate={userEstimate}
+          salaryLabel="Din månedslønn"
           title="Basert på din lønn"
+        />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        {medianEstimate ? (
+          <EstimateHolidayCard
+            estimate={medianEstimate}
+            title="Feriepenger basert på median i yrket"
+          />
+        ) : null}
+        <EstimateHolidayCard
+          estimate={userEstimate}
+          title="Feriepenger basert på din lønn"
         />
       </div>
     </section>
   );
 }
 
-type EstimateCardProps = {
+type EstimateSummaryCardProps = {
   title: string;
   description: string;
   estimate: ReturnType<typeof buildEstimate>;
+  salaryLabel: string;
 };
 
-function EstimateCard({ title, description, estimate }: EstimateCardProps) {
+function EstimateSummaryCard({
+  title,
+  description,
+  estimate,
+  salaryLabel,
+}: EstimateSummaryCardProps) {
   return (
     <article className="rounded-[5px] border border-black/10 bg-[#f8faf8] px-5 py-5">
       <div className="space-y-4">
@@ -728,13 +726,54 @@ function EstimateCard({ title, description, estimate }: EstimateCardProps) {
         </div>
 
         <div className="grid gap-3">
-          <EstimateRow label="Månedslønn" value={formatCurrency(estimate.monthlySalary)} strong />
+          <EstimateRow label={salaryLabel} value={formatCurrency(estimate.monthlySalary)} strong />
           <EstimateRow label="Årslønn" value={formatCurrency(estimate.annualSalary)} />
           <EstimateRow label="Timelønn" value={formatCurrency(estimate.hourlySalary)} />
-          <EstimateRow label="Netto per måned" tone="positive" value={formatCurrency(estimate.netMonthlySalary)} />
-          <EstimateRow label="Feriepenger" tone="positive" value={formatCurrency(estimate.estimatedHolidayPay)} />
+          <EstimateRow label="Daglønn (7,5 t)" value={formatCurrency(estimate.dailySalary)} />
+          <EstimateRow label="Skatt per måned" tone="negative" value={formatCurrency(estimate.monthlyTax)} />
+          <EstimateRow label="Netto per måned" tone="positive" value={formatCurrency(estimate.netMonthlySalary)} strong />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+type EstimateHolidayCardProps = {
+  title: string;
+  estimate: ReturnType<typeof buildEstimate>;
+};
+
+function EstimateHolidayCard({ title, estimate }: EstimateHolidayCardProps) {
+  return (
+    <article className="rounded-[5px] border border-amber-300 bg-[#fff4cf] px-5 py-5">
+      <div className="space-y-5">
+        <div className="space-y-1">
+          <p className="text-sm font-semibold text-slate-900">{title}</p>
+          <p className="text-sm font-medium text-[#946200]">
+            {HOLIDAY_PAY_RATE.toLocaleString("nb-NO")} % feriepengesats | {VACATION_WEEKS.toLocaleString("nb-NO")} uker
+          </p>
+        </div>
+
+        <div className="space-y-3 border-b border-black/10 pb-4">
+          <EstimateRow label="Årslønn (brutto)" value={formatCurrency(estimate.annualSalary)} />
+          <EstimateRow label="Feriepengegrunnlag" value={formatCurrency(estimate.holidayPayBasis)} strong />
+          <EstimateRow label="Ferietrekk" tone="negative" value={formatCurrency(estimate.holidayDeduction)} />
+        </div>
+
+        <div className="space-y-3">
+          <EstimateRow
+            label="Estimerte feriepenger"
+            tone="positive"
+            value={formatCurrency(estimate.estimatedHolidayPay)}
+            strong
+          />
           <EstimateRow label="Til utbetaling i juni" value={formatCurrency(estimate.junePayout)} strong />
         </div>
+
+        <p className="text-xs leading-6 text-slate-700">
+          Forenklet estimat basert på årslønn i 100 % stilling minus ferietrekk. Faktiske feriepenger
+          beregnes ut fra lønn som er opptjent året før.
+        </p>
       </div>
     </article>
   );
@@ -758,7 +797,10 @@ function EstimateRow({ label, value, tone = "default", strong = false }: Estimat
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-black/6 pb-3 last:border-b-0 last:pb-0">
       <span className="text-sm text-slate-700">{label}</span>
-      <span className={`${strong ? "text-base" : "text-sm"} font-semibold ${toneClassName}`}>{value}</span>
+      <span className={`${strong ? "text-base" : "text-sm"} font-semibold ${toneClassName}`}>
+        {tone === "negative" ? "- " : ""}
+        {value}
+      </span>
     </div>
   );
 }
@@ -873,11 +915,32 @@ type UserAgeSectionProps = {
 };
 
 function UserAgeSection({ insight }: UserAgeSectionProps) {
+  const tone = insight.difference > 0 ? "negative" : insight.difference < 0 ? "positive" : "default";
+  const surfaceClassName =
+    tone === "positive"
+      ? "border-emerald-200 bg-emerald-50"
+      : tone === "negative"
+        ? "border-red-200 bg-red-50"
+        : "border-black/8 bg-[#f8faf8]";
+  const headlineClassName =
+    tone === "positive"
+      ? "text-emerald-700"
+      : tone === "negative"
+        ? "text-red-700"
+        : "text-slate-950";
+
   return (
     <div className="grid gap-4">
+      <div className={`rounded-[5px] border px-5 py-4 ${surfaceClassName}`}>
+        <p className={`text-2xl font-semibold tracking-[-0.03em] ${headlineClassName}`}>
+          {insight.label}
+        </p>
+        <p className="mt-2 text-sm leading-6 text-slate-700">{insight.detail}</p>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <ReportCard
-          detail={insight.label}
+          detail="Alderen du la inn"
           label="Din alder"
           value={`${insight.userAge} år`}
         />
@@ -885,14 +948,9 @@ function UserAgeSection({ insight }: UserAgeSectionProps) {
           detail={`Siste tilgjengelige periode: ${insight.periodLabel}`}
           label="Snittalder i yrket"
           value={`${insight.referenceAge.toLocaleString("nb-NO", {
-            maximumFractionDigits: 1,
-            minimumFractionDigits: 1,
+            maximumFractionDigits: 0,
           })} år`}
         />
-      </div>
-
-      <div className="rounded-[5px] border border-black/8 bg-[#f8faf8] px-5 py-4 text-sm leading-7 text-slate-700">
-        <p>{insight.detail}</p>
       </div>
     </div>
   );
@@ -1028,10 +1086,10 @@ function formatPeriodLabel(periodLabel?: string) {
 function buildEstimate(monthlySalary: number) {
   const annualSalary = monthlySalary * 12;
   const hourlySalary = annualSalary / HOURS_PER_YEAR;
+  const dailySalary = annualSalary / WORK_DAYS_PER_YEAR;
   const annualTax = annualSalary * (ESTIMATED_TAX_RATE / 100);
   const monthlyTax = annualTax / 12;
   const netMonthlySalary = monthlySalary - monthlyTax;
-  const dailySalary = annualSalary / WORK_DAYS_PER_YEAR;
   const holidayDeduction = dailySalary * VACATION_DAYS;
   const holidayPayBasis = annualSalary - holidayDeduction;
   const estimatedHolidayPay = holidayPayBasis * (HOLIDAY_PAY_RATE / 100);
@@ -1041,12 +1099,21 @@ function buildEstimate(monthlySalary: number) {
     monthlySalary,
     annualSalary,
     hourlySalary,
+    dailySalary,
     monthlyTax,
     netMonthlySalary,
+    holidayPayBasis,
     holidayDeduction,
     estimatedHolidayPay,
     junePayout,
   };
+}
+
+function formatDecimal(value: number) {
+  return value.toLocaleString("nb-NO", {
+    minimumFractionDigits: value % 1 === 0 ? 0 : 1,
+    maximumFractionDigits: 2,
+  });
 }
 
 function buildUserPurchasingPowerSectionIntro(
@@ -1150,35 +1217,34 @@ function buildUserAgeInsight({
 }) {
   const referenceAge =
     gender === "kvinne"
-      ? ageInsight.averageWomen ?? ageInsight.averageAll
-      : ageInsight.averageMen ?? ageInsight.averageAll;
+      ? ageInsight.averageWomen
+      : ageInsight.averageMen;
 
   if (referenceAge === undefined) {
     return null;
   }
 
-  const difference = age - referenceAge;
+  const roundedReferenceAge = Math.round(referenceAge);
+  const difference = age - roundedReferenceAge;
   const direction =
     difference > 0 ? "eldre enn" : difference < 0 ? "yngre enn" : "på samme nivå som";
   const label =
     difference > 0
       ? `${Math.abs(difference).toLocaleString("nb-NO", {
-          maximumFractionDigits: 1,
-          minimumFractionDigits: 1,
+          maximumFractionDigits: 0,
         })} år eldre`
       : difference < 0
         ? `${Math.abs(difference).toLocaleString("nb-NO", {
-            maximumFractionDigits: 1,
-            minimumFractionDigits: 1,
+            maximumFractionDigits: 0,
           })} år yngre`
         : "På samme nivå";
 
   return {
     userAge: age,
-    referenceAge,
+    referenceAge: roundedReferenceAge,
     difference,
     label,
-    detail: `Du er ${direction} snittet i yrket. Sammenligningen bruker ${gender === "kvinne" ? "kvinner" : "menn"} når det finnes tall, ellers begge kjønn samlet.`,
+    detail: `Du er ${direction} snittet for ${gender === "kvinne" ? "kvinner" : "menn"} i yrket.`,
     periodLabel: formatPeriodLabel(ageInsight.periodLabel),
   };
 }
