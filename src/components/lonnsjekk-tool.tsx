@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useDeferredValue, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import {
-  buildDinLonnReport,
-  type DinLonnKjonn,
-  type DinLonnPageData,
-} from "@/lib/din-lonn";
+  buildLonnsjekkReport,
+  type LonnsjekkKjonn,
+  type LonnsjekkPageData,
+} from "@/lib/lonnsjekk";
 import type {
   OccupationAgeLatest,
   OccupationSalaryTimeSeries,
@@ -15,13 +15,13 @@ import type {
   OccupationSalaryDistribution,
 } from "@/lib/ssb";
 
-type DinLonnToolProps = {
-  data: DinLonnPageData;
+type LonnsjekkToolProps = {
+  data: LonnsjekkPageData;
 };
 
 type FormState = {
   salary: string;
-  gender: DinLonnKjonn;
+  gender: LonnsjekkKjonn;
   occupationCode: string;
   workStartYear: string;
   age: string;
@@ -48,7 +48,7 @@ const VACATION_WEEKS = 5;
 const WORK_DAYS_PER_YEAR = 260;
 const VACATION_DAYS = VACATION_WEEKS * 5;
 
-export function DinLonnTool({ data }: DinLonnToolProps) {
+export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [submitted, setSubmitted] = useState<FormState | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +69,7 @@ export function DinLonnTool({ data }: DinLonnToolProps) {
   const submittedAge = submitted ? parseInteger(submitted.age) : undefined;
   const report =
     submitted && parsedSalary !== undefined
-      ? buildDinLonnReport({
+      ? buildLonnsjekkReport({
           salary: parsedSalary,
           gender: submitted.gender,
           occupationCode: submitted.occupationCode,
@@ -668,7 +668,7 @@ function ReportCard({ label, value, detail, tone = "default" }: ReportCardProps)
 }
 
 type EstimateSectionProps = {
-  report: NonNullable<ReturnType<typeof buildDinLonnReport>>;
+  report: NonNullable<ReturnType<typeof buildLonnsjekkReport>>;
 };
 
 function EstimateSection({ report }: EstimateSectionProps) {
@@ -898,14 +898,14 @@ function UserAgeSection({ insight }: UserAgeSectionProps) {
   );
 }
 
-function flattenOccupationOptions(data: DinLonnPageData) {
+function flattenOccupationOptions(data: LonnsjekkPageData) {
   return [...data.options].sort((left, right) =>
     left.occupationLabel.localeCompare(right.occupationLabel, "nb-NO"),
   );
 }
 
 function filterOccupationOptions(
-  options: DinLonnPageData["options"],
+  options: LonnsjekkPageData["options"],
   query: string,
 ) {
   const normalizedQuery = normalizeText(query.trim());
@@ -1064,7 +1064,7 @@ function buildUserPurchasingPowerInsight({
   startYear,
 }: {
   currentSalary: number;
-  gender: DinLonnKjonn;
+  gender: LonnsjekkKjonn;
   salarySeries: OccupationSalaryTimeSeries;
   purchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
   startYear: number;
@@ -1146,7 +1146,7 @@ function buildUserAgeInsight({
 }: {
   age: number;
   ageInsight: OccupationAgeLatest;
-  gender: DinLonnKjonn;
+  gender: LonnsjekkKjonn;
 }) {
   const referenceAge =
     gender === "kvinne"
@@ -1219,7 +1219,7 @@ function findAnnualPointForYear(
 
 function pickSalaryValue(
   point: { valueAll?: number; valueWomen?: number; valueMen?: number },
-  gender: DinLonnKjonn,
+  gender: LonnsjekkKjonn,
 ) {
   return gender === "kvinne" ? point.valueWomen ?? point.valueAll : point.valueMen ?? point.valueAll;
 }

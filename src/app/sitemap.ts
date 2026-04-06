@@ -6,7 +6,7 @@ import { getAbsoluteUrl } from "@/lib/site-config";
 
 const staticRoutes = [
   { path: "/", priority: 1, changeFrequency: "weekly" as const },
-  { path: "/din-lonn", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/lonnsjekk", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/kvinner-vs-menn", priority: 0.6, changeFrequency: "monthly" as const },
   { path: "/topp-jobber", priority: 0.6, changeFrequency: "monthly" as const },
   { path: "/yrker", priority: 0.7, changeFrequency: "weekly" as const },

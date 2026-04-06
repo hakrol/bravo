@@ -1,6 +1,6 @@
-﻿import type { Metadata } from "next";
-import { DinLonnTool } from "@/components/din-lonn-tool";
-import { buildDinLonnPageData } from "@/lib/din-lonn";
+import type { Metadata } from "next";
+import { LonnsjekkTool } from "@/components/lonnsjekk-tool";
+import { buildLonnsjekkPageData } from "@/lib/lonnsjekk";
 import { buildOccupationSalaryOverview } from "@/lib/occupation-salary-overview";
 import {
   getLatestSalaryDataset,
@@ -16,12 +16,12 @@ export const metadata: Metadata = {
   title: "Lønnsjekk",
   description,
   alternates: {
-    canonical: "/din-lonn",
+    canonical: "/lonnsjekk",
   },
   openGraph: {
     type: "website",
     locale: "nb_NO",
-    url: "/din-lonn",
+    url: "/lonnsjekk",
     siteName: siteConfig.name,
     title: `Lønnsjekk | ${siteConfig.name}`,
     description,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function DinLonnPage() {
+export default async function LonnsjekkPage() {
   const averageDataset = await getLatestSalaryDataset(
     "occupationDetailed",
     OCCUPATION_MONTHLY_SALARY_FILTERS,
@@ -43,7 +43,7 @@ export default async function DinLonnPage() {
     averageOverview.rows.map((row) => row.occupationCode),
     OCCUPATION_MONTHLY_SALARY_FILTERS,
   );
-  const data = buildDinLonnPageData({
+  const data = buildLonnsjekkPageData({
     averageRows: averageOverview.rows,
     medianRows: medianOverview.rows,
     averageMonthlySalaryAll: averageOverview.averageMonthlySalary,
@@ -54,7 +54,7 @@ export default async function DinLonnPage() {
   return (
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <DinLonnTool data={data} />
+        <LonnsjekkTool data={data} />
       </div>
     </div>
   );

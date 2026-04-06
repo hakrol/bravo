@@ -5,9 +5,9 @@ import type {
 import { getOccupationDetailHref } from "@/lib/occupation-detail-pages";
 import { getOccupationGroupByCode } from "@/lib/occupation-groups";
 
-export type DinLonnKjonn = "kvinne" | "mann";
+export type LonnsjekkKjonn = "kvinne" | "mann";
 
-export type DinLonnOccupationOption = {
+export type LonnsjekkOccupationOption = {
   occupationCode: string;
   occupationLabel: string;
   groupCode: string;
@@ -23,20 +23,20 @@ export type DinLonnOccupationOption = {
   medianPercentile: number;
 };
 
-export type DinLonnPageData = {
-  options: DinLonnOccupationOption[];
+export type LonnsjekkPageData = {
+  options: LonnsjekkOccupationOption[];
   totalOccupations: number;
   averageMonthlySalaryAll?: number;
   periodLabel?: string;
   updated?: string;
 };
 
-export type DinLonnReport = {
+export type LonnsjekkReport = {
   salary: number;
   annualSalary: number;
-  gender: DinLonnKjonn;
+  gender: LonnsjekkKjonn;
   genderLabel: string;
-  occupation: DinLonnOccupationOption;
+  occupation: LonnsjekkOccupationOption;
   periodLabel?: string;
   updated?: string;
   comparisonToMedian: {
@@ -74,7 +74,7 @@ export type DinLonnReport = {
   summary: string;
 };
 
-type BuildDinLonnPageDataInput = {
+type BuildLonnsjekkPageDataInput = {
   averageRows: OccupationSalaryRow[];
   medianRows: OccupationMedianSalaryRow[];
   averageMonthlySalaryAll?: number;
@@ -82,20 +82,20 @@ type BuildDinLonnPageDataInput = {
   updated?: string;
 };
 
-type BuildDinLonnReportInput = {
+type BuildLonnsjekkReportInput = {
   salary: number;
-  gender: DinLonnKjonn;
+  gender: LonnsjekkKjonn;
   occupationCode: string;
-  data: DinLonnPageData;
+  data: LonnsjekkPageData;
 };
 
-export function buildDinLonnPageData({
+export function buildLonnsjekkPageData({
   averageRows,
   medianRows,
   averageMonthlySalaryAll,
   periodLabel,
   updated,
-}: BuildDinLonnPageDataInput): DinLonnPageData {
+}: BuildLonnsjekkPageDataInput): LonnsjekkPageData {
   const medianRowsByCode = new Map(
     medianRows.map((row) => [row.occupationCode, row] as const),
   );
@@ -129,7 +129,7 @@ export function buildDinLonnPageData({
         medianSalaryMen: medianRow?.medianMen,
         medianRank,
         medianPercentile,
-      } satisfies DinLonnOccupationOption;
+      } satisfies LonnsjekkOccupationOption;
     })
     .sort((left, right) => {
       const groupCompare = left.groupLabel.localeCompare(right.groupLabel, "nb-NO");
@@ -150,12 +150,12 @@ export function buildDinLonnPageData({
   };
 }
 
-export function buildDinLonnReport({
+export function buildLonnsjekkReport({
   salary,
   gender,
   occupationCode,
   data,
-}: BuildDinLonnReportInput): DinLonnReport | null {
+}: BuildLonnsjekkReportInput): LonnsjekkReport | null {
   const occupation = data.options.find((option) => option.occupationCode === occupationCode);
 
   if (!occupation) {
@@ -215,8 +215,8 @@ export function buildDinLonnReport({
 }
 
 function pickGenderValue(
-  occupation: DinLonnOccupationOption,
-  gender: DinLonnKjonn,
+  occupation: LonnsjekkOccupationOption,
+  gender: LonnsjekkKjonn,
   metric: "median" | "average",
 ) {
   if (metric === "median") {
@@ -244,7 +244,7 @@ function buildComparison(salary: number, reference: number | undefined, label: s
   };
 }
 
-function buildGenderGap(occupation: DinLonnOccupationOption) {
+function buildGenderGap(occupation: LonnsjekkOccupationOption) {
   const womenMedian = occupation.medianSalaryWomen;
   const menMedian = occupation.medianSalaryMen;
 

@@ -1,11 +1,11 @@
-import { existsSync } from "node:fs";
+﻿import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import type { Metadata } from "next";
 import { cache } from "react";
 import { metadata as blogIndexMetadata } from "@/app/blogg/page";
-import { metadata as dinLonnMetadata } from "@/app/din-lonn/page";
+import { metadata as lonnsjekkMetadata } from "@/app/lonnsjekk/page";
 import { metadata as kvinnerVsMennMetadata } from "@/app/kvinner-vs-menn/page";
 import { metadata as rootMetadata } from "@/app/layout";
 import robots from "@/app/robots";
@@ -75,13 +75,13 @@ const staticRouteDefinitions: StaticRouteDefinition[] = [
     pageFilePath: path.join(process.cwd(), "src", "app", "blogg", "page.tsx"),
   },
   {
-    id: "page:/din-lonn",
-    title: "Din lønn",
-    url: "/din-lonn",
-    metadata: dinLonnMetadata,
+    id: "page:/lonnsjekk",
+    title: "Lønnssjekk",
+    url: "/lonnsjekk",
+    metadata: lonnsjekkMetadata,
     metadataSource: "page",
     inSitemap: true,
-    pageFilePath: path.join(process.cwd(), "src", "app", "din-lonn", "page.tsx"),
+    pageFilePath: path.join(process.cwd(), "src", "app", "lonnsjekk", "page.tsx"),
   },
   {
     id: "page:/kvinner-vs-menn",
@@ -593,3 +593,5 @@ export function getAdminAbsoluteUrl(value: string | null) {
 
   return new URL(value, siteConfig.siteUrl).toString();
 }
+
+
