@@ -15,7 +15,10 @@ import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-work
 import type { OccupationDescription } from "@/lib/occupation-descriptions";
 import type { OccupationDetailPage } from "@/lib/occupation-detail-pages";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
-import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
+import {
+  buildOccupationMedianGrowthOverview,
+  type OccupationMedianSalaryRow,
+} from "@/lib/occupation-salary-overview";
 import {
   getLatestAndPreviousYearSalaryDatasets,
   getOccupationDetailTrendData,
@@ -26,29 +29,56 @@ import {
   OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
   SSB_OCCUPATION_CONTRACT_TABLE_ID,
+  type OccupationDetailTrendData,
+  type OccupationLaborMarketStats,
+  type OccupationSalaryDistribution,
+  type OccupationSalaryTimeSeries,
 } from "@/lib/ssb";
+
+export type OccupationRelatedSalaryRow = {
+  occupationCode: string;
+  occupationLabel: string;
+  href: string;
+  medianAll?: number;
+  medianWomen?: number;
+  medianMen?: number;
+  growthWomen?: number;
+  growthMen?: number;
+  groupCode: string;
+};
+
+export type OccupationSalaryDetailPageData = {
+  trendData: OccupationDetailTrendData;
+  distribution: OccupationSalaryDistribution | null;
+  medianOverview: {
+    rows: OccupationMedianSalaryRow[];
+    periodLabel?: string;
+    measureLabel: string;
+  };
+  laborMarketStats: OccupationLaborMarketStats | null;
+  medianBasicSalarySeries: OccupationSalaryTimeSeries;
+  relatedRows: OccupationRelatedSalaryRow[];
+};
 
 type OccupationSalaryDetailPageProps = {
   occupationCode: string;
   detailPageOverride: OccupationDetailPage;
   occupationDescription?: OccupationDescription | null;
   relatedPagesOverride?: OccupationDetailPage[];
+  viewModelData?: OccupationSalaryDetailPageData;
 };
 
 const sectionAnchorClassName = "scroll-mt-32";
 void notFound;
 
-export async function OccupationSalaryDetailPage({
+export async function buildOccupationSalaryDetailPageData({
   occupationCode,
-  detailPageOverride,
-  occupationDescription,
-  relatedPagesOverride,
-}: OccupationSalaryDetailPageProps) {
-  const detailPage = detailPageOverride;
-  const relatedPages = relatedPagesOverride ?? [];
-  const formattedOccupationLabel = formatOccupationDisplayLabel(detailPage.label);
+  relatedPages,
+}: {
+  occupationCode: string;
+  relatedPages: OccupationDetailPage[];
+}): Promise<OccupationSalaryDetailPageData> {
   const comparisonOccupationCodes = [occupationCode, ...relatedPages.map((page) => page.occupationCode)];
-
   const [trendData, distribution, medianOverview, laborMarketStats, medianBasicSalarySeries, yearlyMedianDatasets] =
     await Promise.all([
       getOccupationDetailTrendData(occupationCode, OCCUPATION_MONTHLY_SALARY_FILTERS),
@@ -64,6 +94,69 @@ export async function OccupationSalaryDetailPage({
         OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
       ),
     ]);
+  const growthOverview = buildOccupationMedianGrowthOverview(
+    yearlyMedianDatasets.latestDataset,
+    yearlyMedianDatasets.previousDataset,
+    { occupationCodes: comparisonOccupationCodes },
+  );
+  const growthByOccupationCode = new Map(
+    growthOverview.rows.map((row) => [row.occupationCode, row] as const),
+  );
+  const medianRowsByCode = new Map(
+    medianOverview.rows.map((row) => [row.occupationCode, row] as const),
+  );
+  const relatedRows = relatedPages
+    .map((page) => {
+      const row = medianRowsByCode.get(page.occupationCode);
+      const growthRow = growthByOccupationCode.get(page.occupationCode);
+
+      return {
+        occupationCode: page.occupationCode,
+        occupationLabel: row?.occupationLabel ?? page.label,
+        href: page.href,
+        medianAll: row?.medianAll,
+        medianWomen: row?.medianWomen,
+        medianMen: row?.medianMen,
+        growthWomen: growthRow?.growthWomen,
+        growthMen: growthRow?.growthMen,
+        groupCode: page.occupationCode.charAt(0),
+      };
+    })
+    .filter((row) => row.occupationCode !== occupationCode)
+    .filter((row) => row.medianWomen !== undefined || row.medianMen !== undefined)
+    .slice(0, 6);
+
+  return {
+    trendData,
+    distribution,
+    medianOverview,
+    laborMarketStats,
+    medianBasicSalarySeries,
+    relatedRows,
+  };
+}
+
+export async function OccupationSalaryDetailPage({
+  occupationCode,
+  detailPageOverride,
+  occupationDescription,
+  relatedPagesOverride,
+  viewModelData,
+}: OccupationSalaryDetailPageProps) {
+  const detailPage = detailPageOverride;
+  const relatedPages = relatedPagesOverride ?? [];
+  const formattedOccupationLabel = formatOccupationDisplayLabel(detailPage.label);
+  const {
+    trendData,
+    distribution,
+    medianOverview,
+    laborMarketStats,
+    medianBasicSalarySeries,
+    relatedRows,
+  } = viewModelData ?? await buildOccupationSalaryDetailPageData({
+    occupationCode,
+    relatedPages,
+  });
   const { series, purchasingPower, purchasingPowerSeries } = trendData;
   const medianGrowthMetrics = buildMedianGrowthMetrics(medianBasicSalarySeries);
 
@@ -95,34 +188,6 @@ export async function OccupationSalaryDetailPage({
     summary: detailPage.summary,
     occupationDescription,
   });
-  const growthOverview = buildOccupationMedianGrowthOverview(
-    yearlyMedianDatasets.latestDataset,
-    yearlyMedianDatasets.previousDataset,
-    { occupationCodes: comparisonOccupationCodes },
-  );
-  const growthByOccupationCode = new Map(
-    growthOverview.rows.map((row) => [row.occupationCode, row] as const),
-  );
-  const relatedRows = relatedPages
-    .map((page) => {
-      const row = medianRowsByCode.get(page.occupationCode);
-      const growthRow = growthByOccupationCode.get(page.occupationCode);
-
-      return {
-        occupationCode: page.occupationCode,
-        occupationLabel: row?.occupationLabel ?? page.label,
-        href: page.href,
-        medianAll: row?.medianAll,
-        medianWomen: row?.medianWomen,
-        medianMen: row?.medianMen,
-        growthWomen: growthRow?.growthWomen,
-        growthMen: growthRow?.growthMen,
-        groupCode: page.occupationCode.charAt(0),
-      };
-    })
-    .filter((row) => row.occupationCode !== occupationCode)
-    .filter((row) => row.medianWomen !== undefined || row.medianMen !== undefined)
-    .slice(0, 6);
   const hasEstimate =
     currentSalary !== undefined || currentSalaryWomen !== undefined || currentSalaryMen !== undefined;
   const hasRelatedRows = relatedRows.length > 0;

@@ -228,6 +228,10 @@ async function main() {
   };
 
   await writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2), "utf8");
+  const { syncOccupationDetailViewModels } = await import(
+    new URL("./occupation-detail-view-model-sync.ts", import.meta.url).href
+  );
+  await syncOccupationDetailViewModels();
   console.log(`Ferdig. Skrev ${manifest.datasets.length} datasett til ${GENERATED_DIR}.`);
 }
 
