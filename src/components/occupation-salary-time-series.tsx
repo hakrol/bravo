@@ -37,6 +37,7 @@ type OccupationSalaryTimeSeriesProps = {
   latestDataDescription?: string;
   valueDisplay?: "monthly" | "hourly";
   containerClassName?: string;
+  variant?: "default" | "modern" | "classic-emphasis";
 };
 
 export function OccupationSalaryTimeSeriesChart({
@@ -47,6 +48,7 @@ export function OccupationSalaryTimeSeriesChart({
   latestDataDescription,
   valueDisplay = "monthly",
   containerClassName,
+  variant = "default",
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
 
@@ -110,10 +112,33 @@ export function OccupationSalaryTimeSeriesChart({
   const valueFormatter = valueDisplay === "hourly" ? formatHourlyValue : formatCurrency;
   const axisValueFormatter = valueDisplay === "hourly" ? formatHourlyAxisValue : formatAxisCurrency;
   const endLabelFormatter = valueDisplay === "hourly" ? formatHourlyEndLabel : formatEndLabel;
+  const isModern = variant === "modern";
+  const isClassicEmphasis = variant === "classic-emphasis";
+  const containerClasses = isModern
+    ? "rounded-md border border-black bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:p-6"
+    : `border bg-[var(--surface)] p-5 shadow-sm sm:p-6 ${containerClassName ?? "rounded-md"}`;
+  const chartFrameClasses = isModern
+    ? "mt-6 overflow-x-auto rounded-md border border-black bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:p-4"
+    : "mt-6 overflow-x-auto";
+  const gridStroke = isModern
+    ? "rgba(15, 23, 42, 0.10)"
+    : isClassicEmphasis
+      ? "rgba(27, 36, 48, 0.14)"
+      : "rgba(27, 36, 48, 0.09)";
+  const gridDash = isModern ? "0" : isClassicEmphasis ? "4 6" : "4 6";
+  const axisStroke = isModern
+    ? "rgba(15, 23, 42, 0.24)"
+    : isClassicEmphasis
+      ? "rgba(27, 36, 48, 0.2)"
+      : "rgba(27, 36, 48, 0.14)";
+  const pointRadius = isModern ? 4.5 : 4;
+  const lineWidth = isModern ? 4 : 3;
+  const axisLabelColor = isModern || isClassicEmphasis ? "#000000" : "#5f6773";
+  const yearGuideStroke = isModern ? "rgba(15, 23, 42, 0.08)" : "transparent";
 
   return (
     <section className="grid gap-6">
-      <section className={`border bg-[var(--surface)] p-5 shadow-sm sm:p-6 ${containerClassName ?? "rounded-md"}`}>
+      <section className={containerClasses}>
         <div className="flex flex-col gap-4">
           <div className="space-y-2">
             <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
@@ -144,17 +169,30 @@ export function OccupationSalaryTimeSeriesChart({
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 {latestPeriodLabel ? (
-                  <span className="rounded-md border border-black/10 bg-[#f7fafc] px-3 py-2 text-sm font-semibold text-slate-700">
+                  <span className={`rounded-md border px-3 py-2 text-sm font-semibold ${
+                    isModern
+                      ? "border-black/10 bg-slate-950 text-white"
+                      : "border-black/10 bg-[#f7fafc] text-slate-700"
+                  }`}>
                     {formatPeriodLabel(latestPeriodLabel)}
                   </span>
                 ) : null}
                 {latestValues.map((entry) => (
                   <div
                     key={`latest-${entry.key}`}
-                    className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none text-slate-700"
+                    className={`rounded-md border px-3 py-2 text-sm leading-none ${
+                      isModern
+                        ? "border-black/10 bg-white text-slate-700 shadow-[0_8px_20px_rgba(15,23,42,0.06)]"
+                        : "border-black/10 bg-white text-slate-700"
+                    }`}
                   >
-                    <span className="text-[15px]">{entry.label}: </span>
-                    <span className="text-[15px] font-semibold text-slate-950">{valueFormatter(entry.value)}</span>
+                    <span className={`text-[15px] ${isModern ? "block text-xs uppercase tracking-[0.14em] text-slate-500" : ""}`}>
+                      {entry.label}
+                      {!isModern ? ":" : ""}
+                    </span>
+                    <span className={`${isModern ? "mt-2 block text-xl" : "text-[15px]"} font-semibold text-slate-950`}>
+                      {valueFormatter(entry.value)}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -170,8 +208,10 @@ export function OccupationSalaryTimeSeriesChart({
                   key={option.key}
                   className={`rounded-full border px-3 py-1.5 text-sm transition ${
                     isActive
-                      ? "border-[var(--primary)] bg-[var(--primary)] text-white"
-                      : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                      ? "border-slate-950 bg-slate-950 text-white"
+                      : isModern
+                        ? "border-black/10 bg-slate-50 text-slate-700 hover:border-slate-950/30"
+                        : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
                   }`}
                   onClick={() => setActiveFilter(option.key)}
                   type="button"
@@ -184,7 +224,14 @@ export function OccupationSalaryTimeSeriesChart({
 
           <div className="flex flex-wrap gap-3">
             {activeSeries.map((definition) => (
-              <div key={definition.key} className="flex items-center gap-2 text-sm text-slate-700">
+              <div
+                key={definition.key}
+                className={`flex items-center gap-2 text-sm ${
+                  isModern
+                    ? "rounded-full border border-black/10 bg-white px-3 py-1.5 text-slate-700"
+                    : "text-slate-700"
+                }`}
+              >
                 <span
                   aria-hidden="true"
                   className="h-3 w-3 rounded-full"
@@ -196,7 +243,7 @@ export function OccupationSalaryTimeSeriesChart({
           </div>
         </div>
 
-        <div className="mt-6 overflow-x-auto">
+        <div className={chartFrameClasses}>
           <svg
             aria-label={ariaLabel ?? `Tidsserie for ${series.occupationLabel}`}
             className="min-w-[760px] w-full"
@@ -209,8 +256,8 @@ export function OccupationSalaryTimeSeriesChart({
               return (
                 <g key={tickValue}>
                   <line
-                    stroke="rgba(27, 36, 48, 0.09)"
-                    strokeDasharray="4 6"
+                    stroke={gridStroke}
+                    strokeDasharray={gridDash}
                     strokeWidth="1"
                     x1={paddingLeft}
                     x2={chartWidth - paddingRight}
@@ -218,12 +265,13 @@ export function OccupationSalaryTimeSeriesChart({
                     y2={y}
                   />
                   <text
-                  fill="#5f6773"
-                  fontSize="12"
-                  textAnchor="end"
-                  x={paddingLeft - 10}
-                  y={y + 4}
-                >
+                    fill={axisLabelColor}
+                    fontSize={isModern || isClassicEmphasis ? "13" : "12"}
+                    fontWeight={isModern || isClassicEmphasis ? "600" : "400"}
+                    textAnchor="end"
+                    x={paddingLeft - 10}
+                    y={y + 4}
+                  >
                     {axisValueFormatter(tickValue)}
                   </text>
                 </g>
@@ -231,7 +279,7 @@ export function OccupationSalaryTimeSeriesChart({
             })}
 
             <line
-              stroke="rgba(27, 36, 48, 0.14)"
+              stroke={axisStroke}
               strokeWidth="1"
               x1={paddingLeft}
               x2={chartWidth - paddingRight}
@@ -260,40 +308,98 @@ export function OccupationSalaryTimeSeriesChart({
               const path = points
                 .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`)
                 .join(" ");
+              const latestPoint = points[points.length - 1];
 
               return (
                 <g key={definition.key}>
+                  {isModern ? (
+                    <path
+                      d={path}
+                      fill="none"
+                      stroke={definition.color}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeOpacity="0.16"
+                      strokeWidth={lineWidth + 6}
+                    />
+                  ) : null}
                   <path
                     d={path}
                     fill="none"
                     stroke={definition.color}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="3"
+                    strokeWidth={lineWidth}
                   />
                   {points.map((point) => (
                     <g key={`${definition.key}-${point.periodCode}`}>
-                      <circle cx={point.x} cy={point.y} fill={definition.color} r="4" />
+                      {isModern ? (
+                        <circle
+                          cx={point.x}
+                          cy={point.y}
+                          fill="white"
+                          r={point.periodCode === latestPoint.periodCode ? pointRadius + 4 : pointRadius + 2.5}
+                          stroke="none"
+                        />
+                      ) : null}
+                      <circle
+                        cx={point.x}
+                        cy={point.y}
+                        fill={definition.color}
+                        r={point.periodCode === latestPoint.periodCode && isModern ? pointRadius + 1 : pointRadius}
+                      />
                       <title>
                         {`${definition.label}: ${valueFormatter(point.value)} (${formatPeriodLabel(point.label)})`}
                       </title>
                     </g>
                   ))}
                   {points.length > 0 ? (
-                    <text
-                      fill={definition.color}
-                      fontSize="12"
-                      fontWeight="600"
-                      textAnchor="start"
-                      x={points[points.length - 1].x + 8}
-                      y={
-                        points[points.length - 1].y +
-                        4 +
-                        (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
-                      }
-                    >
-                      {endLabelFormatter(points[points.length - 1].value)}
-                    </text>
+                    isModern ? (
+                      <g>
+                        <rect
+                          fill="#0f172a"
+                          height="28"
+                          rx="6"
+                          stroke="none"
+                          width={Math.max(54, endLabelFormatter(latestPoint.value).length * 8 + 18)}
+                          x={latestPoint.x + 10}
+                          y={
+                            latestPoint.y -
+                            16 +
+                            (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                          }
+                        />
+                        <text
+                          fill="white"
+                          fontSize="12"
+                          fontWeight="700"
+                          textAnchor="start"
+                          x={latestPoint.x + 20}
+                          y={
+                            latestPoint.y +
+                            1 +
+                            (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                          }
+                        >
+                          {endLabelFormatter(latestPoint.value)}
+                        </text>
+                      </g>
+                    ) : (
+                      <text
+                        fill={definition.color}
+                        fontSize="12"
+                        fontWeight="600"
+                        textAnchor="start"
+                        x={latestPoint.x + 8}
+                        y={
+                          latestPoint.y +
+                          4 +
+                          (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                        }
+                      >
+                        {endLabelFormatter(latestPoint.value)}
+                      </text>
+                    )
                   ) : null}
                 </g>
               );
@@ -303,22 +409,34 @@ export function OccupationSalaryTimeSeriesChart({
               const x = paddingLeft + xStep * tick.index;
 
               return (
-                <text
-                  key={`year-${tick.label}-${tick.index}`}
-                  fill="#5f6773"
-                  fontSize="12"
-                  textAnchor={
-                    tick.index === 0
-                      ? "start"
-                      : tick.index === series.points.length - 1
-                        ? "end"
-                        : "middle"
-                  }
-                  x={x}
-                  y={chartHeight - 18}
-                >
-                  {tick.label}
-                </text>
+                <g key={`year-${tick.label}-${tick.index}`}>
+                  {isModern ? (
+                    <line
+                      stroke={yearGuideStroke}
+                      strokeWidth="1"
+                      x1={x}
+                      x2={x}
+                      y1={paddingTop}
+                      y2={paddingTop + plotHeight}
+                    />
+                  ) : null}
+                  <text
+                    fill={axisLabelColor}
+                    fontSize={isModern || isClassicEmphasis ? "13" : "12"}
+                    fontWeight={isModern || isClassicEmphasis ? "700" : "400"}
+                    textAnchor={
+                      tick.index === 0
+                        ? "start"
+                        : tick.index === series.points.length - 1
+                          ? "end"
+                          : "middle"
+                    }
+                    x={x}
+                    y={chartHeight - 18}
+                  >
+                    {tick.label}
+                  </text>
+                </g>
               );
             })}
           </svg>
