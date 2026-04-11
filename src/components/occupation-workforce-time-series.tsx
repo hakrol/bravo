@@ -62,12 +62,12 @@ export function OccupationWorkforceTimeSeriesChart({
     return null;
   }
 
-  const chartWidth = 960;
-  const chartHeight = 320;
-  const paddingLeft = 64;
-  const paddingRight = 96;
+  const chartWidth = 820;
+  const chartHeight = 300;
+  const paddingLeft = 52;
+  const paddingRight = 64;
   const paddingTop = 18;
-  const paddingBottom = 52;
+  const paddingBottom = 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
   const chartMin = Math.floor(Math.min(...values) * 0.98);
@@ -98,21 +98,13 @@ export function OccupationWorkforceTimeSeriesChart({
   const latestPeriodLabel = latestValues[0]?.periodLabel;
   const latestOverallPoint = getLatestSeriesPoint(relevantPoints, "employeesAll");
   const latestTotal = latestOverallPoint?.value;
-  const latestSummary = latestOverallPoint
-    ? `${formatPeriodLabel(latestOverallPoint.periodLabel)}: ${formatWorkforceCount(latestOverallPoint.value)} personer`
-    : null;
 
   return (
-    <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
+    <section className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
       <div className="space-y-2">
         <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
           Lønnstakere over tid
         </h3>
-        {latestSummary ? (
-          <p className="text-4xl font-semibold tracking-[-0.05em] text-slate-950">
-            {latestSummary}
-          </p>
-        ) : null}
         <p className="text-sm text-[var(--muted)]">
           {description ?? "Antall personer registrert som lønnstakere i midtmåneden i kvartalet."}
         </p>
@@ -159,8 +151,8 @@ export function OccupationWorkforceTimeSeriesChart({
               key={option.key}
               className={`rounded-full border px-3 py-1.5 text-sm transition ${
                 isActive
-                  ? "border-[var(--primary)] bg-[var(--primary)] text-white"
-                  : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                  ? "border-slate-950 bg-slate-950 text-white"
+                  : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
               }`}
               onClick={() => setActiveFilter(option.key)}
               type="button"
@@ -187,7 +179,7 @@ export function OccupationWorkforceTimeSeriesChart({
       <div className="mt-4 overflow-x-auto pb-2">
         <svg
           aria-label="Linjediagram for lønnstakere over tid"
-          className="min-w-[760px] w-full"
+          className="w-full"
           role="img"
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
         >

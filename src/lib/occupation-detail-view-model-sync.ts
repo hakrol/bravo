@@ -47,6 +47,8 @@ type SsbDataset = {
 type OccupationDetailPage = {
   occupationCode: string;
   label: string;
+  editorialLabel?: string;
+  displayLabel?: string;
   slug: string;
   href: string;
   summary: string;

@@ -1,6 +1,8 @@
 export type OccupationDetailPage = {
   occupationCode: string;
   label: string;
+  editorialLabel?: string;
+  displayLabel?: string;
   slug: string;
   href: string;
   summary: string;
@@ -9,6 +11,20 @@ export type OccupationDetailPage = {
 
 const OCCUPATION_SALARY_SUFFIX = "lonn";
 const DYNAMIC_OCCUPATION_DETAIL_BASE_PATH = "/yrke";
+
+type OccupationLabelVariants = {
+  editorialLabel?: string;
+  displayLabel?: string;
+};
+
+const OCCUPATION_LABEL_VARIANTS: Record<string, OccupationLabelVariants> = {
+  "2131": {
+    editorialLabel: "biologer, botanikere og zoologer mv.",
+  },
+  "3141": {
+    editorialLabel: "bioteknikere i ikke-medisinske laboratorier",
+  },
+};
 
 function normalizeNorwegianLetters(value: string) {
   return value
@@ -38,11 +54,37 @@ export function buildOccupationSalarySlug(label: string) {
 }
 
 export function formatOccupationDisplayLabel(label: string) {
-  return label
-    .split(",")
-    .map((part) => part.trim())
-    .filter(Boolean)
-    .join(" og ");
+  return label.replace(/\s+/g, " ").trim();
+}
+
+export function getOccupationLabelVariants(occupationCode: string): OccupationLabelVariants {
+  const variants = OCCUPATION_LABEL_VARIANTS[occupationCode];
+
+  if (!variants) {
+    return {};
+  }
+
+  return {
+    editorialLabel: variants.editorialLabel?.trim() || undefined,
+    displayLabel: variants.displayLabel?.trim() || undefined,
+  };
+}
+
+export function getOccupationTextContext(page: Pick<
+  OccupationDetailPage,
+  "occupationCode" | "label" | "editorialLabel" | "displayLabel"
+>) {
+  const seoLabel = formatOccupationDisplayLabel(page.label);
+  const variants = getOccupationLabelVariants(page.occupationCode);
+  const displayLabel = page.displayLabel?.trim() || variants.displayLabel || seoLabel;
+  const editorialLabel = page.editorialLabel?.trim() || variants.editorialLabel;
+
+  return {
+    seoLabel,
+    titleLabel: displayLabel,
+    sentenceLabel: editorialLabel ?? seoLabel,
+    genericReference: "yrket",
+  };
 }
 
 export function isDynamicOccupationCode(occupationCode: string) {
@@ -54,13 +96,17 @@ export function buildDynamicOccupationDetailPage(
   label: string,
 ): OccupationDetailPage {
   const slug = buildOccupationSalarySlug(label);
+  const variants = getOccupationLabelVariants(occupationCode);
+  const canonicalLabel = formatOccupationDisplayLabel(label);
 
   return {
     occupationCode,
     label,
+    editorialLabel: variants.editorialLabel,
+    displayLabel: variants.displayLabel,
     slug,
     href: `${DYNAMIC_OCCUPATION_DETAIL_BASE_PATH}/${slug}`,
-    summary: `${formatOccupationDisplayLabel(label)} er en yrkesgruppe i SSBs yrkesstatistikk som samler roller med lignende arbeidsoppgaver og kompetansekrav.`,
+    summary: `${canonicalLabel} er en yrkesgruppe i SSBs yrkesstatistikk som samler roller med lignende arbeidsoppgaver og kompetansekrav.`,
     relatedOccupationCodes: [],
   };
 }

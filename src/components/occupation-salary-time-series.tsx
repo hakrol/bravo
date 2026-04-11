@@ -80,12 +80,12 @@ export function OccupationSalaryTimeSeriesChart({
       ? Math.ceil((maxValue + axisStep) / axisStep) * axisStep
       : Math.ceil(maxValue / axisStep) * axisStep;
   const chartRange = Math.max(chartMax - chartMin, 1);
-  const chartWidth = 920;
-  const chartHeight = 360;
-  const paddingLeft = 56;
-  const paddingRight = 112;
+  const chartWidth = 820;
+  const chartHeight = 320;
+  const paddingLeft = 48;
+  const paddingRight = 72;
   const paddingTop = 16;
-  const paddingBottom = 48;
+  const paddingBottom = 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
   const xStep = series.points.length > 1 ? plotWidth / (series.points.length - 1) : 0;
@@ -115,8 +115,8 @@ export function OccupationSalaryTimeSeriesChart({
   const isModern = variant === "modern";
   const isClassicEmphasis = variant === "classic-emphasis";
   const containerClasses = isModern
-    ? "rounded-md border border-black bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:p-6"
-    : `border bg-[var(--surface)] p-5 shadow-sm sm:p-6 ${containerClassName ?? "rounded-md"}`;
+    ? "rounded-md border border-black bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:p-6"
+    : `border bg-[var(--surface)] p-4 shadow-sm sm:p-6 ${containerClassName ?? "rounded-md"}`;
   const chartFrameClasses = isModern
     ? "mt-6 overflow-x-auto rounded-md border border-black bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:p-4"
     : "mt-6 overflow-x-auto";
@@ -141,13 +141,10 @@ export function OccupationSalaryTimeSeriesChart({
       <section className={containerClasses}>
         <div className="flex flex-col gap-4">
           <div className="space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-              Utvikling
-            </p>
             <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
               {title ?? `Utvikling i månedslønn for ${series.occupationLabel}`}
             </h3>
-            <p className="text-sm text-[var(--muted)]">
+            <p className="text-sm leading-6 text-[var(--muted)]">
               {description ??
                 `${series.occupationLabel} lønnsutvikling per kvartal i Norge. Se median avtalt månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
             </p>
@@ -190,7 +187,7 @@ export function OccupationSalaryTimeSeriesChart({
                       {entry.label}
                       {!isModern ? ":" : ""}
                     </span>
-                    <span className={`${isModern ? "mt-2 block text-xl" : "text-[15px]"} font-semibold text-slate-950`}>
+                    <span className={`${isModern ? "mt-2 block text-lg sm:text-xl" : "text-[15px]"} font-semibold text-slate-950`}>
                       {valueFormatter(entry.value)}
                     </span>
                   </div>
@@ -211,7 +208,7 @@ export function OccupationSalaryTimeSeriesChart({
                       ? "border-slate-950 bg-slate-950 text-white"
                       : isModern
                         ? "border-black/10 bg-slate-50 text-slate-700 hover:border-slate-950/30"
-                        : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                        : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
                   }`}
                   onClick={() => setActiveFilter(option.key)}
                   type="button"
@@ -246,7 +243,7 @@ export function OccupationSalaryTimeSeriesChart({
         <div className={chartFrameClasses}>
           <svg
             aria-label={ariaLabel ?? `Tidsserie for ${series.occupationLabel}`}
-            className="min-w-[760px] w-full"
+            className="w-full"
             role="img"
             viewBox={`0 0 ${chartWidth} ${chartHeight}`}
           >
