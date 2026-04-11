@@ -6,6 +6,7 @@ type OccupationSalaryEstimateProps = {
   monthlySalary?: number;
   monthlySalaryWomen?: number;
   monthlySalaryMen?: number;
+  embedded?: boolean;
 };
 
 const HOURS_PER_WEEK = 37.5;
@@ -22,6 +23,7 @@ export function OccupationSalaryEstimate({
   monthlySalary,
   monthlySalaryWomen,
   monthlySalaryMen,
+  embedded = false,
 }: OccupationSalaryEstimateProps) {
   if (monthlySalary === undefined && monthlySalaryWomen === undefined && monthlySalaryMen === undefined) {
     return null;
@@ -31,6 +33,53 @@ export function OccupationSalaryEstimate({
   const womenEstimate =
     monthlySalaryWomen !== undefined ? buildEstimate(monthlySalaryWomen) : undefined;
   const menEstimate = monthlySalaryMen !== undefined ? buildEstimate(monthlySalaryMen) : undefined;
+
+  if (embedded) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
+          <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
+          <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
+          <span>{POSITION_PERCENTAGE} % stilling</span>
+          <span>{ESTIMATED_TAX_RATE} % estimert skatt</span>
+          <span>{HOLIDAY_PAY_RATE} % feriepengesats</span>
+          <span>{VACATION_WEEKS} uker ferie</span>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          {womenEstimate ? (
+            <SalarySummaryCard
+              description="Median avtalt månedslønn for kvinner i yrket."
+              estimate={womenEstimate}
+              title="Kvinner"
+            />
+          ) : null}
+          {menEstimate ? (
+            <SalarySummaryCard
+              description="Median avtalt månedslønn for menn i yrket."
+              estimate={menEstimate}
+              title="Menn"
+            />
+          ) : null}
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-2">
+          {womenEstimate ? (
+            <HolidayPayCard
+              estimate={womenEstimate}
+              title="Feriepenger for kvinner"
+            />
+          ) : null}
+          {menEstimate ? (
+            <HolidayPayCard
+              estimate={menEstimate}
+              title="Feriepenger for menn"
+            />
+          ) : null}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="rounded-md border border-black/10 bg-white/75 px-6 py-6 shadow-[0_12px_40px_rgba(27,36,48,0.06)] sm:px-8">
@@ -102,7 +151,7 @@ type SalarySummaryCardProps = {
 
 function SalarySummaryCard({ title, description, estimate }: SalarySummaryCardProps) {
   return (
-    <div className="rounded-md border border-slate-200 bg-[#f7fafc] px-5 py-5">
+    <div className="rounded-md border border-slate-200 bg-[#f7fafc] px-4 py-4 sm:px-5 sm:py-5">
       <div className="space-y-4">
         <div className="space-y-1">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
@@ -138,7 +187,6 @@ function HolidayPayCard({ title, estimate }: HolidayPayCardProps) {
   return (
     <SummaryCard
       accent="warm"
-      footnote="Forenklet estimat basert på median avtalt månedslønn for årslønn i 100 % stilling minus ferietrekk. For nøyaktig beløp beregnes feriepengegrunnlaget av lønn som faktisk er opptjent året før."
       title={title}
       sections={[
         {
@@ -210,7 +258,7 @@ function SummaryCard({
       : "border-slate-200 bg-[#f7fafc]";
 
   return (
-    <div className={`rounded-md border px-5 py-5 ${accentClasses}`}>
+    <div className={`rounded-md border px-4 py-4 sm:px-5 sm:py-5 ${accentClasses}`}>
       <div className="space-y-5">
         <p className="text-sm font-semibold text-slate-900">{title}</p>
 
@@ -230,7 +278,7 @@ function SummaryCard({
               {section.rows.map((row) => (
                 <div
                   key={row.label}
-                  className="flex items-start justify-between gap-4 text-sm leading-6"
+                  className="flex items-start justify-between gap-3 text-sm leading-6 sm:gap-4"
                 >
                   <div className="flex min-w-0 items-start gap-2">
                     <span className="text-slate-700">{row.label}</span>
@@ -240,7 +288,7 @@ function SummaryCard({
                   </div>
                   <span
                     className={[
-                      "shrink-0 text-right font-semibold",
+                      "max-w-[45%] shrink-0 text-right font-semibold sm:max-w-none",
                       row.strong ? "text-base" : "text-sm",
                       row.tone === "positive"
                         ? "text-emerald-700"
@@ -280,9 +328,9 @@ function SummaryRow({ label, value, tone = "default", strong = false }: SummaryR
         : "text-slate-950";
 
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-black/8 pb-3 last:border-b-0 last:pb-0">
-      <span className="text-sm text-slate-700">{label}</span>
-      <span className={`${strong ? "text-base" : "text-sm"} font-semibold ${toneClasses}`}>
+    <div className="flex items-start justify-between gap-3 border-b border-black/8 pb-3 last:border-b-0 last:pb-0 sm:gap-4">
+      <span className="min-w-0 text-sm text-slate-700">{label}</span>
+      <span className={`${strong ? "text-base" : "text-sm"} max-w-[45%] shrink-0 text-right font-semibold sm:max-w-none ${toneClasses}`}>
         {value}
       </span>
     </div>

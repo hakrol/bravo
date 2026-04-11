@@ -66,12 +66,12 @@ export function OccupationAgeTimeSeriesChart({
   const chartMin = Math.floor((minValue - 0.5) * 2) / 2;
   const chartMax = Math.ceil((maxValue + 0.5) * 2) / 2;
   const chartRange = Math.max(chartMax - chartMin, 1);
-  const chartWidth = 920;
-  const chartHeight = 320;
-  const paddingLeft = 56;
-  const paddingRight = 96;
+  const chartWidth = 820;
+  const chartHeight = 300;
+  const paddingLeft = 48;
+  const paddingRight = 64;
   const paddingTop = 20;
-  const paddingBottom = 48;
+  const paddingBottom = 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
   const xStep = points.length > 1 ? plotWidth / (points.length - 1) : 0;
@@ -97,14 +97,14 @@ export function OccupationAgeTimeSeriesChart({
   const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
-    <section className="rounded-md border bg-[var(--surface)] p-5 shadow-sm sm:p-6">
+    <section className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
       <div className="flex flex-col gap-4">
         <div className="space-y-2">
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
             Gjennomsnittsalder over tid
           </h3>
           <p className="text-sm text-[var(--muted)]">
-            Kvartalsvis utvikling i gjennomsnittsalder for {occupationLabel.toLowerCase()}.
+            Kvartalsvis utvikling i gjennomsnittsalder i yrket.
           </p>
         </div>
 
@@ -149,8 +149,8 @@ export function OccupationAgeTimeSeriesChart({
                 key={option.key}
                 className={`rounded-full border px-3 py-1.5 text-sm transition ${
                   isActive
-                    ? "border-[var(--primary)] bg-[var(--primary)] text-white"
-                    : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                  ? "border-slate-950 bg-slate-950 text-white"
+                  : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
                 }`}
                 onClick={() => setActiveFilter(option.key)}
                 type="button"
@@ -178,7 +178,7 @@ export function OccupationAgeTimeSeriesChart({
       <div className="mt-6 overflow-x-auto">
         <svg
           aria-label={`Tidsserie for gjennomsnittsalder i ${occupationLabel}`}
-          className="min-w-[760px] w-full"
+          className="w-full"
           role="img"
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
         >
