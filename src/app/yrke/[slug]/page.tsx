@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { OccupationSalaryDetailPage } from "@/components/occupation-salary-detail-page";
+import { OccupationDetailDemoPageV3 } from "@/components/occupation-detail-demo-page-v3";
 import {
   formatOccupationDisplayLabel,
 } from "@/lib/occupation-detail-pages";
@@ -50,13 +50,5 @@ export default async function OccupationDetailPage({
     notFound();
   }
 
-  return (
-    <OccupationSalaryDetailPage
-      occupationCode={detail.detailPage.occupationCode}
-      detailPageOverride={detail.detailPage}
-      occupationDescription={detail.occupationDescription}
-      relatedPagesOverride={detail.relatedPages}
-      viewModelData={detail.data}
-    />
-  );
+  return <OccupationDetailDemoPageV3 detail={detail} />;
 }

@@ -20,26 +20,20 @@ type OccupationDetailDemoPageProps = {
 const FEATURED_BLOG_POST = {
   href: "/blogg/hvordan-be-om-mer-lonn",
   title: "Hvordan be om mer lønn",
-  description:
-    "Et konkret innlegg for deg som vil forberede lønnssamtalen, bruke bedre argumenter og vite hva du gjør hvis svaret blir nei.",
 };
 
 const BLOG_DEMO_LINKS = [
   {
-    href: "/blogg/hvor-hoy-lonn-skal-du-ha",
-    title: "Hvor høy lønn skal du ha",
+    href: "/blogg/hvor-mye-mer-kan-man-be-om-i-lonn",
+    title: "Hvor mye mer kan man be om i lønn?",
   },
   {
-    href: "/blogg/hva-avgjor-lonnsnivaet-ditt-i-et-yrke",
-    title: "Hva avgjør lønnsnivået ditt i et yrke?",
+    href: "/blogg/nar-bor-man-be-om-hoyere-lonn",
+    title: "Når bør man be om høyere lønn?",
   },
 ];
 
 const EXTERNAL_SOURCE_LINKS = [
-  {
-    href: "https://utdanning.no/",
-    label: "Les mer om yrker på utdanning.no",
-  },
   {
     href: "https://www.ssb.no/arbeid-og-lonn/lonn-og-arbeidskraftkostnader",
     label: "Se lønnsstatistikk hos Statistisk sentralbyrå",
@@ -84,14 +78,19 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
     estimateMonthlySalaryMen !== undefined;
   const topSummary = buildTopSummary({
     periodLabel: distribution?.periodLabel,
+    totalMedian: distribution?.total?.median,
     womenMedian: distribution?.women?.median,
     menMedian: distribution?.men?.median,
+    totalP25: distribution?.total?.p25,
+    totalP75: distribution?.total?.p75,
     womenP25: distribution?.women?.p25,
     womenP75: distribution?.women?.p75,
     menP25: distribution?.men?.p25,
     menP75: distribution?.men?.p75,
   });
   const distributionSummary = buildDistributionSummary({
+    totalP25: distribution?.total?.p25,
+    totalP75: distribution?.total?.p75,
     womenP25: distribution?.women?.p25,
     womenP75: distribution?.women?.p75,
     menP25: distribution?.men?.p25,
@@ -106,6 +105,12 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
   const relatedJobsSummary = buildRelatedJobsSummary({
     currentMedian: estimateMonthlySalary,
     rows: relatedRows,
+  });
+  const salaryMetricCards = buildSalaryMetricCards({
+    latestSalaryPeriodLabel,
+    totalMedian: estimateMonthlySalary,
+    womenMedian: estimateMonthlySalaryWomen,
+    menMedian: estimateMonthlySalaryMen,
   });
 
   return (
@@ -180,20 +185,16 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
             ) : null}
 
             <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <KeyMetric
-                icon={<MetricAvatar tone="women" />}
-                caption={latestSalaryPeriodLabel ? `Kvinner ${latestSalaryPeriodLabel}` : "Kvinner"}
-                description="Median avtalt månedslønn for kvinner i dette yrket. Tallet viser lønnen som ligger midt i fordelingen og er hentet fra siste tilgjengelige SSB-periode."
-                label="Månedslønn"
-                value={formatKr(distribution?.women?.median)}
-              />
-              <KeyMetric
-                icon={<MetricAvatar tone="men" />}
-                caption={latestSalaryPeriodLabel ? `Menn ${latestSalaryPeriodLabel}` : "Menn"}
-                description="Median avtalt månedslønn for menn i dette yrket. Tallet viser lønnen som ligger midt i fordelingen og er hentet fra siste tilgjengelige SSB-periode."
-                label="Månedslønn"
-                value={formatKr(distribution?.men?.median)}
-              />
+              {salaryMetricCards.map((card) => (
+                <KeyMetric
+                  caption={card.caption}
+                  description={card.description}
+                  icon={card.icon}
+                  key={card.key}
+                  label="Månedslønn"
+                  value={formatKr(card.value)}
+                />
+              ))}
               <KeyMetric
                 caption={`${purchasingPower?.previousPeriodLabel ?? "Forrige periode"} til ${purchasingPower?.latestPeriodLabel ?? "siste periode"}`}
                 description="Reallønnsvekst viser lønnsutviklingen i yrket justert for prisvekst."
@@ -267,7 +268,13 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                     Her ser du et forenklet lønnsestimat basert på median avtalt månedslønn i yrket.
                     Vi bruker vanlig heltidsstilling, standard feriepengesats og et fast
                     skatteanslag for å vise timelønn, årslønn, feriepengeestimat og omtrent hva det
-                    kan gi utbetalt.
+                    kan gi utbetalt.{" "}
+                    <Link
+                      className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
+                      href="/blogg/hvor-mye-mer-kan-man-be-om-i-lonn"
+                    >
+                      Les også hvor mye mer kan man be om i lønn?
+                    </Link>
                   </p>
                 </div>
                 <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
@@ -312,18 +319,17 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                           </span>
                         </div>
                         <dl className="mt-4 space-y-3 text-sm">
-                          <div className="flex items-center justify-between gap-4 border-t border-black/10 pt-3">
-                            <dt className="text-slate-600">Kvinner</dt>
-                            <dd className="font-semibold text-slate-950">
-                              {formatKr(row.medianWomen)}
-                            </dd>
-                          </div>
-                          <div className="flex items-center justify-between gap-4 border-t border-black/10 pt-3">
-                            <dt className="text-slate-600">Menn</dt>
-                            <dd className="font-semibold text-slate-950">
-                              {formatKr(row.medianMen)}
-                            </dd>
-                          </div>
+                          {buildRelatedJobSalaryRows(row).map((salaryRow) => (
+                            <div
+                              className="flex items-center justify-between gap-4 border-t border-black/10 pt-3"
+                              key={salaryRow.label}
+                            >
+                              <dt className="text-slate-600">{salaryRow.label}</dt>
+                              <dd className="font-semibold text-slate-950">
+                                {formatKr(salaryRow.value)}
+                              </dd>
+                            </div>
+                          ))}
                         </dl>
                       </Link>
                     ))}
@@ -361,7 +367,7 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                 Dataene på denne siden kommer fra{" "}
                 <a
                   className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
-                  href={EXTERNAL_SOURCE_LINKS[1].href}
+                  href={EXTERNAL_SOURCE_LINKS[0].href}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -369,26 +375,6 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                 </a>
                 , og tallene er sist oppdatert {updatedLabel ?? "i siste tilgjengelige publisering"}.
               </p>
-              <div className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
-                <p>
-                  Les mer om yrket og lignende roller hos{" "}
-                  <a
-                    className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
-                    href={EXTERNAL_SOURCE_LINKS[0].href}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    utdanning.no
-                  </a>
-                  .
-                </p>
-              </div>
-              <Link
-                className="mt-4 inline-flex rounded-md border border-[var(--primary)] px-4 py-2 text-sm font-semibold text-[var(--primary-strong)] transition hover:bg-[var(--primary)] hover:text-white"
-                href={detail.detailPage.href}
-              >
-                Se dagens side
-              </Link>
             </section>
 
             {BLOG_DEMO_LINKS.length > 0 ? (
@@ -397,17 +383,11 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                   Fra bloggen
                 </p>
                 <Link
-                  className="mt-4 block rounded-md border border-[var(--primary)]/18 bg-[linear-gradient(135deg,rgba(20,83,45,0.06),rgba(255,255,255,0.98)_58%,rgba(180,83,9,0.08))] px-4 py-4 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                  className="mt-4 block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
                   href={FEATURED_BLOG_POST.href}
                 >
-                  <span className="block text-xs font-semibold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
-                    Anbefalt akkurat nå
-                  </span>
-                  <span className="mt-2 block text-base font-semibold text-slate-950">
+                  <span className="block text-sm font-semibold text-slate-950">
                     {FEATURED_BLOG_POST.title}
-                  </span>
-                  <span className="mt-2 block text-sm leading-6 text-slate-600">
-                    {FEATURED_BLOG_POST.description}
                   </span>
                 </Link>
                 <div className="mt-4 space-y-3">
@@ -457,6 +437,14 @@ type KeyMetricProps = {
   tone?: "default" | "positive" | "negative";
 };
 
+type SalaryMetricCard = {
+  key: string;
+  value?: number;
+  caption: string;
+  description: string;
+  icon?: React.ReactNode;
+};
+
 function KeyMetric({
   label,
   value,
@@ -487,6 +475,76 @@ function KeyMetric({
   );
 }
 
+function buildSalaryMetricCards({
+  latestSalaryPeriodLabel,
+  totalMedian,
+  womenMedian,
+  menMedian,
+}: {
+  latestSalaryPeriodLabel?: string;
+  totalMedian?: number;
+  womenMedian?: number;
+  menMedian?: number;
+}) {
+  const cards: SalaryMetricCard[] = [];
+  const hasBothGenderMetrics = womenMedian !== undefined && menMedian !== undefined;
+
+  if (womenMedian !== undefined) {
+    cards.push({
+      key: "women",
+      value: womenMedian,
+      caption: latestSalaryPeriodLabel ? `Kvinner ${latestSalaryPeriodLabel}` : "Kvinner",
+      description:
+        "Median avtalt månedslønn for kvinner i dette yrket. Tallet viser lønnen som ligger midt i fordelingen og er hentet fra siste tilgjengelige SSB-periode.",
+      icon: <MetricAvatar tone="women" />,
+    });
+  }
+
+  if (menMedian !== undefined) {
+    cards.push({
+      key: "men",
+      value: menMedian,
+      caption: latestSalaryPeriodLabel ? `Menn ${latestSalaryPeriodLabel}` : "Menn",
+      description:
+        "Median avtalt månedslønn for menn i dette yrket. Tallet viser lønnen som ligger midt i fordelingen og er hentet fra siste tilgjengelige SSB-periode.",
+      icon: <MetricAvatar tone="men" />,
+    });
+  }
+
+  if (!hasBothGenderMetrics && totalMedian !== undefined) {
+    cards.push({
+      key: "all",
+      value: totalMedian,
+      caption: latestSalaryPeriodLabel ? `Alle ${latestSalaryPeriodLabel}` : "Alle",
+      description:
+        "Median avtalt månedslønn for alle i dette yrket. Dette brukes når kjønnsfordelte tall ikke er komplette i siste tilgjengelige SSB-periode.",
+    });
+  }
+
+  return cards;
+}
+
+function buildRelatedJobSalaryRows(
+  row: OccupationDetailViewModel["data"]["relatedRows"][number],
+) {
+  const salaryRows: Array<{ label: string; value?: number }> = [];
+  const hasBothGenderMetrics = row.medianWomen !== undefined && row.medianMen !== undefined;
+
+  if (row.medianWomen !== undefined) {
+    salaryRows.push({ label: "Kvinner", value: row.medianWomen });
+  }
+
+  if (row.medianMen !== undefined) {
+    salaryRows.push({ label: "Menn", value: row.medianMen });
+  }
+
+  if (!hasBothGenderMetrics && row.medianAll !== undefined) {
+    salaryRows.push({ label: "Alle", value: row.medianAll });
+  }
+
+  return salaryRows;
+}
+
 function MetricAvatar({ tone }: { tone: "women" | "men" }) {
   return (
     <span
@@ -502,7 +560,7 @@ function MetricAvatar({ tone }: { tone: "women" | "men" }) {
 
 function formatKr(value?: number) {
   if (value === undefined) {
-    return ":";
+    return "Mangler tall";
   }
 
   return `${value.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr`;
@@ -510,7 +568,7 @@ function formatKr(value?: number) {
 
 function formatPercent(value?: number) {
   if (value === undefined) {
-    return ":";
+    return "Mangler tall";
   }
 
   return `${value.toLocaleString("nb-NO", {
@@ -521,7 +579,7 @@ function formatPercent(value?: number) {
 
 function formatNumber(value?: number) {
   if (value === undefined) {
-    return ":";
+    return "Mangler tall";
   }
 
   return value.toLocaleString("nb-NO", { maximumFractionDigits: 0 });
@@ -891,30 +949,39 @@ function buildHeroIntro(occupationLabel: string, intro: string) {
 
 function buildTopSummary({
   periodLabel,
+  totalMedian,
   womenMedian,
   menMedian,
+  totalP25,
+  totalP75,
   womenP25,
   womenP75,
   menP25,
   menP75,
 }: {
   periodLabel?: string;
+  totalMedian?: number;
   womenMedian?: number;
   menMedian?: number;
+  totalP25?: number;
+  totalP75?: number;
   womenP25?: number;
   womenP75?: number;
   menP25?: number;
   menP75?: number;
 }) {
-  if (womenMedian === undefined && menMedian === undefined) {
+  if (totalMedian === undefined && womenMedian === undefined && menMedian === undefined) {
     return null;
   }
 
+  const totalRange = formatSalaryRangeText(totalP25, totalP75);
   const womenRange = formatSalaryRangeText(womenP25, womenP75);
   const menRange = formatSalaryRangeText(menP25, menP75);
   const medianSentence =
     womenMedian !== undefined && menMedian !== undefined
       ? `Median lønn i yrket i Norge er ${formatKr(womenMedian)} for kvinner og ${formatKr(menMedian)} for menn.`
+      : totalMedian !== undefined && womenMedian === undefined && menMedian === undefined
+        ? `Median lønn i yrket i Norge er ${formatKr(totalMedian)}.`
       : womenMedian !== undefined
         ? `Median lønn for kvinner i yrket i Norge er ${formatKr(womenMedian)}.`
         : `Median lønn for menn i yrket i Norge er ${formatKr(menMedian)}.`;
@@ -923,6 +990,8 @@ function buildTopSummary({
 
   if (womenRange && menRange) {
     rangeSentence = `De fleste kvinner ligger mellom ${womenRange}, og de fleste menn ligger mellom ${menRange}`;
+  } else if (totalRange && womenRange === null && menRange === null) {
+    rangeSentence = `De fleste i yrket ligger mellom ${totalRange}`;
   } else if (womenRange) {
     rangeSentence = `De fleste kvinner ligger mellom ${womenRange}`;
   } else if (menRange) {
@@ -939,21 +1008,30 @@ function buildTopSummary({
 }
 
 function buildDistributionSummary({
+  totalP25,
+  totalP75,
   womenP25,
   womenP75,
   menP25,
   menP75,
 }: {
+  totalP25?: number;
+  totalP75?: number;
   womenP25?: number;
   womenP75?: number;
   menP25?: number;
   menP75?: number;
 }) {
   const introSentence = "Her ser du hvordan lønnen typisk fordeler seg i yrket.";
+  const totalSpread = calculateSpread(totalP25, totalP75);
   const womenSpread = calculateSpread(womenP25, womenP75);
   const menSpread = calculateSpread(menP25, menP75);
 
   if (womenSpread === undefined && menSpread === undefined) {
+    if (totalSpread !== undefined) {
+      return `${introSentence} Blant alle i yrket skiller det ${formatKrPlain(totalSpread)} mellom de som tjener mindre og de som tjener mer.`;
+    }
+
     return introSentence;
   }
 
@@ -993,7 +1071,7 @@ function calculateSpread(min?: number, max?: number) {
 
 function formatKrPlain(value?: number) {
   if (value === undefined) {
-    return ":";
+    return "Mangler tall";
   }
 
   return `${value.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr`;

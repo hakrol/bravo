@@ -30,9 +30,12 @@ export function OccupationSalaryEstimate({
   }
 
   const formattedOccupationTitle = formatOccupationDisplayLabel(occupationLabel).toLowerCase();
+  const totalEstimate = monthlySalary !== undefined ? buildEstimate(monthlySalary) : undefined;
   const womenEstimate =
     monthlySalaryWomen !== undefined ? buildEstimate(monthlySalaryWomen) : undefined;
   const menEstimate = monthlySalaryMen !== undefined ? buildEstimate(monthlySalaryMen) : undefined;
+  const shouldShowTotalEstimate =
+    totalEstimate !== undefined && (womenEstimate === undefined || menEstimate === undefined);
 
   if (embedded) {
     return (
@@ -47,6 +50,13 @@ export function OccupationSalaryEstimate({
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
+          {shouldShowTotalEstimate && totalEstimate ? (
+            <SalarySummaryCard
+              description="Median avtalt månedslønn for alle i yrket."
+              estimate={totalEstimate}
+              title="Alle"
+            />
+          ) : null}
           {womenEstimate ? (
             <SalarySummaryCard
               description="Median avtalt månedslønn for kvinner i yrket."
@@ -64,6 +74,12 @@ export function OccupationSalaryEstimate({
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
+          {shouldShowTotalEstimate && totalEstimate ? (
+            <HolidayPayCard
+              estimate={totalEstimate}
+              title="Feriepenger for alle"
+            />
+          ) : null}
           {womenEstimate ? (
             <HolidayPayCard
               estimate={womenEstimate}
@@ -106,6 +122,13 @@ export function OccupationSalaryEstimate({
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
+          {shouldShowTotalEstimate && totalEstimate ? (
+            <SalarySummaryCard
+              description="Median avtalt månedslønn for alle i yrket."
+              estimate={totalEstimate}
+              title="Alle"
+            />
+          ) : null}
           {womenEstimate ? (
             <SalarySummaryCard
               description="Median avtalt månedslønn for kvinner i yrket."
@@ -123,6 +146,12 @@ export function OccupationSalaryEstimate({
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
+          {shouldShowTotalEstimate && totalEstimate ? (
+            <HolidayPayCard
+              estimate={totalEstimate}
+              title="Feriepenger for alle"
+            />
+          ) : null}
           {womenEstimate ? (
             <HolidayPayCard
               estimate={womenEstimate}

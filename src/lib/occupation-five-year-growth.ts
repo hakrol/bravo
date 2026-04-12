@@ -59,8 +59,11 @@ const getOccupationSeriesGrowthSnapshots = cache(async () => {
   const index = await readJsonFile<OccupationDetailViewModelIndex>(
     OCCUPATION_DETAIL_VIEW_MODELS_INDEX_PATH,
   );
+  const uniquePages = Array.from(
+    new Map(index.pages.map((page) => [page.fileName, page] as const)).values(),
+  );
   const files = await Promise.all(
-    index.pages.map((page) =>
+    uniquePages.map((page) =>
       readJsonFile<OccupationDetailViewModelFile>(
         path.join(OCCUPATION_DETAIL_VIEW_MODELS_DIR, page.fileName),
       ),
