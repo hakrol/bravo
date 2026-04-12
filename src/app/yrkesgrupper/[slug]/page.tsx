@@ -1,10 +1,11 @@
-import { OccupationSalaryOverview } from "@/components/occupation-salary-overview";
+﻿import { OccupationSalaryOverview } from "@/components/occupation-salary-overview";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { getOccupationGroupBySlug, listOccupationGroups } from "@/lib/occupation-groups";
 import {
   getLatestAndPreviousYearSalaryDatasets,
   OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
 } from "@/lib/ssb";
+import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -34,9 +35,23 @@ export async function generateMetadata({
     return {};
   }
 
+  const description = `Se siste tilgjengelige l\u00F8nnsdata for ${group.label.toLowerCase()} og sammenlign yrkene i feltet.`;
+  const canonicalPath = `/yrkesgrupper/${group.slug}`;
+
   return {
     title: `${group.label} | Yrkesgrupper`,
-    description: `Se siste tilgjengelige lønnsdata for ${group.label.toLowerCase()} og sammenlign yrkene i feltet.`,
+    description,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      type: "website",
+      locale: "nb_NO",
+      url: canonicalPath,
+      siteName: siteConfig.name,
+      title: `${group.label} | ${siteConfig.name}`,
+      description,
+    },
   };
 }
 
@@ -67,7 +82,7 @@ export default async function OccupationGroupPage({
             Yrkesfelt
           </p>
           <h1 className="text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
-            Lønn for {group.label.toLowerCase()}
+            L\u00F8nn for {group.label.toLowerCase()}
           </h1>
         </div>
 
@@ -79,12 +94,12 @@ export default async function OccupationGroupPage({
             </p>
           </article>
           <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="text-sm font-medium text-[var(--muted)]">Lønn for toppnivå</p>
+            <p className="text-sm font-medium text-[var(--muted)]">L\u00F8nn for toppniv\u00E5</p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
               {formatSalary(groupMedianSalary)}
             </p>
             <p className="mt-1 text-sm text-[var(--muted)]">
-              Median avtalt månedslønn
+              Median avtalt m\u00E5nedsl\u00F8nn
             </p>
           </article>
           <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
@@ -105,8 +120,8 @@ export default async function OccupationGroupPage({
           lastUpdated={latestDataset.updated}
           periodLabel={overview.periodLabel}
           title={`Detaljyrker i ${group.label.toLowerCase()}`}
-          description={`Tabellen viser siste tilgjengelige median avtalt månedslønn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt på begge kjønn, kvinner og menn.`}
-          emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat nå.`}
+          description={`Tabellen viser siste tilgjengelige median avtalt m\u00E5nedsl\u00F8nn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt p\u00E5 begge kj\u00F8nn, kvinner og menn.`}
+          emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat n\u00E5.`}
         />
       </div>
     </div>

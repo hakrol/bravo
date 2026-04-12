@@ -101,15 +101,6 @@ const staticRouteDefinitions: StaticRouteDefinition[] = [
     inSitemap: true,
     pageFilePath: path.join(process.cwd(), "src", "app", "topp-jobber", "page.tsx"),
   },
-  {
-    id: "page:/yrker",
-    title: "Yrker",
-    url: "/yrker",
-    metadata: null,
-    metadataSource: "none",
-    inSitemap: false,
-    pageFilePath: path.join(process.cwd(), "src", "app", "yrker", "page.tsx"),
-  },
 ];
 
 const dynamicRouteFamilies: DynamicRouteFamilyDefinition[] = [
@@ -117,13 +108,6 @@ const dynamicRouteFamilies: DynamicRouteFamilyDefinition[] = [
     id: "group:/yrke/[slug]",
     title: "Yrkesdetaljer",
     url: "/yrke/[slug]",
-    hasGenerateMetadata: true,
-    hasCanonical: false,
-  },
-  {
-    id: "group:/yrker/[slug]",
-    title: "Yrkesgrupper",
-    url: "/yrker/[slug]",
     hasGenerateMetadata: true,
     hasCanonical: false,
   },

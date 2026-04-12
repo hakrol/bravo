@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationSalaryTimeSeries } from "@/lib/ssb";
 
@@ -52,10 +52,27 @@ export function OccupationSalaryTimeSeriesChart({
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
 
+  const availableFilters = useMemo(
+    () =>
+      ({
+        valueAll: series.points.some(
+          (point) => point.valueWomen !== undefined || point.valueMen !== undefined,
+        ),
+        valueWomen: series.points.some((point) => point.valueWomen !== undefined),
+        valueMen: series.points.some((point) => point.valueMen !== undefined),
+      }) satisfies Record<FilterKey, boolean>,
+    [series.points],
+  );
+
+  const resolvedFilter =
+    availableFilters[activeFilter]
+      ? activeFilter
+      : filterOptions.find((option) => availableFilters[option.key])?.key ?? "valueAll";
+
   const activeSeries =
-    activeFilter === "valueAll"
+    resolvedFilter === "valueAll"
       ? seriesDefinitions.filter((definition) => definition.key !== "valueAll")
-      : seriesDefinitions.filter((definition) => definition.key === activeFilter);
+      : seriesDefinitions.filter((definition) => definition.key === resolvedFilter);
 
   const availableValues = series.points.flatMap((point) => {
     return activeSeries.flatMap((definition) => {
@@ -198,19 +215,27 @@ export function OccupationSalaryTimeSeriesChart({
 
           <div className="flex flex-wrap gap-2">
             {filterOptions.map((option) => {
-              const isActive = option.key === activeFilter;
+              const isActive = option.key === resolvedFilter;
+              const isAvailable = availableFilters[option.key];
 
               return (
                 <button
                   key={option.key}
+                  disabled={!isAvailable}
                   className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                    isActive
+                    !isAvailable
+                      ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
+                      : isActive
                       ? "border-slate-950 bg-slate-950 text-white"
                       : isModern
                         ? "border-black/10 bg-slate-50 text-slate-700 hover:border-slate-950/30"
                         : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
                   }`}
-                  onClick={() => setActiveFilter(option.key)}
+                  onClick={() => {
+                    if (isAvailable) {
+                      setActiveFilter(option.key);
+                    }
+                  }}
                   type="button"
                 >
                   {option.label}
@@ -363,7 +388,7 @@ export function OccupationSalaryTimeSeriesChart({
                           y={
                             latestPoint.y -
                             16 +
-                            (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                            (resolvedFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
                           }
                         />
                         <text
@@ -375,7 +400,7 @@ export function OccupationSalaryTimeSeriesChart({
                           y={
                             latestPoint.y +
                             1 +
-                            (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                            (resolvedFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
                           }
                         >
                           {endLabelFormatter(latestPoint.value)}
@@ -391,7 +416,7 @@ export function OccupationSalaryTimeSeriesChart({
                         y={
                           latestPoint.y +
                           4 +
-                          (activeFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                          (resolvedFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
                         }
                       >
                         {endLabelFormatter(latestPoint.value)}
