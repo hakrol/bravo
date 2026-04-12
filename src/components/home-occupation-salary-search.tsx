@@ -101,6 +101,8 @@ export function HomeOccupationSalarySearch({
       <OccupationSalaryOverview
         description="Se månedslønn og vekst fordelt på yrker."
         emptyStateText="Ingen yrker matcher søket ditt akkurat nå."
+        initialSortDirection="desc"
+        initialSortKey="medianMen"
         lastUpdated={lastUpdated}
         periodLabel={periodLabel}
         rows={filteredRows}
