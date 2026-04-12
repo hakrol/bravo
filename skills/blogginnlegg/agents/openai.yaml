@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogginnlegg"
+  short_description: "Skriv og oppdater blogginnlegg i Bravo"
+  default_prompt: "Use $blogginnlegg to write or update a blog post for this project."
