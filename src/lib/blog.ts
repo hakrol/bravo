@@ -4,7 +4,7 @@ import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import type { ReactNode } from "react";
 import { cache } from "react";
-import { blogMdxComponents } from "@/components/blog-mdx-components";
+import { buildBlogMdxComponentsFixed } from "@/components/blog-mdx-components-fixed";
 import { siteConfig } from "@/lib/site-config";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
@@ -26,6 +26,13 @@ export type BlogPostPreview = BlogFrontmatter & {
 
 export type BlogPost = BlogPostPreview & {
   content: ReactNode;
+  tableOfContents: BlogTableOfContentsItem[];
+};
+
+export type BlogTableOfContentsItem = {
+  id: string;
+  title: string;
+  level: 2 | 3;
 };
 
 function trimOptionalString(value: unknown) {
@@ -69,6 +76,39 @@ function calculateReadingTimeMinutes(source: string) {
   return Math.max(1, Math.ceil(wordCount / 220));
 }
 
+function slugifyHeading(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9æøå\s-]/gi, "")
+    .replace(/[æÆ]/g, "ae")
+    .replace(/[øØ]/g, "o")
+    .replace(/[åÅ]/g, "a")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+function extractTableOfContents(source: string): BlogTableOfContentsItem[] {
+  const headingMatches = source.matchAll(/^(##|###)\s+(.+)$/gm);
+  const slugCounts = new Map<string, number>();
+
+  return Array.from(headingMatches, (match) => {
+    const level = match[1] === "##" ? 2 : 3;
+    const title = match[2].trim();
+    const baseId = slugifyHeading(title);
+    const currentCount = slugCounts.get(baseId) ?? 0;
+    slugCounts.set(baseId, currentCount + 1);
+
+    return {
+      id: currentCount === 0 ? baseId : `${baseId}-${currentCount + 1}`,
+      title,
+      level,
+    } satisfies BlogTableOfContentsItem;
+  });
+}
+
 async function getBlogFileNames() {
   const entries = await fs.readdir(BLOG_DIRECTORY, { withFileTypes: true });
   return entries.filter((entry) => entry.isFile() && entry.name.endsWith(".mdx")).map((entry) => entry.name);
@@ -98,9 +138,10 @@ export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
 export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
   try {
     const source = await fs.readFile(path.join(BLOG_DIRECTORY, `${slug}.mdx`), "utf8");
+    const tableOfContents = extractTableOfContents(source);
     const { content, frontmatter } = await compileMDX<BlogFrontmatter>({
       source,
-      components: blogMdxComponents,
+      components: buildBlogMdxComponentsFixed(tableOfContents),
       options: {
         parseFrontmatter: true,
       },
@@ -111,6 +152,7 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
     return {
       ...normalizedFrontmatter,
       content,
+      tableOfContents,
       readingTimeMinutes: calculateReadingTimeMinutes(source),
     };
   } catch (error) {

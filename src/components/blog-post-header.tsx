@@ -15,9 +15,9 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
     .join("");
 
   return (
-    <header className="overflow-hidden rounded-[24px] bg-[linear-gradient(135deg,#eef4ff_0%,#d8e5ff_42%,#eef1f8_100%)] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(320px,520px)] lg:items-center">
-        <div className="space-y-6">
+    <header className="overflow-hidden rounded-[5px] bg-[linear-gradient(135deg,#eef4ff_0%,#d8e5ff_42%,#eef1f8_100%)]">
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,560px)] lg:items-stretch">
+        <div className="space-y-6 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
           <nav aria-label="Brødsmuler" className="flex flex-wrap items-center gap-2 text-sm text-[rgba(27,36,48,0.68)]">
             <Link className="transition hover:text-[var(--foreground)]" href="/blogg">
               Blogg
@@ -46,13 +46,13 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
           </div>
         </div>
 
-        <div className="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-[linear-gradient(135deg,#dfe9ff,#5e84d6)] shadow-[0_20px_50px_rgba(70,103,159,0.18)]">
+        <div className="relative min-h-[280px] overflow-hidden shadow-[0_20px_50px_rgba(70,103,159,0.18)] lg:min-h-full">
           <Image
             alt={post.title}
             className="object-cover"
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 520px"
+            sizes="(max-width: 1024px) 100vw, 560px"
             src={post.coverImage}
           />
         </div>
