@@ -1,17 +1,17 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { OccupationLinkGrid } from "@/components/occupation-link-grid";
-import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 import {
   getOccupationDetailViewModelBySlug,
   getOccupationDetailViewModelIndex,
 } from "@/lib/occupation-detail-view-models";
+import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
 export const metadata: Metadata = {
   title: "Yrker",
-  description: "Se alle yrker og klikk deg videre til detaljsiden for hvert yrke.",
+  description: "Se alle konkrete yrker og klikk deg videre til detaljsiden for hvert yrke.",
 };
 
-export default async function OccupationsPage() {
+export default async function OccupationsOverviewPage() {
   const index = await getOccupationDetailViewModelIndex();
   const firstSlugByOccupationCode = new Map<string, string>();
 
@@ -38,10 +38,10 @@ export default async function OccupationsPage() {
 
   return (
     <OccupationLinkGrid
-      compact
-      description="Velg et yrke for å åpne yrkessiden med lønn og nøkkeltall."
+      description="Velg et yrke for å åpne detaljsiden med lønn og nøkkeltall."
       eyebrow="Oversikt"
       items={items}
+      compact
       title="Alle yrker"
     />
   );

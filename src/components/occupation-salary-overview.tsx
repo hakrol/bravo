@@ -15,6 +15,8 @@ type OccupationSalaryOverviewProps = {
   description?: string;
   emptyStateText?: string;
   variant?: "table" | "cards";
+  initialSortKey?: SortKey;
+  initialSortDirection?: SortDirection;
 };
 
 type SortKey =
@@ -56,10 +58,12 @@ export function OccupationSalaryOverview({
   description = "Trykk på overskriftene for å sortere. Trykk på yrket for å åpne detaljsiden.",
   emptyStateText = "Ingen yrker matcher søket ditt.",
   variant = "table",
+  initialSortKey = "occupationLabel",
+  initialSortDirection = "asc",
 }: OccupationSalaryOverviewProps) {
   const formattedPeriodLabel = formatPeriodLabel(periodLabel);
-  const [sortKey, setSortKey] = useState<SortKey>("occupationLabel");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  const [sortKey, setSortKey] = useState<SortKey>(initialSortKey);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(initialSortDirection);
   const sortedRows = [...rows].sort((left, right) =>
     compareRows(left, right, sortKey, sortDirection),
   );
