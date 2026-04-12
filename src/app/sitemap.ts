@@ -1,42 +1,100 @@
-import { existsSync } from "node:fs";
+import { stat } from "node:fs/promises";
 import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
 import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
+import { listOccupationGroups } from "@/lib/occupation-groups";
+import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
 import { getAbsoluteUrl } from "@/lib/site-config";
 
 const staticRoutes = [
-  { path: "/", priority: 1, changeFrequency: "weekly" as const },
-  { path: "/lonnsjekk", priority: 0.8, changeFrequency: "monthly" as const },
-  { path: "/kvinner-vs-menn", priority: 0.6, changeFrequency: "monthly" as const },
-  { path: "/topp-jobber", priority: 0.6, changeFrequency: "monthly" as const },
-  { path: "/yrker", priority: 0.7, changeFrequency: "weekly" as const },
-  { path: "/blogg", priority: 0.7, changeFrequency: "weekly" as const },
+  { path: "/", filePath: "src/app/page.tsx", priority: 1, changeFrequency: "weekly" as const },
+  {
+    path: "/lonnsjekk",
+    filePath: "src/app/lonnsjekk/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/analyse",
+    filePath: "src/app/analyse/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/kvinner-vs-menn",
+    filePath: "src/app/kvinner-vs-menn/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/topp-jobber",
+    filePath: "src/app/topp-jobber/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/yrkesgrupper",
+    filePath: "src/app/yrkesgrupper/page.tsx",
+    priority: 0.7,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/yrkesgrupper/yrker",
+    filePath: "src/app/yrkesgrupper/yrker/page.tsx",
+    priority: 0.5,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/blogg",
+    filePath: "src/app/blogg/page.tsx",
+    priority: 0.7,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/om",
+    filePath: "src/app/om/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/personvern",
+    filePath: "src/app/personvern/page.tsx",
+    priority: 0.2,
+    changeFrequency: "yearly" as const,
+  },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [blogPosts, occupationPages, hourlySalaryPages] = await Promise.all([
+  const [blogPosts, occupationPages, hourlySalaryPages, occupationIndex] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getHourlySalaryPages().catch(() => []),
+    getOccupationDetailViewModelIndex().catch(() => null),
   ]);
 
-  const routes = staticRoutes
-    .filter((route) => {
-      if (route.path === "/") {
-        return true;
-      }
+  const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
+  const occupationContentLastModified = occupationIndex?.generatedAt
+    ? new Date(occupationIndex.generatedAt)
+    : undefined;
 
-      const routeSegments = route.path.split("/").filter(Boolean);
-      return existsSync(path.join(process.cwd(), "src", "app", ...routeSegments, "page.tsx"));
-    })
-    .map((route) => ({
+  const routes: MetadataRoute.Sitemap = await Promise.all(staticRoutes.map(async (route) => ({
       url: getAbsoluteUrl(route.path),
-      lastModified: new Date(),
+      lastModified:
+        route.path === "/blogg"
+          ? latestBlogDate
+          : await readLastModifiedFromFile(route.filePath),
       changeFrequency: route.changeFrequency,
       priority: route.priority,
-    }));
+    })));
+
+  const groupRoutes: MetadataRoute.Sitemap = listOccupationGroups().map((group) => ({
+    url: getAbsoluteUrl(`/yrkesgrupper/${group.slug}`),
+    lastModified: occupationContentLastModified,
+    changeFrequency: "weekly",
+    priority: 0.6,
+  }));
 
   const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: getAbsoluteUrl(`/blogg/${post.slug}`),
@@ -48,17 +106,39 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const occupationRoutes: MetadataRoute.Sitemap = occupationPages.map((entry) => ({
     url: getAbsoluteUrl(entry.page.href),
-    lastModified: new Date(),
+    lastModified: occupationContentLastModified,
     changeFrequency: "weekly",
     priority: 0.7,
   }));
 
   const hourlySalaryRoutes: MetadataRoute.Sitemap = hourlySalaryPages.map((page) => ({
     url: getAbsoluteUrl(page.href),
-    lastModified: new Date(),
+    lastModified: occupationContentLastModified,
     changeFrequency: "weekly",
     priority: 0.7,
   }));
 
-  return [...routes, ...blogRoutes, ...occupationRoutes, ...hourlySalaryRoutes];
+  return [...routes, ...groupRoutes, ...blogRoutes, ...occupationRoutes, ...hourlySalaryRoutes];
+}
+
+async function readLastModifiedFromFile(filePath: string) {
+  try {
+    const fileStats = await stat(path.join(process.cwd(), filePath));
+    return fileStats.mtime;
+  } catch {
+    return undefined;
+  }
+}
+
+function getLatestDate(values: Array<string | Date>) {
+  const timestamps = values
+    .map((value) => new Date(value))
+    .filter((value) => !Number.isNaN(value.getTime()))
+    .map((value) => value.getTime());
+
+  if (timestamps.length === 0) {
+    return undefined;
+  }
+
+  return new Date(Math.max(...timestamps));
 }

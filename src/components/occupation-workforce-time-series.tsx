@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationWorkforceTimeSeriesPoint } from "@/lib/ssb";
 
@@ -46,10 +46,27 @@ export function OccupationWorkforceTimeSeriesChart({
     return null;
   }
 
+  const availableFilters = useMemo(
+    () =>
+      ({
+        employeesAll: relevantPoints.some(
+          (point) => point.employeesWomen !== undefined || point.employeesMen !== undefined,
+        ),
+        employeesWomen: relevantPoints.some((point) => point.employeesWomen !== undefined),
+        employeesMen: relevantPoints.some((point) => point.employeesMen !== undefined),
+      }) satisfies Record<FilterKey, boolean>,
+    [relevantPoints],
+  );
+
+  const resolvedFilter =
+    availableFilters[activeFilter]
+      ? activeFilter
+      : filterOptions.find((option) => availableFilters[option.key])?.key ?? "employeesAll";
+
   const activeSeries =
-    activeFilter === "employeesAll"
+    resolvedFilter === "employeesAll"
       ? seriesDefinitions.filter((series) => series.key !== "employeesAll")
-      : seriesDefinitions.filter((series) => series.key === activeFilter);
+      : seriesDefinitions.filter((series) => series.key === resolvedFilter);
 
   const values = relevantPoints.flatMap((point) =>
     activeSeries.flatMap((series) => {
@@ -144,17 +161,25 @@ export function OccupationWorkforceTimeSeriesChart({
 
       <div className="mt-4 flex flex-wrap gap-2">
         {filterOptions.map((option) => {
-          const isActive = option.key === activeFilter;
+          const isActive = option.key === resolvedFilter;
+          const isAvailable = availableFilters[option.key];
 
           return (
             <button
               key={option.key}
+              disabled={!isAvailable}
               className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                isActive
-                  ? "border-slate-950 bg-slate-950 text-white"
-                  : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
+                !isAvailable
+                  ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
+                  : isActive
+                    ? "border-slate-950 bg-slate-950 text-white"
+                    : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
               }`}
-              onClick={() => setActiveFilter(option.key)}
+              onClick={() => {
+                if (isAvailable) {
+                  setActiveFilter(option.key);
+                }
+              }}
               type="button"
             >
               {option.label}
@@ -276,7 +301,7 @@ export function OccupationWorkforceTimeSeriesChart({
                     y={
                       chartPoints[chartPoints.length - 1].y +
                       4 +
-                      (activeFilter === "employeesAll" ? endLabelOffsets[series.key] : 0)
+                      (resolvedFilter === "employeesAll" ? endLabelOffsets[series.key] : 0)
                     }
                   >
                     {formatWorkforceCount(chartPoints[chartPoints.length - 1].value)}

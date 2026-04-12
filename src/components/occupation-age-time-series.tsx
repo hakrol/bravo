@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationAgeTimeSeriesPoint } from "@/lib/ssb";
 
@@ -45,10 +45,27 @@ export function OccupationAgeTimeSeriesChart({
     return null;
   }
 
+  const availableFilters = useMemo(
+    () =>
+      ({
+        averageAll: points.some(
+          (point) => point.averageWomen !== undefined || point.averageMen !== undefined,
+        ),
+        averageWomen: points.some((point) => point.averageWomen !== undefined),
+        averageMen: points.some((point) => point.averageMen !== undefined),
+      }) satisfies Record<FilterKey, boolean>,
+    [points],
+  );
+
+  const resolvedFilter =
+    availableFilters[activeFilter]
+      ? activeFilter
+      : filterOptions.find((option) => availableFilters[option.key])?.key ?? "averageAll";
+
   const activeSeries =
-    activeFilter === "averageAll"
+    resolvedFilter === "averageAll"
       ? seriesDefinitions.filter((series) => series.key !== "averageAll")
-      : seriesDefinitions.filter((series) => series.key === activeFilter);
+      : seriesDefinitions.filter((series) => series.key === resolvedFilter);
 
   const availableValues = points.flatMap((point) => {
     return activeSeries.flatMap((series) => {
@@ -142,17 +159,25 @@ export function OccupationAgeTimeSeriesChart({
 
         <div className="flex flex-wrap gap-2">
           {filterOptions.map((option) => {
-            const isActive = option.key === activeFilter;
+            const isActive = option.key === resolvedFilter;
+            const isAvailable = availableFilters[option.key];
 
             return (
               <button
                 key={option.key}
+                disabled={!isAvailable}
                 className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                  isActive
-                  ? "border-slate-950 bg-slate-950 text-white"
-                  : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
+                  !isAvailable
+                    ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
+                    : isActive
+                      ? "border-slate-950 bg-slate-950 text-white"
+                      : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
                 }`}
-                onClick={() => setActiveFilter(option.key)}
+                onClick={() => {
+                  if (isAvailable) {
+                    setActiveFilter(option.key);
+                  }
+                }}
                 type="button"
               >
                 {option.label}
@@ -268,7 +293,7 @@ export function OccupationAgeTimeSeriesChart({
                     y={
                       chartPoints[chartPoints.length - 1].y +
                       4 +
-                      (activeFilter === "averageAll" ? endLabelOffsets[definition.key] : 0)
+                      (resolvedFilter === "averageAll" ? endLabelOffsets[definition.key] : 0)
                     }
                   >
                     {ageFormatter.format(chartPoints[chartPoints.length - 1].value)}

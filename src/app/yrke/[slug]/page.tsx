@@ -37,6 +37,9 @@ export async function generateMetadata({
   return {
     title: `Lønn til ${occupationLabel}`,
     description: `Se lønn, lønnsutvikling og andre nøkkeltall for ${occupationLabel.toLowerCase()} med siste tilgjengelige tall fra SSB. ${occupationDescription ?? detail.detailPage.summary}`,
+    alternates: {
+      canonical: detail.detailPage.href,
+    },
   };
 }
 

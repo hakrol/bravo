@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { OccupationLinkGrid } from "@/components/occupation-link-grid";
 import {
   getOccupationDetailViewModelBySlug,
@@ -9,6 +9,9 @@ import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 export const metadata: Metadata = {
   title: "Yrker",
   description: "Se alle konkrete yrker og klikk deg videre til detaljsiden for hvert yrke.",
+  alternates: {
+    canonical: "/yrkesgrupper/yrker",
+  },
 };
 
 export default async function OccupationsOverviewPage() {
@@ -38,7 +41,7 @@ export default async function OccupationsOverviewPage() {
 
   return (
     <OccupationLinkGrid
-      description="Velg et yrke for å åpne detaljsiden med lønn og nøkkeltall."
+      description="Velg et yrke for \u00E5 \u00E5pne detaljsiden med l\u00F8nn og n\u00F8kkeltall."
       eyebrow="Oversikt"
       items={items}
       compact

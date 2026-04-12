@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationPurchasingPowerTimeSeries } from "@/lib/ssb";
 
@@ -40,8 +40,23 @@ export function OccupationPurchasingPowerTimeSeriesChart({
     return null;
   }
 
+  const availableFilters = useMemo(
+    () =>
+      ({
+        realGrowthAll: series.points.some((point) => point.realGrowthAll !== undefined),
+        realGrowthWomen: series.points.some((point) => point.realGrowthWomen !== undefined),
+        realGrowthMen: series.points.some((point) => point.realGrowthMen !== undefined),
+      }) satisfies Record<FilterKey, boolean>,
+    [series.points],
+  );
+
+  const resolvedFilter =
+    availableFilters[activeFilter]
+      ? activeFilter
+      : filterOptions.find((option) => availableFilters[option.key])?.key ?? "realGrowthAll";
+
   const activeSeries = seriesDefinitions.filter((definition) => {
-    return activeFilter === definition.key;
+    return resolvedFilter === definition.key;
   });
 
   const values = series.points.flatMap((point) => {
@@ -138,17 +153,25 @@ export function OccupationPurchasingPowerTimeSeriesChart({
 
         <div className="flex flex-wrap gap-2">
           {filterOptions.map((option) => {
-            const isActive = option.key === activeFilter;
+            const isActive = option.key === resolvedFilter;
+            const isAvailable = availableFilters[option.key];
 
             return (
               <button
                 key={option.key}
+                disabled={!isAvailable}
                 className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                  isActive
-                    ? "border-[var(--primary)] bg-[var(--primary)] text-white"
-                    : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
+                  !isAvailable
+                    ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
+                    : isActive
+                      ? "border-[var(--primary)] bg-[var(--primary)] text-white"
+                      : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/40"
                 }`}
-                onClick={() => setActiveFilter(option.key)}
+                onClick={() => {
+                  if (isAvailable) {
+                    setActiveFilter(option.key);
+                  }
+                }}
                 type="button"
               >
                 {option.label}
