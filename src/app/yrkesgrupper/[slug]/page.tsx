@@ -35,7 +35,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const description = `Se siste tilgjengelige l\u00F8nnsdata for ${group.label.toLowerCase()} og sammenlign yrkene i feltet.`;
+  const description = `Se siste tilgjengelige lønnsdata for ${group.label.toLowerCase()} og sammenlign yrkene i feltet.`;
   const canonicalPath = `/yrkesgrupper/${group.slug}`;
 
   return {
@@ -78,37 +78,32 @@ export default async function OccupationGroupPage({
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <div className="space-y-3">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
-            Yrkesfelt
-          </p>
           <h1 className="text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
-            L\u00F8nn for {group.label.toLowerCase()}
+            Lønn for {group.label.toLowerCase()}
           </h1>
+          <p className="max-w-3xl text-base text-[var(--muted)] sm:text-lg">
+            {group.description}
+          </p>
         </div>
 
         <section className="grid gap-4 sm:grid-cols-3">
           <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="text-sm font-medium text-[var(--muted)]">Yrkesfelt</p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
               {group.label}
             </p>
           </article>
           <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="text-sm font-medium text-[var(--muted)]">L\u00F8nn for toppniv\u00E5</p>
+            <p className="text-sm font-medium text-[var(--muted)]">
+              Medianlønn i {group.label.toLowerCase()}
+            </p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
               {formatSalary(groupMedianSalary)}
             </p>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              Median avtalt m\u00E5nedsl\u00F8nn
-            </p>
           </article>
           <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="text-sm font-medium text-[var(--muted)]">Detaljyrker i feltet</p>
+            <p className="text-sm font-medium text-[var(--muted)]">Antall yrker</p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
               {overview.rows.length}
-            </p>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              4-siffer-yrker som starter med {group.code}
             </p>
           </article>
         </section>
@@ -118,10 +113,11 @@ export default async function OccupationGroupPage({
           initialSortDirection="desc"
           initialSortKey="medianMen"
           lastUpdated={latestDataset.updated}
+          showLastUpdated={false}
           periodLabel={overview.periodLabel}
           title={`Detaljyrker i ${group.label.toLowerCase()}`}
-          description={`Tabellen viser siste tilgjengelige median avtalt m\u00E5nedsl\u00F8nn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt p\u00E5 begge kj\u00F8nn, kvinner og menn.`}
-          emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat n\u00E5.`}
+          description={`Tabellen viser siste tilgjengelige median avtalt månedslønn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt på begge kjønn, kvinner og menn.`}
+          emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat nå.`}
         />
       </div>
     </div>

@@ -2,6 +2,7 @@
 import { SiteBrand } from "@/components/site-brand";
 
 const footerLinks = [
+  { href: "/yrkesgrupper", label: "Yrkesgrupper" },
   { href: "/om", label: "Om" },
   { href: "/personvern", label: "Personvern" },
 ] as const;
@@ -14,7 +15,9 @@ export function MainFooter() {
           <SiteBrand size="footer" />
 
           <p className="mt-5 text-sm leading-7 text-[var(--muted)] sm:text-base">
-            {"L\u00f8nnsinnsikt samler og presenterer oversiktlige l\u00f8nnstall for ulike yrker, slik at det blir enklere \u00e5 utforske forskjeller i inntekt etter rolle, erfaring og kj\u00f8nn."}
+            Lønnsinnsikt samler og presenterer oversiktlige lønnstall for ulike yrker, slik
+            at det blir enklere å utforske forskjeller i inntekt etter rolle, erfaring og
+            kjønn.
           </p>
         </div>
 
