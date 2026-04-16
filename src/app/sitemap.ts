@@ -2,6 +2,7 @@ import { stat } from "node:fs/promises";
 import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
+import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-detail-view-models";
 import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 import { listOccupationGroups } from "@/lib/occupation-groups";
@@ -41,6 +42,12 @@ const staticRoutes = [
     changeFrequency: "weekly" as const,
   },
   {
+    path: "/laerling",
+    filePath: "src/app/laerling/page.tsx",
+    priority: 0.7,
+    changeFrequency: "weekly" as const,
+  },
+  {
     path: "/yrkesgrupper/yrker",
     filePath: "src/app/yrkesgrupper/yrker/page.tsx",
     priority: 0.5,
@@ -67,16 +74,20 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [blogPosts, occupationPages, hourlySalaryPages, occupationIndex] = await Promise.all([
+  const [blogPosts, occupationPages, hourlySalaryPages, occupationIndex, apprenticeshipIndex] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getHourlySalaryPages().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
+    getApprenticeshipDetailViewModelIndex().catch(() => null),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
   const occupationContentLastModified = occupationIndex?.generatedAt
     ? new Date(occupationIndex.generatedAt)
+    : undefined;
+  const apprenticeshipContentLastModified = apprenticeshipIndex?.generatedAt
+    ? new Date(apprenticeshipIndex.generatedAt)
     : undefined;
 
   const routes: MetadataRoute.Sitemap = await Promise.all(staticRoutes.map(async (route) => ({
@@ -118,7 +129,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...routes, ...groupRoutes, ...blogRoutes, ...occupationRoutes, ...hourlySalaryRoutes];
+  const apprenticeshipRoutes: MetadataRoute.Sitemap = (apprenticeshipIndex?.pages ?? []).map((page) => ({
+    url: getAbsoluteUrl(`/laerling/${page.slug}`),
+    lastModified: apprenticeshipContentLastModified,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [
+    ...routes,
+    ...groupRoutes,
+    ...blogRoutes,
+    ...occupationRoutes,
+    ...hourlySalaryRoutes,
+    ...apprenticeshipRoutes,
+  ];
 }
 
 async function readLastModifiedFromFile(filePath: string) {

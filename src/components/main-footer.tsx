@@ -3,6 +3,7 @@ import { SiteBrand } from "@/components/site-brand";
 
 const footerLinks = [
   { href: "/yrkesgrupper", label: "Yrkesgrupper" },
+  { href: "/laerling", label: "Lærlingfag" },
   { href: "/om", label: "Om" },
   { href: "/personvern", label: "Personvern" },
 ] as const;

@@ -1,5 +1,10 @@
 ﻿import { unstable_cache } from "next/cache";
 import {
+  buildApprenticeshipMedianSalaryOverview,
+  buildApprenticeshipSalaryDistribution,
+  buildApprenticeshipSalaryTimeSeries,
+} from "./apprenticeship-salary-overview";
+import {
   getTableData,
   getTableInfo,
   getTableMetadata,
@@ -75,11 +80,26 @@ export const OCCUPATION_WORKFORCE_FILTERS: SsbSalaryFilters = {
   ContentsCode: ["Lonsstakere", "AntArbForhold"],
 };
 
+export const APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
+  LaerlingIkkel: "2",
+  AvtaltVanlig: "0",
+  MaaleMetode: "01",
+  ContentsCode: "AvtaltManedslonn",
+};
+
+export const APPRENTICESHIP_DISTRIBUTION_FILTERS: SsbSalaryFilters = {
+  LaerlingIkkel: "2",
+  AvtaltVanlig: "0",
+  MaaleMetode: ["01", "02", "051", "061"],
+  ContentsCode: "AvtaltManedslonn",
+};
+
 export const ACCOUNTANT_OCCUPATION_CODE = "3313";
 export const SSB_INFLATION_TABLE_ID = "14700";
 export const SSB_OCCUPATION_DISTRIBUTION_TABLE_ID = "11418";
 export const SSB_OCCUPATION_EMPLOYMENT_TABLE_ID = "09792";
 export const SSB_OCCUPATION_CONTRACT_TABLE_ID = "14437";
+export const SSB_APPRENTICESHIP_SALARY_TABLE_ID = "12851";
 
 export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefinition> = {
   industryMonthly: {
@@ -116,6 +136,13 @@ export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefiniti
     title: "LÃ¸nn per yrke (4-siffer)",
     category: "core",
     description: "Detaljert lÃ¸nn per yrke.",
+  },
+  apprenticeshipDetailed: {
+    key: "apprenticeshipDetailed",
+    id: SSB_APPRENTICESHIP_SALARY_TABLE_ID,
+    title: "Lærlinglønn per yrke",
+    category: "support",
+    description: "Årlig lærlinglønn per yrke.",
   },
   occupationEmployment: {
     key: "occupationEmployment",
@@ -171,6 +198,7 @@ export const CORE_SALARY_TABLE_KEYS: SsbSalaryTableKey[] = [
 ];
 
 export const SUPPORT_SALARY_TABLE_KEYS: SsbSalaryTableKey[] = [
+  "apprenticeshipDetailed",
   "occupationEmployment",
   "industryGrowth",
   "industryHiringFlows",
@@ -433,6 +461,254 @@ export async function getLatestSalaryDatasets(
   lang: SsbLanguage = "no",
 ) {
   return Promise.all(tableKeys.map((tableKey) => getLatestSalaryDataset(tableKey, {}, lang)));
+}
+
+const getLatestApprenticeshipSalaryDatasetCached = unstable_cache(
+  async (
+    filters: SsbSalaryFilters = APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+    lang: SsbLanguage = "no",
+  ): Promise<SsbNormalizedDataset> => {
+    const table = getSalaryTableDefinition("apprenticeshipDetailed");
+    const metadata = await getTableMetadata(table.id, lang);
+    const query = buildLatestQueryFromMetadata(metadata, filters);
+    const [info, dataset] = await Promise.all([
+      getTableInfo(table.id, lang),
+      getTableData(table.id, query, lang),
+    ]);
+
+    return normalizeDataset(dataset, {
+      tableId: table.id,
+      tableKey: table.key,
+      title: info.label,
+    });
+  },
+  ["ssb-latest-apprenticeship-salary-dataset"],
+  { revalidate: 300 },
+);
+
+export async function getLatestApprenticeshipSalaryDataset(
+  filters: SsbSalaryFilters = APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  if (shouldUseLocalSsbStore()) {
+    if (!matchesFilters(filters, APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS)) {
+      throw new Error("Lokalt SSB-lager støtter foreløpig bare median datasett for lærlinglønn.");
+    }
+
+    return getStoredDataset("apprenticeshipLatestMedian");
+  }
+
+  return getLatestApprenticeshipSalaryDatasetCached(filters, lang);
+}
+
+const getLatestAndPreviousYearApprenticeshipSalaryDatasetsCached = unstable_cache(
+  async (
+    filters: SsbSalaryFilters = APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+    lang: SsbLanguage = "no",
+  ): Promise<{
+    latestDataset: SsbNormalizedDataset;
+    previousDataset: SsbNormalizedDataset | null;
+    latestPeriodCode?: string;
+    previousPeriodCode?: string;
+  }> => {
+    const table = getSalaryTableDefinition("apprenticeshipDetailed");
+    const metadata = await getTableMetadata(table.id, lang);
+    const timeDimensionCode = metadata.role?.time?.[0];
+    const latestQuery = buildLatestQueryFromMetadata(metadata, filters);
+    const [info, latestDataset] = await Promise.all([
+      getTableInfo(table.id, lang),
+      getTableData(table.id, latestQuery, lang),
+    ]);
+
+    const normalizedLatestDataset = normalizeDataset(latestDataset, {
+      tableId: table.id,
+      tableKey: table.key,
+      title: info.label,
+    });
+    const latestPeriodCode = timeDimensionCode
+      ? normalizeYearPeriodCode(
+          normalizedLatestDataset.rows[0]?.dimensions[timeDimensionCode]?.code,
+          normalizedLatestDataset.rows[0]?.dimensions[timeDimensionCode]?.label,
+        )
+      : undefined;
+    const previousPeriodCode = latestPeriodCode ? getPreviousYearCode(latestPeriodCode) : undefined;
+
+    if (!timeDimensionCode || !previousPeriodCode) {
+      return {
+        latestDataset: normalizedLatestDataset,
+        previousDataset: null,
+        latestPeriodCode,
+        previousPeriodCode,
+      };
+    }
+
+    const previousQuery = {
+      ...buildLatestQueryFromMetadata(metadata, filters),
+      [`valueCodes[${timeDimensionCode}]`]: previousPeriodCode,
+    };
+    const previousDataset = await getTableData(table.id, previousQuery, lang);
+    const normalizedPreviousDataset = normalizeDataset(previousDataset, {
+      tableId: table.id,
+      tableKey: table.key,
+      title: info.label,
+    });
+
+    return {
+      latestDataset: normalizedLatestDataset,
+      previousDataset: normalizedPreviousDataset,
+      latestPeriodCode,
+      previousPeriodCode,
+    };
+  },
+  ["ssb-latest-and-previous-year-apprenticeship-salary-datasets"],
+  { revalidate: 300 },
+);
+
+export async function getLatestAndPreviousYearApprenticeshipSalaryDatasets(
+  filters: SsbSalaryFilters = APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  if (shouldUseLocalSsbStore()) {
+    if (!matchesFilters(filters, APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS)) {
+      throw new Error("Lokalt SSB-lager støtter foreløpig bare median datasett for lærlinglønn.");
+    }
+
+    const [latestDataset, previousDataset] = await Promise.all([
+      getStoredDataset("apprenticeshipLatestMedian"),
+      getStoredDataset("apprenticeshipPreviousMedian"),
+    ]);
+
+    return {
+      latestDataset,
+      previousDataset,
+      latestPeriodCode: normalizeYearPeriodCode(
+        findLatestTimeDimension(latestDataset)?.code,
+        findLatestTimeDimension(latestDataset)?.label,
+      ),
+      previousPeriodCode: normalizeYearPeriodCode(
+        findLatestTimeDimension(previousDataset)?.code,
+        findLatestTimeDimension(previousDataset)?.label,
+      ),
+    };
+  }
+
+  return getLatestAndPreviousYearApprenticeshipSalaryDatasetsCached(filters, lang);
+}
+
+export async function getApprenticeshipSalaryDistribution(
+  occupationCode: string,
+  filters: SsbSalaryFilters = APPRENTICESHIP_DISTRIBUTION_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  if (shouldUseLocalSsbStore()) {
+    if (!matchesFilters(filters, APPRENTICESHIP_DISTRIBUTION_FILTERS)) {
+      throw new Error("Lokalt SSB-lager støtter foreløpig bare standardfiltre for lærlingfordeling.");
+    }
+
+    const normalized = await getStoredDataset("apprenticeshipDistributionLatest");
+    return buildApprenticeshipSalaryDistribution(normalized, occupationCode);
+  }
+
+  const tableId = SSB_APPRENTICESHIP_SALARY_TABLE_ID;
+  const metadata = await getTableMetadata(tableId, lang);
+  const query = buildLatestQueryFromMetadata(metadata, {
+    ...filters,
+    Yrke: occupationCode,
+    Kjonn: ["0", "1", "2"],
+  });
+  const [info, dataset] = await Promise.all([
+    getTableInfo(tableId, lang),
+    getTableData(tableId, query, lang),
+  ]);
+  const normalized = normalizeDataset(dataset, {
+    tableId,
+    tableKey: "apprenticeshipDetailed",
+    title: info.label,
+  });
+
+  return buildApprenticeshipSalaryDistribution(normalized, occupationCode);
+}
+
+export async function getApprenticeshipMedianSalaryOverview(
+  occupationCodes: string[],
+  filters: SsbSalaryFilters = APPRENTICESHIP_DISTRIBUTION_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  const uniqueOccupationCodes = Array.from(new Set(occupationCodes)).filter(Boolean);
+
+  if (uniqueOccupationCodes.length === 0) {
+    return {
+      rows: [],
+      periodLabel: undefined,
+      measureLabel: "Median avtalt månedslønn",
+    };
+  }
+
+  if (shouldUseLocalSsbStore()) {
+    if (!matchesFilters(filters, APPRENTICESHIP_DISTRIBUTION_FILTERS)) {
+      throw new Error("Lokalt SSB-lager støtter foreløpig bare standardfiltre for lærlingoversikt.");
+    }
+
+    const normalized = await getStoredDataset("apprenticeshipDistributionLatest");
+    return buildApprenticeshipMedianSalaryOverview(normalized, {
+      occupationCodes: uniqueOccupationCodes,
+    });
+  }
+
+  const tableId = SSB_APPRENTICESHIP_SALARY_TABLE_ID;
+  const metadata = await getTableMetadata(tableId, lang);
+  const query = buildLatestQueryFromMetadata(metadata, {
+    ...filters,
+    Yrke: uniqueOccupationCodes,
+    Kjonn: ["0", "1", "2"],
+  });
+  const [info, dataset] = await Promise.all([
+    getTableInfo(tableId, lang),
+    postTableData(tableId, buildPostBodyFromQueryParams(query), { outputFormat: "json-stat2" }, lang),
+  ]);
+  const normalized = normalizeDataset(dataset, {
+    tableId,
+    tableKey: "apprenticeshipDetailed",
+    title: info.label,
+  });
+
+  return buildApprenticeshipMedianSalaryOverview(normalized, {
+    occupationCodes: uniqueOccupationCodes,
+  });
+}
+
+export async function getApprenticeshipSalaryTimeSeries(
+  occupationCode: string,
+  filters: SsbSalaryFilters = APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+  lang: SsbLanguage = "no",
+) {
+  if (shouldUseLocalSsbStore()) {
+    if (!matchesFilters(filters, APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS)) {
+      throw new Error("Lokalt SSB-lager støtter foreløpig bare standardfiltre for lærlingtidsserier.");
+    }
+
+    const normalized = await getStoredDataset("apprenticeshipMedianTimeSeries");
+    return buildApprenticeshipSalaryTimeSeries(normalized, occupationCode);
+  }
+
+  const tableId = SSB_APPRENTICESHIP_SALARY_TABLE_ID;
+  const table = getSalaryTableDefinition("apprenticeshipDetailed");
+  const metadata = await getTableMetadata(tableId, lang);
+  const query = buildOccupationTimeSeriesQuery(metadata, occupationCode, {
+    ...filters,
+    Kjonn: ["0", "1", "2"],
+  });
+  const [info, dataset] = await Promise.all([
+    getTableInfo(tableId, lang),
+    getTableData(tableId, query, lang),
+  ]);
+  const normalized = normalizeDataset(dataset, {
+    tableId,
+    tableKey: table.key,
+    title: info.label,
+  });
+
+  return buildApprenticeshipSalaryTimeSeries(normalized, occupationCode);
 }
 
 export async function getOccupationSalaryDistribution(
@@ -2580,13 +2856,33 @@ function decodeCoordinates(index: number, sizes: number[]) {
 
 function findLatestTimeDimension(dataset: SsbNormalizedDataset) {
   const timeDimensionCode = dataset.dimensions.find((dimension) =>
-    dataset.rows.some((row) => row.dimensions[dimension]?.code?.match(/^\d{4}[KM]\d+/)),
+    dataset.rows.some((row) => row.dimensions[dimension]?.code?.match(/^\d{4}([KM]\d+)?$/)),
   );
 
   return dataset.rows
     .map((row) => (timeDimensionCode ? row.dimensions[timeDimensionCode] : undefined))
     .filter((value): value is { code: string; label: string } => Boolean(value))
     .sort((left, right) => right.code.localeCompare(left.code, "nb-NO"))[0];
+}
+
+function normalizeYearPeriodCode(periodCode?: string, periodLabel?: string) {
+  if (periodCode && /^\d{4}$/.test(periodCode)) {
+    return periodCode;
+  }
+
+  if (periodLabel && /^\d{4}$/.test(periodLabel)) {
+    return periodLabel;
+  }
+
+  return undefined;
+}
+
+function getPreviousYearCode(periodCode: string) {
+  if (!/^\d{4}$/.test(periodCode)) {
+    return undefined;
+  }
+
+  return String(Number(periodCode) - 1);
 }
 
 function matchesFilters(filters: SsbSalaryFilters, expected: SsbSalaryFilters) {

@@ -137,6 +137,7 @@ export type SsbSalaryTableKey =
   | "industryRegion"
   | "industrySectorRegion"
   | "occupationDetailed"
+  | "apprenticeshipDetailed"
   | "occupationEmployment"
   | "genderAge"
   | "industryGrowth"
@@ -188,6 +189,10 @@ export type GeneratedSsbDatasetKey =
   | "occupationWorkforceTimeSeries"
   | "occupationAgeTimeSeries"
   | "occupationContractLatest"
+  | "apprenticeshipLatestMedian"
+  | "apprenticeshipPreviousMedian"
+  | "apprenticeshipMedianTimeSeries"
+  | "apprenticeshipDistributionLatest"
   | "inflationQuarterSeries";
 
 export type GeneratedSsbDatasetManifestEntry = {

@@ -174,6 +174,76 @@ async function main() {
       buildQuery: (metadata) => queries.buildOccupationContractTypeQuery(metadata, "*"),
     },
     {
+      key: "apprenticeshipLatestMedian",
+      fileName: "apprenticeship-latest-median.json",
+      tableId: queries.SSB_SALARY_TABLES.apprenticeshipDetailed.id,
+      tableKey: "apprenticeshipDetailed",
+      buildQuery: (metadata) =>
+        queries.buildLatestQueryFromMetadata(metadata, queries.APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS),
+    },
+    {
+      key: "apprenticeshipPreviousMedian",
+      fileName: "apprenticeship-previous-median.json",
+      tableId: queries.SSB_SALARY_TABLES.apprenticeshipDetailed.id,
+      tableKey: "apprenticeshipDetailed",
+      buildQuery: async (metadata) => {
+        const latestQuery = queries.buildLatestQueryFromMetadata(
+          metadata,
+          queries.APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+        );
+        const latestDataset = await client.getTableData(
+          queries.SSB_SALARY_TABLES.apprenticeshipDetailed.id,
+          latestQuery,
+          "no",
+        );
+        const normalizedLatest = queries.normalizeDataset(latestDataset, {
+          tableId: queries.SSB_SALARY_TABLES.apprenticeshipDetailed.id,
+          tableKey: "apprenticeshipDetailed",
+          title: queries.SSB_SALARY_TABLES.apprenticeshipDetailed.title,
+        });
+        const timeDimensionCode = metadata.role?.time?.[0];
+        const latestPeriodCode = timeDimensionCode
+          ? normalizedLatest.rows[0]?.dimensions[timeDimensionCode]?.code
+          : undefined;
+
+        if (!latestPeriodCode) {
+          throw new Error("Fant ikke siste periode for lærling median datasett.");
+        }
+
+        return {
+          ...latestQuery,
+          [`valueCodes[${timeDimensionCode}]`]: String(Number(latestPeriodCode) - 1),
+        };
+      },
+    },
+    {
+      key: "apprenticeshipMedianTimeSeries",
+      fileName: "apprenticeship-median-timeseries.json",
+      tableId: queries.SSB_SALARY_TABLES.apprenticeshipDetailed.id,
+      tableKey: "apprenticeshipDetailed",
+      buildQuery: (metadata) =>
+        queries.buildOccupationTimeSeriesQuery(
+          metadata,
+          "*",
+          {
+            ...queries.APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+            Kjonn: ["0", "1", "2"],
+          },
+        ),
+    },
+    {
+      key: "apprenticeshipDistributionLatest",
+      fileName: "apprenticeship-distribution-latest.json",
+      tableId: queries.SSB_SALARY_TABLES.apprenticeshipDetailed.id,
+      tableKey: "apprenticeshipDetailed",
+      buildQuery: (metadata) =>
+        queries.buildLatestQueryFromMetadata(metadata, {
+          ...queries.APPRENTICESHIP_DISTRIBUTION_FILTERS,
+          Yrke: "*",
+          Kjonn: ["0", "1", "2"],
+        }),
+    },
+    {
       key: "inflationQuarterSeries",
       fileName: "inflation-quarter-series.json",
       tableId: queries.SSB_INFLATION_TABLE_ID,
@@ -231,7 +301,11 @@ async function main() {
   const { syncOccupationDetailViewModels } = await import(
     new URL("./occupation-detail-view-model-sync.ts", import.meta.url).href
   );
+  const { syncApprenticeshipDetailViewModels } = await import(
+    new URL("./apprenticeship-detail-view-model-sync.ts", import.meta.url).href
+  );
   await syncOccupationDetailViewModels();
+  await syncApprenticeshipDetailViewModels();
   console.log(`Ferdig. Skrev ${manifest.datasets.length} datasett til ${GENERATED_DIR}.`);
 }
 
@@ -478,6 +552,18 @@ function buildSsbSyncHelpers() {
     Alder: "999D",
     ContentsCode: ["Lonsstakere", "AntArbForhold"],
   };
+  const APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
+    LaerlingIkkel: "2",
+    AvtaltVanlig: "0",
+    MaaleMetode: "01",
+    ContentsCode: "AvtaltManedslonn",
+  };
+  const APPRENTICESHIP_DISTRIBUTION_FILTERS: SsbSalaryFilters = {
+    LaerlingIkkel: "2",
+    AvtaltVanlig: "0",
+    MaaleMetode: ["01", "02", "051", "061"],
+    ContentsCode: "AvtaltManedslonn",
+  };
   const SSB_INFLATION_TABLE_ID = "14700";
   const SSB_OCCUPATION_DISTRIBUTION_TABLE_ID = "11418";
   const SSB_OCCUPATION_CONTRACT_TABLE_ID = "14437";
@@ -485,6 +571,10 @@ function buildSsbSyncHelpers() {
     occupationDetailed: {
       id: "11658",
       title: "Lonn per yrke (4-siffer)",
+    },
+    apprenticeshipDetailed: {
+      id: "12851",
+      title: "Lærlinglønn per yrke",
     },
   };
 
@@ -747,6 +837,8 @@ function buildSsbSyncHelpers() {
     OCCUPATION_AVERAGE_AGE_FILTERS,
     OCCUPATION_SUPPLEMENT_FILTERS,
     OCCUPATION_WORKFORCE_FILTERS,
+    APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
+    APPRENTICESHIP_DISTRIBUTION_FILTERS,
     SSB_INFLATION_TABLE_ID,
     SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
     SSB_OCCUPATION_CONTRACT_TABLE_ID,

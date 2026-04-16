@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-15T18:08:19.965Z",
+  "sourceGeneratedAt": "2026-04-15T18:08:10.790Z",
+  "pages": [
+    {
+      "slug": "ambulansepersonell-laerling-lonn",
+      "occupationCode": "3258",
+      "fileName": "3258.json"
+    },
+    {
+      "slug": "andre-hjelpearbeidere-i-industri-laerling-lonn",
+      "occupationCode": "9329",
+      "fileName": "9329.json"
+    },
+    {
+      "slug": "andre-pleiemedarbeidere-laerling-lonn",
+      "occupationCode": "5329",
+      "fileName": "5329.json"
+    },
+    {
+      "slug": "anleggsmaskin-og-industrimekanikere-laerling-lonn",
+      "occupationCode": "7233",
+      "fileName": "7233.json"
+    },
+    {
+      "slug": "anleggsmaskinforere-laerling-lonn",
+      "occupationCode": "8342",
+      "fileName": "8342.json"
+    },
+    {
+      "slug": "automatikere-laerling-lonn",
+      "occupationCode": "7412",
+      "fileName": "7412.json"
+    },
+    {
+      "slug": "bakere-konditorer-mv-laerling-lonn",
+      "occupationCode": "7512",
+      "fileName": "7512.json"
+    },
+    {
+      "slug": "barnehage-og-skolefritidsassistenter-mv-laerling-lonn",
+      "occupationCode": "5311",
+      "fileName": "5311.json"
+    },
+    {
+      "slug": "betongarbeidere-laerling-lonn",
+      "occupationCode": "7114",
+      "fileName": "7114.json"
+    },
+    {
+      "slug": "bilmekanikere-laerling-lonn",
+      "occupationCode": "7231",
+      "fileName": "7231.json"
+    },
+    {
+      "slug": "butikkmedarbeidere-laerling-lonn",
+      "occupationCode": "5223",
+      "fileName": "5223.json"
+    },
+    {
+      "slug": "dekks-og-maskinmannskap-skip-laerling-lonn",
+      "occupationCode": "8350",
+      "fileName": "8350.json"
+    },
+    {
+      "slug": "driftsteknikere-ikt-laerling-lonn",
+      "occupationCode": "3511",
+      "fileName": "3511.json"
+    },
+    {
+      "slug": "elektrikere-laerling-lonn",
+      "occupationCode": "7411",
+      "fileName": "7411.json"
+    },
+    {
+      "slug": "energikontrolloperatorer-laerling-lonn",
+      "occupationCode": "3131",
+      "fileName": "3131.json"
+    },
+    {
+      "slug": "energimontorer-laerling-lonn",
+      "occupationCode": "7413",
+      "fileName": "7413.json"
+    },
+    {
+      "slug": "frisorer-laerling-lonn",
+      "occupationCode": "5141",
+      "fileName": "5141.json"
+    },
+    {
+      "slug": "gartnere-laerling-lonn",
+      "occupationCode": "6113",
+      "fileName": "6113.json"
+    },
+    {
+      "slug": "havbruksarbeidere-laerling-lonn",
+      "occupationCode": "6221",
+      "fileName": "6221.json"
+    },
+    {
+      "slug": "helsefagarbeidere-laerling-lonn",
+      "occupationCode": "5321",
+      "fileName": "5321.json"
+    },
+    {
+      "slug": "hjelpearbeidere-i-anlegg-laerling-lonn",
+      "occupationCode": "9312",
+      "fileName": "9312.json"
+    },
+    {
+      "slug": "hjelpearbeidere-i-bygg-laerling-lonn",
+      "occupationCode": "9313",
+      "fileName": "9313.json"
+    },
+    {
+      "slug": "hotellresepsjonister-laerling-lonn",
+      "occupationCode": "4224",
+      "fileName": "4224.json"
+    },
+    {
+      "slug": "kokker-laerling-lonn",
+      "occupationCode": "5120",
+      "fileName": "5120.json"
+    },
+    {
+      "slug": "kontormedarbeidere-laerling-lonn",
+      "occupationCode": "4110",
+      "fileName": "4110.json"
+    },
+    {
+      "slug": "kopper-og-blikkenslagere-laerling-lonn",
+      "occupationCode": "7213",
+      "fileName": "7213.json"
+    },
+    {
+      "slug": "kuldemontorer-mv-laerling-lonn",
+      "occupationCode": "7127",
+      "fileName": "7127.json"
+    },
+    {
+      "slug": "lagermedarbeidere-og-material-forvaltere-laerling-lonn",
+      "occupationCode": "4321",
+      "fileName": "4321.json"
+    },
+    {
+      "slug": "lastebil-og-trailersjaforer-laerling-lonn",
+      "occupationCode": "8332",
+      "fileName": "8332.json"
+    },
+    {
+      "slug": "logistikkmedarbeidere-laerling-lonn",
+      "occupationCode": "4322",
+      "fileName": "4322.json"
+    },
+    {
+      "slug": "malere-og-byggtapetserere-laerling-lonn",
+      "occupationCode": "7131",
+      "fileName": "7131.json"
+    },
+    {
+      "slug": "mekanikere-innen-flytekniske-fag-laerling-lonn",
+      "occupationCode": "7232",
+      "fileName": "7232.json"
+    },
+    {
+      "slug": "melke-og-husdyrprodusenter-laerling-lonn",
+      "occupationCode": "6121",
+      "fileName": "6121.json"
+    },
+    {
+      "slug": "metalldreiere-mv-laerling-lonn",
+      "occupationCode": "7223",
+      "fileName": "7223.json"
+    },
+    {
+      "slug": "murere-laerling-lonn",
+      "occupationCode": "7112",
+      "fileName": "7112.json"
+    },
+    {
+      "slug": "operatorer-innen-boring-mv-laerling-lonn",
+      "occupationCode": "8113",
+      "fileName": "8113.json"
+    },
+    {
+      "slug": "operatorer-innen-kjemisk-industri-laerling-lonn",
+      "occupationCode": "8131",
+      "fileName": "8131.json"
+    },
+    {
+      "slug": "operatorer-innen-metallurgiske-prosessfag-laerling-lonn",
+      "occupationCode": "8121",
+      "fileName": "8121.json"
+    },
+    {
+      "slug": "operatorer-innen-naeringsmiddelproduksjon-laerling-lonn",
+      "occupationCode": "8160",
+      "fileName": "8160.json"
+    },
+    {
+      "slug": "operatorer-innen-treforedling-laerling-lonn",
+      "occupationCode": "8171",
+      "fileName": "8171.json"
+    },
+    {
+      "slug": "platearbeidere-laerling-lonn",
+      "occupationCode": "7214",
+      "fileName": "7214.json"
+    },
+    {
+      "slug": "rorleggere-og-vvs-montorer-laerling-lonn",
+      "occupationCode": "7126",
+      "fileName": "7126.json"
+    },
+    {
+      "slug": "servitorer-laerling-lonn",
+      "occupationCode": "5131",
+      "fileName": "5131.json"
+    },
+    {
+      "slug": "skytebaser-og-sprengningsarbeidere-laerling-lonn",
+      "occupationCode": "7542",
+      "fileName": "7542.json"
+    },
+    {
+      "slug": "sveisere-laerling-lonn",
+      "occupationCode": "7212",
+      "fileName": "7212.json"
+    },
+    {
+      "slug": "tele-og-ikt-installatorer-laerling-lonn",
+      "occupationCode": "7422",
+      "fileName": "7422.json"
+    },
+    {
+      "slug": "tomrere-og-snekkere-laerling-lonn",
+      "occupationCode": "7115",
+      "fileName": "7115.json"
+    },
+    {
+      "slug": "transportfunksjonaerer-laerling-lonn",
+      "occupationCode": "4323",
+      "fileName": "4323.json"
+    },
+    {
+      "slug": "vaktmestre-laerling-lonn",
+      "occupationCode": "5153",
+      "fileName": "5153.json"
+    },
+    {
+      "slug": "vektere-laerling-lonn",
+      "occupationCode": "5414",
+      "fileName": "5414.json"
+    },
+    {
+      "slug": "verktoymaker-lasesmeder-mv-laerling-lonn",
+      "occupationCode": "7222",
+      "fileName": "7222.json"
+    }
+  ]
+}

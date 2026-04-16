@@ -4,6 +4,7 @@ import path from "node:path";
 import matter from "gray-matter";
 import type { Metadata } from "next";
 import { cache } from "react";
+import { metadata as apprenticeshipOverviewMetadata } from "@/app/laerling/page";
 import { metadata as blogIndexMetadata } from "@/app/blogg/page";
 import { metadata as lonnsjekkMetadata } from "@/app/lonnsjekk/page";
 import { metadata as kvinnerVsMennMetadata } from "@/app/kvinner-vs-menn/page";
@@ -101,6 +102,15 @@ const staticRouteDefinitions: StaticRouteDefinition[] = [
     inSitemap: true,
     pageFilePath: path.join(process.cwd(), "src", "app", "topp-jobber", "page.tsx"),
   },
+  {
+    id: "page:/laerling",
+    title: "Lærlingfag",
+    url: "/laerling",
+    metadata: apprenticeshipOverviewMetadata,
+    metadataSource: "page",
+    inSitemap: true,
+    pageFilePath: path.join(process.cwd(), "src", "app", "laerling", "page.tsx"),
+  },
 ];
 
 const dynamicRouteFamilies: DynamicRouteFamilyDefinition[] = [
@@ -115,6 +125,13 @@ const dynamicRouteFamilies: DynamicRouteFamilyDefinition[] = [
     id: "group:/timelonn/[slug]",
     title: "Timelønn-detaljer",
     url: "/timelonn/[slug]",
+    hasGenerateMetadata: true,
+    hasCanonical: true,
+  },
+  {
+    id: "group:/laerling/[slug]",
+    title: "Lærlinglønn-detaljer",
+    url: "/laerling/[slug]",
     hasGenerateMetadata: true,
     hasCanonical: true,
   },

@@ -6,6 +6,7 @@ import { OccupationSalaryEstimate } from "@/components/occupation-salary-estimat
 import { MetricInfoButton } from "@/components/metric-info-button";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
+import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
 import {
   getOccupationFiveYearGrowthComparison,
   type OccupationFiveYearGrowthComparison,
@@ -106,6 +107,9 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
     currentMedian: estimateMonthlySalary,
     rows: relatedRows,
   });
+  const apprenticeshipPage = await getApprenticeshipDetailPageByOccupationCode(
+    detail.detailPage.occupationCode,
+  );
   const salaryMetricCards = buildSalaryMetricCards({
     latestSalaryPeriodLabel,
     totalMedian: estimateMonthlySalary,
@@ -377,6 +381,23 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
               </p>
             </section>
 
+            {apprenticeshipPage ? (
+              <Link
+                className="inline-flex w-full items-center justify-between gap-3 rounded-md border border-black bg-white px-4 py-3 text-left shadow-sm transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                href={apprenticeshipPage.href}
+              >
+                <span className="block text-sm font-semibold text-slate-950">
+                  {buildApprenticeshipSidebarLabel(occupationText.titleLabel)}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#f7fafc] text-[var(--primary-strong)]"
+                >
+                  <ApprenticeshipIcon />
+                </span>
+              </Link>
+            ) : null}
+
             {BLOG_DEMO_LINKS.length > 0 ? (
               <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
@@ -522,6 +543,30 @@ function buildSalaryMetricCards({
   }
 
   return cards;
+}
+
+function buildApprenticeshipSidebarLabel(occupationLabel: string) {
+  return `Se lærlinglønn for ${occupationLabel.toLowerCase()}`;
+}
+
+function ApprenticeshipIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7 17 17 7M9 7h8v8"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
+    </svg>
+  );
 }
 
 function buildRelatedJobSalaryRows(

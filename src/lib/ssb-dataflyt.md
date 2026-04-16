@@ -54,6 +54,10 @@ Scriptet oppdaterer datasett i:
 - `src/lib/generated/occupation-workforce-timeseries.json`
 - `src/lib/generated/occupation-age-timeseries.json`
 - `src/lib/generated/occupation-contract-latest.json`
+- `src/lib/generated/apprenticeship-latest-median.json`
+- `src/lib/generated/apprenticeship-previous-median.json`
+- `src/lib/generated/apprenticeship-median-timeseries.json`
+- `src/lib/generated/apprenticeship-distribution-latest.json`
 - `src/lib/generated/inflation-quarter-series.json`
 
 I tillegg oppdateres:
@@ -61,6 +65,8 @@ I tillegg oppdateres:
 - `src/lib/generated/manifest.json`
 - `src/lib/generated/occupation-detail-view-models/index.json`
 - alle JSON-filer i `src/lib/generated/occupation-detail-view-models/`
+- `src/lib/generated/apprenticeship-detail-view-models/index.json`
+- alle JSON-filer i `src/lib/generated/apprenticeship-detail-view-models/`
 
 ## Hva du må gjøre når SSB publiserer nye tall
 

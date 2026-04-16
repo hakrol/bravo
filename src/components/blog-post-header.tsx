@@ -7,13 +7,6 @@ type BlogPostHeaderProps = {
 };
 
 export function BlogPostHeader({ post }: BlogPostHeaderProps) {
-  const authorInitials = post.author
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("");
-
   return (
     <header className="overflow-hidden rounded-[5px] bg-[linear-gradient(135deg,#eef4ff_0%,#d8e5ff_42%,#eef1f8_100%)]">
       <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,560px)] lg:items-stretch">
@@ -36,9 +29,6 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#243347,#47679f)] text-sm font-semibold tracking-[0.08em] text-white">
-              {authorInitials}
-            </div>
             <div className="min-w-0">
               <p className="font-semibold text-[var(--foreground)]">{post.author}</p>
               <p className="text-sm text-[rgba(27,36,48,0.68)]">{post.readingTimeMinutes} min lesetid</p>
