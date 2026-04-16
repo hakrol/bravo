@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-04T09:52:27.872Z",
+  "generatedAt": "2026-04-15T18:08:10.790Z",
   "source": "ssb",
   "datasets": [
     {
@@ -166,12 +166,84 @@
       ]
     },
     {
+      "key": "apprenticeshipLatestMedian",
+      "fileName": "apprenticeship-latest-median.json",
+      "tableId": "12851",
+      "tableKey": "apprenticeshipDetailed",
+      "title": "12851: Månedslønn for lærlinger, etter yrke, kjønn og arbeidstid 2017-2025",
+      "updated": "2026-03-16T07:00:00Z",
+      "rowCount": 372,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "LaerlingIkkel",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
+      "key": "apprenticeshipPreviousMedian",
+      "fileName": "apprenticeship-previous-median.json",
+      "tableId": "12851",
+      "tableKey": "apprenticeshipDetailed",
+      "title": "12851: Månedslønn for lærlinger, etter yrke, kjønn og arbeidstid 2017-2025",
+      "updated": "2026-03-16T07:00:00Z",
+      "rowCount": 372,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "LaerlingIkkel",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
+      "key": "apprenticeshipMedianTimeSeries",
+      "fileName": "apprenticeship-median-timeseries.json",
+      "tableId": "12851",
+      "tableKey": "apprenticeshipDetailed",
+      "title": "12851: Månedslønn for lærlinger, etter yrke, kjønn og arbeidstid 2017-2025",
+      "updated": "2026-03-16T07:00:00Z",
+      "rowCount": 3348,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "LaerlingIkkel",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
+      "key": "apprenticeshipDistributionLatest",
+      "fileName": "apprenticeship-distribution-latest.json",
+      "tableId": "12851",
+      "tableKey": "apprenticeshipDetailed",
+      "title": "12851: Månedslønn for lærlinger, etter yrke, kjønn og arbeidstid 2017-2025",
+      "updated": "2026-03-16T07:00:00Z",
+      "rowCount": 1488,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "LaerlingIkkel",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
       "key": "inflationQuarterSeries",
       "fileName": "inflation-quarter-series.json",
       "tableId": "14700",
-      "title": "14700: Konsumprisindeks, etter vare- og tjenestegruppe (2025=100) 2000M01-2026M02",
-      "updated": "2026-03-10T07:00:00Z",
-      "rowCount": 314,
+      "title": "14700: Konsumprisindeks, etter vare- og tjenestegruppe (2025=100) 2000M01-2026M03",
+      "updated": "2026-04-10T06:00:00Z",
+      "rowCount": 315,
       "dimensions": [
         "VareTjenesteGrp",
         "ContentsCode",

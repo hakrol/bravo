@@ -51,13 +51,15 @@ export function OccupationSalaryTimeSeriesChart({
   variant = "default",
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
+  const hasSplitByGender = useMemo(
+    () => series.points.some((point) => point.valueWomen !== undefined || point.valueMen !== undefined),
+    [series.points],
+  );
 
   const availableFilters = useMemo(
     () =>
       ({
-        valueAll: series.points.some(
-          (point) => point.valueWomen !== undefined || point.valueMen !== undefined,
-        ),
+        valueAll: series.points.some((point) => point.valueAll !== undefined),
         valueWomen: series.points.some((point) => point.valueWomen !== undefined),
         valueMen: series.points.some((point) => point.valueMen !== undefined),
       }) satisfies Record<FilterKey, boolean>,
@@ -71,7 +73,9 @@ export function OccupationSalaryTimeSeriesChart({
 
   const activeSeries =
     resolvedFilter === "valueAll"
-      ? seriesDefinitions.filter((definition) => definition.key !== "valueAll")
+      ? hasSplitByGender
+        ? seriesDefinitions.filter((definition) => definition.key !== "valueAll")
+        : seriesDefinitions.filter((definition) => definition.key === "valueAll")
       : seriesDefinitions.filter((definition) => definition.key === resolvedFilter);
 
   const availableValues = series.points.flatMap((point) => {
@@ -111,7 +115,9 @@ export function OccupationSalaryTimeSeriesChart({
     return chartMin + (chartRange / axisTicks) * index;
   });
   const yearTicks = buildYearTicks(series.points);
-  const latestValues = seriesDefinitions.filter((definition) => definition.key !== "valueAll").flatMap((definition) => {
+  const latestValues = seriesDefinitions
+    .filter((definition) => hasSplitByGender ? definition.key !== "valueAll" : definition.key === "valueAll")
+    .flatMap((definition) => {
     const latestPoint = getLatestSeriesPoint(series.points, definition.key);
 
     if (!latestPoint) {

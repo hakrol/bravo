@@ -15,7 +15,7 @@ type OccupationSalaryDistributionProps = {
 };
 
 type DistributionRow = {
-  id: "women" | "men";
+  id: "total" | "women" | "men";
   label: string;
   accentClassName: string;
   metrics: OccupationSalaryDistributionMetrics;
@@ -40,11 +40,13 @@ type MarkerLayout = Record<
 >;
 
 const distributionLabels: Record<DistributionRow["id"], string> = {
+  total: "Begge kjønn",
   women: "Kvinner",
   men: "Menn",
 };
 
 const distributionAccents: Record<DistributionRow["id"], string> = {
+  total: "from-slate-200 via-slate-100 to-slate-200",
   women: "from-amber-200 via-amber-100 to-amber-200",
   men: "from-emerald-200 via-emerald-100 to-emerald-200",
 };
@@ -56,12 +58,18 @@ export function OccupationSalaryDistributionSection({
   scaleMode = "data",
 }: OccupationSalaryDistributionProps) {
   const allowedRows = visibleRows ? new Set(visibleRows) : null;
-  const rows: DistributionRow[] = [
+  const genderRows: DistributionRow[] = [
     buildDistributionRow("women", distribution.women),
     buildDistributionRow("men", distribution.men),
   ]
     .filter((row): row is DistributionRow => Boolean(row))
     .filter((row) => (allowedRows ? allowedRows.has(row.id) : true));
+  const rows =
+    genderRows.length > 0
+      ? genderRows
+      : [buildDistributionRow("total", distribution.total)].filter(
+          (row): row is DistributionRow => Boolean(row),
+        );
 
   if (rows.length === 0) {
     return null;
