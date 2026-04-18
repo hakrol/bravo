@@ -4,11 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 
-const navItems = [
+const navItems: ReadonlyArray<{
+  href: string;
+  label: string;
+  decoration?: "norway-flag";
+}> = [
+  { href: "/lonn-i-norge", label: "Lønn i Norge", decoration: "norway-flag" },
   { href: "/blogg", label: "Blogg" },
   { href: "/lonnsjekk", label: "Lønnssjekk" },
   { href: "/om", label: "Om" },
-] as const;
+];
 
 function isActivePath(pathname: string, href: string) {
   if (href === "/") {
@@ -94,7 +99,7 @@ export function MainNav() {
               ].join(" ")}
               href={item.href}
             >
-              {item.label}
+              <NavItemLabel decoration={item.decoration} label={item.label} />
             </Link>
           );
         })}
@@ -127,12 +132,40 @@ export function MainNav() {
                 href={item.href}
                 tabIndex={isOpen ? undefined : -1}
               >
-                <span>{item.label}</span>
+                <NavItemLabel decoration={item.decoration} label={item.label} />
               </Link>
             );
           })}
         </nav>
       </div>
     </div>
+  );
+}
+
+function NavItemLabel({
+  label,
+  decoration,
+}: {
+  label: string;
+  decoration?: "norway-flag";
+}) {
+  if (decoration !== "norway-flag") {
+    return <span>{label}</span>;
+  }
+
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span>{label}</span>
+      <span
+        aria-hidden="true"
+        className="relative h-4 w-6 overflow-hidden rounded-[3px] border border-black/10 shadow-sm"
+      >
+        <span className="absolute inset-0 bg-[#ba0c2f]" />
+        <span className="absolute inset-y-0 left-[28%] w-[14%] bg-white" />
+        <span className="absolute inset-y-0 left-[32.5%] w-[5%] bg-[#00205b]" />
+        <span className="absolute inset-x-0 top-[39%] h-[20%] bg-white" />
+        <span className="absolute inset-x-0 top-[46%] h-[6%] bg-[#00205b]" />
+      </span>
+    </span>
   );
 }

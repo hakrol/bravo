@@ -63,6 +63,7 @@ Scriptet oppdaterer datasett i:
 I tillegg oppdateres:
 
 - `src/lib/generated/manifest.json`
+- `src/lib/generated/norway-salary-view-model/index.json`
 - `src/lib/generated/occupation-detail-view-models/index.json`
 - alle JSON-filer i `src/lib/generated/occupation-detail-view-models/`
 - `src/lib/generated/apprenticeship-detail-view-models/index.json`

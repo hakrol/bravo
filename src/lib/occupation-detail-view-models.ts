@@ -34,6 +34,13 @@ type OccupationDetailViewModelIndex = {
   }>;
 };
 
+export type TopPaidOccupationLink = {
+  occupationCode: string;
+  title: string;
+  href: string;
+  medianAll: number;
+};
+
 async function readJsonFile<T>(filePath: string): Promise<T> {
   const content = await readFile(filePath, "utf8");
   return JSON.parse(content) as T;
@@ -62,4 +69,29 @@ export const getOccupationDetailViewModelBySlug = cache(async (slug: string) => 
   return readJsonFile<OccupationDetailViewModel>(
     path.join(OCCUPATION_DETAIL_VIEW_MODELS_DIR, page.fileName),
   );
+});
+
+export const getTopPaidOccupationLinks = cache(async (limit = 2) => {
+  const index = await getOccupationDetailViewModelIndex();
+  const uniquePages = Array.from(
+    new Map(index.pages.map((page) => [page.fileName, page])).values(),
+  );
+  const details = await Promise.all(
+    uniquePages.map((page) =>
+      readJsonFile<OccupationDetailViewModel>(
+        path.join(OCCUPATION_DETAIL_VIEW_MODELS_DIR, page.fileName),
+      ),
+    ),
+  );
+
+  return details
+    .map((detail) => ({
+      occupationCode: detail.detailPage.occupationCode,
+      title: detail.detailPage.displayLabel ?? detail.detailPage.editorialLabel ?? detail.detailPage.label,
+      href: detail.detailPage.href,
+      medianAll: detail.data.distribution?.total?.median,
+    }))
+    .filter((item): item is TopPaidOccupationLink => item.medianAll !== undefined)
+    .sort((left, right) => right.medianAll - left.medianAll)
+    .slice(0, limit);
 });

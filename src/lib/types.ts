@@ -378,6 +378,59 @@ export type OccupationLaborMarketStats = {
   ageSeries: OccupationAgeTimeSeriesPoint[];
 };
 
+export type NorwaySalarySummary = {
+  title: string;
+  description: string;
+  href: string;
+  occupationCode: string;
+  occupationLabel: string;
+  latestPeriodLabel?: string;
+  updated?: string;
+  medianAll?: number;
+  medianWomen?: number;
+  medianMen?: number;
+  averageAll?: number;
+  p25All?: number;
+  p75All?: number;
+  medianGapAmount?: number;
+  medianGapPercent?: number;
+};
+
+export type NorwaySalaryLaborMarketSummary = {
+  latestWorkforcePeriodLabel?: string;
+  workforceUpdated?: string;
+  employeesAll?: number;
+  jobsAll?: number;
+  contractPeriodLabel?: string;
+  contractUpdated?: string;
+  employedAll?: number;
+  permanentAll?: number;
+  temporaryAll?: number;
+  permanentShareAll?: number;
+  temporaryShareAll?: number;
+  latestAgePeriodLabel?: string;
+  ageUpdated?: string;
+  averageAgeAll?: number;
+  averageAgeWomen?: number;
+  averageAgeMen?: number;
+};
+
+export type NorwaySalaryViewModel = {
+  route: {
+    slug: string;
+    href: string;
+    title: string;
+    description: string;
+  };
+  generatedAt: string;
+  sourceGeneratedAt?: string;
+  updated?: string;
+  summary: NorwaySalarySummary;
+  salarySeries: OccupationSalaryTimeSeries;
+  distribution: OccupationSalaryDistribution | null;
+  laborMarket: NorwaySalaryLaborMarketSummary;
+};
+
 export type InflationQuarterPoint = {
   periodCode: string;
   periodLabel: string;

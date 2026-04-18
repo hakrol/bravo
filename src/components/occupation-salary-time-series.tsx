@@ -103,7 +103,7 @@ export function OccupationSalaryTimeSeriesChart({
   const chartRange = Math.max(chartMax - chartMin, 1);
   const chartWidth = 820;
   const chartHeight = 320;
-  const paddingLeft = 48;
+  const paddingLeft = 72;
   const paddingRight = 72;
   const paddingTop = 16;
   const paddingBottom = 42;

@@ -367,7 +367,7 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
 
           <aside className="space-y-6">
             <section className="rounded-md border border-black bg-white p-5 shadow-sm">
-              <p className="mt-3 text-sm leading-7 text-slate-600">
+              <p className="text-sm leading-7 text-slate-600">
                 Dataene på denne siden kommer fra{" "}
                 <a
                   className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"

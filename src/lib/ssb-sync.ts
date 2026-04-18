@@ -304,8 +304,12 @@ async function main() {
   const { syncApprenticeshipDetailViewModels } = await import(
     new URL("./apprenticeship-detail-view-model-sync.ts", import.meta.url).href
   );
+  const { syncNorwaySalaryViewModel } = await import(
+    new URL("./norway-salary-view-model-sync.ts", import.meta.url).href
+  );
   await syncOccupationDetailViewModels();
   await syncApprenticeshipDetailViewModels();
+  await syncNorwaySalaryViewModel();
   console.log(`Ferdig. Skrev ${manifest.datasets.length} datasett til ${GENERATED_DIR}.`);
 }
 

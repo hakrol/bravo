@@ -1,0 +1,358 @@
+{
+  "route": {
+    "slug": "lonn-i-norge",
+    "href": "/lonn-i-norge",
+    "title": "Lønn i Norge",
+    "description": "Se lønnsnivå, lønnsutvikling, lønnsfordeling og arbeidsmarkedsnøkkeltall for Norge som helhet, basert på aggregatet Alle yrker fra SSB."
+  },
+  "generatedAt": "2026-04-18T09:35:19.210Z",
+  "sourceGeneratedAt": "2026-04-15T18:08:10.790Z",
+  "updated": "2026-02-26T07:00:00.000Z",
+  "summary": {
+    "title": "Lønn i Norge",
+    "description": "Et samlet bilde av lønnsnivå, lønnsfordeling og arbeidsmarked i Norge, basert på aggregatet Alle yrker fra SSB.",
+    "href": "/lonn-i-norge",
+    "occupationCode": "0-9",
+    "occupationLabel": "Alle yrker",
+    "latestPeriodLabel": "4. kvartal 2025",
+    "updated": "2026-02-05T07:00:00.000Z",
+    "medianAll": 53190,
+    "medianWomen": 51730,
+    "medianMen": 54580,
+    "averageAll": 58450,
+    "p25All": 43820,
+    "p75All": 66670,
+    "medianGapAmount": 2850,
+    "medianGapPercent": 5.221692927812385
+  },
+  "salarySeries": {
+    "occupationCode": "0-9",
+    "occupationLabel": "Alle yrker",
+    "measureLabel": "Median avtalt månedslønn",
+    "updated": "2026-02-05T07:00:00Z",
+    "points": [
+      {
+        "periodCode": "2016K1",
+        "periodLabel": "1. kvartal 2016",
+        "valueAll": 37100,
+        "valueWomen": 35580,
+        "valueMen": 38880
+      },
+      {
+        "periodCode": "2016K2",
+        "periodLabel": "2. kvartal 2016",
+        "valueAll": 37030,
+        "valueWomen": 35560,
+        "valueMen": 38590
+      },
+      {
+        "periodCode": "2016K3",
+        "periodLabel": "3. kvartal 2016",
+        "valueAll": 36930,
+        "valueWomen": 35580,
+        "valueMen": 38410
+      },
+      {
+        "periodCode": "2016K4",
+        "periodLabel": "4. kvartal 2016",
+        "valueAll": 37520,
+        "valueWomen": 36320,
+        "valueMen": 39000
+      },
+      {
+        "periodCode": "2017K1",
+        "periodLabel": "1. kvartal 2017",
+        "valueAll": 37830,
+        "valueWomen": 36500,
+        "valueMen": 39390
+      },
+      {
+        "periodCode": "2017K2",
+        "periodLabel": "2. kvartal 2017",
+        "valueAll": 37800,
+        "valueWomen": 36540,
+        "valueMen": 39260
+      },
+      {
+        "periodCode": "2017K3",
+        "periodLabel": "3. kvartal 2017",
+        "valueAll": 37770,
+        "valueWomen": 36500,
+        "valueMen": 39070
+      },
+      {
+        "periodCode": "2017K4",
+        "periodLabel": "4. kvartal 2017",
+        "valueAll": 38530,
+        "valueWomen": 37350,
+        "valueMen": 39930
+      },
+      {
+        "periodCode": "2018K1",
+        "periodLabel": "1. kvartal 2018",
+        "valueAll": 38780,
+        "valueWomen": 37500,
+        "valueMen": 40000
+      },
+      {
+        "periodCode": "2018K2",
+        "periodLabel": "2. kvartal 2018",
+        "valueAll": 38750,
+        "valueWomen": 37500,
+        "valueMen": 40000
+      },
+      {
+        "periodCode": "2018K3",
+        "periodLabel": "3. kvartal 2018",
+        "valueAll": 38750,
+        "valueWomen": 37500,
+        "valueMen": 40000
+      },
+      {
+        "periodCode": "2018K4",
+        "periodLabel": "4. kvartal 2018",
+        "valueAll": 39710,
+        "valueWomen": 38410,
+        "valueMen": 40640
+      },
+      {
+        "periodCode": "2019K1",
+        "periodLabel": "1. kvartal 2019",
+        "valueAll": 40000,
+        "valueWomen": 38640,
+        "valueMen": 41120
+      },
+      {
+        "periodCode": "2019K2",
+        "periodLabel": "2. kvartal 2019",
+        "valueAll": 40000,
+        "valueWomen": 38700,
+        "valueMen": 41170
+      },
+      {
+        "periodCode": "2019K3",
+        "periodLabel": "3. kvartal 2019",
+        "valueAll": 40070,
+        "valueWomen": 38880,
+        "valueMen": 41220
+      },
+      {
+        "periodCode": "2019K4",
+        "periodLabel": "4. kvartal 2019",
+        "valueAll": 41240,
+        "valueWomen": 40000,
+        "valueMen": 42080
+      },
+      {
+        "periodCode": "2020K1",
+        "periodLabel": "1. kvartal 2020",
+        "valueAll": 41670,
+        "valueWomen": 40330,
+        "valueMen": 42540
+      },
+      {
+        "periodCode": "2020K2",
+        "periodLabel": "2. kvartal 2020",
+        "valueAll": 41970,
+        "valueWomen": 41020,
+        "valueMen": 42980
+      },
+      {
+        "periodCode": "2020K3",
+        "periodLabel": "3. kvartal 2020",
+        "valueAll": 41370,
+        "valueWomen": 40000,
+        "valueMen": 42220
+      },
+      {
+        "periodCode": "2020K4",
+        "periodLabel": "4. kvartal 2020",
+        "valueAll": 42060,
+        "valueWomen": 40980,
+        "valueMen": 43300
+      },
+      {
+        "periodCode": "2021K1",
+        "periodLabel": "1. kvartal 2021",
+        "valueAll": 42530,
+        "valueWomen": 41650,
+        "valueMen": 43950
+      },
+      {
+        "periodCode": "2021K2",
+        "periodLabel": "2. kvartal 2021",
+        "valueAll": 42620,
+        "valueWomen": 41670,
+        "valueMen": 44100
+      },
+      {
+        "periodCode": "2021K3",
+        "periodLabel": "3. kvartal 2021",
+        "valueAll": 42460,
+        "valueWomen": 41360,
+        "valueMen": 43840
+      },
+      {
+        "periodCode": "2021K4",
+        "periodLabel": "4. kvartal 2021",
+        "valueAll": 43690,
+        "valueWomen": 42620,
+        "valueMen": 44830
+      },
+      {
+        "periodCode": "2022K1",
+        "periodLabel": "1. kvartal 2022",
+        "valueAll": 44070,
+        "valueWomen": 43010,
+        "valueMen": 45260
+      },
+      {
+        "periodCode": "2022K2",
+        "periodLabel": "2. kvartal 2022",
+        "valueAll": 44120,
+        "valueWomen": 43050,
+        "valueMen": 45260
+      },
+      {
+        "periodCode": "2022K3",
+        "periodLabel": "3. kvartal 2022",
+        "valueAll": 44250,
+        "valueWomen": 43000,
+        "valueMen": 45470
+      },
+      {
+        "periodCode": "2022K4",
+        "periodLabel": "4. kvartal 2022",
+        "valueAll": 45490,
+        "valueWomen": 44490,
+        "valueMen": 46740
+      },
+      {
+        "periodCode": "2023K1",
+        "periodLabel": "1. kvartal 2023",
+        "valueAll": 45870,
+        "valueWomen": 44830,
+        "valueMen": 47270
+      },
+      {
+        "periodCode": "2023K2",
+        "periodLabel": "2. kvartal 2023",
+        "valueAll": 46520,
+        "valueWomen": 45210,
+        "valueMen": 47740
+      },
+      {
+        "periodCode": "2023K3",
+        "periodLabel": "3. kvartal 2023",
+        "valueAll": 47330,
+        "valueWomen": 45970,
+        "valueMen": 48500
+      },
+      {
+        "periodCode": "2023K4",
+        "periodLabel": "4. kvartal 2023",
+        "valueAll": 48480,
+        "valueWomen": 47360,
+        "valueMen": 49720
+      },
+      {
+        "periodCode": "2024K1",
+        "periodLabel": "1. kvartal 2024",
+        "valueAll": 48870,
+        "valueWomen": 47550,
+        "valueMen": 50000
+      },
+      {
+        "periodCode": "2024K2",
+        "periodLabel": "2. kvartal 2024",
+        "valueAll": 48980,
+        "valueWomen": 47630,
+        "valueMen": 50030
+      },
+      {
+        "periodCode": "2024K3",
+        "periodLabel": "3. kvartal 2024",
+        "valueAll": 49760,
+        "valueWomen": 48270,
+        "valueMen": 50820
+      },
+      {
+        "periodCode": "2024K4",
+        "periodLabel": "4. kvartal 2024",
+        "valueAll": 50910,
+        "valueWomen": 49730,
+        "valueMen": 52220
+      },
+      {
+        "periodCode": "2025K1",
+        "periodLabel": "1. kvartal 2025",
+        "valueAll": 51370,
+        "valueWomen": 50000,
+        "valueMen": 52770
+      },
+      {
+        "periodCode": "2025K2",
+        "periodLabel": "2. kvartal 2025",
+        "valueAll": 51580,
+        "valueWomen": 50100,
+        "valueMen": 52990
+      },
+      {
+        "periodCode": "2025K3",
+        "periodLabel": "3. kvartal 2025",
+        "valueAll": 52020,
+        "valueWomen": 50550,
+        "valueMen": 53390
+      },
+      {
+        "periodCode": "2025K4",
+        "periodLabel": "4. kvartal 2025",
+        "valueAll": 53190,
+        "valueWomen": 51730,
+        "valueMen": 54580
+      }
+    ]
+  },
+  "distribution": {
+    "occupationCode": "0-9",
+    "occupationLabel": "Alle yrker",
+    "periodLabel": "2025",
+    "updated": "2026-02-05T07:00:00Z",
+    "total": {
+      "median": 53190,
+      "average": 58450,
+      "p25": 43820,
+      "p75": 66670
+    },
+    "women": {
+      "median": 51730,
+      "average": 55160,
+      "p25": 42800,
+      "p75": 62560
+    },
+    "men": {
+      "median": 54580,
+      "average": 61120,
+      "p25": 44630,
+      "p75": 70800
+    }
+  },
+  "laborMarket": {
+    "workforceUpdated": "2026-02-05T07:00:00Z",
+    "contractUpdated": "2026-02-26T07:00:00Z",
+    "ageUpdated": "2026-02-05T07:00:00Z",
+    "latestWorkforcePeriodLabel": "4. kvartal 2025",
+    "employeesAll": 2839036,
+    "jobsAll": 3174526,
+    "latestAgePeriodLabel": "4. kvartal 2025",
+    "averageAgeAll": 42.5,
+    "averageAgeWomen": 42.4,
+    "averageAgeMen": 42.5,
+    "contractPeriodLabel": "2025",
+    "employedAll": 2629264,
+    "permanentAll": 2227008,
+    "temporaryAll": 261226,
+    "permanentShareAll": 84.70081361171795,
+    "temporaryShareAll": 9.935327909255214
+  }
+}
