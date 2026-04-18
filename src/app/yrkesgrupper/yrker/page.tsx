@@ -7,8 +7,8 @@ import {
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
 export const metadata: Metadata = {
-  title: "Yrker",
-  description: "Se alle konkrete yrker og klikk deg videre til detaljsiden for hvert yrke.",
+  title: "Alle yrker og lønnstall",
+  description: "Se alle yrker med egne detaljsider og finn lønnstall, lønnsutvikling og nøkkeltall for hvert yrke.",
   alternates: {
     canonical: "/yrkesgrupper/yrker",
   },

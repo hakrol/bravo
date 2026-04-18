@@ -4,6 +4,31 @@ import {
   getLatestAndPreviousYearSalaryDatasets,
   OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
 } from "@/lib/ssb";
+import { siteConfig } from "@/lib/site-config";
+
+const description =
+  "Se hva ulike yrker tjener i Norge, sammenlign lønn og utforsk oppdaterte lønnstall fra SSB.";
+
+export const metadata: Metadata = {
+  title: "Hva tjener ulike yrker i Norge?",
+  description,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "nb_NO",
+    url: "/",
+    siteName: siteConfig.name,
+    title: `Hva tjener ulike yrker i Norge? | ${siteConfig.name}`,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Hva tjener ulike yrker i Norge? | ${siteConfig.name}`,
+    description,
+  },
+};
 
 export default async function HomePage() {
   const { latestDataset, previousDataset } = await getLatestAndPreviousYearSalaryDatasets(
@@ -44,3 +69,4 @@ export default async function HomePage() {
     </div>
   );
 }
+import type { Metadata } from "next";

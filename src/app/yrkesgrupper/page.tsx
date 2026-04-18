@@ -3,8 +3,8 @@ import { OccupationLinkGrid } from "@/components/occupation-link-grid";
 import { listOccupationGroups } from "@/lib/occupation-groups";
 
 export const metadata: Metadata = {
-  title: "Yrkesgrupper",
-  description: "Se alle yrkesgrupper og klikk deg videre til l\u00F8nnsoversikter for hver gruppe.",
+  title: "Lønn i ulike yrkesgrupper",
+  description: "Se lønn i ulike yrkesgrupper og gå videre til oversikter for yrkene i hver gruppe.",
   alternates: {
     canonical: "/yrkesgrupper",
   },

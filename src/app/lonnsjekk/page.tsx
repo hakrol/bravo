@@ -10,10 +10,10 @@ import {
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Sammenlign lønnen din med markedet og få en rask, tydelig vurdering basert på oppdaterte SSB-data.";
+  "Sammenlign lønnen din med markedet og få en rask vurdering basert på oppdaterte lønnstall fra SSB.";
 
 export const metadata: Metadata = {
-  title: "Lønnsjekk",
+  title: "Lønnssjekk: Sammenlign lønnen din med markedet",
   description,
   alternates: {
     canonical: "/lonnsjekk",
@@ -23,12 +23,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/lonnsjekk",
     siteName: siteConfig.name,
-    title: `Lønnsjekk | ${siteConfig.name}`,
+    title: `Lønnssjekk: Sammenlign lønnen din med markedet | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Lønnsjekk | ${siteConfig.name}`,
+    title: `Lønnssjekk: Sammenlign lønnen din med markedet | ${siteConfig.name}`,
     description,
   },
 };
