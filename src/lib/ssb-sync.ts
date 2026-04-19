@@ -44,33 +44,41 @@ async function main() {
     {
       key: "occupationLatestMedian",
       fileName: "occupation-latest-median.json",
-      tableId: queries.SSB_SALARY_TABLES.occupationDetailed.id,
-      tableKey: "occupationDetailed",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
       buildQuery: (metadata) =>
-        queries.buildLatestQueryFromMetadata(
-          metadata,
-          queries.OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-        ),
+        queries.buildLatestQueryFromMetadata(metadata, {
+          MaaleMetode: "01",
+          Yrke: "*",
+          Sektor: "ALLE",
+          Kjonn: ["0", "1", "2"],
+          AvtaltVanlig: "0",
+          ContentsCode: "Manedslonn",
+        }),
     },
     {
       key: "occupationPreviousMedian",
       fileName: "occupation-previous-median.json",
-      tableId: queries.SSB_SALARY_TABLES.occupationDetailed.id,
-      tableKey: "occupationDetailed",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
       buildQuery: async (metadata) => {
         const latestQuery = queries.buildLatestQueryFromMetadata(
           metadata,
-          queries.OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
+          {
+            MaaleMetode: "01",
+            Yrke: "*",
+            Sektor: "ALLE",
+            Kjonn: ["0", "1", "2"],
+            AvtaltVanlig: "0",
+            ContentsCode: "Manedslonn",
+          },
         );
         const latestDataset = await client.getTableData(
-          queries.SSB_SALARY_TABLES.occupationDetailed.id,
+          queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
           latestQuery,
           "no",
         );
         const normalizedLatest = queries.normalizeDataset(latestDataset, {
-          tableId: queries.SSB_SALARY_TABLES.occupationDetailed.id,
-          tableKey: "occupationDetailed",
-          title: queries.SSB_SALARY_TABLES.occupationDetailed.title,
+          tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
+          title: "Yrkesfordelt månedslønn",
         });
         const timeDimensionCode = normalizedLatest.dimensions.find((dimension) =>
           normalizedLatest.rows.some((row) => row.dimensions[dimension]?.code?.startsWith("20")),
@@ -109,18 +117,38 @@ async function main() {
     {
       key: "occupationMedianTimeSeries",
       fileName: "occupation-median-timeseries.json",
-      tableId: queries.SSB_SALARY_TABLES.occupationDetailed.id,
-      tableKey: "occupationDetailed",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
       buildQuery: (metadata) =>
         queries.buildOccupationTimeSeriesQuery(
           metadata,
           "*",
-          queries.OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
+          {
+            MaaleMetode: "01",
+            Sektor: "ALLE",
+            Kjonn: ["0", "1", "2"],
+            AvtaltVanlig: "0",
+            ContentsCode: "Manedslonn",
+          },
         ),
     },
     {
       key: "occupationDistributionLatest",
       fileName: "occupation-distribution-latest.json",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
+      buildQuery: (metadata) =>
+        queries.buildLatestQueryFromMetadata(metadata, {
+          ...queries.OCCUPATION_MONTHLY_SALARY_FILTERS,
+          MaaleMetode: ["01", "02", "051", "061"],
+          Yrke: "*",
+          Sektor: "ALLE",
+          Kjonn: ["0", "1", "2"],
+          AvtaltVanlig: "0",
+          ContentsCode: "Manedslonn",
+        }),
+    },
+    {
+      key: "occupationContractedDistributionLatest",
+      fileName: "occupation-contracted-distribution-latest.json",
       tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
       buildQuery: (metadata) =>
         queries.buildLatestQueryFromMetadata(metadata, {

@@ -99,13 +99,14 @@ export function HomeOccupationSalarySearch({
       ) : null}
 
       <OccupationSalaryOverview
-        description="Se månedslønn og vekst fordelt på yrker."
+        description="Se median samlet månedslønn fordelt på yrker."
         emptyStateText="Ingen yrker matcher søket ditt akkurat nå."
         initialSortDirection="desc"
         initialSortKey="medianMen"
         lastUpdated={lastUpdated}
         periodLabel={periodLabel}
         rows={filteredRows}
+        showGrowthColumns={false}
         showLastUpdated={false}
         title={buildTitle(query.trim(), activeGroupLabel)}
         variant="cards"
@@ -130,7 +131,7 @@ function buildTitle(query: string, activeGroupLabel?: string) {
     return `Yrker i ${activeGroupLabel}`;
   }
 
-  return "Månedslønn for alle yrker";
+  return "Samlet månedslønn for alle yrker";
 }
 
 function getTopGroupCode(occupationCode: string) {

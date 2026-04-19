@@ -6,14 +6,11 @@ import {
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
-import {
-  getLatestSalaryDataset,
-  OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-} from "@/lib/ssb";
+import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Se alle yrker med median avtalt månedslønn for begge kjønn, basert på oppdaterte lønnstall fra SSB.";
+  "Se alle yrker med median samlet månedslønn for begge kjønn, basert på oppdaterte lønnstall fra SSB.";
 
 export const metadata: Metadata = {
   title: "Alle yrker",
@@ -38,10 +35,7 @@ export const metadata: Metadata = {
 
 export default async function YrkerPage() {
   const [dataset, occupationIndex] = await Promise.all([
-    getLatestSalaryDataset(
-      "occupationDetailed",
-      OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-    ),
+    getLatestOccupationMedianMonthlySalaryDataset(),
     getOccupationDetailViewModelIndex(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(dataset);

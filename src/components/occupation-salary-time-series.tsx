@@ -169,7 +169,7 @@ export function OccupationSalaryTimeSeriesChart({
             </h3>
             <p className="text-sm leading-6 text-[var(--muted)]">
               {description ??
-                `${series.occupationLabel} lønnsutvikling per kvartal i Norge. Se median avtalt månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
+                `${series.occupationLabel} lønnsutvikling i Norge. Se median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
             </p>
           </div>
 
@@ -182,7 +182,7 @@ export function OccupationSalaryTimeSeriesChart({
                 <MetricInfoButton
                   description={
                     latestDataDescription ??
-                    `Her ser du siste registrerte månedslønn for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`
+                    `Her ser du siste registrerte månedslønn for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB.`
                   }
                   label="Siste data"
                 />

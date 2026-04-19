@@ -1,9 +1,6 @@
 ﻿import { HomeOccupationSalarySearch } from "@/components/home-occupation-salary-search";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
-import {
-  getLatestAndPreviousYearSalaryDatasets,
-  OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-} from "@/lib/ssb";
+import { getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets } from "@/lib/ssb";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
@@ -31,10 +28,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const { latestDataset, previousDataset } = await getLatestAndPreviousYearSalaryDatasets(
-    "occupationDetailed",
-    OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-  );
+  const { latestDataset, previousDataset } =
+    await getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets();
   const overview = buildOccupationMedianGrowthOverview(latestDataset, previousDataset);
 
   return (

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-15T18:08:10.790Z",
+  "generatedAt": "2026-04-19T10:57:33.024Z",
   "source": "ssb",
   "datasets": [
     {
@@ -22,15 +22,16 @@
     {
       "key": "occupationLatestMedian",
       "fileName": "occupation-latest-median.json",
-      "tableId": "11658",
-      "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
+      "tableId": "11418",
+      "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 1749,
+      "rowCount": 1746,
       "dimensions": [
-        "Kjonn",
-        "Alder",
+        "MaaleMetode",
         "Yrke",
+        "Sektor",
+        "Kjonn",
+        "AvtaltVanlig",
         "ContentsCode",
         "Tid"
       ]
@@ -38,15 +39,16 @@
     {
       "key": "occupationPreviousMedian",
       "fileName": "occupation-previous-median.json",
-      "tableId": "11658",
-      "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
+      "tableId": "11418",
+      "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 1749,
+      "rowCount": 1746,
       "dimensions": [
-        "Kjonn",
-        "Alder",
+        "MaaleMetode",
         "Yrke",
+        "Sektor",
+        "Kjonn",
+        "AvtaltVanlig",
         "ContentsCode",
         "Tid"
       ]
@@ -70,15 +72,16 @@
     {
       "key": "occupationMedianTimeSeries",
       "fileName": "occupation-median-timeseries.json",
-      "tableId": "11658",
-      "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
+      "tableId": "11418",
+      "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 69960,
+      "rowCount": 19206,
       "dimensions": [
-        "Kjonn",
-        "Alder",
+        "MaaleMetode",
         "Yrke",
+        "Sektor",
+        "Kjonn",
+        "AvtaltVanlig",
         "ContentsCode",
         "Tid"
       ]
@@ -86,6 +89,23 @@
     {
       "key": "occupationDistributionLatest",
       "fileName": "occupation-distribution-latest.json",
+      "tableId": "11418",
+      "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
+      "updated": "2026-02-05T07:00:00Z",
+      "rowCount": 6984,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "Sektor",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
+      "key": "occupationContractedDistributionLatest",
+      "fileName": "occupation-contracted-distribution-latest.json",
       "tableId": "11418",
       "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",

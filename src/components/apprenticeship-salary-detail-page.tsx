@@ -96,7 +96,6 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
     totalMedian: distribution?.total?.median,
     womenMedian: distribution?.women?.median,
     menMedian: distribution?.men?.median,
-    average: distribution?.total?.average,
   });
   const introText = buildIntroText(
     occupationText.seoLabel,
@@ -175,16 +174,9 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
               </section>
             ) : null}
 
-            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <section className="grid gap-4 sm:grid-cols-2">
               {salaryMetricCards.map((card) => (
-                <KeyMetric
-                  caption={card.caption}
-                  description={card.description}
-                  icon={card.icon}
-                  key={card.key}
-                  label={card.label}
-                  value={formatSalary(card.value)}
-                />
+                <ApprenticeshipSalaryCard card={card} key={card.key} />
               ))}
             </section>
 
@@ -303,7 +295,7 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
           <aside className="space-y-6">
             <div className="space-y-6">
               <section className="rounded-md border border-black bg-white p-5 shadow-sm">
-                <p className="mt-3 text-sm leading-7 text-slate-600">
+                <p className="text-sm leading-7 text-slate-600">
                   Dataene på denne siden kommer fra{" "}
                   <a
                     className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
@@ -336,6 +328,14 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
                   >
                     <span className="block text-sm font-semibold text-slate-950">
                       Lønnssjekk
+                    </span>
+                  </Link>
+                  <Link
+                    className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                    href="/lanekalkulator"
+                  >
+                    <span className="block text-sm font-semibold text-slate-950">
+                      Lånekalkulator
                     </span>
                   </Link>
                 </div>
@@ -511,31 +511,21 @@ function buildSalaryMetricCards({
   totalMedian,
   womenMedian,
   menMedian,
-  average,
 }: {
   periodLabel?: string;
   totalMedian?: number;
   womenMedian?: number;
   menMedian?: number;
-  average?: number;
 }) {
-  const cards: Array<{
-    key: string;
-    label: string;
-    value?: number;
-    caption: string;
-    description: string;
-    icon?: React.ReactNode;
-  }> = [];
+  const cards: ApprenticeshipSalaryCardData[] = [];
   const hasBothGenderMetrics = womenMedian !== undefined && menMedian !== undefined;
 
   if (womenMedian !== undefined) {
     cards.push({
       key: "women",
-      label: "Månedslønn",
+      title: "Kvinner",
       value: womenMedian,
-      caption: periodLabel ? `Kvinner ${periodLabel}` : "Kvinner",
-      description: "Median avtalt månedslønn for kvinnelige lærlinger i siste tilgjengelige SSB-år.",
+      caption: periodLabel,
       icon: <MetricAvatar tone="women" />,
     });
   }
@@ -543,10 +533,9 @@ function buildSalaryMetricCards({
   if (menMedian !== undefined) {
     cards.push({
       key: "men",
-      label: "Månedslønn",
+      title: "Menn",
       value: menMedian,
-      caption: periodLabel ? `Menn ${periodLabel}` : "Menn",
-      description: "Median avtalt månedslønn for mannlige lærlinger i siste tilgjengelige SSB-år.",
+      caption: periodLabel,
       icon: <MetricAvatar tone="men" />,
     });
   }
@@ -554,20 +543,9 @@ function buildSalaryMetricCards({
   if (!hasBothGenderMetrics && totalMedian !== undefined) {
     cards.push({
       key: "all",
-      label: "Månedslønn",
+      title: "Alle",
       value: totalMedian,
-      caption: periodLabel ? `Alle ${periodLabel}` : "Alle",
-      description: "Median avtalt månedslønn for alle lærlinger når kjønnsdelte tall ikke er komplette.",
-    });
-  }
-
-  if (average !== undefined) {
-    cards.push({
-      key: "average",
-      label: "Gjennomsnitt",
-      value: average,
-      caption: periodLabel ? `Alle ${periodLabel}` : "Siste tilgjengelige år",
-      description: "Gjennomsnittlig avtalt månedslønn for alle lærlinger i siste tilgjengelige SSB-år.",
+      caption: periodLabel,
     });
   }
 
@@ -663,32 +641,38 @@ function formatUpdatedLabel(value?: string) {
   });
 }
 
-type KeyMetricProps = {
-  label: string;
-  value: string;
+type ApprenticeshipSalaryCardData = {
+  key: string;
+  title: string;
+  value?: number;
   caption?: string;
-  description?: string;
   icon?: React.ReactNode;
 };
 
-function KeyMetric({
-  label,
-  value,
-  caption,
-  description,
-  icon,
-}: KeyMetricProps) {
+function ApprenticeshipSalaryCard({ card }: { card: ApprenticeshipSalaryCardData }) {
   return (
-    <article className="rounded-md border border-black bg-white p-5 shadow-sm">
-      <div className="flex items-start gap-2">
-        {icon ? <div className="mr-1 shrink-0">{icon}</div> : null}
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
-          {label}
-        </p>
-        {description ? <MetricInfoButton description={description} label={label} /> : null}
+    <article className="rounded-[5px] border border-black bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-2">
+          {card.icon ? <div className="mr-1 shrink-0">{card.icon}</div> : null}
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
+            {card.title}
+          </p>
+        </div>
+        {card.caption ? <p className="shrink-0 text-sm text-slate-500">{card.caption}</p> : null}
       </div>
-      <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-slate-950">{value}</p>
-      {caption ? <p className="mt-2 text-sm text-slate-500">{caption}</p> : null}
+
+      <div className="mt-5 flex items-center gap-2">
+        <p className="text-sm font-medium text-slate-600">Månedslønn</p>
+        <MetricInfoButton
+          description="Dette er median avtalt månedslønn for lærlinger i siste tilgjengelige SSB-år. Tallet viser lønnen som ligger midt i fordelingen."
+          label={`${card.title} månedslønn forklart`}
+        />
+      </div>
+      <p className="mt-1 text-4xl font-semibold tracking-[-0.05em] text-slate-950 tabular-nums sm:text-5xl">
+        {formatSalary(card.value)}
+      </p>
+
     </article>
   );
 }

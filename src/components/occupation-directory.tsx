@@ -78,7 +78,7 @@ export function OccupationDirectory({ items }: OccupationDirectoryProps) {
 
       {filteredItems.length > 0 ? (
         <div
-          aria-label="Alle yrker med median avtalt månedslønn"
+          aria-label="Alle yrker med median samlet månedslønn"
           className="grid auto-rows-fr gap-4 md:grid-cols-2 lg:grid-cols-3"
         >
           {filteredItems.map((item) => {
@@ -88,7 +88,7 @@ export function OccupationDirectory({ items }: OccupationDirectoryProps) {
                   {item.title}
                 </h2>
                 <p className="mt-3 text-sm font-medium text-slate-600">
-                  Månedslønn:{" "}
+                  Samlet månedslønn:{" "}
                   <span className="font-semibold text-[var(--primary-strong)]">
                     {formatCurrency(item.monthlySalary)}
                   </span>

@@ -62,6 +62,15 @@ export const OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS: SsbSalaryFilters 
   ContentsCode: "MedianAvtMndLonn",
 };
 
+export const OCCUPATION_MEDIAN_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
+  MaaleMetode: "01",
+  Yrke: "*",
+  Sektor: "ALLE",
+  Kjonn: ["0", "1", "2"],
+  AvtaltVanlig: "0",
+  ContentsCode: "Manedslonn",
+};
+
 export const OCCUPATION_AVERAGE_AGE_FILTERS: SsbSalaryFilters = {
   Alder: "999D",
   ContentsCode: "GjsnAlder",
@@ -456,6 +465,125 @@ export async function getLatestAndPreviousYearSalaryDatasets(
   return getLatestAndPreviousYearSalaryDatasetsCached(tableKey, filters, lang);
 }
 
+const getLatestOccupationMedianMonthlySalaryDatasetCached = unstable_cache(
+  async (lang: SsbLanguage = "no"): Promise<SsbNormalizedDataset> => {
+    const tableId = SSB_OCCUPATION_DISTRIBUTION_TABLE_ID;
+    const metadata = await getTableMetadata(tableId, lang);
+    const query = buildLatestQueryFromMetadata(metadata, OCCUPATION_MEDIAN_MONTHLY_SALARY_FILTERS);
+    const [info, dataset] = await Promise.all([
+      getTableInfo(tableId, lang),
+      getTableData(tableId, query, lang),
+    ]);
+
+    return normalizeDataset(dataset, {
+      tableId,
+      title: info.label,
+    });
+  },
+  ["ssb-latest-occupation-median-monthly-salary-dataset"],
+  { revalidate: 300 },
+);
+
+export async function getLatestOccupationMedianMonthlySalaryDataset(
+  lang: SsbLanguage = "no",
+) {
+  if (shouldUseLocalSsbStore()) {
+    return getStoredDataset("occupationLatestMedian");
+  }
+
+  return getLatestOccupationMedianMonthlySalaryDatasetCached(lang);
+}
+
+const getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasetsCached = unstable_cache(
+  async (
+    lang: SsbLanguage = "no",
+  ): Promise<{
+    latestDataset: SsbNormalizedDataset;
+    previousDataset: SsbNormalizedDataset | null;
+    latestPeriodCode?: string;
+    previousPeriodCode?: string;
+  }> => {
+    const tableId = SSB_OCCUPATION_DISTRIBUTION_TABLE_ID;
+    const metadata = await getTableMetadata(tableId, lang);
+    const timeDimensionCode = metadata.role?.time?.[0];
+    const latestQuery = buildLatestQueryFromMetadata(
+      metadata,
+      OCCUPATION_MEDIAN_MONTHLY_SALARY_FILTERS,
+    );
+    const [info, latestDataset] = await Promise.all([
+      getTableInfo(tableId, lang),
+      getTableData(tableId, latestQuery, lang),
+    ]);
+    const normalizedLatestDataset = normalizeDataset(latestDataset, {
+      tableId,
+      title: info.label,
+    });
+    const latestPeriod = timeDimensionCode
+      ? normalizedLatestDataset.rows[0]?.dimensions[timeDimensionCode]
+      : undefined;
+    const latestPeriodCode = normalizeQuarterPeriodCode(latestPeriod?.code, latestPeriod?.label);
+    const previousPeriodCode = latestPeriodCode
+      ? getPreviousYearQuarterCode(latestPeriodCode)
+      : undefined;
+
+    if (!timeDimensionCode || !previousPeriodCode) {
+      return {
+        latestDataset: normalizedLatestDataset,
+        previousDataset: null,
+        latestPeriodCode,
+        previousPeriodCode,
+      };
+    }
+
+    const previousQuery = {
+      ...latestQuery,
+      [`valueCodes[${timeDimensionCode}]`]: previousPeriodCode,
+    };
+    const previousDataset = await getTableData(tableId, previousQuery, lang);
+    const normalizedPreviousDataset = normalizeDataset(previousDataset, {
+      tableId,
+      title: info.label,
+    });
+
+    return {
+      latestDataset: normalizedLatestDataset,
+      previousDataset: normalizedPreviousDataset,
+      latestPeriodCode,
+      previousPeriodCode,
+    };
+  },
+  ["ssb-latest-and-previous-year-occupation-median-monthly-salary-datasets"],
+  { revalidate: 300 },
+);
+
+export async function getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets(
+  lang: SsbLanguage = "no",
+) {
+  if (shouldUseLocalSsbStore()) {
+    const [latestDataset, previousDataset] = await Promise.all([
+      getStoredDataset("occupationLatestMedian"),
+      getStoredDataset("occupationPreviousMedian"),
+    ]);
+    const latestPeriodCode = normalizeQuarterPeriodCode(
+      findLatestTimeDimension(latestDataset)?.code,
+      findLatestTimeDimension(latestDataset)?.label,
+    );
+    const previousPeriodCode = normalizeQuarterPeriodCode(
+      findLatestTimeDimension(previousDataset)?.code,
+      findLatestTimeDimension(previousDataset)?.label,
+    );
+
+    return {
+      latestDataset,
+      previousDataset,
+      latestPeriodCode,
+      previousPeriodCode,
+    };
+  }
+
+  return getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasetsCached(lang);
+}
+
 export async function getLatestSalaryDatasets(
   tableKeys: SsbSalaryTableKey[] = CORE_SALARY_TABLE_KEYS,
   lang: SsbLanguage = "no",
@@ -734,7 +862,7 @@ export async function getOccupationSalaryDistribution(
     Sektor: "ALLE",
     Kjonn: ["0", "1", "2"],
     AvtaltVanlig: "0",
-    ContentsCode: "AvtaltManedslonn",
+    ContentsCode: "Manedslonn",
   });
   const [info, dataset] = await Promise.all([
     getTableInfo(tableId, lang),
@@ -760,7 +888,7 @@ export async function getOccupationMedianSalaryOverview(
     return {
       rows: [],
       periodLabel: undefined,
-      measureLabel: "Median avtalt mÃ¥nedslÃ¸nn",
+      measureLabel: "Median månedslønn",
     };
   }
 
@@ -784,7 +912,7 @@ export async function getOccupationMedianSalaryOverview(
     Sektor: "ALLE",
     Kjonn: ["0", "1", "2"],
     AvtaltVanlig: "0",
-    ContentsCode: "AvtaltManedslonn",
+    ContentsCode: "Manedslonn",
   });
   const distributionBody = buildPostBodyFromQueryParams(distributionQuery);
   const [info, dataset] = await Promise.all([
@@ -2595,13 +2723,13 @@ function buildOccupationPurchasingPowerDetailFromSeries(
   const latestPeriodCode = comparablePeriods[0];
 
   if (!latestPeriodCode) {
-    throw new Error(`Fant ingen sammenlignbar KPI-periode for yrkeskode ${options.occupationCode}.`);
+    return null;
   }
 
   const previousPeriodCode = getPreviousYearQuarterCode(latestPeriodCode);
 
   if (!previousPeriodCode) {
-    throw new Error(`Fant ikke forrige Ã¥rs periode for ${latestPeriodCode}.`);
+    return null;
   }
 
   const latestSalaryPoint = series.points.find(
@@ -3069,6 +3197,12 @@ function toQuarterFromMonthCode(periodCode: string) {
 }
 
 function normalizeQuarterPeriodCode(periodCode?: string, periodLabel?: string) {
+  const yearSource = periodCode ?? periodLabel;
+
+  if (yearSource && /^(\d{4})$/.test(yearSource)) {
+    return yearSource;
+  }
+
   if (periodCode) {
     const quarterCodeMatch = periodCode.match(/^(\d{4})K0?([1-4])$/);
 
@@ -3095,6 +3229,12 @@ function normalizeQuarterPeriodCode(periodCode?: string, periodLabel?: string) {
 }
 
 function getPreviousYearQuarterCode(periodCode: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return `${Number(yearMatch[1]) - 1}`;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/);
 
   if (!match) {
@@ -3106,6 +3246,10 @@ function getPreviousYearQuarterCode(periodCode: string) {
 }
 
 function formatQuarterLabel(periodCode: string) {
+  if (/^\d{4}$/.test(periodCode)) {
+    return periodCode;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/);
 
   if (!match) {

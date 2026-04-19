@@ -49,8 +49,8 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
     displayLabel: detail.detailPage.displayLabel,
   });
   const distribution = detail.data.distribution;
+  const contractedDistribution = detail.data.contractedDistribution;
   const laborMarket = detail.data.laborMarketStats;
-  const purchasingPower = detail.data.trendData.purchasingPower;
   const medianGrowthMetrics = buildMedianGrowthMetrics(detail.data.medianBasicSalarySeries);
   const fiveYearGrowthComparison = await getOccupationFiveYearGrowthComparison(
     detail.detailPage.occupationCode,
@@ -73,6 +73,11 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
   const estimateMonthlySalary = distribution?.total?.median;
   const estimateMonthlySalaryWomen = distribution?.women?.median;
   const estimateMonthlySalaryMen = distribution?.men?.median;
+  const salaryCompositionCards = buildSalaryCompositionCards({
+    distribution,
+    contractedDistribution,
+    latestSalaryPeriodLabel,
+  });
   const hasEstimate =
     estimateMonthlySalary !== undefined ||
     estimateMonthlySalaryWomen !== undefined ||
@@ -110,13 +115,6 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
   const apprenticeshipPage = await getApprenticeshipDetailPageByOccupationCode(
     detail.detailPage.occupationCode,
   );
-  const salaryMetricCards = buildSalaryMetricCards({
-    latestSalaryPeriodLabel,
-    totalMedian: estimateMonthlySalary,
-    womenMedian: estimateMonthlySalaryWomen,
-    menMedian: estimateMonthlySalaryMen,
-  });
-
   return (
     <main className="min-h-screen bg-[#f7fafc] text-slate-950">
       <section className="px-4 pb-6 text-white sm:px-6 lg:px-8">
@@ -163,10 +161,10 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                 <MetricInfoButton
                   description={
                     medianGrowthMetrics
-                      ? `Lønnsvekst siste 12 måneder viser endringen i median avtalt månedslønn for begge kjønn fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}.`
-                      : "Lønnsvekst siste 12 måneder viser endringen i median avtalt månedslønn for begge kjønn sammenlignet med samme kvartal året før."
+                      ? `Lønnsvekst siste år viser endringen i median månedslønn for begge kjønn fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}.`
+                      : "Lønnsvekst siste år viser endringen i median månedslønn for begge kjønn sammenlignet med året før."
                   }
-                  label="Lønnsvekst siste 12 måneder"
+                  label="Lønnsvekst siste år"
                 />
               </div>
             </div>
@@ -188,30 +186,10 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
               </section>
             ) : null}
 
-            <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {salaryMetricCards.map((card) => (
-                <KeyMetric
-                  caption={card.caption}
-                  description={card.description}
-                  icon={card.icon}
-                  key={card.key}
-                  label="Månedslønn"
-                  value={formatKr(card.value)}
-                />
+            <section className="grid gap-4 sm:grid-cols-2">
+              {salaryCompositionCards.map((card) => (
+                <SalaryCompositionCard card={card} key={card.key} />
               ))}
-              <KeyMetric
-                caption={`${purchasingPower?.previousPeriodLabel ?? "Forrige periode"} til ${purchasingPower?.latestPeriodLabel ?? "siste periode"}`}
-                description="Reallønnsvekst viser lønnsutviklingen i yrket justert for prisvekst."
-                label="Reallønnsvekst"
-                tone={
-                  purchasingPower?.realGrowth === undefined
-                    ? "default"
-                    : purchasingPower.realGrowth >= 0
-                      ? "positive"
-                      : "negative"
-                }
-                value={formatPercent(purchasingPower?.realGrowth)}
-              />
             </section>
 
             {distribution ? (
@@ -246,7 +224,7 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                 </p>
               </div>
               <OccupationSalaryTimeSeriesChart
-                description="Se utviklingen i månedslønn per kvartal. Grafen viser median avtalt månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB."
+                description="Se utviklingen i månedslønn per år. Grafen viser median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB."
                 series={detail.data.medianBasicSalarySeries}
                 variant="classic-emphasis"
                 title={`Utvikling i månedslønn for ${occupationText.titleLabel}`}
@@ -269,7 +247,7 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                     Lønnsestimat for {occupationText.titleLabel}
                   </h2>
                   <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    Her ser du et forenklet lønnsestimat basert på median avtalt månedslønn i yrket.
+                    Her ser du et forenklet lønnsestimat basert på median samlet månedslønn i yrket.
                     Vi bruker vanlig heltidsstilling, standard feriepengesats og et fast
                     skatteanslag for å vise timelønn, årslønn, feriepengeestimat og omtrent hva det
                     kan gi utbetalt.{" "}
@@ -367,7 +345,7 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
 
           <aside className="space-y-6">
             <section className="rounded-md border border-black bg-white p-5 shadow-sm">
-              <p className="mt-3 text-sm leading-7 text-slate-600">
+              <p className="text-sm leading-7 text-slate-600">
                 Dataene på denne siden kommer fra{" "}
                 <a
                   className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
@@ -417,6 +395,14 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                 >
                   <span className="block text-sm font-semibold text-slate-950">
                     Lønnssjekk
+                  </span>
+                </Link>
+                <Link
+                  className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                  href="/lanekalkulator"
+                >
+                  <span className="block text-sm font-semibold text-slate-950">
+                    Lånekalkulator
                   </span>
                 </Link>
               </div>
@@ -473,96 +459,145 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
   );
 }
 
-type KeyMetricProps = {
-  label: string;
-  value: string;
-  caption?: string;
-  description?: string;
-  icon?: React.ReactNode;
-  tone?: "default" | "positive" | "negative";
-};
-
-type SalaryMetricCard = {
+type SalaryCompositionCardData = {
   key: string;
-  value?: number;
-  caption: string;
-  description: string;
+  title: string;
+  caption?: string;
   icon?: React.ReactNode;
+  contractedMedian?: number;
+  totalMedian?: number;
+  extraMedian?: number;
 };
 
-function KeyMetric({
-  label,
-  value,
-  caption,
-  description,
-  icon,
-  tone = "default",
-}: KeyMetricProps) {
-  const valueClassName =
-    tone === "positive"
-      ? "text-emerald-700"
-      : tone === "negative"
-        ? "text-red-700"
-        : "text-slate-950";
+type SalaryCompositionCardProps = {
+  card: SalaryCompositionCardData;
+};
 
+function SalaryCompositionCard({ card }: SalaryCompositionCardProps) {
   return (
-    <article className="rounded-md border border-black bg-white p-5 shadow-sm">
-      <div className="flex items-start gap-2">
-        {icon ? <div className="mr-1 shrink-0">{icon}</div> : null}
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-500">
-          {label}
-        </p>
-        {description ? <MetricInfoButton description={description} label={label} /> : null}
+    <article className="rounded-[5px] border border-black bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-2">
+          {card.icon ? <div className="mr-1 shrink-0">{card.icon}</div> : null}
+          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
+            {card.title}
+          </p>
+        </div>
+        {card.caption ? <p className="shrink-0 text-sm text-slate-500">{card.caption}</p> : null}
       </div>
-      <p className={`mt-3 text-3xl font-semibold tracking-[-0.04em] ${valueClassName}`}>{value}</p>
-      {caption ? <p className="mt-2 text-sm text-slate-500">{caption}</p> : null}
+
+      <div className="mt-5 flex items-center gap-2">
+        <p className="text-sm font-medium text-slate-600">Månedslønn</p>
+        <MetricInfoButton
+          description="Dette er median samlet månedslønn. Tallet inkluderer avtalt månedslønn, bonus og uregelmessige tillegg. Overtid er ikke med."
+          label={`${card.title} månedslønn forklart`}
+        />
+      </div>
+      <p className="mt-1 text-4xl font-semibold tracking-[-0.05em] text-slate-950 tabular-nums sm:text-5xl">
+        {formatKr(card.totalMedian)}
+      </p>
+
+      <dl className="mt-5 grid gap-2">
+        <SalaryCompositionRow
+          info="Avtalt månedslønn er lønnen som er avtalt for jobben, uten bonus, uregelmessige tillegg og overtid."
+          label="Avtalt månedslønn"
+          value={formatKr(card.contractedMedian)}
+        />
+        <SalaryCompositionRow
+          info="Bonus og tillegg er forskjellen mellom samlet og avtalt månedslønn. Det består av bonus og uregelmessige tillegg. Overtid er ikke med."
+          label="Bonus og tillegg"
+          value={formatKr(card.extraMedian)}
+        />
+      </dl>
     </article>
   );
 }
 
-function buildSalaryMetricCards({
-  latestSalaryPeriodLabel,
-  totalMedian,
-  womenMedian,
-  menMedian,
+function SalaryCompositionRow({
+  label,
+  value,
+  info,
+  strong = false,
 }: {
-  latestSalaryPeriodLabel?: string;
-  totalMedian?: number;
-  womenMedian?: number;
-  menMedian?: number;
+  label: string;
+  value: string;
+  info?: string;
+  strong?: boolean;
 }) {
-  const cards: SalaryMetricCard[] = [];
-  const hasBothGenderMetrics = womenMedian !== undefined && menMedian !== undefined;
+  return (
+    <div className="flex items-baseline justify-between gap-4 rounded-[5px] bg-slate-50 px-4 py-3">
+      <dt className="flex min-w-0 items-center gap-2 text-sm text-slate-600">
+        <span className="truncate">{label}</span>
+        {info ? <MetricInfoButton description={info} label={`${label} forklart`} /> : null}
+      </dt>
+      <dd
+        className={
+          strong
+            ? "text-2xl font-semibold tracking-[-0.03em] text-slate-950"
+            : "text-base font-semibold text-slate-950"
+        }
+      >
+        {value}
+      </dd>
+    </div>
+  );
+}
 
-  if (womenMedian !== undefined) {
+function buildSalaryCompositionCards({
+  distribution,
+  contractedDistribution,
+  latestSalaryPeriodLabel,
+}: {
+  distribution: OccupationDetailViewModel["data"]["distribution"];
+  contractedDistribution: OccupationDetailViewModel["data"]["contractedDistribution"];
+  latestSalaryPeriodLabel?: string;
+}) {
+  const cards: SalaryCompositionCardData[] = [];
+  const hasBothGenderMetrics =
+    distribution?.women?.median !== undefined &&
+    distribution?.men?.median !== undefined;
+
+  if (distribution?.women?.median !== undefined || contractedDistribution?.women?.median !== undefined) {
     cards.push({
       key: "women",
-      value: womenMedian,
-      caption: latestSalaryPeriodLabel ? `Kvinner ${latestSalaryPeriodLabel}` : "Kvinner",
-      description:
-        "Median avtalt månedslønn for kvinner i dette yrket. Tallet viser lønnen som ligger midt i fordelingen og er hentet fra siste tilgjengelige SSB-periode.",
+      title: "Kvinner",
+      caption: latestSalaryPeriodLabel,
       icon: <MetricAvatar tone="women" />,
+      contractedMedian: contractedDistribution?.women?.median,
+      totalMedian: distribution?.women?.median,
+      extraMedian: calculatePositiveDifference(
+        distribution?.women?.median,
+        contractedDistribution?.women?.median,
+      ),
     });
   }
 
-  if (menMedian !== undefined) {
+  if (distribution?.men?.median !== undefined || contractedDistribution?.men?.median !== undefined) {
     cards.push({
       key: "men",
-      value: menMedian,
-      caption: latestSalaryPeriodLabel ? `Menn ${latestSalaryPeriodLabel}` : "Menn",
-      description:
-        "Median avtalt månedslønn for menn i dette yrket. Tallet viser lønnen som ligger midt i fordelingen og er hentet fra siste tilgjengelige SSB-periode.",
+      title: "Menn",
+      caption: latestSalaryPeriodLabel,
       icon: <MetricAvatar tone="men" />,
+      contractedMedian: contractedDistribution?.men?.median,
+      totalMedian: distribution?.men?.median,
+      extraMedian: calculatePositiveDifference(
+        distribution?.men?.median,
+        contractedDistribution?.men?.median,
+      ),
     });
   }
 
-  if (!hasBothGenderMetrics && totalMedian !== undefined) {
+  if (!hasBothGenderMetrics && (distribution?.total?.median !== undefined || contractedDistribution?.total?.median !== undefined)) {
     cards.push({
       key: "all",
-      value: totalMedian,
-      caption: latestSalaryPeriodLabel ? `Alle ${latestSalaryPeriodLabel}` : "Alle",
-      description:
-        "Median avtalt månedslønn for alle i dette yrket. Dette brukes når kjønnsfordelte tall ikke er komplette i siste tilgjengelige SSB-periode.",
+      title: "Alle",
+      caption: latestSalaryPeriodLabel,
+      contractedMedian: contractedDistribution?.total?.median,
+      totalMedian: distribution?.total?.median,
+      extraMedian: calculatePositiveDifference(
+        distribution?.total?.median,
+        contractedDistribution?.total?.median,
+      ),
     });
   }
 
@@ -727,12 +762,12 @@ function buildSalaryDevelopmentSummary(comparison: OccupationFiveYearGrowthCompa
 
   const sentences = [
     growthAll !== undefined
-      ? `Median avtalt månedslønn i yrket har økt med ${formatPercent(growthAll)} de siste 5 årene.`
+      ? `Median månedslønn i yrket har økt med ${formatPercent(growthAll)} de siste 5 årene.`
       : null,
     growthAll !== undefined &&
     comparison.rankAll !== undefined &&
     comparison.comparableOccupationCount > 0
-      ? `Det plasserer yrket som nummer ${comparison.rankAll} av ${comparison.comparableOccupationCount} yrker når vi ser på 5-års vekst i median avtalt månedslønn.`
+      ? `Det plasserer yrket som nummer ${comparison.rankAll} av ${comparison.comparableOccupationCount} yrker når vi ser på 5-års vekst i median månedslønn.`
       : null,
     growthWomen !== undefined
       ? `For kvinner har den økt med ${formatPercent(growthWomen)}.`
@@ -842,7 +877,7 @@ function buildRelatedJobsSummary({
     const relatedAverage =
       comparableRows.reduce((sum, row) => sum + row.medianAll, 0) / comparableRows.length;
 
-    return `Sammenlignet med relaterte jobber, ligger månedslønnen i yrket ${placement}. Median avtalt månedslønn i yrket er ${formatKr(currentMedian)}, mens den er ${formatKr(relatedAverage)} i gjennomsnitt for relaterte jobber.`;
+    return `Sammenlignet med relaterte jobber, ligger månedslønnen i yrket ${placement}. Median månedslønn i yrket er ${formatKr(currentMedian)}, mens den er ${formatKr(relatedAverage)} i gjennomsnitt for relaterte jobber.`;
   }
 
   return "Her ser du relaterte jobber basert på yrkeskoden.";
@@ -969,6 +1004,12 @@ function OccupationGroupIcon({ groupCode }: { groupCode?: string }) {
 }
 
 function normalizeQuarterPeriodCode(periodCode: string, periodLabel: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/) ?? periodLabel.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return yearMatch[1];
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/i) ?? periodLabel.match(/(\d{4})\s*K([1-4])/i);
 
   if (!match) {
@@ -979,6 +1020,12 @@ function normalizeQuarterPeriodCode(periodCode: string, periodLabel: string) {
 }
 
 function getPreviousYearQuarterCode(periodCode: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return `${Number(yearMatch[1]) - 1}`;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/i);
 
   if (!match) {
@@ -991,6 +1038,10 @@ function getPreviousYearQuarterCode(periodCode: string) {
 }
 
 function formatQuarterCodeLabel(value: string) {
+  if (/^\d{4}$/.test(value)) {
+    return value;
+  }
+
   const match = value.match(/(\d{4})\s*K([1-4])/i) ?? value.match(/(\d{4})K([1-4])/i);
 
   if (!match) {
@@ -1136,6 +1187,14 @@ function calculateSpread(min?: number, max?: number) {
   }
 
   return Math.max(0, max - min);
+}
+
+function calculatePositiveDifference(total?: number, base?: number) {
+  if (total === undefined || base === undefined) {
+    return undefined;
+  }
+
+  return Math.max(0, total - base);
 }
 
 function formatKrPlain(value?: number) {

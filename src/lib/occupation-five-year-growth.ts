@@ -157,6 +157,12 @@ function calculateGrowth(previous?: number, latest?: number) {
 }
 
 function normalizeQuarterPeriodCode(periodCode: string, periodLabel: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/) ?? periodLabel.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return yearMatch[1];
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/i) ?? periodLabel.match(/(\d{4})\s*K([1-4])/i);
 
   if (!match) {
@@ -167,6 +173,12 @@ function normalizeQuarterPeriodCode(periodCode: string, periodLabel: string) {
 }
 
 function getPreviousYearsQuarterCode(periodCode: string, yearsBack: number) {
+  const yearMatch = periodCode.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return `${Number(yearMatch[1]) - yearsBack}`;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/i);
 
   if (!match) {
@@ -179,6 +191,10 @@ function getPreviousYearsQuarterCode(periodCode: string, yearsBack: number) {
 }
 
 function formatQuarterCodeLabel(value: string) {
+  if (/^\d{4}$/.test(value)) {
+    return value;
+  }
+
   const match = value.match(/(\d{4})\s*K([1-4])/i) ?? value.match(/(\d{4})K([1-4])/i);
 
   if (!match) {

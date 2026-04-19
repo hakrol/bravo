@@ -50,6 +50,7 @@ export type OccupationRelatedSalaryRow = {
 export type OccupationSalaryDetailPageData = {
   trendData: OccupationDetailTrendData;
   distribution: OccupationSalaryDistribution | null;
+  contractedDistribution?: OccupationSalaryDistribution | null;
   medianOverview: {
     rows: OccupationMedianSalaryRow[];
     periodLabel?: string;
@@ -129,6 +130,7 @@ export async function buildOccupationSalaryDetailPageData({
   return {
     trendData,
     distribution,
+    contractedDistribution: null,
     medianOverview,
     laborMarketStats,
     medianBasicSalarySeries,
@@ -612,6 +614,10 @@ function formatSalaryMetric(value?: number) {
 }
 
 function formatQuarterCodeLabel(value: string) {
+  if (/^\d{4}$/.test(value)) {
+    return value;
+  }
+
   const match = value.match(/(\d{4})\s*K([1-4])/i) ?? value.match(/(\d{4})K([1-4])/i);
 
   if (!match) {
@@ -996,6 +1002,12 @@ function buildMedianGrowthMetrics(series: {
 }
 
 function normalizeQuarterPeriodCode(periodCode: string, periodLabel: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/) ?? periodLabel.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return yearMatch[1];
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/i) ?? periodLabel.match(/(\d{4})\s*K([1-4])/i);
 
   if (!match) {
@@ -1006,6 +1018,12 @@ function normalizeQuarterPeriodCode(periodCode: string, periodLabel: string) {
 }
 
 function getPreviousYearQuarterCode(periodCode: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return `${Number(yearMatch[1]) - 1}`;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/i);
 
   if (!match) {

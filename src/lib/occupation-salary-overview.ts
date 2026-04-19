@@ -176,7 +176,7 @@ export function buildOccupationMedianSalaryOverview(
   return {
     rows,
     periodLabel,
-    measureLabel: "Median avtalt månedslønn",
+    measureLabel: "Median månedslønn",
   };
 }
 
@@ -254,7 +254,7 @@ export function buildOccupationMedianGrowthOverview(
   return {
     rows,
     periodLabel,
-    measureLabel: "Median avtalt månedslønn",
+    measureLabel: "Median månedslønn",
   };
 }
 

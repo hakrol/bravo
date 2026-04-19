@@ -15,8 +15,7 @@ export default function OccupationGroupsOverviewPage() {
 
   return (
     <OccupationLinkGrid
-      description="Velg en yrkesgruppe for \u00E5 se hvilke yrker som inng\u00E5r og hva de tjener."
-      eyebrow="Oversikt"
+      description="Velg en yrkesgruppe for å se hvilke yrker som inngår og hva de tjener."
       items={groups.map((group) => ({
         title: group.label,
         description: group.description,

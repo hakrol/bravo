@@ -14,6 +14,7 @@ type GeneratedSsbDatasetKey =
   | "occupationAverageTimeSeries"
   | "occupationMedianTimeSeries"
   | "occupationDistributionLatest"
+  | "occupationContractedDistributionLatest"
   | "occupationWorkforceTimeSeries"
   | "occupationAgeTimeSeries"
   | "occupationContractLatest"
@@ -120,6 +121,10 @@ export async function syncOccupationDetailViewModels() {
             datasets.occupationDistributionLatest,
             entry.page.occupationCode,
           ),
+          contractedDistribution: buildDistribution(
+            datasets.occupationContractedDistributionLatest,
+            entry.page.occupationCode,
+          ),
           medianOverview,
           laborMarketStats: buildLaborMarketStats({
             workforceDataset: datasets.occupationWorkforceTimeSeries,
@@ -129,7 +134,7 @@ export async function syncOccupationDetailViewModels() {
           medianBasicSalarySeries: buildSalaryTimeSeries(
             datasets.occupationMedianTimeSeries,
             entry.page.occupationCode,
-            "Median avtalt månedslønn",
+            "Median månedslønn",
           ),
           relatedRows: buildRelatedRows({
             occupationCode: entry.page.occupationCode,
@@ -183,6 +188,7 @@ async function readSourceDatasets(manifest: GeneratedManifest) {
     "occupationAverageTimeSeries",
     "occupationMedianTimeSeries",
     "occupationDistributionLatest",
+    "occupationContractedDistributionLatest",
     "occupationWorkforceTimeSeries",
     "occupationAgeTimeSeries",
     "occupationContractLatest",
@@ -324,7 +330,7 @@ function buildMedianOverview(dataset: SsbDataset, occupationCodes: string[]) {
       (left, right) => (right.medianAll ?? -1) - (left.medianAll ?? -1),
     ),
     periodLabel: findFirstDimensionLabel(dataset, "Tid"),
-    measureLabel: "Median avtalt månedslønn",
+    measureLabel: "Median månedslønn",
   };
 }
 
@@ -999,6 +1005,12 @@ function toQuarterFromMonthCode(periodCode: string) {
 }
 
 function normalizeQuarterPeriodCode(periodCode?: string, periodLabel?: string) {
+  const yearSource = periodCode ?? periodLabel;
+
+  if (yearSource && /^(\d{4})$/.test(yearSource)) {
+    return yearSource;
+  }
+
   if (periodCode) {
     const quarterCodeMatch = periodCode.match(/^(\d{4})K0?([1-4])$/);
 
@@ -1025,6 +1037,12 @@ function normalizeQuarterPeriodCode(periodCode?: string, periodLabel?: string) {
 }
 
 function getPreviousYearQuarterCode(periodCode: string) {
+  const yearMatch = periodCode.match(/^(\d{4})$/);
+
+  if (yearMatch) {
+    return `${Number(yearMatch[1]) - 1}`;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/);
 
   if (!match) {
@@ -1036,6 +1054,10 @@ function getPreviousYearQuarterCode(periodCode: string) {
 }
 
 function formatQuarterLabel(periodCode: string) {
+  if (/^\d{4}$/.test(periodCode)) {
+    return periodCode;
+  }
+
   const match = periodCode.match(/^(\d{4})K([1-4])$/);
 
   if (!match) {

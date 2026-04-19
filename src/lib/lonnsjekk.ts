@@ -168,7 +168,7 @@ export function buildLonnsjekkReport({
   const comparisonToMedian = buildComparison(
     salary,
     selectedMedian,
-    `Median avtalt månedslønn (${genderLabel})`,
+    `Median månedslønn (${genderLabel})`,
   );
   const comparisonToAverage = buildComparison(
     salary,
@@ -262,10 +262,10 @@ function buildGenderGap(occupation: LonnsjekkOccupationOption) {
     differencePercent,
     label:
       difference > 0
-        ? "Median avtalt månedslønn for menn er høyere enn for kvinner i dette yrket."
+        ? "Median månedslønn for menn er høyere enn for kvinner i dette yrket."
         : difference < 0
-          ? "Median avtalt månedslønn for kvinner er høyere enn for menn i dette yrket."
-          : "Median avtalt månedslønn er lik for kvinner og menn i dette yrket.",
+          ? "Median månedslønn for kvinner er høyere enn for menn i dette yrket."
+          : "Median månedslønn er lik for kvinner og menn i dette yrket.",
   };
 }
 
@@ -307,8 +307,8 @@ function buildSummary({
   medianDifference?: number;
 }) {
   return median !== undefined && medianDifference !== undefined
-    ? `Med ${formatCurrency(salary)} i brutto månedslønn ligger du ${formatDifferenceText(medianDifference)} median avtalt månedslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
-    : `Med ${formatCurrency(salary)} i brutto månedslønn har vi ikke nok kjønnsdelte tall for median avtalt månedslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
+    ? `Med ${formatCurrency(salary)} i brutto månedslønn ligger du ${formatDifferenceText(medianDifference)} median månedslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
+    : `Med ${formatCurrency(salary)} i brutto månedslønn har vi ikke nok kjønnsdelte tall for median månedslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
 }
 
 function getPlacementLabel(percentile: number) {
