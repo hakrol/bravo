@@ -65,13 +65,13 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <>
-      <div ref={headerRegionRef}>
+      <div ref={headerRegionRef} className="print:hidden">
         <MainHeader />
       </div>
       <main ref={mainRegionRef} className="flex-1">
         {children}
       </main>
-      <div ref={footerRegionRef}>
+      <div ref={footerRegionRef} className="print:hidden">
         <MainFooter />
       </div>
     </>

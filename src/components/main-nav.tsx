@@ -6,12 +6,14 @@ import { useEffect, useId, useState } from "react";
 
 const navItems = [
   { href: "/yrker", label: "Yrker" },
+  { href: "/ressurser", label: "Ressurser" },
   { href: "/blogg", label: "Blogg" },
   { href: "/om", label: "Om" },
 ] as const;
 
 const toolItems = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
+  { href: "/lanekalkulator", label: "Lånekalkulator" },
   { href: "/lonnsjekk", label: "Lønnssjekk" },
 ] as const;
 
@@ -105,17 +107,20 @@ export function MainNav() {
         })}
 
         <div className="group relative">
-          <button
+          <Link
+            aria-current={pathname && isActivePath(pathname, "/verktoy") ? "page" : undefined}
             className={[
               "inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
-              pathname && toolItems.some((item) => isActivePath(pathname, item.href))
+              pathname &&
+              (isActivePath(pathname, "/verktoy") ||
+                toolItems.some((item) => isActivePath(pathname, item.href)))
                 ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)]"
                 : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
             ].join(" ")}
-            type="button"
+            href="/verktoy"
           >
             Verktøy
-          </button>
+          </Link>
           <div className="pointer-events-none absolute right-0 top-full z-50 pt-2 opacity-0 transition duration-150 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
             <div className="grid min-w-56 gap-1 rounded-[5px] border border-[var(--border)] bg-white p-2 shadow-[0_24px_64px_rgba(27,36,48,0.16)]">
               {toolItems.map((item) => {
@@ -173,33 +178,19 @@ export function MainNav() {
         id={menuId}
       >
         <nav aria-label="Mobil hovedmeny" className="flex flex-col gap-1">
-          <div className="px-4 pb-1 pt-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-            Verktøy
-          </div>
-          {toolItems.map((item) => {
-            const active = pathname ? isActivePath(pathname, item.href) : false;
-
-            return (
-              <Link
-                key={item.href}
-                aria-current={active ? "page" : undefined}
-                className={[
-                  "flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200",
-                  active
-                    ? "bg-[rgba(20,83,45,0.1)] text-[var(--primary-strong)]"
-                    : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
-                ].join(" ")}
-                href={item.href}
-                tabIndex={isOpen ? undefined : -1}
-              >
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-
-          <div className="px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
-            Utforsk
-          </div>
+          <Link
+            aria-current={pathname && isActivePath(pathname, "/verktoy") ? "page" : undefined}
+            className={[
+              "flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200",
+              pathname && isActivePath(pathname, "/verktoy")
+                ? "bg-[rgba(20,83,45,0.1)] text-[var(--primary-strong)]"
+                : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
+            ].join(" ")}
+            href="/verktoy"
+            tabIndex={isOpen ? undefined : -1}
+          >
+            <span>Verktøy</span>
+          </Link>
           {navItems.map((item) => {
             const active = pathname ? isActivePath(pathname, item.href) : false;
 
