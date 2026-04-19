@@ -24,6 +24,36 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/lanekalkulator",
+    filePath: "src/app/lanekalkulator/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/verktoy",
+    filePath: "src/app/verktoy/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/ressurser",
+    filePath: "src/app/ressurser/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/ressurser/sjekkliste-for-lonnssamtale",
+    filePath: "src/app/ressurser/sjekkliste-for-lonnssamtale/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/ressurser/sjekkliste-vurdere-mer-lonn",
+    filePath: "src/app/ressurser/sjekkliste-vurdere-mer-lonn/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/analyse",
     filePath: "src/app/analyse/page.tsx",
     priority: 0.6,
