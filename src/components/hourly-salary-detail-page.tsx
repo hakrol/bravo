@@ -114,8 +114,8 @@ export function HourlySalaryDetailPage({
         {hasHourlyValues ? (
           <OccupationSalaryTimeSeriesChart
             containerClassName="rounded-[5px]"
-            description={`Se utviklingen i estimert timelønn for ${page.titleOccupationLabel} per kvartal. Grafen bygger på median avtalt månedslønn fra SSB og viser utviklingen for kvinner og menn der data finnes.`}
-            latestDataDescription={`Her ser du siste estimerte timelønn for ${page.titleOccupationLabel}. Tallene er regnet ut fra median avtalt månedslønn i SSB og fordelt på kvinner og menn der det finnes data.`}
+            description={`Se utviklingen i estimert timelønn for ${page.titleOccupationLabel}. Grafen bygger på median samlet månedslønn fra SSB og viser utviklingen for kvinner og menn der data finnes.`}
+            latestDataDescription={`Her ser du siste estimerte timelønn for ${page.titleOccupationLabel}. Tallene er regnet ut fra median samlet månedslønn i SSB og fordelt på kvinner og menn der det finnes data.`}
             series={hourlySeries}
             title={`Utvikling i timelønn for ${page.titleOccupationLabel}`}
             valueDisplay="hourly"

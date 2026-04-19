@@ -17,6 +17,7 @@ type OccupationSalaryOverviewProps = {
   variant?: "table" | "cards";
   initialSortKey?: SortKey;
   initialSortDirection?: SortDirection;
+  showGrowthColumns?: boolean;
 };
 
 type SortKey =
@@ -36,6 +37,7 @@ export type { OccupationMedianGrowthRow as OccupationSalaryRow };
 type OverviewContentProps = {
   emptyStateText: string;
   rows: OccupationMedianGrowthRow[];
+  showGrowthColumns: boolean;
   sortDirection: SortDirection;
   sortKey: SortKey;
   onSort: (key: SortKey) => void;
@@ -54,12 +56,13 @@ export function OccupationSalaryOverview({
   lastUpdated,
   showLastUpdated = true,
   periodLabel,
-  title = "Månedslønn for alle yrker",
-  description = "Trykk på overskriftene for å sortere. Trykk på yrket for å åpne detaljsiden.",
+  title = "Samlet månedslønn for alle yrker",
+  description = "Oversikten viser median samlet månedslønn. Trykk på overskriftene for å sortere, eller trykk på yrket for å åpne detaljsiden.",
   emptyStateText = "Ingen yrker matcher søket ditt.",
   variant = "table",
   initialSortKey = "occupationLabel",
   initialSortDirection = "asc",
+  showGrowthColumns = true,
 }: OccupationSalaryOverviewProps) {
   const formattedPeriodLabel = formatPeriodLabel(periodLabel);
   const [sortKey, setSortKey] = useState<SortKey>(initialSortKey);
@@ -87,7 +90,7 @@ export function OccupationSalaryOverview({
               <h2 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
                 {title}
               </h2>
-              <DataInfoModal description={description} title="Månedslønn" />
+              <DataInfoModal description={description} title="Samlet månedslønn" />
             </div>
             <p className="mt-1 text-sm text-[var(--muted)]">{description}</p>
           </div>
@@ -108,6 +111,7 @@ export function OccupationSalaryOverview({
             <CardsOverview
               emptyStateText={emptyStateText}
               rows={sortedRows}
+              showGrowthColumns={showGrowthColumns}
               sortDirection={sortDirection}
               sortKey={sortKey}
               onSort={handleSort}
@@ -116,6 +120,7 @@ export function OccupationSalaryOverview({
             <TableOverview
               emptyStateText={emptyStateText}
               rows={sortedRows}
+              showGrowthColumns={showGrowthColumns}
               sortDirection={sortDirection}
               sortKey={sortKey}
               onSort={handleSort}
@@ -139,6 +144,7 @@ type SortableHeaderProps = {
 function TableOverview({
   emptyStateText,
   rows,
+  showGrowthColumns,
   sortDirection,
   sortKey,
   onSort,
@@ -163,14 +169,16 @@ function TableOverview({
             label="Kvinner"
             onSort={onSort}
           />
-          <SortableHeader
-            activeSortDirection={sortDirection}
-            activeSortKey={sortKey}
-            align="right"
-            columnKey="growthWomen"
-            label="Lønnsvekst kvinner"
-            onSort={onSort}
-          />
+          {showGrowthColumns ? (
+            <SortableHeader
+              activeSortDirection={sortDirection}
+              activeSortKey={sortKey}
+              align="right"
+              columnKey="growthWomen"
+              label="Lønnsvekst kvinner"
+              onSort={onSort}
+            />
+          ) : null}
           <SortableHeader
             activeSortDirection={sortDirection}
             activeSortKey={sortKey}
@@ -179,20 +187,22 @@ function TableOverview({
             label="Menn"
             onSort={onSort}
           />
-          <SortableHeader
-            activeSortDirection={sortDirection}
-            activeSortKey={sortKey}
-            align="right"
-            columnKey="growthMen"
-            label="Lønnsvekst menn"
-            onSort={onSort}
-          />
+          {showGrowthColumns ? (
+            <SortableHeader
+              activeSortDirection={sortDirection}
+              activeSortKey={sortKey}
+              align="right"
+              columnKey="growthMen"
+              label="Lønnsvekst menn"
+              onSort={onSort}
+            />
+          ) : null}
         </tr>
       </thead>
       <tbody className="bg-white/80 text-sm">
         {rows.length === 0 ? (
           <tr>
-            <td className="px-6 py-8 text-sm text-[var(--muted)]" colSpan={5}>
+            <td className="px-6 py-8 text-sm text-[var(--muted)]" colSpan={showGrowthColumns ? 5 : 3}>
               {emptyStateText}
             </td>
           </tr>
@@ -208,15 +218,19 @@ function TableOverview({
                 <td className="border-b px-6 py-4 text-right font-semibold text-slate-950">
                   {formatSalary(row.medianWomen)}
                 </td>
-                <td className="border-b px-6 py-4 text-right font-semibold text-slate-950">
-                  {formatPercentage(row.growthWomen)}
-                </td>
+                {showGrowthColumns ? (
+                  <td className="border-b px-6 py-4 text-right font-semibold text-slate-950">
+                    {formatPercentage(row.growthWomen)}
+                  </td>
+                ) : null}
                 <td className="border-b px-6 py-4 text-right font-semibold text-slate-950">
                   {formatSalary(row.medianMen)}
                 </td>
-                <td className="border-b px-6 py-4 text-right font-semibold text-slate-950">
-                  {formatPercentage(row.growthMen)}
-                </td>
+                {showGrowthColumns ? (
+                  <td className="border-b px-6 py-4 text-right font-semibold text-slate-950">
+                    {formatPercentage(row.growthMen)}
+                  </td>
+                ) : null}
               </tr>
             );
           })
@@ -229,15 +243,20 @@ function TableOverview({
 function CardsOverview({
   emptyStateText,
   rows,
+  showGrowthColumns,
   sortDirection,
   sortKey,
   onSort,
 }: OverviewContentProps) {
+  const visibleSortOptions = showGrowthColumns
+    ? sortOptions
+    : sortOptions.filter((option) => !option.key.startsWith("growth"));
+
   return (
     <div className="flex h-[70vh] min-h-0 flex-col overflow-hidden bg-white/45">
       <div className="shrink-0 border-b bg-[#f8f3ea]/95 px-4 py-2 sm:px-6">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 lg:hidden">
-          {sortOptions.map((option) => {
+          {visibleSortOptions.map((option) => {
             const active = sortKey === option.key;
 
             return (
@@ -269,33 +288,37 @@ function CardsOverview({
             onClick={() => onSort("occupationLabel")}
             sortIcon={getSortIcon(sortKey, sortDirection, "occupationLabel")}
           />
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <div className={showGrowthColumns ? "grid grid-cols-2 gap-3 sm:gap-4" : "grid gap-3 sm:gap-4"}>
             <SortTitleButton
               active={sortKey === "medianWomen"}
               label="Kvinner"
               onClick={() => onSort("medianWomen")}
               sortIcon={getSortIcon(sortKey, sortDirection, "medianWomen")}
             />
-            <SortTitleButton
-              active={sortKey === "growthWomen"}
-              label="Lønnsvekst kvinner"
-              onClick={() => onSort("growthWomen")}
-              sortIcon={getSortIcon(sortKey, sortDirection, "growthWomen")}
-            />
+            {showGrowthColumns ? (
+              <SortTitleButton
+                active={sortKey === "growthWomen"}
+                label="Lønnsvekst kvinner"
+                onClick={() => onSort("growthWomen")}
+                sortIcon={getSortIcon(sortKey, sortDirection, "growthWomen")}
+              />
+            ) : null}
           </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <div className={showGrowthColumns ? "grid grid-cols-2 gap-3 sm:gap-4" : "grid gap-3 sm:gap-4"}>
             <SortTitleButton
               active={sortKey === "medianMen"}
               label="Menn"
               onClick={() => onSort("medianMen")}
               sortIcon={getSortIcon(sortKey, sortDirection, "medianMen")}
             />
-            <SortTitleButton
-              active={sortKey === "growthMen"}
-              label="Lønnsvekst menn"
-              onClick={() => onSort("growthMen")}
-              sortIcon={getSortIcon(sortKey, sortDirection, "growthMen")}
-            />
+            {showGrowthColumns ? (
+              <SortTitleButton
+                active={sortKey === "growthMen"}
+                label="Lønnsvekst menn"
+                onClick={() => onSort("growthMen")}
+                sortIcon={getSortIcon(sortKey, sortDirection, "growthMen")}
+              />
+            ) : null}
           </div>
         </div>
       </div>
@@ -320,22 +343,26 @@ function CardsOverview({
                     <OccupationLink href={detailHref} label={row.occupationLabel} />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <div className={showGrowthColumns ? "grid grid-cols-2 gap-3 sm:gap-4" : "grid gap-3 sm:gap-4"}>
                     <MetricField label="Kvinner" value={formatSalary(row.medianWomen)} />
-                    <MetricField
-                      label="Lønnsvekst kvinner"
-                      tone="accent"
-                      value={formatPercentage(row.growthWomen)}
-                    />
+                    {showGrowthColumns ? (
+                      <MetricField
+                        label="Lønnsvekst kvinner"
+                        tone="accent"
+                        value={formatPercentage(row.growthWomen)}
+                      />
+                    ) : null}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                  <div className={showGrowthColumns ? "grid grid-cols-2 gap-3 sm:gap-4" : "grid gap-3 sm:gap-4"}>
                     <MetricField label="Menn" value={formatSalary(row.medianMen)} />
-                    <MetricField
-                      label="Lønnsvekst menn"
-                      tone="accent"
-                      value={formatPercentage(row.growthMen)}
-                    />
+                    {showGrowthColumns ? (
+                      <MetricField
+                        label="Lønnsvekst menn"
+                        tone="accent"
+                        value={formatPercentage(row.growthMen)}
+                      />
+                    ) : null}
                   </div>
                 </div>
               </article>

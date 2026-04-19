@@ -557,7 +557,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               <p>
                 <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span>{" "}
                 ligger i {formatTopPercent(report.occupationPlacement.percentile)} av yrkene når vi
-                rangerer etter median avtalt månedslønn.
+                rangerer etter median månedslønn.
               </p>
               <p>
                 Yrkets plassering er <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span>. {report.occupationPlacement.label}
@@ -569,7 +569,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                 </p>
               ) : (
                 <p>
-                  Det finnes ikke nok kjønnsdelte tall for median avtalt månedslønn til å vise et
+                  Det finnes ikke nok kjønnsdelte tall for median månedslønn til å vise et
                   tydelig gap i yrket.
                 </p>
               )}
@@ -651,7 +651,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
           Timelønn, feriepenger og netto
         </h3>
         <p className="text-sm leading-7 text-slate-700">
-          Her ser du et forenklet estimat for yrket basert på median avtalt månedslønn, og et eget
+          Her ser du et forenklet estimat for yrket basert på median samlet månedslønn, og et eget
           estimat basert på lønnen du har lagt inn.
         </p>
         <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-500">
@@ -666,9 +666,9 @@ function EstimateSection({ report }: EstimateSectionProps) {
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
         {medianEstimate ? (
           <EstimateSummaryCard
-            description="Median avtalt månedslønn i yrket."
+            description="Median samlet månedslønn i yrket."
             estimate={medianEstimate}
-            salaryLabel="Median avtalt månedslønn"
+            salaryLabel="Median samlet månedslønn"
             title="Basert på median i yrket"
           />
         ) : null}
@@ -891,7 +891,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
 
       <div className="rounded-[5px] bg-slate-50 px-5 py-4 text-sm leading-7 text-slate-700">
         <p>
-          Hvis vi bruker median avtalt månedslønn i yrket som startnivå i {insight.startYear}, tilsvarer det{" "}
+          Hvis vi bruker median samlet månedslønn i yrket som startnivå i {insight.startYear}, tilsvarer det{" "}
           <span className="font-semibold text-slate-950">{formatCurrency(insight.inflationAdjustedStartSalary)}</span>{" "}
           i {insight.latestPeriodLabel.toLowerCase()} når vi justerer for prisvekst.
         </p>

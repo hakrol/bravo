@@ -181,7 +181,7 @@ function buildTopSummary({
 function buildSourceNote({ periodLabel }: { periodLabel?: string }) {
   const periodText = periodLabel ? ` for ${periodLabel}` : "";
 
-  return `Tallene på denne siden er hentet fra Statistisk sentralbyrå (SSB) og bygger på offisiell lønnsstatistikk${periodText}. Timelønn er regnet om fra avtalt månedslønn for å gi et mer sammenlignbart bilde av nivået i yrket.`;
+  return `Tallene på denne siden er hentet fra Statistisk sentralbyrå (SSB) og bygger på offisiell lønnsstatistikk${periodText}. Timelønn er regnet om fra samlet månedslønn for å gi et mer sammenlignbart bilde av nivået i yrket.`;
 }
 
 function buildFaqItems({
@@ -219,7 +219,7 @@ function buildFaqItems({
 
   const averageText =
     averageSegments.length > 0
-      ? `Basert på gjennomsnittlig avtalt månedslønn fra SSB tilsvarer gjennomsnittlig timelønn for ${occupationLabel} ${averageSegments.join(", ")}${periodText}.`
+      ? `Basert på gjennomsnittlig samlet månedslønn fra SSB tilsvarer gjennomsnittlig timelønn for ${occupationLabel} ${averageSegments.join(", ")}${periodText}.`
       : `Vi mangler nok data til å beregne gjennomsnittlig timelønn for ${occupationLabel} akkurat nå.`;
 
   return [

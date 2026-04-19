@@ -50,9 +50,10 @@ export function DataInfoModal({ title, description }: DataInfoModalProps) {
 
             <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
               <p>
-                Tallene viser median avtalt månedslønn for yrkene i tabellen,
-                hentet fra SSB. Det betyr at halvparten tjener mer og
-                halvparten tjener mindre. Dette gir et bilde av det typiske lønnsnivået.
+                Tallene viser median månedslønn for yrkene i tabellen,
+                hentet fra SSB. Månedslønn inkluderer avtalt lønn, bonus og
+                uregelmessige tillegg, men ikke overtid. Det betyr at halvparten
+                tjener mer og halvparten tjener mindre.
               </p>
             </div>
           </div>

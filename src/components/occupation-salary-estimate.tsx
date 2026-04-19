@@ -52,21 +52,21 @@ export function OccupationSalaryEstimate({
         <div className="grid gap-4 lg:grid-cols-2">
           {shouldShowTotalEstimate && totalEstimate ? (
             <SalarySummaryCard
-              description="Median avtalt månedslønn for alle i yrket."
+              description="Median samlet månedslønn for alle i yrket."
               estimate={totalEstimate}
               title="Alle"
             />
           ) : null}
           {womenEstimate ? (
             <SalarySummaryCard
-              description="Median avtalt månedslønn for kvinner i yrket."
+              description="Median samlet månedslønn for kvinner i yrket."
               estimate={womenEstimate}
               title="Kvinner"
             />
           ) : null}
           {menEstimate ? (
             <SalarySummaryCard
-              description="Median avtalt månedslønn for menn i yrket."
+              description="Median samlet månedslønn for menn i yrket."
               estimate={menEstimate}
               title="Menn"
             />
@@ -108,7 +108,7 @@ export function OccupationSalaryEstimate({
             Hva er lønnen til {formattedOccupationTitle}?
           </h2>
           <p className="max-w-3xl text-sm leading-7 text-slate-700">
-            Vi har gjort et forenklet estimat basert på median avtalt månedslønn, vanlig heltidsstilling,
+            Vi har gjort et forenklet estimat basert på median samlet månedslønn, vanlig heltidsstilling,
             standard feriepengesats og et fast skatteanslag.
           </p>
           <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
@@ -124,21 +124,21 @@ export function OccupationSalaryEstimate({
         <div className="grid gap-4 lg:grid-cols-2">
           {shouldShowTotalEstimate && totalEstimate ? (
             <SalarySummaryCard
-              description="Median avtalt månedslønn for alle i yrket."
+              description="Median samlet månedslønn for alle i yrket."
               estimate={totalEstimate}
               title="Alle"
             />
           ) : null}
           {womenEstimate ? (
             <SalarySummaryCard
-              description="Median avtalt månedslønn for kvinner i yrket."
+              description="Median samlet månedslønn for kvinner i yrket."
               estimate={womenEstimate}
               title="Kvinner"
             />
           ) : null}
           {menEstimate ? (
             <SalarySummaryCard
-              description="Median avtalt månedslønn for menn i yrket."
+              description="Median samlet månedslønn for menn i yrket."
               estimate={menEstimate}
               title="Menn"
             />
@@ -190,7 +190,7 @@ function SalarySummaryCard({ title, description, estimate }: SalarySummaryCardPr
         </div>
 
         <div className="space-y-3">
-          <SummaryRow label="Median avtalt månedslønn" value={formatCurrency(estimate.monthlySalary)} strong />
+          <SummaryRow label="Median samlet månedslønn" value={formatCurrency(estimate.monthlySalary)} strong />
           <SummaryRow label="Årslønn" value={formatCurrency(estimate.annualSalary)} />
           <SummaryRow label="Timelønn" value={formatCurrency(estimate.hourlySalary)} />
           <SummaryRow label="Daglønn (7,5 t)" value={formatCurrency(estimate.dailySalary)} />

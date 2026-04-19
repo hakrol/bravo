@@ -1,10 +1,7 @@
 ﻿import { OccupationSalaryOverview } from "@/components/occupation-salary-overview";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { getOccupationGroupBySlug, listOccupationGroups } from "@/lib/occupation-groups";
-import {
-  getLatestAndPreviousYearSalaryDatasets,
-  OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-} from "@/lib/ssb";
+import { getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets } from "@/lib/ssb";
 import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -65,10 +62,8 @@ export default async function OccupationGroupPage({
     notFound();
   }
 
-  const { latestDataset, previousDataset } = await getLatestAndPreviousYearSalaryDatasets(
-    "occupationDetailed",
-    OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
-  );
+  const { latestDataset, previousDataset } =
+    await getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets();
   const overview = buildOccupationMedianGrowthOverview(latestDataset, previousDataset, {
     occupationCodes: listOccupationCodesForGroup(group.code),
   });
@@ -94,7 +89,7 @@ export default async function OccupationGroupPage({
           </article>
           <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
             <p className="text-sm font-medium text-[var(--muted)]">
-              Medianlønn i {group.label.toLowerCase()}
+              Median samlet månedslønn i {group.label.toLowerCase()}
             </p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
               {formatSalary(groupMedianSalary)}
@@ -116,7 +111,7 @@ export default async function OccupationGroupPage({
           showLastUpdated={false}
           periodLabel={overview.periodLabel}
           title={`Detaljyrker i ${group.label.toLowerCase()}`}
-          description={`Tabellen viser siste tilgjengelige median avtalt månedslønn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt på begge kjønn, kvinner og menn.`}
+          description={`Tabellen viser siste tilgjengelige median samlet månedslønn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt på kvinner og menn.`}
           emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat nå.`}
         />
       </div>

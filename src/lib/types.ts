@@ -185,6 +185,7 @@ export type GeneratedSsbDatasetKey =
   | "occupationAverageTimeSeries"
   | "occupationMedianTimeSeries"
   | "occupationDistributionLatest"
+  | "occupationContractedDistributionLatest"
   | "occupationSupplementTimeSeries"
   | "occupationWorkforceTimeSeries"
   | "occupationAgeTimeSeries"
