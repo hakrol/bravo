@@ -301,7 +301,7 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
           </div>
 
           <aside className="space-y-6">
-            <div className="sticky top-24 space-y-6">
+            <div className="space-y-6">
               <section className="rounded-md border border-black bg-white p-5 shadow-sm">
                 <p className="mt-3 text-sm leading-7 text-slate-600">
                   Dataene på denne siden kommer fra{" "}
@@ -315,6 +315,30 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
                   </a>
                   , og tallene er sist oppdatert {updatedLabel ?? "i siste tilgjengelige publisering"}.
                 </p>
+              </section>
+
+              <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+                  Verktøy
+                </p>
+                <div className="mt-4 space-y-3">
+                  <Link
+                    className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                    href="/lonnskalkulator"
+                  >
+                    <span className="block text-sm font-semibold text-slate-950">
+                      Lønnskalkulator
+                    </span>
+                  </Link>
+                  <Link
+                    className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                    href="/lonnsjekk"
+                  >
+                    <span className="block text-sm font-semibold text-slate-950">
+                      Lønnssjekk
+                    </span>
+                  </Link>
+                </div>
               </section>
 
               <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">

@@ -1,13 +1,19 @@
 <!-- BEGIN:nextjs-agent-rules -->
 
-# Next.js: ALWAYS read docs before coding
+# Next.js documentation
 
-Before any Next.js work, find and read the relevant doc in `node_modules/next/dist/docs/`.
-Your training data is outdated — the docs are the source of truth.
+Before changing App Router, metadata, routing, server actions, caching, or data fetching:
+- Read the relevant documentation in `node_modules/next/dist/docs/`
+- Briefly mention which documentation was used
 
 <!-- END:nextjs-agent-rules -->
 
 # Project Rules
+
+## Project context
+
+- Read `PROJECT.MD` when work affects product positioning, page content, UX copy, blog strategy, information architecture, or feature prioritization.
+- Use `PROJECT.MD` as the source of truth for target audience, value proposition, product purpose, and editorial direction.
 
 ## Execution model
 
