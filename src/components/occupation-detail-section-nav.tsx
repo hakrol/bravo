@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 export type OccupationDetailSectionNavItem = {
@@ -115,6 +116,25 @@ export function OccupationDetailSectionNav({
             })}
           </div>
         </div>
+        <div className="mt-3 border-t border-black/8 pt-3">
+          <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+            Verktøy
+          </p>
+          <div className="mt-2 flex min-w-max gap-2 px-1">
+            <Link
+              className="inline-flex items-center rounded-[5px] border border-black/10 bg-white px-2.5 py-1.5 text-[13px] font-medium text-slate-700 transition hover:border-[var(--primary)] hover:text-[var(--primary-strong)]"
+              href="/lonnskalkulator"
+            >
+              Lønnskalkulator
+            </Link>
+            <Link
+              className="inline-flex items-center rounded-[5px] border border-black/10 bg-white px-2.5 py-1.5 text-[13px] font-medium text-slate-700 transition hover:border-[var(--primary)] hover:text-[var(--primary-strong)]"
+              href="/lonnsjekk"
+            >
+              Lønnssjekk
+            </Link>
+          </div>
+        </div>
       </nav>
     );
   }
@@ -153,6 +173,25 @@ export function OccupationDetailSectionNav({
             </a>
           );
         })}
+      </div>
+      <div className="mt-3 border-t border-black/8 pt-3">
+        <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+          Verktøy
+        </p>
+        <div className="space-y-0.5">
+          <Link
+            className="flex items-center rounded-[5px] px-2.5 py-2 text-[13px] text-slate-700 transition hover:bg-white/80 hover:text-slate-950"
+            href="/lonnskalkulator"
+          >
+            Lønnskalkulator
+          </Link>
+          <Link
+            className="flex items-center rounded-[5px] px-2.5 py-2 text-[13px] text-slate-700 transition hover:bg-white/80 hover:text-slate-950"
+            href="/lonnsjekk"
+          >
+            Lønnssjekk
+          </Link>
+        </div>
       </div>
     </nav>
   );

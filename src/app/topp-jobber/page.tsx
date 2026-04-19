@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 
-const description = "Planlagt side for å utforske de best betalte jobbene og lønnsvekst over tid.";
+const description =
+  "Denne siden er under arbeid og skal samle yrker med høyest lønn og tydelig lønnsvekst i Norge.";
 
 export const metadata: Metadata = {
-  title: "Topp jobber",
+  title: "Hvilke yrker har høyest lønn? | Kommer snart",
   description,
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: "/topp-jobber",
   },
@@ -14,12 +19,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/topp-jobber",
     siteName: siteConfig.name,
-    title: `Topp jobber | ${siteConfig.name}`,
+    title: `Hvilke yrker har høyest lønn? | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Topp jobber | ${siteConfig.name}`,
+    title: `Hvilke yrker har høyest lønn? | ${siteConfig.name}`,
     description,
   },
 };

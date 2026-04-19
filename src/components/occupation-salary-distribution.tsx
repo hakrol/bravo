@@ -117,7 +117,38 @@ export function OccupationSalaryDistributionSection({
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
               {row.label}
             </p>
-            <div className="relative px-1">
+            <div className="grid gap-2 md:hidden">
+              {row.metrics.p25 !== undefined ? (
+                <MobileDistributionPoint
+                  label="25% tjener mindre"
+                  tone="bg-slate-700"
+                  value={row.metrics.p25}
+                />
+              ) : null}
+              {row.metrics.median !== undefined ? (
+                <MobileDistributionPoint
+                  infoDescription="Median er lønnen som ligger i midten når alle lønningene sorteres fra lavest til høyest. Det er et godt mål fordi det viser det typiske lønnsnivået uten å bli dratt opp av noen få svært høye lønninger."
+                  label="Median"
+                  tone="bg-[var(--primary)]"
+                  value={row.metrics.median}
+                />
+              ) : null}
+              {row.metrics.p75 !== undefined ? (
+                <MobileDistributionPoint
+                  label="25% tjener mer"
+                  tone="bg-slate-700"
+                  value={row.metrics.p75}
+                />
+              ) : null}
+              {userMarker ? (
+                <MobileDistributionPoint
+                  label={userMarker.label}
+                  tone="bg-[#1d4ed8]"
+                  value={userMarker.value}
+                />
+              ) : null}
+            </div>
+            <div className="relative hidden px-1 md:block">
               <div className="relative h-20">
                 <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-slate-300" />
                 {p25Position !== null && p75Position !== null ? (
@@ -183,6 +214,33 @@ export function OccupationSalaryDistributionSection({
         );
       })}
     </section>
+  );
+}
+
+function MobileDistributionPoint({
+  label,
+  tone,
+  value,
+  infoDescription,
+}: {
+  label: string;
+  tone: string;
+  value: number;
+  infoDescription?: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 rounded-[5px] bg-slate-50 px-4 py-3">
+      <div className="flex min-w-0 items-center gap-2">
+        <span aria-hidden="true" className={`h-3 w-3 shrink-0 rounded-full ${tone}`} />
+        <span className="text-sm font-medium text-slate-700">{label}</span>
+        {infoDescription ? (
+          <MarkerInfoButton description={infoDescription} label={label} />
+        ) : null}
+      </div>
+      <span className="shrink-0 text-sm font-semibold tabular-nums text-slate-950">
+        {formatCurrency(value)}
+      </span>
+    </div>
   );
 }
 

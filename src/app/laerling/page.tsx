@@ -7,8 +7,8 @@ import {
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
 export const metadata: Metadata = {
-  title: "Lærlingfag",
-  description: "Se alle lærlingfag med egne detaljsider og klikk deg videre til lærlinglønn for hvert fag.",
+  title: "Lærlinglønn i ulike fag",
+  description: "Se lærlinglønn i ulike fag og klikk deg videre til detaljsider med lønnsnivå og utvikling.",
   alternates: {
     canonical: "/laerling",
   },

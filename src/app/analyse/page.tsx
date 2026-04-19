@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 
-const description = "Oversikt over analyser og sammenligninger basert på lønnsdata.";
+const description =
+  "Utforsk analyser av lønn, lønnsforskjeller og utvikling i norske yrker basert på oppdaterte data.";
 
 export const metadata: Metadata = {
-  title: "Analyse",
+  title: "Analyse av lønn og lønnsforskjeller",
   description,
   alternates: {
     canonical: "/analyse",
@@ -15,12 +16,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/analyse",
     siteName: siteConfig.name,
-    title: `Analyse | ${siteConfig.name}`,
+    title: `Analyse av lønn og lønnsforskjeller | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Analyse | ${siteConfig.name}`,
+    title: `Analyse av lønn og lønnsforskjeller | ${siteConfig.name}`,
     description,
   },
 };

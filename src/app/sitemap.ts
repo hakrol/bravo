@@ -18,6 +18,12 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/lonnskalkulator",
+    filePath: "src/app/lonnskalkulator/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/analyse",
     filePath: "src/app/analyse/page.tsx",
     priority: 0.6,
@@ -38,6 +44,12 @@ const staticRoutes = [
   {
     path: "/yrkesgrupper",
     filePath: "src/app/yrkesgrupper/page.tsx",
+    priority: 0.7,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/yrker",
+    filePath: "src/app/yrker/page.tsx",
     priority: 0.7,
     changeFrequency: "weekly" as const,
   },

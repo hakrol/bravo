@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site-config";
 
-const description = "Planlagt side for å utforske lønnsforskjeller mellom kvinner og menn.";
+const description =
+  "Denne siden er under arbeid og skal vise lønnsforskjeller mellom kvinner og menn på tvers av yrker.";
 
 export const metadata: Metadata = {
-  title: "Kvinner vs menn",
+  title: "Lønnsforskjeller mellom kvinner og menn | Kommer snart",
   description,
+  robots: {
+    index: false,
+    follow: true,
+  },
   alternates: {
     canonical: "/kvinner-vs-menn",
   },
@@ -14,12 +19,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/kvinner-vs-menn",
     siteName: siteConfig.name,
-    title: `Kvinner vs menn | ${siteConfig.name}`,
+    title: `Lønnsforskjeller mellom kvinner og menn | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Kvinner vs menn | ${siteConfig.name}`,
+    title: `Lønnsforskjeller mellom kvinner og menn | ${siteConfig.name}`,
     description,
   },
 };

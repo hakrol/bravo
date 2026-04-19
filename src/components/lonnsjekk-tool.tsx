@@ -264,32 +264,28 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
   return (
     <div className="grid gap-8">
-      <section className="fade-up">
-        <div className="px-6 py-8 sm:px-8 sm:py-10">
-          <div className="mx-auto max-w-3xl space-y-6">
-            <div className="space-y-4">
-              <h1 className="text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-                Lønnsjekk
-              </h1>
-              <p className="max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
-                Finn ut hvordan lønnen din faktisk står seg. Legg inn brutto månedslønn, kjønn og
-                yrke, og få en tydelig sammenligning mot nivået i yrket ditt basert på oppdaterte
-                tall fra SSB.
-              </p>
-              <div className="max-w-2xl rounded-[5px] border border-black/8 bg-[var(--surface)] px-4 py-4 text-sm leading-7 text-slate-700">
-                <p>Kilde SSB. Siste data: {formatPeriodLabel(data.periodLabel)}</p>
-              </div>
-            </div>
+      <section className="fade-up relative overflow-visible rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
+        <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
+        <div className="relative space-y-5">
+          <div className="max-w-4xl space-y-3">
+            <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+              Lønnsjekk
+            </h1>
+            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              Sammenlign lønnen din med oppdaterte lønnstall fra SSB for yrket ditt.
+            </p>
+            <p className="text-sm leading-6 text-slate-500">
+              Siste data: {formatPeriodLabel(data.periodLabel)}
+            </p>
+          </div>
 
-            <form
-              className="grid gap-5 rounded-[5px] border border-black/8 bg-[linear-gradient(180deg,rgba(248,250,252,0.96)_0%,rgba(255,255,255,0.98)_100%)] p-5 shadow-[0_12px_36px_rgba(27,36,48,0.06)] sm:p-6"
-              onSubmit={handleSubmit}
-            >
-              <label className="grid gap-2.5" htmlFor="salary">
-                <span className="text-sm font-semibold text-slate-900">Brutto månedslønn</span>
+          <form className="grid gap-3" onSubmit={handleSubmit}>
+            <div className="grid gap-3 lg:grid-cols-[minmax(180px,260px)_minmax(0,1fr)]">
+              <label className="grid gap-2" htmlFor="salary">
+                <span className="text-sm font-semibold text-slate-950">Brutto månedslønn</span>
                 <input
                   id="salary"
-                  className="h-14 rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
+                  className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
                   inputMode="numeric"
                   onChange={(event) =>
                     setForm((current) => ({
@@ -303,9 +299,9 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                 />
               </label>
 
-              <fieldset className="grid gap-3">
-                <legend className="text-sm font-semibold text-slate-900">Kjønn</legend>
-                <div className="grid gap-3 sm:grid-cols-2">
+              <fieldset className="grid gap-2">
+                <legend className="text-sm font-semibold text-slate-950">Kjønn</legend>
+                <div className="grid gap-2 sm:grid-cols-2">
                   <GenderButton
                     active={form.gender === "kvinne"}
                     icon={<FemaleIcon />}
@@ -332,125 +328,123 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   />
                 </div>
               </fieldset>
+            </div>
 
-              <div className="grid gap-2">
-                <span className="text-sm font-semibold text-slate-900">Yrke</span>
-                <div className="relative">
-                  <input
-                    id="occupation-search"
-                    autoComplete="off"
-                    className="h-14 w-full rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
-                    onChange={(event) => {
-                      const nextValue = event.target.value;
-                      setOccupationQuery(nextValue);
-                      setIsOccupationMenuOpen(true);
-                      setForm((current) => ({
-                        ...current,
-                        occupationCode: "",
-                      }));
-                    }}
-                    onFocus={() => setIsOccupationMenuOpen(true)}
-                    placeholder="Skriv f.eks. regnskapsfører"
-                    type="search"
-                    value={occupationQuery}
-                  />
+            <div className="grid gap-2">
+              <span className="text-sm font-semibold text-slate-950">Yrke</span>
+              <div className="relative">
+                <input
+                  id="occupation-search"
+                  autoComplete="off"
+                  className="h-11 w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
+                  onChange={(event) => {
+                    const nextValue = event.target.value;
+                    setOccupationQuery(nextValue);
+                    setIsOccupationMenuOpen(true);
+                    setForm((current) => ({
+                      ...current,
+                      occupationCode: "",
+                    }));
+                  }}
+                  onFocus={() => setIsOccupationMenuOpen(true)}
+                  placeholder="Skriv f.eks. regnskapsfører"
+                  type="search"
+                  value={occupationQuery}
+                />
 
-                  {isOccupationMenuOpen && filteredOccupationOptions.length > 0 ? (
-                    <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-[5px] border border-black/10 bg-white shadow-[0_18px_40px_rgba(27,36,48,0.12)]">
-                      <ul className="max-h-72 overflow-y-auto py-2">
-                        {filteredOccupationOptions.map((option) => (
-                          <li key={option.occupationCode}>
-                            <button
-                              className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-[#f8faf8] hover:text-slate-950"
-                              onClick={() => handleOccupationSelect(option)}
-                              type="button"
-                            >
-                              <span>{option.occupationLabel}</span>
-                              <span className="shrink-0 text-xs text-[var(--muted)]">
-                                {option.groupLabel}
-                              </span>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
-                </div>
-
-                {occupationQuery.trim().length > 0 && filteredOccupationOptions.length === 0 ? (
-                  <p className="text-sm leading-6 text-[var(--muted)]">
-                    Ingen yrker matcher søket ditt akkurat nå.
-                  </p>
+                {isOccupationMenuOpen && filteredOccupationOptions.length > 0 ? (
+                  <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-[5px] border border-black/10 bg-white shadow-[0_18px_40px_rgba(27,36,48,0.12)]">
+                    <ul className="max-h-72 overflow-y-auto py-2">
+                      {filteredOccupationOptions.map((option) => (
+                        <li key={option.occupationCode}>
+                          <button
+                            className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-[#f8faf8] hover:text-slate-950"
+                            onClick={() => handleOccupationSelect(option)}
+                            type="button"
+                          >
+                            <span>{option.occupationLabel}</span>
+                            <span className="shrink-0 text-xs text-[var(--muted)]">
+                              {option.groupLabel}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ) : null}
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="grid gap-2.5" htmlFor="workStartYear">
-                  <span className="text-sm font-semibold text-slate-900">
-                    Arbeidsstart
-                    <span className="ml-2 font-normal text-[var(--muted)]">(valgfritt)</span>
-                  </span>
-                  <input
-                    id="workStartYear"
-                    className="h-14 rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
-                    inputMode="numeric"
-                    onChange={(event) =>
-                      setForm((current) => ({
-                        ...current,
-                        workStartYear: event.target.value,
-                      }))
-                    }
-                    placeholder="For eksempel 2019"
-                    type="text"
-                    value={form.workStartYear}
-                  />
-                </label>
-
-                <label className="grid gap-2.5" htmlFor="age">
-                  <span className="text-sm font-semibold text-slate-900">
-                    Alder
-                    <span className="ml-2 font-normal text-[var(--muted)]">(valgfritt)</span>
-                  </span>
-                  <input
-                    id="age"
-                    className="h-14 rounded-[5px] border border-black/10 bg-white px-4 text-base text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
-                    inputMode="numeric"
-                    onChange={(event) =>
-                      setForm((current) => ({
-                        ...current,
-                        age: event.target.value,
-                      }))
-                    }
-                    placeholder="For eksempel 34"
-                    type="text"
-                    value={form.age}
-                  />
-                </label>
-              </div>
-
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <button
-                  className="inline-flex h-14 items-center justify-center rounded-full bg-[var(--primary)] px-6 text-sm font-semibold text-white transition hover:bg-[var(--primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
-                  type="submit"
-                >
-                  Sjekk lønn
-                </button>
-              </div>
-
-              {error ? (
-                <p className="rounded-[5px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                  {error}
+              {occupationQuery.trim().length > 0 && filteredOccupationOptions.length === 0 ? (
+                <p className="text-sm leading-6 text-[var(--muted)]">
+                  Ingen yrker matcher søket ditt akkurat nå.
                 </p>
               ) : null}
-            </form>
-          </div>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end">
+              <label className="grid gap-2" htmlFor="workStartYear">
+                <span className="text-sm font-semibold text-slate-950">
+                  Arbeidsstart
+                  <span className="ml-2 font-normal text-slate-500">(valgfritt)</span>
+                </span>
+                <input
+                  id="workStartYear"
+                  className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
+                  inputMode="numeric"
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      workStartYear: event.target.value,
+                    }))
+                  }
+                  placeholder="For eksempel 2019"
+                  type="text"
+                  value={form.workStartYear}
+                />
+              </label>
+
+              <label className="grid gap-2" htmlFor="age">
+                <span className="text-sm font-semibold text-slate-950">
+                  Alder
+                  <span className="ml-2 font-normal text-slate-500">(valgfritt)</span>
+                </span>
+                <input
+                  id="age"
+                  className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
+                  inputMode="numeric"
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      age: event.target.value,
+                    }))
+                  }
+                  placeholder="For eksempel 34"
+                  type="text"
+                  value={form.age}
+                />
+              </label>
+
+              <button
+                className="inline-flex h-11 items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-6 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(20,83,45,0.16)] transition hover:bg-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-60"
+                type="submit"
+              >
+                Sjekk lønn
+              </button>
+            </div>
+
+            {error ? (
+              <p className="rounded-[5px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </p>
+            ) : null}
+          </form>
         </div>
       </section>
 
       {report ? (
         <section className="fade-up-delay grid gap-6">
-          <div className="rounded-[5px] border border-black/10 bg-[var(--surface)] px-6 py-8 shadow-sm sm:px-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
+          <div className="rounded-[5px] bg-white px-6 py-7 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
               Rapport
             </p>
             <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -462,7 +456,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               </div>
               {report.occupation.href ? (
                 <Link
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-black/10 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-[var(--primary)] hover:text-[var(--primary-strong)]"
+                  className="inline-flex items-center justify-center gap-2 rounded-[5px] bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100 hover:text-[var(--primary-strong)]"
                   href={report.occupation.href}
                 >
                   <ExploreIcon />
@@ -492,7 +486,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             />
           </div>
 
-          <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
+          <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
             <div className="space-y-2">
               <h3 className="text-xl font-semibold text-slate-950">Plassering i lønnsfordelingen</h3>
               <p className="text-sm leading-6 text-slate-600">
@@ -528,9 +522,9 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
           <EstimateSection report={report} />
 
           {submittedAge !== undefined ? (
-            <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
+            <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
               <div className="space-y-2">
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Alder
                 </p>
                 <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
@@ -557,7 +551,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             </section>
           ) : null}
 
-          <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
+          <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
             <h3 className="text-xl font-semibold text-slate-950">Interessante fakta</h3>
             <div className="mt-5 space-y-4 text-base leading-8 text-slate-700">
               <p>
@@ -599,10 +593,10 @@ function GenderButton({ active, icon, label, onClick, type }: GenderButtonProps)
   return (
     <button
       className={[
-        "inline-flex h-12 items-center justify-center gap-2 rounded-full border px-4 text-sm font-semibold transition",
+        "inline-flex h-11 items-center justify-center gap-2 rounded-[5px] border px-4 text-sm font-semibold transition",
         active
-          ? "border-[var(--primary)] bg-[var(--primary)] text-white shadow-[0_10px_24px_rgba(20,83,45,0.18)]"
-          : "border-black/10 bg-white text-slate-700 hover:border-[var(--primary)]/30 hover:text-[var(--primary-strong)]",
+          ? "border-[var(--primary-strong)] bg-[var(--primary-strong)] text-white shadow-[0_12px_28px_rgba(20,83,45,0.16)]"
+          : "border-black/8 bg-white text-slate-700 hover:border-[rgba(20,83,45,0.28)] hover:text-[var(--primary-strong)]",
       ].join(" ")}
       onClick={onClick}
       type={type}
@@ -629,9 +623,9 @@ function ReportCard({ label, value, detail, tone = "default" }: ReportCardProps)
         : "text-slate-950";
 
   return (
-    <article className="rounded-[5px] border border-black/10 bg-white px-6 py-5 shadow-sm">
-      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">{label}</p>
-      <p className={`mt-3 text-3xl font-semibold tracking-[-0.04em] ${valueClassName}`}>{value}</p>
+    <article className="rounded-[5px] bg-white px-6 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
+      <p className={`mt-3 text-3xl font-semibold tracking-[-0.04em] tabular-nums ${valueClassName}`}>{value}</p>
       {detail ? <p className="mt-2 text-sm leading-6 text-slate-600">{detail}</p> : null}
     </article>
   );
@@ -648,9 +642,9 @@ function EstimateSection({ report }: EstimateSectionProps) {
   const userEstimate = buildEstimate(report.salary);
 
   return (
-    <section className="rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-sm">
-      <div className="space-y-6">
-        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+    <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+      <div className="space-y-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
           Lønnsestimat
         </p>
         <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
@@ -660,7 +654,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
           Her ser du et forenklet estimat for yrket basert på median avtalt månedslønn, og et eget
           estimat basert på lønnen du har lagt inn.
         </p>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-500">
           <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
           <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
           <span>{ESTIMATED_TAX_RATE} % estimert skatt</span>
@@ -669,7 +663,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="mt-6 grid gap-4 lg:grid-cols-2">
         {medianEstimate ? (
           <EstimateSummaryCard
             description="Median avtalt månedslønn i yrket."
@@ -686,7 +680,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
         />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="mt-4 grid gap-4 lg:grid-cols-2">
         {medianEstimate ? (
           <EstimateHolidayCard
             estimate={medianEstimate}
@@ -716,10 +710,10 @@ function EstimateSummaryCard({
   salaryLabel,
 }: EstimateSummaryCardProps) {
   return (
-    <article className="rounded-[5px] border border-black/10 bg-[#f8faf8] px-5 py-5">
+    <article className="rounded-[5px] bg-slate-50 px-5 py-5">
       <div className="space-y-4">
         <div className="space-y-1">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
             {title}
           </p>
           <p className="text-sm leading-6 text-slate-600">{description}</p>
@@ -745,11 +739,11 @@ type EstimateHolidayCardProps = {
 
 function EstimateHolidayCard({ title, estimate }: EstimateHolidayCardProps) {
   return (
-    <article className="rounded-[5px] border border-amber-300 bg-[#fff4cf] px-5 py-5">
+    <article className="rounded-[5px] bg-amber-50 px-5 py-5">
       <div className="space-y-5">
         <div className="space-y-1">
           <p className="text-sm font-semibold text-slate-900">{title}</p>
-          <p className="text-sm font-medium text-[#946200]">
+          <p className="text-sm font-medium text-amber-800">
             {HOLIDAY_PAY_RATE.toLocaleString("nb-NO")} % feriepengesats | {VACATION_WEEKS.toLocaleString("nb-NO")} uker
           </p>
         </div>
@@ -841,10 +835,10 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
         : "text-slate-950";
   const trendSurfaceClassName =
     trendTone === "positive"
-      ? "border-emerald-200 bg-emerald-50"
+      ? "bg-emerald-50"
       : trendTone === "negative"
-        ? "border-red-200 bg-red-50"
-        : "border-black/8 bg-[#f8faf8]";
+        ? "bg-red-50"
+        : "bg-slate-50";
   const trendHeadline =
     trendTone === "positive"
       ? "Du har fått bedre kjøpekraft"
@@ -854,7 +848,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
 
   return (
     <div className="grid gap-4">
-      <div className={`rounded-[5px] border px-5 py-4 ${trendSurfaceClassName}`}>
+      <div className={`rounded-[5px] px-5 py-4 ${trendSurfaceClassName}`}>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
@@ -895,7 +889,7 @@ function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps
         />
       </div>
 
-      <div className="rounded-[5px] border border-black/8 bg-[#f8faf8] px-5 py-4 text-sm leading-7 text-slate-700">
+      <div className="rounded-[5px] bg-slate-50 px-5 py-4 text-sm leading-7 text-slate-700">
         <p>
           Hvis vi bruker median avtalt månedslønn i yrket som startnivå i {insight.startYear}, tilsvarer det{" "}
           <span className="font-semibold text-slate-950">{formatCurrency(insight.inflationAdjustedStartSalary)}</span>{" "}
@@ -918,10 +912,10 @@ function UserAgeSection({ insight }: UserAgeSectionProps) {
   const tone = insight.difference > 0 ? "negative" : insight.difference < 0 ? "positive" : "default";
   const surfaceClassName =
     tone === "positive"
-      ? "border-emerald-200 bg-emerald-50"
+      ? "bg-emerald-50"
       : tone === "negative"
-        ? "border-red-200 bg-red-50"
-        : "border-black/8 bg-[#f8faf8]";
+        ? "bg-red-50"
+        : "bg-slate-50";
   const headlineClassName =
     tone === "positive"
       ? "text-emerald-700"
@@ -931,7 +925,7 @@ function UserAgeSection({ insight }: UserAgeSectionProps) {
 
   return (
     <div className="grid gap-4">
-      <div className={`rounded-[5px] border px-5 py-4 ${surfaceClassName}`}>
+      <div className={`rounded-[5px] px-5 py-4 ${surfaceClassName}`}>
         <p className={`text-2xl font-semibold tracking-[-0.03em] ${headlineClassName}`}>
           {insight.label}
         </p>

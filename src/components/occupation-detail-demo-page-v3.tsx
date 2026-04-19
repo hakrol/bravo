@@ -398,6 +398,30 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
               </Link>
             ) : null}
 
+            <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+                Verktøy
+              </p>
+              <div className="mt-4 space-y-3">
+                <Link
+                  className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                  href="/lonnskalkulator"
+                >
+                  <span className="block text-sm font-semibold text-slate-950">
+                    Lønnskalkulator
+                  </span>
+                </Link>
+                <Link
+                  className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                  href="/lonnsjekk"
+                >
+                  <span className="block text-sm font-semibold text-slate-950">
+                    Lønnssjekk
+                  </span>
+                </Link>
+              </div>
+            </section>
+
             {BLOG_DEMO_LINKS.length > 0 ? (
               <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">

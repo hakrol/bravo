@@ -2,6 +2,8 @@
 import { SiteBrand } from "@/components/site-brand";
 
 const footerLinks = [
+  { href: "/lonnskalkulator", label: "Lønnskalkulator" },
+  { href: "/lonnsjekk", label: "Lønnssjekk" },
   { href: "/yrkesgrupper", label: "Yrkesgrupper" },
   { href: "/laerling", label: "Lærlingfag" },
   { href: "/om", label: "Om" },

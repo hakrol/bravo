@@ -4,10 +4,10 @@ import { getAllBlogPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Artikler om lønn, statistikk, forhandlinger og hvordan du bruker lønnsdata bedre.";
+  "Les guider om lønn, lønnssamtale, lønnsforhandling og hvordan du bruker lønnsdata bedre.";
 
 export const metadata: Metadata = {
-  title: "Blogg",
+  title: "Blogg om lønn og lønnssamtale",
   description,
   alternates: {
     canonical: "/blogg",
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/blogg",
     siteName: siteConfig.name,
-    title: `Blogg | ${siteConfig.name}`,
+    title: `Blogg om lønn og lønnssamtale | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Blogg | ${siteConfig.name}`,
+    title: `Blogg om lønn og lønnssamtale | ${siteConfig.name}`,
     description,
   },
 };
