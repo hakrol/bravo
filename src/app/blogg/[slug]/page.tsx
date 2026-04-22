@@ -73,15 +73,15 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   return (
-    <div className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
-        <Link className="text-sm text-[var(--muted)] transition hover:text-[var(--foreground)]" href="/blogg">
+    <div className="blog-post-page min-h-screen">
+      <div className="mx-auto flex w-full max-w-6xl flex-col">
+        <Link className="blog-post-back-link" href="/blogg">
           ← Tilbake til blogg
         </Link>
 
-        <article className="space-y-12">
+        <article>
           <BlogPostHeader post={post} />
-          <div className="mx-auto max-w-3xl pt-2">
+          <div className="blog-post-content mx-auto max-w-3xl">
             <BlogProse>{post.content}</BlogProse>
           </div>
         </article>

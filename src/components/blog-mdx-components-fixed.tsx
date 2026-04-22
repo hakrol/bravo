@@ -1,6 +1,14 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
+import { BlogChart } from "@/components/blog-chart";
+import {
+  NorwayOccupationSalary2025Chart,
+  SalaryJumpBarChart,
+  SalaryLevelStackedChart,
+  SsbSalaryExampleChart,
+} from "@/components/blog-chart-examples";
+import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
 
@@ -125,5 +133,11 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
         {children}
       </td>
     ),
+    BlogChart,
+    BlogOccupationSalaryTable,
+    NorwayOccupationSalary2025Chart,
+    SalaryJumpBarChart,
+    SalaryLevelStackedChart,
+    SsbSalaryExampleChart,
   };
 }
