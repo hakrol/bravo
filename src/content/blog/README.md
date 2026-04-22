@@ -28,6 +28,7 @@ Bruk disse feltene bevisst i frontmatter:
 
 - `description`
   Brukes som kort oppsummering og bør forklare hva leseren faktisk får ut av innlegget.
+  På bloggforsiden fungerer dette som salgsteksten for innlegget. Skriv den som en engasjerende hook som gjør leseren nysgjerrig på svaret, ikke bare som en nøktern oppsummering.
 
 - `seoTitle`
   Brukes når du vil ha en litt mer søkevennlig variant enn den synlige tittelen. Hold den kort og tydelig.
@@ -43,6 +44,7 @@ Anbefalt praksis:
 - La `title` være tydelig og lesbar, ikke pakket med søkeord.
 - La `seoTitle` være mer søkespisset hvis det gir mening, men ikke kunstig.
 - Hold `description` og `seoDescription` konkrete. Forklar hva innlegget handler om og hvorfor det er nyttig.
+- Gi `description` en tydelig hook for bloggforsiden: still gjerne opp en kontrast, et spørsmål eller et konkret funn som gjør at leseren får lyst til å åpne innlegget.
 - Unngå at `title` og `seoTitle` er identiske hvis du kan lage en bedre SEO-variant.
 - Unngå at flere innlegg dekker nøyaktig samme søkeintensjon med nesten like titler.
 - Bruk én tydelig hovedintensjon per innlegg.
@@ -153,6 +155,12 @@ Bruk felles bloggkomponenter i MDX når mønsteret skal kunne gjenbrukes i flere
 - `ToolCallout`
   Brukes når et innlegg naturlig bør peke videre til et verktøy, for eksempel Lønnsjekk.
 
+- `BlogChart`
+  Brukes til redaksjonelle diagrammer i blogginnlegg. Komponenten støtter horisontale og vertikale stolpediagrammer, linje og area. Bruk den når tallene skal leses som en del av artikkelen, ikke som et dashboard.
+
+- `SalaryJumpBarChart` og `SsbSalaryExampleChart`
+  Ferdige eksempler som viser anbefalt uttrykk og datastruktur. Bruk dem som mal når nye figurer lages.
+
 Eksempel:
 
 ```mdx
@@ -161,3 +169,114 @@ Eksempel:
   description="Bruk Lønnsjekk for å sammenligne lønnen din med relevante tall og få et mer konkret grunnlag før du bestemmer hva du skal be om."
 />
 ```
+
+## Diagrammer i blogginnlegg
+
+Diagrammer skal være enkle, redaksjonelle og kildebelagte. Start alltid med spørsmålet figuren skal svare på, og hold datamengden liten nok til at leseren kan skanne figuren på mobil.
+
+Datadrevne innlegg som handler om en bestemt periode skal bruke snapshots. Hvis et innlegg for eksempel handler om 2025-tall, skal tallgrunnlaget lagres som en egen fil under `src/content/blog/data/` og hentes via en eksplisitt kortkode eller `snapshotId`. Ikke bruk `latest`-datasett direkte i historiske blogginnlegg, fordi de vil endre seg når nye SSB-data synkes.
+
+Anbefalt standardformat i MDX:
+
+```mdx
+<BlogChart
+  title="Median månedslønn varierer mye mellom yrkesgrupper"
+  subtitle="Median månedslønn etter yrkesgruppe. Stolpene er sortert fra høyest til lavest."
+  type="bar-horizontal"
+  format="currency"
+  source="SSB tabell 11418"
+  note="Tallene gjelder månedslønn for heltids- og deltidsansatte samlet."
+  sort="descending"
+  xAxisLabel="Kroner per måned"
+  data={[
+    {
+      label: "Ledere",
+      value: 78020,
+      note: "Median månedslønn for yrkesgruppen.",
+    },
+    {
+      label: "Alle yrker",
+      value: 55800,
+      category: "highlight",
+      note: "Totalnivået gjør sammenligningen enklere.",
+    },
+    {
+      label: "Kontoryrker",
+      value: 52110,
+    },
+  ]}
+/>
+```
+
+Bruk disse feltene:
+
+- `title`: tydelig figurpoeng, ikke bare datanavn.
+- `subtitle`: forklar hva som sammenlignes og hvordan figuren skal leses.
+- `type`: `bar-horizontal`, `bar-vertical`, `line` eller `area`.
+- `format`: `currency`, `number` eller `percent`.
+- `source`: alltid oppgi kilde, for eksempel `SSB tabell 11418`.
+- `note`: metode, avgrensning eller usikkerhet.
+- `data`: én serie med `{ label, value, note?, category? }`.
+- `series`: flere serier for linje/area, med `{ label, color?, points }`.
+- `sort`: `descending`, `ascending` eller `none`. Stolpediagrammer sorteres høy til lav som standard.
+- `highlightLabel`: markerer én kategori med tydeligere farge.
+- `primaryColor` og `highlightColor`: kan overstyres ved behov, men standardfargene bør brukes i vanlige blogginnlegg.
+
+### Stacked bar charts
+
+Bruk `type="stacked-bar"` når figuren skal vise prosentvis fordeling per kategori. Dette passer når ett lønnstall ikke er nok, for eksempel hvis du vil vise andel under, rundt og over et nivå.
+
+```mdx
+<BlogChart
+  title="Fordelingen sier mer enn ett enkelt lønnstall"
+  subtitle="Hver rad viser hvordan lønnsnivået fordeler seg innenfor en yrkesgruppe."
+  type="stacked-bar"
+  format="percent"
+  source="SSB tabell 11418, strukturert eksempel"
+  note="Segmentene normaliseres til 100 prosent per rad."
+  showLegend
+  normalizeStacked
+  categories={[
+    {
+      label: "Ledere",
+      segments: [
+        { label: "Under 50k", value: 12 },
+        { label: "50-70k", value: 38 },
+        { label: "Over 70k", value: 46 },
+        { label: "Uoppgitt", value: 4 },
+      ],
+    },
+    {
+      label: "Alle yrker",
+      note: "referanse",
+      segments: [
+        { label: "Under 50k", value: 36 },
+        { label: "50-70k", value: 43 },
+        { label: "Over 70k", value: 15 },
+        { label: "Uoppgitt", value: 6 },
+      ],
+    },
+  ]}
+/>
+```
+
+Retningslinjer for stacked bars:
+
+- Bruk samme segmentrekkefølge i alle rader.
+- La høyere/verdimessig bedre kategori ha mørkere grønn.
+- Bruk varme, lysere farger for lavere nivåer og grått for `Uoppgitt` eller `Vet ikke`.
+- La `normalizeStacked` være på når verdiene skal leses som prosentfordeling.
+- Segmentlabels vises bare inne i stolpen når det er nok plass. Små segmenter forklares via tooltip.
+
+For SSB-data bør `note` beskrive tabell, målemetode, periode og viktige dimensjoner. Eksempel:
+
+```md
+Kilde: SSB tabell 11418. Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Tid: 2025.
+```
+
+Designregler:
+
+- Foretrekk horisontale stolper når etikettene er lange eller figuren står midt i en artikkel.
+- Marker kun ett sammenligningspunkt med `category: "highlight"` når det hjelper leseren.
+- Bruk `note` per datapunkt for tooltip-tekst når tallet trenger forklaring.
+- Ikke bruk flere farger enn nødvendig. Standardpaletten er laget for Lønnsinnsikt og bør normalt være nok.

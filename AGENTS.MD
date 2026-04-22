@@ -15,6 +15,11 @@ Before changing App Router, metadata, routing, server actions, caching, or data 
 - Read `PROJECT.MD` when work affects product positioning, page content, UX copy, blog strategy, information architecture, or feature prioritization.
 - Use `PROJECT.MD` as the source of truth for target audience, value proposition, product purpose, and editorial direction.
 
+## Blogginnlegg
+
+- Når du lager eller oppdaterer blogginnlegg, skal `description` fungere som en engasjerende hook på bloggforsiden, ikke bare en nøktern oppsummering. Den skal gi leseren lyst til å klikke videre, samtidig som den er presis og ikke overdriver innholdet.
+- Datadrevne blogginnlegg som handler om en bestemt periode, for eksempel "2025", skal bruke et frosset snapshot av tallgrunnlaget. Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
+
 ## Execution model
 
 - Default to code generation, not autonomous execution

@@ -1,0 +1,214 @@
+import { BlogChart, type BlogChartDatum } from "@/components/blog-chart";
+
+export function SalaryJumpBarChart() {
+  return (
+    <BlogChart
+      categories={[
+        {
+          label: "Jobbskifte",
+          segments: [
+            { label: "Standardnivå", value: 8, color: "#e9c46a", note: "Nedre del av et vanlig jobbskifte." },
+            { label: "Realistisk spenn", value: 7, color: "#4d7c5b", note: "Området mange kan argumentere for med riktig marked og rolle." },
+            { label: "Ambisiøst nivå", value: 5, color: "#14532d", note: "Øvre del når marked, kompetanse og timing trekker i samme retning." },
+          ],
+        },
+        {
+          label: "Økt ansvar",
+          segments: [
+            { label: "Standardnivå", value: 5, color: "#e9c46a" },
+            { label: "Realistisk spenn", value: 4, color: "#4d7c5b" },
+            { label: "Ambisiøst nivå", value: 3, color: "#14532d" },
+          ],
+        },
+        {
+          label: "Årlig justering",
+          segments: [
+            { label: "Standardnivå", value: 3, color: "#e9c46a" },
+            { label: "Realistisk spenn", value: 2, color: "#4d7c5b" },
+            { label: "Ambisiøst nivå", value: 1, color: "#14532d" },
+          ],
+        },
+      ]}
+      format="percent"
+      normalizeStacked={false}
+      note="Intervallene er redaksjonelle tommelfingerregler, ikke SSB-statistikk."
+      source="Lønnsinnsikt, basert på vanlige forhandlingssituasjoner"
+      subtitle="Stablede stolper viser hvordan et lønnskrav kan bygges opp fra standardnivå til mer ambisiøse nivåer. Skalaen går til 100 %, men disse situasjonene stopper naturlig langt tidligere."
+      title="Hvor høyt kan et lønnskrav typisk ligge?"
+      type="stacked-bar"
+    />
+  );
+}
+
+const ssbLikeMonthlySalaryData: BlogChartDatum[] = [
+  {
+    label: "Ledere",
+    value: 78020,
+    note: "Median månedslønn for hovedgruppen i 2025.",
+  },
+  {
+    label: "Akademiske yrker",
+    value: 62040,
+    note: "Representativ SSB-struktur for yrkesfordelt månedslønn.",
+  },
+  {
+    label: "Alle yrker",
+    value: 55800,
+    category: "highlight",
+    note: "Totalnivået gjør det enklere å lese avstanden til markedet.",
+  },
+  {
+    label: "Kontoryrker",
+    value: 52110,
+    note: "Gjennomsnittlig nivå i eksempelet.",
+  },
+  {
+    label: "Salgs- og serviceyrker",
+    value: 45260,
+    note: "Lavere median enn totalnivået.",
+  },
+];
+
+export function SsbSalaryExampleChart() {
+  return (
+    <BlogChart
+      data={ssbLikeMonthlySalaryData}
+      format="currency"
+      highlightLabel="Alle yrker"
+      note="Eksempeldata følger samme dimensjoner som SSB-tabell 11418: målemetode, yrke, sektor, kjønn, arbeidstid, innhold og tid."
+      source="SSB tabell 11418, strukturert eksempel for Lønnsinnsikt"
+      sort="descending"
+      subtitle="Median månedslønn etter yrkesgruppe. Stolpene er sortert fra høyest til lavest, med totalnivået markert."
+      title="Median månedslønn varierer mye mellom yrkesgrupper"
+      type="bar-horizontal"
+      xAxisLabel="Kroner per måned"
+    />
+  );
+}
+
+export function SalaryLevelStackedChart() {
+  return (
+    <BlogChart
+      categories={[
+        {
+          label: "Ledere",
+          note: "representativ fordeling",
+          segments: [
+            { label: "Under 50k", value: 12, color: "#e9c46a", note: "Andel under 50 000 kroner i måneden." },
+            { label: "50-70k", value: 38, color: "#4d7c5b", note: "Andel mellom 50 000 og 70 000 kroner." },
+            { label: "Over 70k", value: 46, color: "#14532d", note: "Andel over 70 000 kroner i måneden." },
+            { label: "Uoppgitt", value: 4, color: "#cbd5e1", note: "Manglende eller skjermet verdi." },
+          ],
+        },
+        {
+          label: "Akademiske yrker",
+          segments: [
+            { label: "Under 50k", value: 21, color: "#e9c46a" },
+            { label: "50-70k", value: 52, color: "#4d7c5b" },
+            { label: "Over 70k", value: 22, color: "#14532d" },
+            { label: "Uoppgitt", value: 5, color: "#cbd5e1" },
+          ],
+        },
+        {
+          label: "Alle yrker",
+          note: "referanse",
+          segments: [
+            { label: "Under 50k", value: 36, color: "#e9c46a" },
+            { label: "50-70k", value: 43, color: "#4d7c5b" },
+            { label: "Over 70k", value: 15, color: "#14532d" },
+            { label: "Uoppgitt", value: 6, color: "#cbd5e1" },
+          ],
+        },
+        {
+          label: "Salgs- og serviceyrker",
+          segments: [
+            { label: "Under 50k", value: 58, color: "#e9c46a" },
+            { label: "50-70k", value: 31, color: "#4d7c5b" },
+            { label: "Over 70k", value: 6, color: "#14532d" },
+            { label: "Uoppgitt", value: 5, color: "#cbd5e1" },
+          ],
+        },
+      ]}
+      format="percent"
+      note="Eksempelet viser et redaksjonelt fordelingsformat for SSB-lignende lønnsdata. Segmentene normaliseres til 100 prosent per rad."
+      normalizeStacked
+      showLegend
+      source="SSB-lignende eksempelstruktur for Lønnsinnsikt"
+      subtitle="Hver rad viser hvordan lønnsnivået fordeler seg innenfor en yrkesgruppe. Mørkere grønn betyr høyere lønnsnivå."
+      title="Fordelingen sier mer enn ett enkelt lønnstall"
+      type="stacked-bar"
+    />
+  );
+}
+
+const norwayOccupationSalary2025Data: BlogChartDatum[] = [
+  {
+    label: "Flygeledere",
+    value: 121910,
+    note: "Høyeste median månedslønn blant fire-sifrede yrkeskoder i utvalget.",
+  },
+  {
+    label: "Ledere av olje- og gassutvinning mv.",
+    value: 120670,
+  },
+  {
+    label: "Toppledere i offentlig administrasjon",
+    value: 119520,
+  },
+  {
+    label: "Dommere",
+    value: 118470,
+  },
+  {
+    label: "Flygere",
+    value: 118440,
+  },
+  {
+    label: "Ledere av forsikring og finansvirksomhet",
+    value: 108190,
+  },
+  {
+    label: "Alle yrker",
+    value: 55800,
+    category: "highlight",
+    note: "Median månedslønn for alle yrker samlet.",
+  },
+  {
+    label: "Mannekenger og modeller",
+    value: 35600,
+  },
+  {
+    label: "Hjelpearbeidere i skogbruk",
+    value: 34910,
+  },
+  {
+    label: "Intervjuere",
+    value: 32540,
+  },
+  {
+    label: "Hjelpearbeidere i husdyrproduksjon",
+    value: 32470,
+  },
+  {
+    label: "Hjelpearbeidere i nyttevekstproduksjon",
+    value: 31390,
+    note: "Laveste median månedslønn blant fire-sifrede yrkeskoder i utvalget.",
+  },
+];
+
+export function NorwayOccupationSalary2025Chart() {
+  return (
+    <BlogChart
+      data={norwayOccupationSalary2025Data}
+      format="currency"
+      highlightLabel="Alle yrker"
+      note="Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Utvalget viser fire-sifrede yrkeskoder, mens aggregater og uoppgitte yrker er utelatt fra topp- og bunnutvalget."
+      sort="descending"
+      source="SSB tabell 11418"
+      subtitle="Utvalget viser de seks høyeste yrkene, totalnivået for alle yrker og fem av de laveste yrkene i SSBs 2025-tall."
+      title="Median månedslønn varierer kraftig mellom yrker"
+      type="bar-horizontal"
+      xAxisLabel="Kroner per måned"
+    />
+  );
+}
