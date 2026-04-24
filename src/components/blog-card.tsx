@@ -1,6 +1,6 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
-import { formatBlogDate, type BlogPostPreview } from "@/lib/blog";
+import { formatBlogDate, type BlogPostPreview } from "@/lib/blog-shared";
 
 type BlogCardProps = {
   post: BlogPostPreview;
@@ -8,50 +8,47 @@ type BlogCardProps = {
 
 export function BlogCard({ post }: BlogCardProps) {
   return (
-    <article className="grid gap-8 rounded-[5px] border border-[var(--border)] p-6 sm:p-8 md:grid-cols-[minmax(0,1.1fr)_340px] md:items-center lg:grid-cols-[minmax(0,1.2fr)_420px]">
-      <div className="order-2 flex flex-col gap-4 md:order-1">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--muted)]">
-          <span>{formatBlogDate(post.publishedAt)}</span>
-          <span aria-hidden="true">•</span>
-          <span>{post.readingTimeMinutes} min lesetid</span>
-        </div>
-
-        <div className="space-y-4">
-          <h2 className="max-w-3xl text-3xl font-semibold tracking-[-0.05em] text-balance text-[var(--foreground)] sm:text-4xl">
-            <Link className="transition hover:text-[var(--primary-strong)]" href={`/blogg/${post.slug}`}>
-              {post.title}
-            </Link>
-          </h2>
-          <p className="max-w-2xl text-base leading-8 text-[var(--muted)] sm:text-lg">
-            {post.description}
-          </p>
-        </div>
-
-        <div className="flex items-center justify-end gap-3 pt-2">
-          <Link
-            className="text-sm font-semibold text-[var(--foreground)] transition hover:text-[var(--primary-strong)]"
-            href={`/blogg/${post.slug}`}
-          >
-            Les innlegget →
-          </Link>
-        </div>
-      </div>
-
-      <Link
-        aria-label={`Les ${post.title}`}
-        className="order-1 block md:order-2"
-        href={`/blogg/${post.slug}`}
-      >
-        <div className="relative aspect-[16/10] overflow-hidden rounded-[5px] bg-[linear-gradient(135deg,#e9efe9,#f4eadc)]">
+    <article className="group flex h-full flex-col transition duration-200 hover:-translate-y-0.5">
+      <Link aria-label={`Les ${post.title}`} className="block overflow-hidden rounded-[5px]" href={`/blogg/${post.slug}`}>
+        <div className="relative aspect-[16/10] bg-[linear-gradient(135deg,#eef2ea,#f6efe4)]">
           <Image
             alt={post.title}
-            className="object-cover"
+            className="object-cover transition duration-500 group-hover:scale-[1.03]"
             fill
-            sizes="(max-width: 768px) 100vw, 420px"
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 420px"
             src={post.coverImage}
           />
         </div>
       </Link>
+
+      <div className="flex flex-1 flex-col gap-4 pt-5">
+        <div className="text-[0.76rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+          Artikkel · {post.readingTimeMinutes} min lesetid
+        </div>
+
+        <div className="space-y-3">
+          <h2 className="max-w-[15ch] text-[1.95rem] font-semibold tracking-[-0.065em] text-balance text-[var(--foreground)]">
+            <Link
+              className="transition duration-200 group-hover:text-[var(--primary-strong)]"
+              href={`/blogg/${post.slug}`}
+            >
+              {post.title}
+            </Link>
+          </h2>
+          <p className="max-w-[34ch] text-base leading-7 text-[var(--muted)]">{post.description}</p>
+        </div>
+
+        <div className="mt-auto flex items-center justify-between gap-3 pt-2">
+          <span className="text-sm text-[var(--muted)]">{formatBlogDate(post.publishedAt)}</span>
+          <Link
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--foreground)] transition duration-200 group-hover:text-[var(--primary-strong)]"
+            href={`/blogg/${post.slug}`}
+          >
+            Les artikkelen
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </div>
     </article>
   );
 }

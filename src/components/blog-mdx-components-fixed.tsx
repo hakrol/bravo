@@ -8,6 +8,7 @@ import {
   SalaryLevelStackedChart,
   SsbSalaryExampleChart,
 } from "@/components/blog-chart-examples";
+import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
@@ -134,6 +135,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       </td>
     ),
     BlogChart,
+    BlogHandverkerSalaryChart,
     BlogOccupationSalaryTable,
     NorwayOccupationSalary2025Chart,
     SalaryJumpBarChart,

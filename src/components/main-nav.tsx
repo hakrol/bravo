@@ -94,9 +94,9 @@ export function MainNav() {
               key={item.href}
               aria-current={active ? "page" : undefined}
               className={[
-                "inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
+                "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
                 active
-                  ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)]"
+                  ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)] shadow-[inset_0_0_0_1px_rgba(20,83,45,0.08)]"
                   : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
               ].join(" ")}
               href={item.href}
@@ -110,11 +110,11 @@ export function MainNav() {
           <Link
             aria-current={pathname && isActivePath(pathname, "/verktoy") ? "page" : undefined}
             className={[
-              "inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
+              "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
               pathname &&
               (isActivePath(pathname, "/verktoy") ||
                 toolItems.some((item) => isActivePath(pathname, item.href)))
-                ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)]"
+                ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)] shadow-[inset_0_0_0_1px_rgba(20,83,45,0.08)]"
                 : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
             ].join(" ")}
             href="/verktoy"
@@ -154,9 +154,9 @@ export function MainNav() {
               key={item.href}
               aria-current={active ? "page" : undefined}
               className={[
-                "inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
+                "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
                 active
-                  ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)]"
+                  ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)] shadow-[inset_0_0_0_1px_rgba(20,83,45,0.08)]"
                   : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
               ].join(" ")}
               href={item.href}
