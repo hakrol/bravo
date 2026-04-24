@@ -1,0 +1,45 @@
+{
+  "id": "butikksjef-lonn-2025",
+  "title": "Butikksjef lønn sammenlignet med andre sjefsyrker i 2025",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025.",
+  "rows": [
+    {
+      "label": "Personalsjefer",
+      "href": "/yrke/personalsjefer-lonn",
+      "value": 96670
+    },
+    {
+      "label": "Salgs- og markedssjefer",
+      "href": "/yrke/salgs-og-markedssjefer-lonn",
+      "value": 89170
+    },
+    {
+      "label": "Varehandelssjefer",
+      "href": "/yrke/varehandelssjefer-lonn",
+      "value": 55390
+    },
+    {
+      "label": "Hotellsjefer",
+      "href": "/yrke/hotellsjefer-lonn",
+      "value": 52610
+    },
+    {
+      "label": "Restaurantsjefer",
+      "href": "/yrke/restaurantsjefer-lonn",
+      "value": 50770
+    },
+    {
+      "label": "Butikkavdelingssjefer",
+      "href": "/yrke/butikkavdelingssjefer-lonn",
+      "value": 47680
+    },
+    {
+      "label": "Butikkmedarbeidere",
+      "href": "/yrke/butikkmedarbeidere-lonn",
+      "value": 42020
+    }
+  ]
+}

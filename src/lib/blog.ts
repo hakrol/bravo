@@ -2,38 +2,15 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
-import type { ReactNode } from "react";
 import { cache } from "react";
 import { buildBlogMdxComponentsFixed } from "@/components/blog-mdx-components-fixed";
+import type { BlogFrontmatter, BlogPost, BlogPostPreview, BlogTableOfContentsItem } from "@/lib/blog-shared";
 import { siteConfig } from "@/lib/site-config";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
 
-export type BlogFrontmatter = {
-  title: string;
-  description: string;
-  slug: string;
-  publishedAt: string;
-  coverImage: string;
-  author: string;
-  seoTitle?: string;
-  seoDescription?: string;
-};
-
-export type BlogPostPreview = BlogFrontmatter & {
-  readingTimeMinutes: number;
-};
-
-export type BlogPost = BlogPostPreview & {
-  content: ReactNode;
-  tableOfContents: BlogTableOfContentsItem[];
-};
-
-export type BlogTableOfContentsItem = {
-  id: string;
-  title: string;
-  level: 2 | 3;
-};
+export { formatBlogDate } from "@/lib/blog-shared";
+export type { BlogFrontmatter, BlogPost, BlogPostPreview, BlogTableOfContentsItem } from "@/lib/blog-shared";
 
 function trimOptionalString(value: unknown) {
   return typeof value === "string" && value.trim().length > 0 ? value.trim() : undefined;
@@ -167,14 +144,6 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
 export async function getBlogPostSlugs() {
   const posts = await getAllBlogPosts();
   return posts.map((post) => post.slug);
-}
-
-export function formatBlogDate(dateString: string) {
-  return new Intl.DateTimeFormat("nb-NO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(dateString));
 }
 
 export function getBlogPostUrl(slug: string) {

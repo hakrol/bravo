@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import bestBetalteYrker2025Snapshot from "@/content/blog/data/best-betalte-yrker-2025.json";
+import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025.json";
+import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 
 type OccupationSalaryRow = {
+  code?: string;
   label: string;
   href: string;
-  value: number;
+  value: number | null;
 };
 
 type OccupationSalarySnapshot = {
@@ -24,15 +27,18 @@ const rowsPerPage = 25;
 
 const snapshots = {
   "best-betalte-yrker-2025": bestBetalteYrker2025Snapshot as OccupationSalarySnapshot,
+  "butikksjef-lonn-2025": butikksjefLonn2025Snapshot as OccupationSalarySnapshot,
+  "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
 };
 
 type BlogOccupationSalaryTableProps = {
   snapshotId?: keyof typeof snapshots;
+  title?: string;
 };
 
-export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-2025" }: BlogOccupationSalaryTableProps) {
+export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-2025", title }: BlogOccupationSalaryTableProps) {
   const snapshot = snapshots[snapshotId] ?? snapshots["best-betalte-yrker-2025"];
-  const occupationRows = snapshot.rows;
+  const occupationRows = snapshot.rows.filter((row): row is OccupationSalaryRow & { value: number } => typeof row.value === "number");
   const maxSalary = Math.max(...occupationRows.map((row) => row.value), 1);
   const minSalary = Math.min(...occupationRows.map((row) => row.value), 0);
 
@@ -62,7 +68,7 @@ export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-202
     <section className="blog-occupation-table" aria-labelledby="occupation-salary-table-title">
       <div className="blog-occupation-table-header">
         <div>
-          <h2 id="occupation-salary-table-title">Dette tjener ansatte i ulike yrker</h2>
+          <h2 id="occupation-salary-table-title">{title ?? "Dette tjener ansatte i ulike yrker"}</h2>
           <p>
             {snapshot.measure} i {occupationRows.length.toLocaleString("nb-NO")} yrker i {snapshot.period}. Du kan søke og bla i
             tabellen.
