@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
@@ -6,6 +7,7 @@ type OccupationSalaryEstimateProps = {
   monthlySalary?: number;
   monthlySalaryWomen?: number;
   monthlySalaryMen?: number;
+  hourlySalaryHref?: string;
   embedded?: boolean;
 };
 
@@ -23,6 +25,7 @@ export function OccupationSalaryEstimate({
   monthlySalary,
   monthlySalaryWomen,
   monthlySalaryMen,
+  hourlySalaryHref,
   embedded = false,
 }: OccupationSalaryEstimateProps) {
   if (monthlySalary === undefined && monthlySalaryWomen === undefined && monthlySalaryMen === undefined) {
@@ -111,6 +114,18 @@ export function OccupationSalaryEstimate({
             Vi har gjort et forenklet estimat basert på median samlet månedslønn, vanlig heltidsstilling,
             standard feriepengesats og et fast skatteanslag.
           </p>
+          {hourlySalaryHref ? (
+            <p className="max-w-3xl text-sm leading-7 text-slate-700">
+              Vil du se mer om timesats for yrket?{" "}
+              <Link
+                className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary-strong)]/30 underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href={hourlySalaryHref}
+              >
+                Se estimert timelønn for {formattedOccupationTitle}
+              </Link>
+              .
+            </p>
+          ) : null}
           <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
             <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
             <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>

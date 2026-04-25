@@ -48,7 +48,7 @@ function createHourlySalaryPage(
   };
 }
 
-function buildHourlySalarySlugFromOccupationSlug(occupationSlug: string) {
+export function buildHourlySalarySlugFromOccupationSlug(occupationSlug: string) {
   if (occupationSlug.endsWith("-lonn")) {
     return `${occupationSlug.slice(0, -"-lonn".length)}-timelonn`;
   }

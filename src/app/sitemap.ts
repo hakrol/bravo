@@ -84,6 +84,12 @@ const staticRoutes = [
     changeFrequency: "weekly" as const,
   },
   {
+    path: "/timelonn",
+    filePath: "src/app/timelonn/page.tsx",
+    priority: 0.7,
+    changeFrequency: "weekly" as const,
+  },
+  {
     path: "/laerling",
     filePath: "src/app/laerling/page.tsx",
     priority: 0.7,
