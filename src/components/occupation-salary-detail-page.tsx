@@ -15,6 +15,7 @@ import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-work
 import type { OccupationDescription } from "@/lib/occupation-descriptions";
 import type { OccupationDetailPage } from "@/lib/occupation-detail-pages";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
+import { buildHourlySalarySlugFromOccupationSlug } from "@/lib/hourly-salary-pages";
 import {
   buildOccupationMedianGrowthOverview,
   type OccupationMedianSalaryRow,
@@ -148,6 +149,7 @@ export async function OccupationSalaryDetailPage({
   const detailPage = detailPageOverride;
   const relatedPages = relatedPagesOverride ?? [];
   const formattedOccupationLabel = formatOccupationDisplayLabel(detailPage.label);
+  const hourlySalaryHref = `/timelonn/${buildHourlySalarySlugFromOccupationSlug(detailPage.slug)}`;
   const {
     trendData,
     distribution,
@@ -367,6 +369,7 @@ export async function OccupationSalaryDetailPage({
             id="lonnsutregning"
           >
             <OccupationSalaryEstimate
+              hourlySalaryHref={hourlySalaryHref}
               monthlySalary={currentSalary}
               monthlySalaryMen={currentSalaryMen}
               monthlySalaryWomen={currentSalaryWomen}

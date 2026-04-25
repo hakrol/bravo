@@ -96,10 +96,6 @@ export default async function HourlySalaryPage({ params }: HourlySalaryPageProps
     menP75Hourly: hourlyDistribution?.men?.p75,
   });
 
-  const sourceNote = buildSourceNote({
-    periodLabel: distribution?.periodLabel ?? averageOverview.periodLabel,
-  });
-
   const faqItems = buildFaqItems({
     occupationLabel: page.titleOccupationLabel,
     periodLabel: distribution?.periodLabel ?? averageOverview.periodLabel,
@@ -121,7 +117,6 @@ export default async function HourlySalaryPage({ params }: HourlySalaryPageProps
       latestHourlyPoint={latestHourlyPoint}
       latestMonthlyPoint={latestMonthlyPoint}
       page={page}
-      sourceNote={sourceNote}
       summaryText={summaryText}
     />
   );
@@ -176,12 +171,6 @@ function buildTopSummary({
   return [medianSentence, sourceSentence]
     .filter((part): part is string => Boolean(part))
     .join(" ");
-}
-
-function buildSourceNote({ periodLabel }: { periodLabel?: string }) {
-  const periodText = periodLabel ? ` for ${periodLabel}` : "";
-
-  return `Tallene på denne siden er hentet fra Statistisk sentralbyrå (SSB) og bygger på offisiell lønnsstatistikk${periodText}. Timelønn er regnet om fra samlet månedslønn for å gi et mer sammenlignbart bilde av nivået i yrket.`;
 }
 
 function buildFaqItems({

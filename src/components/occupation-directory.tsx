@@ -7,27 +7,41 @@ export type OccupationDirectoryItem = {
   occupationCode: string;
   title: string;
   monthlySalary?: number;
+  salaryValue?: number;
   href?: string;
   searchText?: string;
 };
 
 type OccupationDirectoryProps = {
   items: OccupationDirectoryItem[];
+  valueLabel?: string;
+  filterLabel?: string;
+  salaryFilters?: SalaryFilterOption[];
 };
 
-type SalaryFilter = "all" | "under-40000" | "40000-60000" | "60000-80000" | "over-80000";
+type SalaryFilterOption = {
+  value: string;
+  label: string;
+  min?: number;
+  max?: number;
+};
 
-const salaryFilters: Array<{ value: SalaryFilter; label: string }> = [
+const defaultSalaryFilters: SalaryFilterOption[] = [
   { value: "all", label: "Alle lønnsnivå" },
-  { value: "under-40000", label: "Under 40 000 kr" },
-  { value: "40000-60000", label: "40 000-60 000 kr" },
-  { value: "60000-80000", label: "60 000-80 000 kr" },
-  { value: "over-80000", label: "Over 80 000 kr" },
+  { value: "under-40000", label: "Under 40 000 kr", max: 40000 },
+  { value: "40000-60000", label: "40 000-60 000 kr", min: 40000, max: 60000 },
+  { value: "60000-80000", label: "60 000-80 000 kr", min: 60000, max: 80000 },
+  { value: "over-80000", label: "Over 80 000 kr", min: 80000 },
 ];
 
-export function OccupationDirectory({ items }: OccupationDirectoryProps) {
+export function OccupationDirectory({
+  items,
+  valueLabel = "Samlet månedslønn",
+  filterLabel = "Filtrer på lønn",
+  salaryFilters = defaultSalaryFilters,
+}: OccupationDirectoryProps) {
   const [query, setQuery] = useState("");
-  const [salaryFilter, setSalaryFilter] = useState<SalaryFilter>("all");
+  const [salaryFilter, setSalaryFilter] = useState("all");
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = normalizeText(deferredQuery);
 
@@ -35,7 +49,7 @@ export function OccupationDirectory({ items }: OccupationDirectoryProps) {
     const searchableText = item.searchText ?? `${item.title} ${item.occupationCode}`;
     const matchesQuery =
       normalizedQuery.length === 0 || normalizeText(searchableText).includes(normalizedQuery);
-    const matchesSalary = matchesSalaryFilter(item.monthlySalary, salaryFilter);
+    const matchesSalary = matchesSalaryFilter(getSalaryValue(item), salaryFilter, salaryFilters);
 
     return matchesQuery && matchesSalary;
   });
@@ -56,11 +70,11 @@ export function OccupationDirectory({ items }: OccupationDirectoryProps) {
         </label>
 
         <label className="grid gap-2" htmlFor="salary-filter">
-          <span className="text-sm font-semibold text-slate-950">Filtrer på lønn</span>
+          <span className="text-sm font-semibold text-slate-950">{filterLabel}</span>
           <select
             id="salary-filter"
             className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-            onChange={(event) => setSalaryFilter(event.target.value as SalaryFilter)}
+            onChange={(event) => setSalaryFilter(event.target.value)}
             value={salaryFilter}
           >
             {salaryFilters.map((filter) => (
@@ -88,9 +102,9 @@ export function OccupationDirectory({ items }: OccupationDirectoryProps) {
                   {item.title}
                 </h2>
                 <p className="mt-3 text-sm font-medium text-slate-600">
-                  Samlet månedslønn:{" "}
+                  {valueLabel}:{" "}
                   <span className="font-semibold text-[var(--primary-strong)]">
-                    {formatCurrency(item.monthlySalary)}
+                    {formatCurrency(getSalaryValue(item))}
                   </span>
                 </p>
               </>
@@ -130,7 +144,11 @@ export function OccupationDirectory({ items }: OccupationDirectoryProps) {
   );
 }
 
-function matchesSalaryFilter(value: number | undefined, filter: SalaryFilter) {
+function matchesSalaryFilter(
+  value: number | undefined,
+  filter: string,
+  salaryFilters: SalaryFilterOption[],
+) {
   if (filter === "all") {
     return true;
   }
@@ -139,19 +157,25 @@ function matchesSalaryFilter(value: number | undefined, filter: SalaryFilter) {
     return false;
   }
 
-  if (filter === "under-40000") {
-    return value < 40000;
+  const filterOption = salaryFilters.find((option) => option.value === filter);
+
+  if (!filterOption) {
+    return true;
   }
 
-  if (filter === "40000-60000") {
-    return value >= 40000 && value < 60000;
+  if (filterOption.min !== undefined && value < filterOption.min) {
+    return false;
   }
 
-  if (filter === "60000-80000") {
-    return value >= 60000 && value < 80000;
+  if (filterOption.max !== undefined && value >= filterOption.max) {
+    return false;
   }
 
-  return value >= 80000;
+  return true;
+}
+
+function getSalaryValue(item: OccupationDirectoryItem) {
+  return item.salaryValue ?? item.monthlySalary;
 }
 
 function formatCurrency(value?: number) {

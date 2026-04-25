@@ -13,6 +13,7 @@ import {
 } from "@/lib/occupation-five-year-growth";
 import type { OccupationDetailViewModel } from "@/lib/occupation-detail-view-models";
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
+import { buildHourlySalarySlugFromOccupationSlug } from "@/lib/hourly-salary-pages";
 
 type OccupationDetailDemoPageProps = {
   detail: OccupationDetailViewModel;
@@ -73,6 +74,7 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
   const estimateMonthlySalary = distribution?.total?.median;
   const estimateMonthlySalaryWomen = distribution?.women?.median;
   const estimateMonthlySalaryMen = distribution?.men?.median;
+  const hourlySalaryHref = `/timelonn/${buildHourlySalarySlugFromOccupationSlug(detail.detailPage.slug)}`;
   const salaryCompositionCards = buildSalaryCompositionCards({
     distribution,
     contractedDistribution,
@@ -257,6 +259,16 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                     >
                       Les også hvor mye mer kan man be om i lønn?
                     </Link>
+                  </p>
+                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    Vil du se mer om timesats for yrket?{" "}
+                    <Link
+                      className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
+                      href={hourlySalaryHref}
+                    >
+                      Se estimert timelønn for {occupationText.titleLabel}
+                    </Link>
+                    .
                   </p>
                 </div>
                 <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
