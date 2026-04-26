@@ -11,6 +11,7 @@ import {
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
+import { BlogTeacherHourlySalaryChart, BlogTeacherSalaryChart } from "@/components/blog-teacher-salary-chart";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
 
 function slugifyHeading(value: string) {
@@ -137,6 +138,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogChart,
     BlogHandverkerSalaryChart,
     BlogOccupationSalaryTable,
+    BlogTeacherHourlySalaryChart,
+    BlogTeacherSalaryChart,
     NorwayOccupationSalary2025Chart,
     SalaryJumpBarChart,
     SalaryLevelStackedChart,

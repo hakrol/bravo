@@ -1,0 +1,122 @@
+{
+  "id": "laerere-lonn-2025",
+  "title": "Hva er vanlig lønn for lærere?",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "reference": {
+    "label": "Alle yrker",
+    "value": 55800
+  },
+  "note": "Tallene gjelder månedslønn for begge kjønn, alle sektorer, heltids- og deltidsansatte samlet. Prosent i figuren viser avvik fra medianen for alle yrker.",
+  "chart": {
+    "title": "Hva er vanlig lærerlønn?",
+    "kicker": "LÆRERLØNN",
+    "subtitleLabel": "Median månedslønn",
+    "subtitleText": "i kroner for utvalgte læreryrker, SSB 2025",
+    "brandText": null,
+    "rows": [
+      {
+        "label": "Universitets- og høyskolelektorer/-lærere",
+        "value": 62740
+      },
+      {
+        "label": "Lektorer mv. (videregående skole)",
+        "value": 61930
+      },
+      {
+        "label": "Grunnskolelærere",
+        "value": 58750
+      },
+      {
+        "label": "Yrkesfaglærere",
+        "value": 56300
+      },
+      {
+        "label": "Alle yrker",
+        "value": 55800,
+        "highlight": true
+      },
+      {
+        "label": "Førskole-/barnehagelærere",
+        "value": 53550
+      }
+    ]
+  },
+  "hourlyChart": {
+    "title": "Timelønnen til lærere",
+    "kicker": "LÆRERLØNN",
+    "subtitleLabel": "Estimert timelønn",
+    "subtitleText": "månedslønn regnet om med 1 950 arbeidstimer i året",
+    "rows": [
+      {
+        "label": "UH-lærere",
+        "hrefLabel": "Universitets- og høyskolelektorer/-lærere",
+        "value": 386
+      },
+      {
+        "label": "Lektorer vgs",
+        "hrefLabel": "Lektorer mv. (videregående skole)",
+        "value": 381
+      },
+      {
+        "label": "Grunnskole",
+        "hrefLabel": "Grunnskolelærere",
+        "value": 362
+      },
+      {
+        "label": "Yrkesfag",
+        "hrefLabel": "Yrkesfaglærere",
+        "value": 346
+      },
+      {
+        "label": "Alle yrker",
+        "hrefLabel": "Alle yrker",
+        "value": 343,
+        "highlight": true
+      },
+      {
+        "label": "Barnehage",
+        "hrefLabel": "Førskole-/barnehagelærere",
+        "value": 330
+      }
+    ]
+  },
+  "rows": [
+    {
+      "code": "2310",
+      "label": "Universitets- og høyskolelektorer/-lærere",
+      "href": "/yrke/universitets-og-hoyskolelektorer-laerere-lonn",
+      "value": 62740,
+      "differenceFromAllOccupationsPercent": 12.4
+    },
+    {
+      "code": "2330",
+      "label": "Lektorer mv. (videregående skole)",
+      "href": "/yrke/lektorer-mv-videregaende-skole-lonn",
+      "value": 61930,
+      "differenceFromAllOccupationsPercent": 11.0
+    },
+    {
+      "code": "2341",
+      "label": "Grunnskolelærere",
+      "href": "/yrke/grunnskolelaerere-lonn",
+      "value": 58750,
+      "differenceFromAllOccupationsPercent": 5.3
+    },
+    {
+      "code": "2320",
+      "label": "Yrkesfaglærere",
+      "href": "/yrke/yrkesfaglaerere-lonn",
+      "value": 56300,
+      "differenceFromAllOccupationsPercent": 0.9
+    },
+    {
+      "code": "2342",
+      "label": "Førskole-/barnehagelærere",
+      "href": "/yrke/forskole-barnehagelaerere-lonn",
+      "value": 53550,
+      "differenceFromAllOccupationsPercent": -4.0
+    }
+  ]
+}
