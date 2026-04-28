@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AppShell } from "@/components/app-shell";
@@ -9,6 +10,8 @@ import "./globals.css";
 const manrope = Manrope({
   subsets: ["latin"],
 });
+
+const adsenseClientId = "ca-pub-3073306475357950";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -58,6 +61,13 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
+      <Script
+        id="google-adsense"
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+        crossOrigin="anonymous"
+        strategy="beforeInteractive"
+      />
       <body className="flex min-h-screen flex-col">
         <AppShell>{children}</AppShell>
         <Analytics />
