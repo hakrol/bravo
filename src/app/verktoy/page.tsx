@@ -24,6 +24,12 @@ const tools = [
     description:
       "Beregn hvor mye du kan låne til bolig, og se om inntekt, betjeningsevne eller egenkapital begrenser deg.",
   },
+  {
+    href: "/sammenlign-lonn",
+    label: "Sammenlign lønn",
+    description:
+      "Sammenlign to yrker side om side med lønn, alder, antall i jobb og reallønnsvekst.",
+  },
 ] as const;
 
 export const metadata: Metadata = {
