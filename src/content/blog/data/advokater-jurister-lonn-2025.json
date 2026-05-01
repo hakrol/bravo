@@ -1,0 +1,46 @@
+{
+  "id": "advokater-jurister-lonn-2025",
+  "title": "Hva tjener advokater og jurister?",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025.",
+  "rows": [
+    {
+      "code": "2612",
+      "label": "Dommere",
+      "href": "/yrke/dommere-lonn",
+      "value": 118470
+    },
+    {
+      "code": "261",
+      "label": "Juridiske yrker",
+      "href": "/yrkesgrupper",
+      "value": 81630
+    },
+    {
+      "code": "2611",
+      "label": "Jurister og advokater",
+      "href": "/yrke/jurister-og-advokater-lonn",
+      "value": 80830
+    },
+    {
+      "code": "2619",
+      "label": "Andre juridiske yrker",
+      "href": "/yrke/andre-juridiske-yrker-lonn",
+      "value": 72920
+    },
+    {
+      "code": "3342",
+      "label": "Advokatsekretær",
+      "href": "/yrke/advokatsekretaer-lonn",
+      "value": 54930
+    },
+    {
+      "code": "0-9",
+      "label": "Alle yrker",
+      "href": "/yrker",
+      "value": 55800
+    }
+  ]
+}

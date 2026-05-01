@@ -9,6 +9,10 @@ description: Skriv, oppdater og kvalitetssikre blogginnlegg for Bravo-prosjektet
 
 Bruk denne skillen når arbeidet gjelder blogginnhold eller bloggoppsett i dette prosjektet. Følg eksisterende bloggstruktur, skriv på norsk bokmål, og prioriter gjenbrukbare komponenter og felles stiler fremfor lokale spesialløsninger.
 
+Blogginnleggene skal hjelpe norske lesere med å forstå lønn, lønnsstatistikk, yrker, utdanning og karrierevalg. Innholdet skal gjøre det lettere å ta gode valg, stille bedre spørsmål og bruke lønnsdata på en praktisk måte.
+
+Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller eller fagterminologi. Tonen skal være konkret, hjelpsom og rolig, uten salgspreg, overdrevne løfter eller generiske SEO-avsnitt.
+
 ## Arbeidsflyt
 
 1. Les alltid [src/content/blog/README.md](src/content/blog/README.md) før du skriver eller oppdaterer et blogginnlegg.
@@ -23,6 +27,14 @@ Bruk denne skillen når arbeidet gjelder blogginnhold eller bloggoppsett i dette
    - innhold i innlegget hvis bare teksten skal endres
    - MDX-komponenter hvis flere innlegg skal bruke samme mønster
    - globale bloggstiler hvis uttrykket skal gjenbrukes på tvers av innlegg
+5. For automatiserte blogginnlegg: bruk `skills/blogginnlegg/daily-brief.md` som tema-kø og kjøringsbrief, men ikke dupliser generelle bloggstandarder der.
+
+## Arbeidskopi og synk
+
+- Desktop/Bravo-prosjektet er den stabile innholdskilden for blogginnlegg.
+- Når en midlertidig Codex-worktree brukes til utkast eller forhåndsvisning, må hele bloggpakken synkes samlet til Desktop/Bravo før temaet regnes som ferdig.
+- Ikke kryss av temaer i `daily-brief.md` hvis MDX-fil, snapshot, public-assets og relevante komponentendringer bare finnes i en annen worktree.
+- Når et innlegg er godkjent for publisering, skal status i Desktop/Bravo vise hele endringen samlet.
 
 ## Filer og ansvar
 
@@ -52,6 +64,9 @@ Bruk denne skillen når arbeidet gjelder blogginnhold eller bloggoppsett i dette
 - Skriv på norsk bokmål og bruk `ÆØÅ`.
 - Skriv konkret, tydelig og uten fluff.
 - Bruk `du` når brukeren ber om direkte rådgivende bloggtekst.
+- Forklar vanskelige begreper enkelt, uten å bli barnslig.
+- Skill mellom fakta, tolkning og råd.
+- Unngå amerikanske karriereråd som ikke passer norske forhold.
 - Bruk `##` og `###` for struktur. Det gir automatisk innholdsfortegnelse.
 - Hold frontmatter ryddig og komplett.
 - Legg nye innlegg i `src/content/blog/`.
@@ -62,6 +77,7 @@ Bruk denne skillen når arbeidet gjelder blogginnhold eller bloggoppsett i dette
 - Skriv blogginnlegg rundt én tydelig hovedintensjon per side.
 - Sørg for at tittel, ingress, mellomtitler og brødtekst svarer på samme spørsmål.
 - Bruk `title`, `description`, `seoTitle`, `seoDescription` og `slug` aktivt, ikke som ettertanke.
+- `description` skal fungere som en engasjerende hook på bloggforsiden, ikke bare som en nøktern oppsummering.
 - Hold `slug` kort, beskrivende og skrevet med små bokstaver og bindestreker.
 - Unngå duplisering mellom blogginnlegg med nesten samme søkeintensjon.
 - Bruk viktige nøkkelord naturlig, ikke mekanisk.
@@ -72,6 +88,15 @@ Bruk denne skillen når arbeidet gjelder blogginnhold eller bloggoppsett i dette
 - Bruk tom `alt` på dekorative bilder som ikke tilfører informasjon.
 - Sørg for at hero-bilder også er relevante for temaet, siden de brukes i metadata og deling.
 - Unngå keyword stuffing i `alt`-tekst og filnavn.
+
+## Data og SSB
+
+- Hvis innlegget bruker SSB-data, følg reglene i `/lib/ssb/docs.md` når filen finnes i prosjektet.
+- Bruk eksisterende funksjoner i `/lib/ssb/queries.ts` når innlegget krever nye SSB-uttrekk.
+- Ikke konstruer rå SSB-kall inne i komponenter eller blogginnlegg.
+- Datadrevne innlegg som handler om en bestemt periode, for eksempel 2025, skal bruke et frosset snapshot under `src/content/blog/data/`.
+- Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
+- Forklar kilde, periode, målemetode og viktige avgrensninger når tall brukes.
 
 ## Regler for bloggkomponenter
 
@@ -101,10 +126,13 @@ Bruk beskrivende `alt`-tekst når bildet settes inn i MDX.
 ## Kvalitetssjekk før du er ferdig
 
 - Stemmer `slug`, `coverImage` og filplassering?
+- Er `description` en presis hook som gir leseren lyst til å åpne innlegget?
 - Har innlegget tydelige `##`-overskrifter?
 - Bruker innlegget riktige bloggkomponenter i stedet for lokale hacks?
 - Ser sitater, eksempler og tabeller ut som ulike elementtyper?
 - Er endringen gjort på riktig nivå: innhold, komponent eller global stil?
+- Hvis innlegget bruker data: finnes det et frosset snapshot når perioden er historisk?
+- Hvis automasjonen brukes: er `daily-brief.md` bare krysset av etter at hele bloggpakken ligger i samme arbeidskopi?
 
 ## Når du må endre bloggdesignet
 

@@ -61,14 +61,14 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
-      <Script
-        id="google-adsense"
-        async
-        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
-        crossOrigin="anonymous"
-        strategy="beforeInteractive"
-      />
       <body className="flex min-h-screen flex-col">
+        <Script
+          id="google-adsense"
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <AppShell>{children}</AppShell>
         <Analytics />
         <SpeedInsights />

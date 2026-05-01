@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import advokaterJuristerLonn2025Snapshot from "@/content/blog/data/advokater-jurister-lonn-2025.json";
 import bestBetalteYrker2025Snapshot from "@/content/blog/data/best-betalte-yrker-2025.json";
 import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025.json";
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
@@ -26,6 +27,7 @@ type OccupationSalarySnapshot = {
 const rowsPerPage = 25;
 
 const snapshots = {
+  "advokater-jurister-lonn-2025": advokaterJuristerLonn2025Snapshot as OccupationSalarySnapshot,
   "best-betalte-yrker-2025": bestBetalteYrker2025Snapshot as OccupationSalarySnapshot,
   "butikksjef-lonn-2025": butikksjefLonn2025Snapshot as OccupationSalarySnapshot,
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,

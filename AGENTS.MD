@@ -19,6 +19,7 @@ Before changing App Router, metadata, routing, server actions, caching, or data 
 
 - Når du lager eller oppdaterer blogginnlegg, skal `description` fungere som en engasjerende hook på bloggforsiden, ikke bare en nøktern oppsummering. Den skal gi leseren lyst til å klikke videre, samtidig som den er presis og ikke overdriver innholdet.
 - Datadrevne blogginnlegg som handler om en bestemt periode, for eksempel "2025", skal bruke et frosset snapshot av tallgrunnlaget. Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
+- Desktop/Bravo-prosjektet er stabil innholdskilde for blogginnlegg. Hvis en midlertidig Codex-worktree brukes til utkast eller forhåndsvisning, skal MDX-fil, snapshot, public-assets, relevante komponentendringer og `daily-brief.md` synkes samlet til Desktop/Bravo før temaet regnes som ferdig.
 
 ## Execution model
 
