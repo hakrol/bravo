@@ -832,16 +832,23 @@ function buildInsightSummaryItems({
     metricType: "growth",
     formatter: formatPercent,
   });
+  const items: InsightSummaryItem[] = [];
 
-  return [salary, people, growth].filter(
-    (item): item is {
-      label: string;
-      text: string;
-      tone: "positive" | "neutral";
-      bars?: Array<{ label: string; value: number; percent: number }>;
-    } => Boolean(item),
-  );
+  for (const item of [salary, people, growth]) {
+    if (item) {
+      items.push(item);
+    }
+  }
+
+  return items;
 }
+
+type InsightSummaryItem = {
+  label: string;
+  text: string;
+  tone: "positive" | "neutral";
+  bars?: Array<{ label: string; value: number; percent: number }>;
+};
 
 function buildHeroInsightText({
   firstLabel,
