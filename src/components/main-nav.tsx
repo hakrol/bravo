@@ -13,6 +13,7 @@ const navItems = [
 
 const toolItems = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
+  { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
   { href: "/lanekalkulator", label: "Lånekalkulator" },
   { href: "/lonnsjekk", label: "Lønnssjekk" },
 ] as const;
