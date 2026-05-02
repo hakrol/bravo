@@ -3,6 +3,7 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  HealthSalaryBubbleChart,
   NorwayOccupationSalary2025Chart,
   SalaryJumpBarChart,
   SalaryLevelStackedChart,
@@ -137,6 +138,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ),
     BlogChart,
     BlogHandverkerSalaryChart,
+    HealthSalaryBubbleChart,
     BlogOccupationSalaryTable,
     BlogTeacherHourlySalaryChart,
     BlogTeacherSalaryChart,

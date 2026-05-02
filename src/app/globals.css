@@ -653,10 +653,22 @@ body {
   padding: 1.55rem 0 1.05rem;
 }
 
+.blog-chart-bubble-figure {
+  border-top: 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  background: #fff7ee;
+  padding: 2.2rem clamp(1rem, 4vw, 2.2rem) 1.1rem;
+}
+
 .blog-chart-header {
   display: grid;
   gap: 1rem;
   align-items: start;
+}
+
+.blog-chart-bubble-figure .blog-chart-header {
+  justify-items: center;
+  text-align: center;
 }
 
 .blog-chart-kicker {
@@ -667,6 +679,13 @@ body {
   letter-spacing: 0.13em;
   line-height: 1.2;
   text-transform: uppercase;
+}
+
+.blog-chart-bubble-figure .blog-chart-kicker {
+  color: #111111;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
 }
 
 .blog-prose .blog-chart-title,
@@ -680,12 +699,27 @@ body {
   line-height: 1.08;
 }
 
+.blog-prose .blog-chart-bubble-figure .blog-chart-title,
+.blog-chart-bubble-figure .blog-chart-title {
+  max-width: 18ch;
+  font-size: clamp(2.15rem, 7vw, 3.85rem);
+  font-weight: 780;
+  line-height: 0.98;
+}
+
 .blog-chart-subtitle {
   margin: 0.72rem 0 0;
   max-width: 60ch;
   color: #4b5563;
   font-size: 0.98rem;
   line-height: 1.68;
+}
+
+.blog-chart-bubble-figure .blog-chart-subtitle {
+  max-width: 42rem;
+  color: #2d2b28;
+  font-size: 1rem;
+  line-height: 1.62;
 }
 
 .blog-chart-tooltip {
@@ -1031,6 +1065,109 @@ body {
 .blog-chart-svg-wrap circle:focus-visible {
   outline: none;
   filter: drop-shadow(0 0 0.28rem rgba(20, 83, 45, 0.42));
+}
+
+.blog-chart-bubble-wrap {
+  margin-top: 1.6rem;
+  padding-bottom: 0.35rem;
+  scrollbar-width: none;
+}
+
+.blog-chart-bubble-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.blog-chart-bubble-wrap svg {
+  min-width: 720px;
+}
+
+.blog-chart-bubble-gridline {
+  stroke: rgba(17, 17, 17, 0.045);
+  stroke-width: 1;
+}
+
+.blog-chart-bubble-axis {
+  stroke: rgba(17, 17, 17, 0.32);
+  stroke-width: 1.6;
+}
+
+.blog-chart-bubble {
+  cursor: pointer;
+  filter: drop-shadow(0 0.42rem 0.95rem rgba(44, 32, 24, 0.1));
+  transition:
+    opacity 150ms ease,
+    r 150ms ease,
+    stroke 150ms ease;
+}
+
+.blog-chart-bubble-label {
+  fill: #211f1c;
+  font-size: 0.9rem;
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.12;
+  pointer-events: none;
+}
+
+.blog-chart-bubble-tick {
+  fill: #26231f;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 760;
+  letter-spacing: 0;
+}
+
+.blog-chart-bubble-axis-label {
+  fill: #5f5a53;
+  font-size: 0.82rem;
+  font-weight: 720;
+  letter-spacing: 0;
+}
+
+.blog-chart-bubble-tooltip {
+  pointer-events: auto;
+}
+
+.blog-chart-bubble-tooltip-bg {
+  fill: rgba(255, 249, 241, 0.96);
+  stroke: rgba(17, 17, 17, 0.12);
+  stroke-width: 1;
+  filter: drop-shadow(0 0.8rem 1.25rem rgba(44, 32, 24, 0.16));
+}
+
+.blog-chart-bubble-tooltip-title {
+  fill: #171412;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.blog-chart-bubble-tooltip-label {
+  fill: #6f6257;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.blog-chart-bubble-tooltip-value {
+  fill: #241f1a;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 760;
+  letter-spacing: 0;
+}
+
+.blog-chart-bubble-tooltip-emphasis {
+  fill: #102f1d;
+  font-size: 0.84rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 840;
+  letter-spacing: 0;
+}
+
+.blog-chart-bubble-figure .blog-chart-footer {
+  border-top-color: rgba(17, 17, 17, 0.1);
+  color: #6d6258;
 }
 
 .blog-chart-footer {
