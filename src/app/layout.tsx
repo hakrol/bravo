@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AppShell } from "@/components/app-shell";
@@ -62,12 +61,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
       <body className="flex min-h-screen flex-col">
-        <Script
+        <script
           id="google-adsense"
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
         <AppShell>{children}</AppShell>
         <Analytics />
