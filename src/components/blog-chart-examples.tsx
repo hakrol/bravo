@@ -1,5 +1,73 @@
 import { BlogChart, type BlogChartDatum } from "@/components/blog-chart";
 
+const healthSalaryBubbleData: BlogChartDatum[] = [
+  {
+    label: "Jordmødre",
+    value: 69660,
+    size: 2976,
+    note: "Høyest median månedslønn i dette utvalget.",
+  },
+  {
+    label: "Spesialsykepleiere",
+    value: 63810,
+    size: 30211,
+  },
+  {
+    label: "Farmasøyter",
+    value: 62840,
+    size: 1882,
+  },
+  {
+    label: "Ambulansepersonell",
+    value: 59260,
+    size: 5638,
+  },
+  {
+    label: "Radiografer mv.",
+    value: 58080,
+    size: 3157,
+  },
+  {
+    label: "Sykepleiere",
+    value: 57830,
+    size: 61314,
+    category: "highlight",
+    note: "Median månedslønn for sykepleiere i 2025.",
+  },
+  {
+    label: "Helsefagarbeidere",
+    value: 51430,
+    size: 96139,
+    note: "Største yrkesgruppe i dette helseutvalget målt i antall lønnstakere.",
+  },
+  {
+    label: "Helsesekretærer",
+    value: 45710,
+    size: 9284,
+  },
+  {
+    label: "Andre pleiemedarbeidere",
+    value: 45070,
+    size: 71067,
+  },
+];
+
+export function HealthSalaryBubbleChart() {
+  return (
+    <BlogChart
+      data={healthSalaryBubbleData}
+      format="currency"
+      note="Median månedslønn gjelder 2025 fra SSB tabell 11418. Antall lønnstakere gjelder 2025K4 fra SSB tabell 11658, begge kjønn og alle aldre."
+      source="SSB tabell 11418 og 11658"
+      sort="none"
+      subtitle="Boblens plassering viser median månedslønn. Boblens størrelse viser antall lønnstakere i yrket."
+      title="Lønn og arbeidstakere i helsesektoren"
+      type="bubble"
+      xAxisLabel="Median månedslønn"
+    />
+  );
+}
+
 export function SalaryJumpBarChart() {
   return (
     <BlogChart

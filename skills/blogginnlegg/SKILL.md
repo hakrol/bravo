@@ -74,6 +74,33 @@ Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller ell
 - Legg nye innlegg i `src/content/blog/`.
 - Legg bilder i `public/blogg/<slug>/`.
 
+## Diagramkrav for datadrevne blogginnlegg
+
+Etablerte bloggdiagrammer:
+- Boblediagram: `<BlogChart type="bubble" />`
+- Stolpediagram: `<BlogChart type="bar-horizontal" />`
+- Søkbar yrkesliste: `<BlogOccupationSalaryTable snapshotId="..." />`
+
+
+Datadrevne blogginnlegg skal som hovedregel inneholde minst 2 visuelle dataelementer. Velg blant disse tre etablerte diagramtypene:
+
+- `BlogChart` med `type="bubble"`
+  Brukes når innlegget skal vise sammenheng mellom lønnsnivå og størrelse på yrkesgruppe. `value` er median månedslønn, og `size` er antall lønnstakere.
+
+- `BlogChart` med `type="bar-horizontal"`
+  Brukes når innlegget skal rangere yrker, grupper eller sammenligningspunkter etter lønn. Dette er standardvalget når leseren skal se hvem som tjener mest eller minst.
+
+- `BlogOccupationSalaryTable`
+  Brukes som søkbar liste/tabell over yrker fra et frosset snapshot under `src/content/blog/data/`. Tabellen passer når innlegget har flere relevante yrker enn det som bør vises i et diagram.
+
+Minstekrav:
+- Bruk minst 2 av disse i datadrevne blogginnlegg.
+- Bruk aldri to diagrammer rett etter hverandre uten forklarende tekst mellom.
+- Velg `BlogOccupationSalaryTable` når leseren bør kunne søke eller bla i flere yrker.
+- Velg boblediagram når antall lønnstakere er en viktig del av poenget.
+- Velg horisontalt stolpediagram når sortering/rangering er hovedpoenget.
+
+
 ## SEO-regler
 
 - Skriv blogginnlegg rundt én tydelig hovedintensjon per side.

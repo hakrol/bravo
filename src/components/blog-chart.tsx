@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export type BlogChartDatum = {
   label: string;
   value: number;
+  size?: number;
+  sizeLabel?: string;
   category?: string;
   note?: string;
 };
@@ -29,7 +31,7 @@ export type BlogChartStackedCategory = {
 };
 
 export type BlogChartFormat = "currency" | "number" | "percent";
-export type BlogChartType = "bar-horizontal" | "bar-vertical" | "line" | "area" | "stacked-bar";
+export type BlogChartType = "bar-horizontal" | "bar-vertical" | "line" | "area" | "stacked-bar" | "bubble";
 
 type BlogChartProps = {
   title: string;
@@ -57,6 +59,8 @@ type ActivePoint = {
   label: string;
   seriesLabel?: string;
   value: number;
+  size?: number;
+  sizeLabel?: string;
   note?: string;
   color: string;
   categoryLabel?: string;
@@ -136,6 +140,16 @@ export function BlogChart({
         series={normalizedSeries}
         yAxisLabel={yAxisLabel}
       />
+    ) : resolvedType === "bubble" ? (
+      <BubbleChart
+        activePoint={activePoint}
+        formatter={formatter}
+        highlightColor={highlightColor}
+        onActivePointChange={setActivePoint}
+        primaryColor={primaryColor}
+        series={normalizedSeries}
+        xAxisLabel={xAxisLabel}
+      />
     ) : (
       <LineChart
         activePoint={activePoint}
@@ -148,10 +162,13 @@ export function BlogChart({
     );
 
   return (
-    <figure className="blog-chart" aria-labelledby={`${slugify(title)}-title`}>
+    <figure
+      className={`blog-chart${resolvedType === "bubble" ? " blog-chart-bubble-figure" : ""}`}
+      aria-labelledby={`${slugify(title)}-title`}
+    >
       <div className="blog-chart-header">
         <div>
-          <p className="blog-chart-kicker">Grafikk</p>
+          {resolvedType === "bubble" ? null : <p className="blog-chart-kicker">Grafikk</p>}
           <h3 className="blog-chart-title" id={`${slugify(title)}-title`}>
             {title}
           </h3>
@@ -168,6 +185,332 @@ export function BlogChart({
       </figcaption>
     </figure>
   );
+}
+
+function BubbleChart({
+  activePoint,
+  formatter,
+  highlightColor,
+  onActivePointChange,
+  primaryColor,
+  series,
+  xAxisLabel,
+}: {
+  activePoint: ActivePoint | null;
+  formatter: (value: number) => string;
+  highlightColor: string;
+  onActivePointChange: (point: ActivePoint | null) => void;
+  primaryColor: string;
+  series: BlogChartSeries[];
+  xAxisLabel?: string;
+}) {
+  const [lockedLabel, setLockedLabel] = useState<string | null>(null);
+  const points = series[0].points.filter((point) => typeof point.size === "number" && point.size > 0);
+
+  if (points.length === 0) {
+    return null;
+  }
+
+  const width = 920;
+  const height = 520;
+  const padding = { top: 78, right: 118, bottom: 92, left: 118 };
+  const plotWidth = width - padding.left - padding.right;
+  const plotHeight = height - padding.top - padding.bottom;
+  const values = points.map((point) => point.value);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const ticks = buildBubbleTicks(minValue, maxValue);
+  const axisMin = ticks[0];
+  const axisMax = ticks[ticks.length - 1];
+  const maxSize = Math.max(...points.map((point) => point.size ?? 0), 1);
+
+  const xForValue = (value: number) =>
+    padding.left + ((value - axisMin) / Math.max(axisMax - axisMin, 1)) * plotWidth;
+  const layoutPoints = points.map((point, index) => {
+    const color = getBubbleColor(point, index, primaryColor, highlightColor);
+    const radius = getBubbleRadius(point, maxSize);
+    const x = xForValue(point.value);
+    const y = padding.top + getBubbleLane(point.label, index) * plotHeight;
+
+    return {
+      point,
+      activePayload: {
+        ...point,
+        color,
+        seriesLabel: series[0].label !== "Verdi" ? series[0].label : undefined,
+      },
+      color,
+      labelOffset: getBubbleLabelOffset(point.label, radius),
+      radius,
+      x,
+      y,
+    };
+  });
+  const activeLayout = activePoint ? layoutPoints.find((entry) => entry.point.label === activePoint.label) : undefined;
+
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setLockedLabel(null);
+        onActivePointChange(null);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onActivePointChange]);
+
+  function closeTooltip() {
+    setLockedLabel(null);
+    onActivePointChange(null);
+  }
+
+  function showHoverTooltip(point: ActivePoint) {
+    if (!lockedLabel) {
+      onActivePointChange(point);
+    }
+  }
+
+  function hideHoverTooltip() {
+    if (!lockedLabel) {
+      onActivePointChange(null);
+    }
+  }
+
+  function toggleLockedTooltip(point: ActivePoint) {
+    if (lockedLabel === point.label) {
+      closeTooltip();
+      return;
+    }
+
+    setLockedLabel(point.label);
+    onActivePointChange(point);
+  }
+
+  return (
+    <div className="blog-chart-svg-wrap blog-chart-bubble-wrap" onClick={closeTooltip} onMouseLeave={hideHoverTooltip}>
+      <svg onClick={closeTooltip} role="img" viewBox={`0 0 ${width} ${height}`}>
+        {xAxisLabel ? <title>{xAxisLabel}</title> : null}
+        {ticks.map((tick) => {
+          const x = xForValue(tick);
+
+          return (
+            <g key={tick}>
+              <line className="blog-chart-bubble-gridline" x1={x} x2={x} y1={padding.top + 12} y2={padding.top + plotHeight - 8} />
+              <text className="blog-chart-bubble-tick" textAnchor="middle" x={x} y={height - 42}>
+                {tick.toLocaleString("nb-NO")}
+              </text>
+            </g>
+          );
+        })}
+        <line
+          className="blog-chart-bubble-axis"
+          x1={padding.left}
+          x2={width - padding.right}
+          y1={padding.top + plotHeight}
+          y2={padding.top + plotHeight}
+        />
+        {layoutPoints.map(({ activePayload, color, labelOffset, point, radius, x, y }) => {
+          const active = activePoint?.label === point.label;
+          const hasActivePoint = Boolean(activePoint);
+          const labelX = clamp(x + labelOffset.x, padding.left + 70, width - padding.right - 70);
+          const labelY = clamp(y + labelOffset.y, padding.top + 22, padding.top + plotHeight - 18);
+          const showLabel = shouldShowBubbleLabel(point, radius);
+          const sizeText = point.sizeLabel ?? `${(point.size ?? 0).toLocaleString("nb-NO")} lønnstakere`;
+
+          return (
+            <g key={point.label}>
+              <circle
+                aria-label={`${point.label}: ${formatter(point.value)}, ${sizeText}`}
+                className="blog-chart-bubble"
+                cx={x}
+                cy={y}
+                fill={color}
+                opacity={active ? 0.98 : hasActivePoint ? Math.max(getBubbleOpacity(point) - 0.18, 0.34) : getBubbleOpacity(point)}
+                r={active ? radius * 1.06 : radius}
+                role="button"
+                stroke={active ? "#101820" : "rgba(255, 247, 238, 0.92)"}
+                strokeWidth={active ? 2.4 : 1.8}
+                tabIndex={0}
+                onBlur={hideHoverTooltip}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleLockedTooltip(activePayload);
+                }}
+                onFocus={() => showHoverTooltip(activePayload)}
+                onMouseEnter={() => showHoverTooltip(activePayload)}
+              />
+              {showLabel ? (
+                <text className="blog-chart-bubble-label" textAnchor={labelOffset.anchor} x={labelX} y={labelY}>
+                  {point.label}
+                </text>
+              ) : null}
+            </g>
+          );
+        })}
+        {activeLayout ? (
+          <BubbleTooltip
+            formatter={formatter}
+            height={height}
+            point={activeLayout.point}
+            radius={activeLayout.radius}
+            width={width}
+            x={activeLayout.x}
+            y={activeLayout.y}
+          />
+        ) : null}
+        {xAxisLabel ? (
+          <text className="blog-chart-bubble-axis-label" textAnchor="middle" x={padding.left + plotWidth / 2} y={height - 10}>
+            {xAxisLabel}
+          </text>
+        ) : null}
+      </svg>
+    </div>
+  );
+}
+
+function BubbleTooltip({
+  formatter,
+  height,
+  point,
+  radius,
+  width,
+  x,
+  y,
+}: {
+  formatter: (value: number) => string;
+  height: number;
+  point: BlogChartDatum;
+  radius: number;
+  width: number;
+  x: number;
+  y: number;
+}) {
+  const tooltipWidth = 236;
+  const tooltipHeight = 132;
+  const gap = 18;
+  const preferredX = x + radius + gap;
+  const preferredY = y - radius - tooltipHeight + 14;
+  const tooltipX = preferredX + tooltipWidth > width - 24 ? x - radius - gap - tooltipWidth : preferredX;
+  const tooltipY = preferredY < 20 ? y + radius + gap : preferredY;
+  const safeX = clamp(tooltipX, 20, width - tooltipWidth - 20);
+  const safeY = clamp(tooltipY, 20, height - tooltipHeight - 20);
+  const employees = `${(point.size ?? 0).toLocaleString("nb-NO")} lønnstakere`;
+
+  return (
+    <g className="blog-chart-bubble-tooltip" onClick={(event) => event.stopPropagation()} role="group">
+      <rect className="blog-chart-bubble-tooltip-bg" height={tooltipHeight} rx="8" width={tooltipWidth} x={safeX} y={safeY} />
+      <text className="blog-chart-bubble-tooltip-title" x={safeX + 16} y={safeY + 28}>
+        {point.label}
+      </text>
+      <text className="blog-chart-bubble-tooltip-label" x={safeX + 16} y={safeY + 58}>
+        Median månedslønn
+      </text>
+      <text className="blog-chart-bubble-tooltip-value" x={safeX + 16} y={safeY + 76}>
+        {formatter(point.value)}
+      </text>
+      <text className="blog-chart-bubble-tooltip-label" x={safeX + 16} y={safeY + 102}>
+        Antall lønnstakere
+      </text>
+      <text className="blog-chart-bubble-tooltip-emphasis" x={safeX + 16} y={safeY + 120}>
+        {employees}
+      </text>
+    </g>
+  );
+}
+
+function buildBubbleTicks(minValue: number, maxValue: number) {
+  if (minValue >= 40000 && maxValue <= 80000) {
+    return [45000, 54000, 63000, 71000, 80000];
+  }
+
+  const axisMin = Math.max(0, Math.floor(minValue / 5000) * 5000);
+  const axisMax = getNiceAxisMax(maxValue);
+  return buildTicks(axisMin, axisMax, 4);
+}
+
+function getBubbleColor(point: BlogChartDatum, index: number, primaryColor: string, highlightColor: string) {
+  if (point.category === "reference") {
+    return "#9ca3af";
+  }
+
+  if (point.category === "highlight") {
+    return highlightColor;
+  }
+
+  if (point.label === "Jordmødre") {
+    return "#ff4a2f";
+  }
+
+  if (point.label === "Spesialsykepleiere") {
+    return "#d8c0ac";
+  }
+
+  const backgroundPalette = ["#8a9a8c", "#d8cfc3", "#7c8f82", "#c9b8a7", "#aab0a3"];
+  return backgroundPalette[index % backgroundPalette.length] ?? primaryColor;
+}
+
+function getBubbleOpacity(point: BlogChartDatum) {
+  if (point.category === "highlight") {
+    return 0.96;
+  }
+
+  if (["Jordmødre", "Spesialsykepleiere"].includes(point.label)) {
+    return 0.86;
+  }
+
+  return 0.62;
+}
+
+function getBubbleRadius(point: BlogChartDatum, maxSize: number) {
+  const radius = 13 + Math.sqrt((point.size ?? 0) / maxSize) * 21;
+
+  if (point.category === "highlight") {
+    return radius + 5;
+  }
+
+  return radius;
+}
+
+function getBubbleLane(label: string, index: number) {
+  const lanes: Record<string, number> = {
+    Sykepleiere: 0.49,
+    Helsefagarbeidere: 0.74,
+    "Andre pleiemedarbeidere": 0.28,
+    Jordmødre: 0.18,
+    Spesialsykepleiere: 0.35,
+    Farmasøyter: 0.62,
+    Ambulansepersonell: 0.84,
+    "Radiografer mv.": 0.52,
+    Helsesekretærer: 0.88,
+  };
+
+  return lanes[label] ?? [0.42, 0.24, 0.7, 0.56][index % 4];
+}
+
+function shouldShowBubbleLabel(point: BlogChartDatum, radius: number) {
+  return (
+    point.category === "highlight" ||
+    radius >= 23 ||
+    ["Jordmødre", "Spesialsykepleiere", "Helsefagarbeidere"].includes(point.label)
+  );
+}
+
+function getBubbleLabelOffset(label: string, radius: number): { x: number; y: number; anchor: "start" | "middle" | "end" } {
+  const offsets: Record<string, { x: number; y: number; anchor: "start" | "middle" | "end" }> = {
+    "Jordmødre": { x: 0, y: -radius - 12, anchor: "middle" },
+    "Spesialsykepleiere": { x: radius + 14, y: 4, anchor: "start" },
+    Sykepleiere: { x: 0, y: radius + 24, anchor: "middle" },
+    Helsefagarbeidere: { x: 0, y: radius + 25, anchor: "middle" },
+    "Andre pleiemedarbeidere": { x: radius + 15, y: 4, anchor: "start" },
+    Helsesekretærer: { x: radius + 13, y: 4, anchor: "start" },
+  };
+
+  return offsets[label] ?? { x: radius + 12, y: 4, anchor: "start" };
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
 }
 
 function StackedBarChart({
