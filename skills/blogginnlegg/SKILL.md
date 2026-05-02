@@ -63,6 +63,8 @@ Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller ell
 
 - Skriv på norsk bokmål og bruk `ÆØÅ`.
 - Skriv konkret, tydelig og uten fluff.
+- Unngå fet tekst for å fremheve poeng
+- Første setning i innlegget skal være en engasjerende hook, men ikke bruk den samme hook-strukturen i hvert innlegg. Hook skal være relevant for temaet, ikke en generisk klisjé. Maks 2-3 setninger.
 - Bruk `du` når brukeren ber om direkte rådgivende bloggtekst.
 - Forklar vanskelige begreper enkelt, uten å bli barnslig.
 - Skill mellom fakta, tolkning og råd.

@@ -59,7 +59,7 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
-- [ ] Hva tjener sykepleiere og andre helsearbeidere?
+- [x] Hva tjener sykepleiere og andre helsearbeidere? - `src/content/blog/hva-tjener-sykepleiere-og-andre-helsearbeidere.mdx` - 2026-05-02
 - [ ] Hva er lønnen til en lege?
 - [ ] Hva tjener en kirurg?
 - [ ] Hvilket yrke tjener mest?
