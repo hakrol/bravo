@@ -10,7 +10,7 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const adsenseClientId = "ca-pub-3073306475357950";
+const adsenseClientId = "ca-pub-8107670237938150";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),

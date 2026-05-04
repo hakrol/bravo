@@ -280,3 +280,48 @@ export function NorwayOccupationSalary2025Chart() {
     />
   );
 }
+
+const doctorSalaryBubbleData: BlogChartDatum[] = [
+  {
+    label: "Legespesialister",
+    value: 107160,
+    size: 18271,
+    sizeLabel: "18 271 lønnstakere",
+    category: "highlight",
+    note: "Høyest median månedslønn i dette utvalget.",
+  },
+  {
+    label: "Allmennpraktiserende leger",
+    value: 83080,
+    size: 8888,
+    sizeLabel: "8 888 lønnstakere",
+  },
+  {
+    label: "Spesialsykepleiere",
+    value: 63810,
+    size: 30211,
+    sizeLabel: "30 211 lønnstakere",
+  },
+  {
+    label: "Sykepleiere",
+    value: 57830,
+    size: 61314,
+    sizeLabel: "61 314 lønnstakere",
+  },
+];
+
+export function DoctorSalaryBubbleChart() {
+  return (
+    <BlogChart
+      data={doctorSalaryBubbleData}
+      format="currency"
+      note="Median månedslønn gjelder 2025 fra SSB tabell 11418. Antall lønnstakere gjelder 2025K4 fra SSB tabell 11658."
+      sort="none"
+      source="SSB tabell 11418 og 11658"
+      subtitle="Boblens plassering viser median månedslønn. Boblens størrelse viser antall lønnstakere."
+      title="Legeyrkene er høytlønte, men ikke størst"
+      type="bubble"
+      xAxisLabel="Median månedslønn"
+    />
+  );
+}

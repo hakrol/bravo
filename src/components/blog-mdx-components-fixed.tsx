@@ -3,14 +3,17 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  DoctorSalaryBubbleChart,
   HealthSalaryBubbleChart,
   NorwayOccupationSalary2025Chart,
   SalaryJumpBarChart,
   SalaryLevelStackedChart,
   SsbSalaryExampleChart,
 } from "@/components/blog-chart-examples";
+import { DoctorSalaryEditorialChart } from "@/components/blog-doctor-salary-chart";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
+import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import { BlogTeacherHourlySalaryChart, BlogTeacherSalaryChart } from "@/components/blog-teacher-salary-chart";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
@@ -137,9 +140,13 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       </td>
     ),
     BlogChart,
+    DoctorSalaryBubbleChart,
+    DoctorSalaryEditorialChart,
     BlogHandverkerSalaryChart,
     HealthSalaryBubbleChart,
     BlogOccupationSalaryTable,
+    SurgeonSalaryBubbleChart,
+    SurgeonSalaryEditorialChart,
     BlogTeacherHourlySalaryChart,
     BlogTeacherSalaryChart,
     NorwayOccupationSalary2025Chart,

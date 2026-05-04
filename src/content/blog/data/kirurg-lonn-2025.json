@@ -1,0 +1,64 @@
+{
+  "id": "kirurg-lonn-2025",
+  "title": "Hva tjener en kirurg?",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. SSB-tallet for kirurg er her lest gjennom nærmeste tilgjengelige yrkesgruppe: legespesialister.",
+  "rows": [
+    {
+      "code": "2212",
+      "label": "Legespesialister",
+      "href": "/yrke/legespesialister-lonn",
+      "value": 107160
+    },
+    {
+      "code": "2211",
+      "label": "Allmennpraktiserende leger",
+      "href": "/yrke/allmennpraktiserende-leger-lonn",
+      "value": 83080
+    },
+    {
+      "code": "2261",
+      "label": "Tannleger",
+      "href": "/yrke/tannleger-lonn",
+      "value": 75000
+    },
+    {
+      "code": "2250",
+      "label": "Veterinærer",
+      "href": "/yrke/veterinaerer-lonn",
+      "value": 66270
+    },
+    {
+      "code": "2269",
+      "label": "Kiropraktorer mv.",
+      "href": "/yrke/kiropraktorer-mv-lonn",
+      "value": 65900
+    },
+    {
+      "code": "2221",
+      "label": "Spesialsykepleiere",
+      "href": "/yrke/spesialsykepleiere-lonn",
+      "value": 63810
+    },
+    {
+      "code": "2262",
+      "label": "Farmasøyter",
+      "href": "/yrke/farmasoyter-lonn",
+      "value": 62840
+    },
+    {
+      "code": "2223",
+      "label": "Sykepleiere",
+      "href": "/yrke/sykepleiere-lonn",
+      "value": 57830
+    },
+    {
+      "code": "0-9",
+      "label": "Alle yrker",
+      "href": "/yrker",
+      "value": 55800
+    }
+  ]
+}
