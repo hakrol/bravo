@@ -8,6 +8,7 @@ import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 import kirurgLonn2025Snapshot from "@/content/blog/data/kirurg-lonn-2025.json";
 import legeLonn2025Snapshot from "@/content/blog/data/lege-lonn-2025.json";
+import psykologLonn2025Snapshot from "@/content/blog/data/psykolog-lonn-2025.json";
 import sykepleiereHelsearbeidereLonn2025Snapshot from "@/content/blog/data/sykepleiere-helsearbeidere-lonn-2025.json";
 
 type OccupationSalaryRow = {
@@ -36,6 +37,7 @@ const snapshots = {
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
   "kirurg-lonn-2025": kirurgLonn2025Snapshot as OccupationSalarySnapshot,
   "lege-lonn-2025": legeLonn2025Snapshot as OccupationSalarySnapshot,
+  "psykolog-lonn-2025": psykologLonn2025Snapshot as OccupationSalarySnapshot,
   "sykepleiere-helsearbeidere-lonn-2025": sykepleiereHelsearbeidereLonn2025Snapshot as OccupationSalarySnapshot,
 };
 

@@ -1,0 +1,80 @@
+{
+  "id": "psykolog-lonn-2025",
+  "title": "Hvor mye tjener en psykolog?",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025.",
+  "rows": [
+    {
+      "label": "Legespesialister",
+      "href": "/yrke/legespesialister-lonn",
+      "value": 107160
+    },
+    {
+      "label": "Allmennpraktiserende leger",
+      "href": "/yrke/allmennpraktiserende-leger-lonn",
+      "value": 83080
+    },
+    {
+      "label": "Tannleger",
+      "href": "/yrke/tannleger-lonn",
+      "value": 75000
+    },
+    {
+      "label": "Psykologer",
+      "href": "/yrke/psykologer-lonn",
+      "value": 66270
+    },
+    {
+      "label": "Kiropraktorer mv.",
+      "href": "/yrke/kiropraktorer-mv-lonn",
+      "value": 65900
+    },
+    {
+      "label": "Spesialsykepleiere",
+      "href": "/yrke/spesialsykepleiere-lonn",
+      "value": 63810
+    },
+    {
+      "label": "Farmasøyter",
+      "href": "/yrke/farmasoyter-lonn",
+      "value": 62840
+    },
+    {
+      "label": "Ernæringsfysiologer",
+      "href": "/yrke/ernaeringsfysiologer-lonn",
+      "value": 59380
+    },
+    {
+      "label": "Sykepleiere",
+      "href": "/yrke/sykepleiere-lonn",
+      "value": 57830
+    },
+    {
+      "label": "Vernepleiere",
+      "href": "/yrke/vernepleiere-lonn",
+      "value": 57190
+    },
+    {
+      "label": "Alle yrker",
+      "href": "/yrker",
+      "value": 55800
+    },
+    {
+      "label": "Audiografer og logopeder",
+      "href": "/yrke/audiografer-og-logopeder-lonn",
+      "value": 54410
+    },
+    {
+      "label": "Fysioterapeuter",
+      "href": "/yrke/fysioterapeuter-lonn",
+      "value": 54350
+    },
+    {
+      "label": "Ergoterapeuter",
+      "href": "/yrke/ergoterapeuter-lonn",
+      "value": 52780
+    }
+  ]
+}

@@ -38,6 +38,7 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
     author: "Kristian",
+    draft: data.draft === true,
     seoTitle: trimOptionalString(data.seoTitle),
     seoDescription: trimOptionalString(data.seoDescription),
   };
@@ -100,6 +101,10 @@ export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
       const { data, content } = matter(source);
       const frontmatter = normalizeFrontmatter(data);
 
+      if (frontmatter.draft) {
+        return null;
+      }
+
       return {
         ...frontmatter,
         readingTimeMinutes: calculateReadingTimeMinutes(content),
@@ -107,7 +112,7 @@ export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
     }),
   );
 
-  return posts.sort(
+  return posts.filter((post): post is BlogPostPreview => Boolean(post)).sort(
     (left, right) => new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime(),
   );
 });
@@ -115,16 +120,21 @@ export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
 export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
   try {
     const source = await fs.readFile(path.join(BLOG_DIRECTORY, `${slug}.mdx`), "utf8");
+    const { data } = matter(source);
+    const normalizedFrontmatter = normalizeFrontmatter(data);
+
+    if (normalizedFrontmatter.draft) {
+      return null;
+    }
+
     const tableOfContents = extractTableOfContents(source);
-    const { content, frontmatter } = await compileMDX<BlogFrontmatter>({
+    const { content } = await compileMDX<BlogFrontmatter>({
       source,
       components: buildBlogMdxComponentsFixed(tableOfContents),
       options: {
         parseFrontmatter: true,
       },
     });
-
-    const normalizedFrontmatter = normalizeFrontmatter(frontmatter);
 
     return {
       ...normalizedFrontmatter,

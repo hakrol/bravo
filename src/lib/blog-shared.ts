@@ -7,6 +7,7 @@ export type BlogFrontmatter = {
   publishedAt: string;
   coverImage: string;
   author: string;
+  draft?: boolean;
   seoTitle?: string;
   seoDescription?: string;
 };
