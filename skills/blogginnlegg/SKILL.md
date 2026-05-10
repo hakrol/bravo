@@ -76,29 +76,35 @@ Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller ell
 
 ## Diagramkrav for datadrevne blogginnlegg
 
-Etablerte bloggdiagrammer:
+Produksjonsklare visuelle dataelementer:
 - Boblediagram: `<BlogChart type="bubble" />`
-- Stolpediagram: `<BlogChart type="bar-horizontal" />`
+- Redaksjonelt stolpediagram: egen bloggkomponent bygget på `EditorialDivergingBarChart`
 - Søkbar yrkesliste: `<BlogOccupationSalaryTable snapshotId="..." />`
 
 
-Datadrevne blogginnlegg skal som hovedregel inneholde minst 2 visuelle dataelementer. Velg blant disse tre etablerte diagramtypene:
+Datadrevne blogginnlegg skal som hovedregel inneholde minst 2 visuelle dataelementer. Velg blant disse tre produksjonsklare typene:
 
 - `BlogChart` med `type="bubble"`
-  Brukes når innlegget skal vise sammenheng mellom lønnsnivå og størrelse på yrkesgruppe. `value` er median månedslønn, og `size` er antall lønnstakere.
+  Brukes når innlegget skal vise sammenheng mellom lønnsnivå og størrelse på yrkesgruppe. Lag en egen wrapper-komponent i `src/components/` og la `value` komme fra et frosset snapshot når innlegget handler om en bestemt periode. `size` er antall lønnstakere og kan komme fra samme snapshot hvis det finnes der, eller fra en tydelig navngitt tilleggsmap når tallet kommer fra en annen SSB-tabell. Bruk datafeltene `lane`, `labelOffset`, `showLabel`, `color` og `opacity` hvis bobleplasseringen må finjusteres. Ikke legg nye yrkesnavn-spesialtilfeller inn i selve `BlogChart`.
 
-- `BlogChart` med `type="bar-horizontal"`
-  Brukes når innlegget skal rangere yrker, grupper eller sammenligningspunkter etter lønn. Dette er standardvalget når leseren skal se hvem som tjener mest eller minst.
+- Redaksjonelt stolpediagram
+  Brukes når innlegget skal rangere yrker, grupper eller sammenligningspunkter etter lønn. Lag en egen bloggkomponent i `src/components/` som bruker `EditorialDivergingBarChart`, slik eksisterende lege-, kirurg- og lærerdiagrammer gjør. La rader og kilde komme fra frosset snapshot når perioden er historisk; wrapper-komponenten kan velge hvilke rader som skal vises og hvilket punkt som skal markeres med `highlight`. Ikke bruk den gamle horisontale `BlogChart`-varianten i nye blogginnlegg.
 
 - `BlogOccupationSalaryTable`
   Brukes som søkbar liste/tabell over yrker fra et frosset snapshot under `src/content/blog/data/`. Tabellen passer når innlegget har flere relevante yrker enn det som bør vises i et diagram.
+
+Arbeidsmønster:
+- Bruk wrapper-komponent for boblediagram og redaksjonelt stolpediagram, slik at MDX-en bare inneholder en kort komponent som `<DoctorSalaryBubbleChart />`.
+- Bruk `BlogOccupationSalaryTable` direkte i MDX med `snapshotId`.
+- For historiske datainnlegg skal tallgrunnlaget ligge i `src/content/blog/data/`; ikke hardkod historiske lønnstall direkte i MDX eller i diagramkomponenten hvis snapshot finnes.
+- Hold selve diagramkomponentene generiske. Tema-, yrkes- og artikkelspesifikke valg skal ligge i wrapper-komponenten eller snapshot-data.
 
 Minstekrav:
 - Bruk minst 2 av disse i datadrevne blogginnlegg.
 - Bruk aldri to diagrammer rett etter hverandre uten forklarende tekst mellom.
 - Velg `BlogOccupationSalaryTable` når leseren bør kunne søke eller bla i flere yrker.
 - Velg boblediagram når antall lønnstakere er en viktig del av poenget.
-- Velg horisontalt stolpediagram når sortering/rangering er hovedpoenget.
+- Velg redaksjonelt stolpediagram når sortering/rangering er hovedpoenget.
 
 ## Interne lenker
 - Interne lenker skal legges inn naturlig i teksten. For eksempel "Se også vår yrkesside for elektrikere", hvor lenken er på "elektrikere".

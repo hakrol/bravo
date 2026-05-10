@@ -9,6 +9,16 @@ export type BlogChartDatum = {
   sizeLabel?: string;
   category?: string;
   note?: string;
+  color?: string;
+  opacity?: number;
+  lane?: number;
+  labelOffset?: {
+    x: number;
+    y: number;
+    anchor?: "start" | "middle" | "end";
+  };
+  showLabel?: boolean;
+  radiusBoost?: number;
 };
 
 export type BlogChartSeries = {
@@ -230,7 +240,7 @@ function BubbleChart({
     const color = getBubbleColor(point, index, primaryColor, highlightColor);
     const radius = getBubbleRadius(point, maxSize);
     const x = xForValue(point.value);
-    const y = padding.top + getBubbleLane(point.label, index) * plotHeight;
+    const y = padding.top + getBubbleLane(point, index) * plotHeight;
 
     return {
       point,
@@ -240,7 +250,7 @@ function BubbleChart({
         seriesLabel: series[0].label !== "Verdi" ? series[0].label : undefined,
       },
       color,
-      labelOffset: getBubbleLabelOffset(point.label, radius),
+      labelOffset: getBubbleLabelOffset(point, radius),
       radius,
       x,
       y,
@@ -430,6 +440,10 @@ function buildBubbleTicks(minValue: number, maxValue: number) {
 }
 
 function getBubbleColor(point: BlogChartDatum, index: number, primaryColor: string, highlightColor: string) {
+  if (point.color) {
+    return point.color;
+  }
+
   if (point.category === "reference") {
     return "#9ca3af";
   }
@@ -451,6 +465,10 @@ function getBubbleColor(point: BlogChartDatum, index: number, primaryColor: stri
 }
 
 function getBubbleOpacity(point: BlogChartDatum) {
+  if (typeof point.opacity === "number") {
+    return point.opacity;
+  }
+
   if (point.category === "highlight") {
     return 0.96;
   }
@@ -466,13 +484,17 @@ function getBubbleRadius(point: BlogChartDatum, maxSize: number) {
   const radius = 13 + Math.sqrt((point.size ?? 0) / maxSize) * 21;
 
   if (point.category === "highlight") {
-    return radius + 5;
+    return radius + (point.radiusBoost ?? 5);
   }
 
-  return radius;
+  return radius + (point.radiusBoost ?? 0);
 }
 
-function getBubbleLane(label: string, index: number) {
+function getBubbleLane(point: BlogChartDatum, index: number) {
+  if (typeof point.lane === "number") {
+    return point.lane;
+  }
+
   const lanes: Record<string, number> = {
     Sykepleiere: 0.49,
     Helsefagarbeidere: 0.74,
@@ -485,10 +507,14 @@ function getBubbleLane(label: string, index: number) {
     Helsesekretærer: 0.88,
   };
 
-  return lanes[label] ?? [0.42, 0.24, 0.7, 0.56][index % 4];
+  return lanes[point.label] ?? [0.42, 0.24, 0.7, 0.56][index % 4];
 }
 
 function shouldShowBubbleLabel(point: BlogChartDatum, radius: number) {
+  if (typeof point.showLabel === "boolean") {
+    return point.showLabel;
+  }
+
   return (
     point.category === "highlight" ||
     radius >= 23 ||
@@ -496,7 +522,15 @@ function shouldShowBubbleLabel(point: BlogChartDatum, radius: number) {
   );
 }
 
-function getBubbleLabelOffset(label: string, radius: number): { x: number; y: number; anchor: "start" | "middle" | "end" } {
+function getBubbleLabelOffset(point: BlogChartDatum, radius: number): { x: number; y: number; anchor: "start" | "middle" | "end" } {
+  if (point.labelOffset) {
+    return {
+      anchor: point.labelOffset.anchor ?? "start",
+      x: point.labelOffset.x,
+      y: point.labelOffset.y,
+    };
+  }
+
   const offsets: Record<string, { x: number; y: number; anchor: "start" | "middle" | "end" }> = {
     "Jordmødre": { x: 0, y: -radius - 12, anchor: "middle" },
     "Spesialsykepleiere": { x: radius + 14, y: 4, anchor: "start" },
@@ -506,7 +540,7 @@ function getBubbleLabelOffset(label: string, radius: number): { x: number; y: nu
     Helsesekretærer: { x: radius + 13, y: 4, anchor: "start" },
   };
 
-  return offsets[label] ?? { x: radius + 12, y: 4, anchor: "start" };
+  return offsets[point.label] ?? { x: radius + 12, y: 4, anchor: "start" };
 }
 
 function clamp(value: number, min: number, max: number) {
