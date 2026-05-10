@@ -13,6 +13,7 @@ import {
   SsbSalaryExampleChart,
 } from "@/components/blog-chart-examples";
 import { DoctorSalaryEditorialChart } from "@/components/blog-doctor-salary-chart";
+import { ElectricianSalaryBubbleChart, ElectricianSalaryEditorialChart } from "@/components/blog-electrician-salary-chart";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
@@ -143,6 +144,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ),
     BlogChart,
     BlogElectricianSalaryChart,
+    ElectricianSalaryBubbleChart,
+    ElectricianSalaryEditorialChart,
     BlogPsychologistSalaryChart,
     DoctorSalaryBubbleChart,
     DoctorSalaryEditorialChart,

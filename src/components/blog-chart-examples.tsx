@@ -1,4 +1,12 @@
 import { BlogChart, type BlogChartDatum } from "@/components/blog-chart";
+import legeLonn2025Snapshot from "@/content/blog/data/lege-lonn-2025.json";
+
+type SalarySnapshot = {
+  rows: {
+    label: string;
+    value: number | null;
+  }[];
+};
 
 const electricianSalaryData: BlogChartDatum[] = [
   { label: "Automatikere", value: 60080 },
@@ -337,39 +345,41 @@ export function NorwayOccupationSalary2025Chart() {
   );
 }
 
-const doctorSalaryBubbleData: BlogChartDatum[] = [
-  {
-    label: "Legespesialister",
-    value: 107160,
-    size: 18271,
-    sizeLabel: "18 271 lønnstakere",
-    category: "highlight",
-    note: "Høyest median månedslønn i dette utvalget.",
-  },
-  {
-    label: "Allmennpraktiserende leger",
-    value: 83080,
-    size: 8888,
-    sizeLabel: "8 888 lønnstakere",
-  },
-  {
-    label: "Spesialsykepleiere",
-    value: 63810,
-    size: 30211,
-    sizeLabel: "30 211 lønnstakere",
-  },
-  {
-    label: "Sykepleiere",
-    value: 57830,
-    size: 61314,
-    sizeLabel: "61 314 lønnstakere",
-  },
-];
+const doctorBubbleLabels = ["Legespesialister", "Allmennpraktiserende leger", "Spesialsykepleiere", "Sykepleiere"];
+const doctorEmployeeSizesByLabel: Record<string, Pick<BlogChartDatum, "size" | "sizeLabel">> = {
+  Legespesialister: { size: 18271, sizeLabel: "18 271 lønnstakere" },
+  "Allmennpraktiserende leger": { size: 8888, sizeLabel: "8 888 lønnstakere" },
+  Spesialsykepleiere: { size: 30211, sizeLabel: "30 211 lønnstakere" },
+  Sykepleiere: { size: 61314, sizeLabel: "61 314 lønnstakere" },
+};
+
+function getDoctorSalaryBubbleData(): BlogChartDatum[] {
+  const snapshot = legeLonn2025Snapshot as SalarySnapshot;
+
+  return doctorBubbleLabels.flatMap((label) => {
+    const row = snapshot.rows.find((entry) => entry.label === label);
+    const employeeSize = doctorEmployeeSizesByLabel[label];
+
+    if (!row || typeof row.value !== "number" || !employeeSize) {
+      return [];
+    }
+
+    return [
+      {
+        label: row.label,
+        value: row.value,
+        ...employeeSize,
+        category: row.label === "Legespesialister" ? "highlight" : undefined,
+        note: row.label === "Legespesialister" ? "Høyest median månedslønn i dette utvalget." : undefined,
+      },
+    ];
+  });
+}
 
 export function DoctorSalaryBubbleChart() {
   return (
     <BlogChart
-      data={doctorSalaryBubbleData}
+      data={getDoctorSalaryBubbleData()}
       format="currency"
       note="Median månedslønn gjelder 2025 fra SSB tabell 11418. Antall lønnstakere gjelder 2025K4 fra SSB tabell 11658."
       sort="none"
