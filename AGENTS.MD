@@ -21,6 +21,19 @@ Before changing App Router, metadata, routing, server actions, caching, or data 
 - Datadrevne blogginnlegg som handler om en bestemt periode, for eksempel "2025", skal bruke et frosset snapshot av tallgrunnlaget. Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
 - Desktop/Bravo-prosjektet er stabil innholdskilde for blogginnlegg. Hvis en midlertidig Codex-worktree brukes til utkast eller forhåndsvisning, skal MDX-fil, snapshot, public-assets, relevante komponentendringer og `daily-brief.md` synkes samlet til Desktop/Bravo før temaet regnes som ferdig.
 
+## Bloggbrief
+
+Når et blogginnlegg lages fra tema-køen, skal briefen under temaet følges.
+
+Briefen kan inneholde:
+- Tittel
+- Beskrivelse av hva innlegget skal svare på, hensikt og mål
+- Overskrifter og mellomoverskrifter som skal brukes eller vurderes
+- Interne lenker som skal inn i teksten
+- Eksterne lenker som skal brukes som kilder eller videre lesing
+
+Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på prosjektreglene og eksisterende blogginnlegg.
+
 ## Execution model
 
 - Default to code generation, not autonomous execution

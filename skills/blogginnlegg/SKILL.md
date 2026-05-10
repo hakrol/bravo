@@ -100,6 +100,8 @@ Minstekrav:
 - Velg boblediagram når antall lønnstakere er en viktig del av poenget.
 - Velg horisontalt stolpediagram når sortering/rangering er hovedpoenget.
 
+## Interne lenker
+- Interne lenker skal legges inn naturlig i teksten. For eksempel "Se også vår yrkesside for elektrikere", hvor lenken er på "elektrikere".
 
 ## SEO-regler
 
@@ -141,7 +143,7 @@ Minstekrav:
 
 Følg reglene i [src/content/blog/README.md](src/content/blog/README.md):
 
-- hero-bilde: `cover.*`
+- hero-bilde: `yrke-lonn.*` - yrke er det sentrale temaet i innlegget, og lønn er det sentrale temaet i innlegget. Eksempel: `psykolog-lonn.*`
 - vanlige bilder: `inline-1.*`, `inline-2.*`
 - figurer og grafer: `figure-1.*`, `figure-2.*`
 

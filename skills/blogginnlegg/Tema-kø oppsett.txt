@@ -1,0 +1,28 @@
+### Ikke startet
+
+- [ ] Tittel på innlegg
+
+### Ikke startet
+
+[ ] Hva tjener en elektriker?
+Tittel:
+Hva tjener en elektriker?
+Beskrivelse:
+Innlegget skal gi leseren et klart svar på hva elektrikere tjener, hvilke faktorer som påvirker lønnen, og hvordan lønnsnivået varierer mellom ulike typer elektrikere og nærliggende håndverksyrker.
+
+Overskrifter:
+
+- Hva tjener en elektriker?
+- Hva er timelønnen til en elektriker?
+- Hvilke elektrikere tjener mest?
+
+Interne lenker:
+- /yrke/elektrikere-lonn
+- /laerling/elektrikere-laerling-lonn
+
+Eksterne lenker:
+
+
+### Ferdig
+
+- [x] Hva tjener advokater og jurister? - `src/content/blog/hva-tjener-advokater-og-jurister.mdx` - 2026-05-01

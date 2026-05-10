@@ -1,0 +1,18 @@
+{
+  "id": "elektriker-lonn-2025",
+  "title": "Hva tjener elektrikere og nærliggende håndverksyrker i 2025",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Utvalget er hentet fra frosset håndverker-snapshot for 2025.",
+  "rows": [
+    { "code": "7412", "label": "Automatikere", "href": "/yrke/automatikere-lonn", "value": 60080 },
+    { "code": "7413", "label": "Energimontører", "href": "/yrke/energimontorer-lonn", "value": 58140 },
+    { "code": "7411", "label": "Elektrikere", "href": "/yrke/elektrikere-lonn", "value": 54930 },
+    { "code": "7421", "label": "Serviceelektronikere", "href": "/yrke/serviceelektronikere-lonn", "value": 53570 },
+    { "code": "7126", "label": "Rørleggere og VVS-montører", "href": "/yrke/rorleggere-og-vvs-montorer-lonn", "value": 53750 },
+    { "code": "7422", "label": "Tele- og IKT-installatører", "href": "/yrke/tele-og-ikt-installatorer-lonn", "value": 48590 },
+    { "code": "7115", "label": "Tømrere og snekkere", "href": "/yrke/tomrere-og-snekkere-lonn", "value": 47900 },
+    { "code": "7131", "label": "Malere og byggtapetserere", "href": "/yrke/malere-og-byggtapetserere-lonn", "value": 45900 }
+  ]
+}

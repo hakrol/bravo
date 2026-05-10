@@ -1,5 +1,61 @@
 import { BlogChart, type BlogChartDatum } from "@/components/blog-chart";
 
+const electricianSalaryData: BlogChartDatum[] = [
+  { label: "Automatikere", value: 60080 },
+  { label: "Energimontører", value: 58140 },
+  { label: "Alle yrker", value: 55800 },
+  { label: "Elektrikere", value: 54930, category: "highlight" },
+  { label: "Rørleggere og VVS-montører", value: 53750 },
+  { label: "Serviceelektronikere", value: 53570 },
+  { label: "Tele- og IKT-installatører", value: 48590 },
+  { label: "Tømrere og snekkere", value: 47900 },
+];
+
+export function BlogElectricianSalaryChart() {
+  return (
+    <BlogChart
+      data={electricianSalaryData}
+      format="currency"
+      highlightLabel="Elektrikere"
+      note="Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025."
+      sort="descending"
+      source="SSB tabell 11418"
+      subtitle="Median månedslønn i 2025. Elektrikere sammenlignes med totalnivået og nærliggende håndverksyrker."
+      title="Elektrikere ligger tett på totalmedianen"
+      type="bar-horizontal"
+      xAxisLabel="Kroner per måned"
+    />
+  );
+}
+
+const psychologistSalaryData: BlogChartDatum[] = [
+  { label: "Legespesialister", value: 107160 },
+  { label: "Allmennpraktiserende leger", value: 83080 },
+  { label: "Tannleger", value: 75000 },
+  { label: "Psykologer", value: 66270, category: "highlight" },
+  { label: "Kiropraktorer mv.", value: 65900 },
+  { label: "Spesialsykepleiere", value: 63810 },
+  { label: "Sykepleiere", value: 57830 },
+  { label: "Alle yrker", value: 55800 },
+];
+
+export function BlogPsychologistSalaryChart() {
+  return (
+    <BlogChart
+      data={psychologistSalaryData}
+      format="currency"
+      highlightLabel="Psykologer"
+      note="Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025."
+      sort="descending"
+      source="SSB tabell 11418"
+      subtitle="Median månedslønn i utvalgte helseyrker. Stolpene viser 2025-tall fra SSB."
+      title="Psykologer ligger over mange helseyrker"
+      type="bar-horizontal"
+      xAxisLabel="Kroner per måned"
+    />
+  );
+}
+
 const healthSalaryBubbleData: BlogChartDatum[] = [
   {
     label: "Jordmødre",
