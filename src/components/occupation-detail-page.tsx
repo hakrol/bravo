@@ -155,7 +155,14 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   return (
     <main className="min-h-screen bg-[#f7fafc] text-slate-950">
       <section className="px-4 pb-6 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-7xl rounded-b-[8px] border-b border-l border-r border-black bg-[#0f2f22] px-5 py-6 shadow-[0_24px_60px_rgba(15,47,34,0.14)] sm:px-8 sm:py-8 lg:px-12">
+        <div
+          className="mx-auto w-full max-w-7xl rounded-b-[8px] bg-[#0f2f22] px-5 py-6 shadow-[0_24px_60px_rgba(15,47,34,0.14)] sm:px-8 sm:py-8 lg:px-12"
+          style={{
+            borderBottom: "2px solid #000",
+            borderLeft: "2px solid #000",
+            borderRight: "2px solid #000",
+          }}
+        >
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-end">
             <div className="max-w-4xl space-y-4">
               <h1 className="max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">
@@ -169,7 +176,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </div>
 
             <div className="lg:justify-self-end">
-              <div className="flex w-full max-w-sm items-start justify-between gap-4 rounded-md border border-black bg-white px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-5 lg:max-w-none">
+              <div
+                className="flex w-full max-w-sm items-start justify-between gap-4 rounded-[5px] bg-white px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-5 lg:max-w-none"
+                style={{ border: "2px solid #000" }}
+              >
                 <div className="flex items-start gap-3">
                   <span
                     aria-hidden="true"
@@ -213,7 +223,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
         <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
             {topSummary ? (
-              <section className="rounded-[5px] bg-[linear-gradient(135deg,rgba(244,239,230,0.72)_0%,rgba(230,240,234,0.78)_100%)] px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6">
+              <section
+                className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
+                style={{ border: "2px solid #000" }}
+              >
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Kort oppsummert
                 </p>
@@ -239,7 +252,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     {distributionSummary}
                   </p>
                 </div>
-                <div className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6">
+                <div
+                  className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6"
+                  style={{ border: "2px solid #000" }}
+                >
                   <OccupationSalaryDistributionSection distribution={distribution} />
                 </div>
               </section>
@@ -306,7 +322,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     .
                   </p>
                 </div>
-                <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
+                <div
+                  className="rounded-[5px] bg-white p-5 shadow-sm sm:p-6"
+                  style={{ border: "2px solid #000" }}
+                >
                   <OccupationSalaryEstimate
                     embedded
                     monthlySalary={estimateMonthlySalary}
@@ -328,41 +347,40 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     {relatedJobsSummary}
                   </p>
                 </div>
-                <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
-                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                    {relatedRows.map((row) => (
-                      <Link
-                        className="rounded-md border border-black/10 bg-[#f7fafc] px-4 py-4 transition hover:border-[var(--primary)]/40 hover:bg-white"
-                        href={row.href}
-                        key={row.occupationCode}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <span className="block text-base font-semibold text-slate-950">
-                            {formatOccupationDisplayLabel(row.occupationLabel)}
-                          </span>
-                          <span
-                            aria-hidden="true"
-                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700"
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {relatedRows.map((row) => (
+                    <Link
+                      className="rounded-[5px] bg-white px-4 py-4 transition hover:bg-[#f7fafc]"
+                      href={row.href}
+                      key={row.occupationCode}
+                      style={{ border: "2px solid #000" }}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="block text-base font-semibold text-slate-950">
+                          {formatOccupationDisplayLabel(row.occupationLabel)}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700"
+                        >
+                          <OccupationGroupIcon groupCode={row.groupCode} />
+                        </span>
+                      </div>
+                      <dl className="mt-4 space-y-3 text-sm">
+                        {buildRelatedJobSalaryRows(row).map((salaryRow) => (
+                          <div
+                            className="flex items-center justify-between gap-4 border-t border-black/10 pt-3"
+                            key={salaryRow.label}
                           >
-                            <OccupationGroupIcon groupCode={row.groupCode} />
-                          </span>
-                        </div>
-                        <dl className="mt-4 space-y-3 text-sm">
-                          {buildRelatedJobSalaryRows(row).map((salaryRow) => (
-                            <div
-                              className="flex items-center justify-between gap-4 border-t border-black/10 pt-3"
-                              key={salaryRow.label}
-                            >
-                              <dt className="text-slate-600">{salaryRow.label}</dt>
-                              <dd className="font-semibold text-slate-950">
-                                {formatKr(salaryRow.value)}
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                      </Link>
-                    ))}
-                  </div>
+                            <dt className="text-slate-600">{salaryRow.label}</dt>
+                            <dd className="font-semibold text-slate-950">
+                              {formatKr(salaryRow.value)}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </Link>
+                  ))}
                 </div>
               </section>
             ) : null}
@@ -390,7 +408,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
           </div>
 
-          <aside className="self-start space-y-7 rounded-[5px] border border-black/10 bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.04)]">
+          <aside
+            className="self-start space-y-7 rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.04)]"
+            style={{ border: "2px solid #000" }}
+          >
             <section>
               <p className="text-sm leading-6 text-slate-600">
                 Data fra{" "}
@@ -466,7 +487,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
       <section className="px-4 pb-10 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-7xl lg:pr-[364px]">
-          <div className="rounded-md border border-black/10 bg-white px-4 py-4 text-sm leading-6 text-slate-600 shadow-sm sm:px-5">
+          <div
+            className="rounded-[5px] bg-white px-4 py-4 text-sm leading-6 text-slate-600 shadow-sm sm:px-5"
+            style={{ border: "2px solid #000" }}
+          >
             <p>
               Hensikten med Lønnsinnsikt er å gjøre lønnsstatistikk enklere å forstå og bruke for
               flere.
@@ -499,7 +523,10 @@ type SalaryCompositionCardProps = {
 
 function SalaryCompositionCard({ card }: SalaryCompositionCardProps) {
   return (
-    <article className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6">
+    <article
+      className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6"
+      style={{ border: "2px solid #000" }}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-2">
           {card.icon ? <div className="mr-1 shrink-0">{card.icon}</div> : null}
