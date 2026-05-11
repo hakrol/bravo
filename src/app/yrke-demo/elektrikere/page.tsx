@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { OccupationDetailDemoPageV3 } from "@/components/occupation-detail-demo-page-v3";
+import { OccupationDetailPage } from "@/components/occupation-detail-page";
 import { getOccupationDetailViewModelBySlug } from "@/lib/occupation-detail-view-models";
 
 export const metadata: Metadata = {
@@ -23,5 +23,5 @@ export default async function ElektrikereDemoPage() {
     notFound();
   }
 
-  return <OccupationDetailDemoPageV3 detail={detail} />;
+  return <OccupationDetailPage detail={detail} />;
 }

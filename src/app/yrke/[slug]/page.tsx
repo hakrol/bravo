@@ -1,6 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { OccupationDetailDemoPageV3 } from "@/components/occupation-detail-demo-page-v3";
+import { OccupationDetailPage as OccupationDetailPageView } from "@/components/occupation-detail-page";
 import {
   formatOccupationDisplayLabel,
 } from "@/lib/occupation-detail-pages";
@@ -53,5 +53,5 @@ export default async function OccupationDetailPage({
     notFound();
   }
 
-  return <OccupationDetailDemoPageV3 detail={detail} />;
+  return <OccupationDetailPageView detail={detail} />;
 }

@@ -114,7 +114,10 @@ export function OccupationAgeTimeSeriesChart({
   const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
-    <section className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
+    <section
+      className="rounded-[5px] bg-white p-5 shadow-sm sm:p-6"
+      style={{ border: "2px solid #000" }}
+    >
       <div className="flex flex-col gap-4">
         <div className="space-y-2">
           <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">

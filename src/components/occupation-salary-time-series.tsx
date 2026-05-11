@@ -138,8 +138,8 @@ export function OccupationSalaryTimeSeriesChart({
   const isModern = variant === "modern";
   const isClassicEmphasis = variant === "classic-emphasis";
   const containerClasses = isModern
-    ? "rounded-md border border-black bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:p-6"
-    : `border bg-[var(--surface)] p-4 shadow-sm sm:p-6 ${containerClassName ?? "rounded-md"}`;
+    ? "rounded-[5px] bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:p-6"
+    : `bg-[var(--surface)] p-4 shadow-sm sm:p-6 ${containerClassName ?? "rounded-[5px]"}`;
   const chartFrameClasses = isModern
     ? "mt-6 overflow-x-auto rounded-md border border-black bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:p-4"
     : "mt-6 overflow-x-auto";
@@ -161,7 +161,7 @@ export function OccupationSalaryTimeSeriesChart({
 
   return (
     <section className="grid gap-6">
-      <section className={containerClasses}>
+      <section className={containerClasses} style={{ border: "2px solid #000" }}>
         <div className="flex flex-col gap-4">
           <div className="space-y-2">
             <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">

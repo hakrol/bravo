@@ -1,9 +1,9 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
-import type { OccupationSalaryDetailPageData } from "@/components/occupation-salary-detail-page";
 import type { OccupationDescription } from "@/lib/occupation-descriptions";
 import type { OccupationDetailPage } from "@/lib/occupation-detail-pages";
+import type { OccupationDetailPageData } from "@/lib/occupation-detail-view-model-types";
 
 const OCCUPATION_DETAIL_VIEW_MODELS_DIR = path.join(
   process.cwd(),
@@ -21,7 +21,7 @@ export type OccupationDetailViewModel = {
   detailPage: OccupationDetailPage;
   relatedPages: OccupationDetailPage[];
   occupationDescription: OccupationDescription | null;
-  data: OccupationSalaryDetailPageData;
+  data: OccupationDetailPageData;
 };
 
 type OccupationDetailViewModelIndex = {

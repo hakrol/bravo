@@ -15,16 +15,16 @@ import type { OccupationDetailViewModel } from "@/lib/occupation-detail-view-mod
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
 import { buildHourlySalarySlugFromOccupationSlug } from "@/lib/hourly-salary-pages";
 
-type OccupationDetailDemoPageProps = {
+type OccupationDetailPageProps = {
   detail: OccupationDetailViewModel;
 };
 
 const FEATURED_BLOG_POST = {
   href: "/blogg/hvordan-be-om-mer-lonn",
-  title: "Hvordan be om mer lønn",
+  title: "Hvordan be om mer lønn?",
 };
 
-const BLOG_DEMO_LINKS = [
+const BLOG_LINKS = [
   {
     href: "/blogg/hvor-mye-mer-kan-man-be-om-i-lonn",
     title: "Hvor mye mer kan man be om i lønn?",
@@ -32,6 +32,41 @@ const BLOG_DEMO_LINKS = [
   {
     href: "/blogg/nar-bor-man-be-om-hoyere-lonn",
     title: "Når bør man be om høyere lønn?",
+  },
+  {
+    href: "/blogg/hva-tjener-handverkere-disse-er-best-betalt",
+    title: "Hva tjener håndverkere?",
+  },
+  {
+    href: "/blogg/best-betalte-yrker-i-2025",
+    title: "Best betalte yrker i 2025",
+  },
+];
+
+const TOOL_LINKS = [
+  {
+    colorClassName: "text-sky-700",
+    href: "/lonnskalkulator",
+    icon: "calculator",
+    title: "Lønnskalkulator",
+  },
+  {
+    colorClassName: "text-emerald-700",
+    href: "/lonnsjekk",
+    icon: "check",
+    title: "Lønnssjekk",
+  },
+  {
+    colorClassName: "text-indigo-700",
+    href: "/sammenlign-lonn",
+    icon: "compare",
+    title: "Sammenlign lønn",
+  },
+  {
+    colorClassName: "text-amber-700",
+    href: "/lanekalkulator",
+    icon: "briefcase",
+    title: "Lånekalkulator",
   },
 ];
 
@@ -42,7 +77,7 @@ const EXTERNAL_SOURCE_LINKS = [
   },
 ];
 
-export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDemoPageProps) {
+export async function OccupationDetailPage({ detail }: OccupationDetailPageProps) {
   const occupationText = getOccupationTextContext({
     occupationCode: detail.detailPage.occupationCode,
     label: detail.detailPage.label,
@@ -120,7 +155,14 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
   return (
     <main className="min-h-screen bg-[#f7fafc] text-slate-950">
       <section className="px-4 pb-6 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-7xl rounded-b-[8px] border-b border-l border-r border-black bg-[#0f2f22] px-5 py-6 shadow-[0_24px_60px_rgba(15,47,34,0.14)] sm:px-8 sm:py-8 lg:px-12">
+        <div
+          className="mx-auto w-full max-w-7xl rounded-b-[8px] bg-[#0f2f22] px-5 py-6 shadow-[0_24px_60px_rgba(15,47,34,0.14)] sm:px-8 sm:py-8 lg:px-12"
+          style={{
+            borderBottom: "2px solid #000",
+            borderLeft: "2px solid #000",
+            borderRight: "2px solid #000",
+          }}
+        >
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-end">
             <div className="max-w-4xl space-y-4">
               <h1 className="max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">
@@ -134,7 +176,10 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
             </div>
 
             <div className="lg:justify-self-end">
-              <div className="flex w-full max-w-sm items-start justify-between gap-4 rounded-md border border-black bg-white px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-5 lg:max-w-none">
+              <div
+                className="flex w-full max-w-sm items-start justify-between gap-4 rounded-[5px] bg-white px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-5 lg:max-w-none"
+                style={{ border: "2px solid #000" }}
+              >
                 <div className="flex items-start gap-3">
                   <span
                     aria-hidden="true"
@@ -178,8 +223,11 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
         <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
             {topSummary ? (
-              <section className="rounded-md border border-black bg-[linear-gradient(135deg,rgba(244,239,230,0.72)_0%,rgba(230,240,234,0.78)_100%)] px-5 py-5 shadow-sm sm:px-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+              <section
+                className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
+                style={{ border: "2px solid #000" }}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Kort oppsummert
                 </p>
                 <p className="mt-3 max-w-4xl text-base leading-7 text-slate-950 sm:text-lg sm:leading-8">
@@ -204,7 +252,10 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                     {distributionSummary}
                   </p>
                 </div>
-                <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
+                <div
+                  className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6"
+                  style={{ border: "2px solid #000" }}
+                >
                   <OccupationSalaryDistributionSection distribution={distribution} />
                 </div>
               </section>
@@ -271,7 +322,10 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                     .
                   </p>
                 </div>
-                <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
+                <div
+                  className="rounded-[5px] bg-white p-5 shadow-sm sm:p-6"
+                  style={{ border: "2px solid #000" }}
+                >
                   <OccupationSalaryEstimate
                     embedded
                     monthlySalary={estimateMonthlySalary}
@@ -293,41 +347,40 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
                     {relatedJobsSummary}
                   </p>
                 </div>
-                <div className="rounded-md border border-black bg-white p-5 shadow-sm sm:p-6">
-                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                    {relatedRows.map((row) => (
-                      <Link
-                        className="rounded-md border border-black/10 bg-[#f7fafc] px-4 py-4 transition hover:border-[var(--primary)]/40 hover:bg-white"
-                        href={row.href}
-                        key={row.occupationCode}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <span className="block text-base font-semibold text-slate-950">
-                            {formatOccupationDisplayLabel(row.occupationLabel)}
-                          </span>
-                          <span
-                            aria-hidden="true"
-                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700"
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {relatedRows.map((row) => (
+                    <Link
+                      className="rounded-[5px] bg-white px-4 py-4 transition hover:bg-[#f7fafc]"
+                      href={row.href}
+                      key={row.occupationCode}
+                      style={{ border: "2px solid #000" }}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="block text-base font-semibold text-slate-950">
+                          {formatOccupationDisplayLabel(row.occupationLabel)}
+                        </span>
+                        <span
+                          aria-hidden="true"
+                          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700"
+                        >
+                          <OccupationGroupIcon groupCode={row.groupCode} />
+                        </span>
+                      </div>
+                      <dl className="mt-4 space-y-3 text-sm">
+                        {buildRelatedJobSalaryRows(row).map((salaryRow) => (
+                          <div
+                            className="flex items-center justify-between gap-4 border-t border-black/10 pt-3"
+                            key={salaryRow.label}
                           >
-                            <OccupationGroupIcon groupCode={row.groupCode} />
-                          </span>
-                        </div>
-                        <dl className="mt-4 space-y-3 text-sm">
-                          {buildRelatedJobSalaryRows(row).map((salaryRow) => (
-                            <div
-                              className="flex items-center justify-between gap-4 border-t border-black/10 pt-3"
-                              key={salaryRow.label}
-                            >
-                              <dt className="text-slate-600">{salaryRow.label}</dt>
-                              <dd className="font-semibold text-slate-950">
-                                {formatKr(salaryRow.value)}
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                      </Link>
-                    ))}
-                  </div>
+                            <dt className="text-slate-600">{salaryRow.label}</dt>
+                            <dd className="font-semibold text-slate-950">
+                              {formatKr(salaryRow.value)}
+                            </dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </Link>
+                  ))}
                 </div>
               </section>
             ) : null}
@@ -355,94 +408,74 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
 
           </div>
 
-          <aside className="space-y-6">
-            <section className="rounded-md border border-black bg-white p-5 shadow-sm">
-              <p className="text-sm leading-7 text-slate-600">
-                Dataene på denne siden kommer fra{" "}
+          <aside
+            className="self-start space-y-7 rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.04)]"
+            style={{ border: "2px solid #000" }}
+          >
+            <section>
+              <p className="text-sm leading-6 text-slate-600">
+                Data fra{" "}
                 <a
-                  className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
+                  className="font-semibold text-slate-700 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-950"
                   href={EXTERNAL_SOURCE_LINKS[0].href}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
                   Statistisk sentralbyrå (SSB)
                 </a>
-                , og tallene er sist oppdatert {updatedLabel ?? "i siste tilgjengelige publisering"}.
+                .
+              </p>
+              <p className="mt-1 text-sm leading-6 text-slate-500">
+                Sist oppdatert {updatedLabel ?? "i siste tilgjengelige publisering"}.
               </p>
             </section>
 
             {apprenticeshipPage ? (
               <Link
-                className="inline-flex w-full items-center justify-between gap-3 rounded-md border border-black bg-white px-4 py-3 text-left shadow-sm transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                className="flex items-center gap-3 rounded-[5px] px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
                 href={apprenticeshipPage.href}
               >
-                <span className="block text-sm font-semibold text-slate-950">
-                  {buildApprenticeshipSidebarLabel(occupationText.titleLabel)}
-                </span>
                 <span
                   aria-hidden="true"
-                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-black/10 bg-[#f7fafc] text-[var(--primary-strong)]"
+                  className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-slate-400"
                 >
                   <ApprenticeshipIcon />
                 </span>
+                <span className="min-w-0">{buildApprenticeshipSidebarLabel(occupationText.titleLabel)}</span>
               </Link>
             ) : null}
 
-            <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+            <section>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Verktøy
               </p>
-              <div className="mt-4 space-y-3">
-                <Link
-                  className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
-                  href="/lonnskalkulator"
-                >
-                  <span className="block text-sm font-semibold text-slate-950">
-                    Lønnskalkulator
-                  </span>
-                </Link>
-                <Link
-                  className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
-                  href="/lonnsjekk"
-                >
-                  <span className="block text-sm font-semibold text-slate-950">
-                    Lønnssjekk
-                  </span>
-                </Link>
-                <Link
-                  className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
-                  href="/lanekalkulator"
-                >
-                  <span className="block text-sm font-semibold text-slate-950">
-                    Lånekalkulator
-                  </span>
-                </Link>
-              </div>
+              <nav aria-label="Verktøy" className="mt-4 grid gap-3">
+                {TOOL_LINKS.map((tool) => (
+                  <Link
+                    className="flex items-center gap-3 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                    href={tool.href}
+                    key={tool.href}
+                  >
+                    <SidebarToolIcon className={tool.colorClassName} icon={tool.icon} />
+                    <span>{tool.title}</span>
+                  </Link>
+                ))}
+              </nav>
             </section>
 
-            {BLOG_DEMO_LINKS.length > 0 ? (
-              <section className="rounded-md border border-black/10 bg-white p-5 shadow-sm">
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
+            {BLOG_LINKS.length > 0 ? (
+              <section>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Fra bloggen
                 </p>
-                <Link
-                  className="mt-4 block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
-                  href={FEATURED_BLOG_POST.href}
-                >
-                  <span className="block text-sm font-semibold text-slate-950">
-                    {FEATURED_BLOG_POST.title}
-                  </span>
-                </Link>
-                <div className="mt-4 space-y-3">
-                  {BLOG_DEMO_LINKS.map((post) => (
+                <div className="mt-4 grid gap-3">
+                  {[FEATURED_BLOG_POST, ...BLOG_LINKS].map((post) => (
                     <Link
-                      className="block rounded-md border border-black/10 px-4 py-3 transition hover:border-[var(--primary)]/40 hover:bg-[#f7fafc]"
+                      className="text-sm font-medium leading-5 text-slate-700 transition hover:text-slate-950 hover:underline hover:decoration-slate-300 hover:underline-offset-4"
                       href={post.href}
                       key={post.href}
                     >
-                      <span className="block text-sm font-semibold text-slate-950">
-                        {post.title}
-                      </span>
+                      {post.title}
                     </Link>
                   ))}
                 </div>
@@ -454,7 +487,10 @@ export async function OccupationDetailDemoPageV3({ detail }: OccupationDetailDem
 
       <section className="px-4 pb-10 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-7xl lg:pr-[364px]">
-          <div className="rounded-md border border-black/10 bg-white px-4 py-4 text-sm leading-6 text-slate-600 shadow-sm sm:px-5">
+          <div
+            className="rounded-[5px] bg-white px-4 py-4 text-sm leading-6 text-slate-600 shadow-sm sm:px-5"
+            style={{ border: "2px solid #000" }}
+          >
             <p>
               Hensikten med Lønnsinnsikt er å gjøre lønnsstatistikk enklere å forstå og bruke for
               flere.
@@ -487,7 +523,10 @@ type SalaryCompositionCardProps = {
 
 function SalaryCompositionCard({ card }: SalaryCompositionCardProps) {
   return (
-    <article className="rounded-[5px] border border-black bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6">
+    <article
+      className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6"
+      style={{ border: "2px solid #000" }}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-2">
           {card.icon ? <div className="mr-1 shrink-0">{card.icon}</div> : null}
@@ -636,6 +675,70 @@ function ApprenticeshipIcon() {
         strokeLinejoin="round"
         strokeWidth="1.8"
       />
+    </svg>
+  );
+}
+
+function SidebarToolIcon({
+  className: colorClassName,
+  icon,
+}: {
+  className: string;
+  icon: string;
+}) {
+  const className = `h-4 w-4 shrink-0 ${colorClassName}`;
+  const commonProps = {
+    "aria-hidden": true,
+    className,
+    fill: "none",
+    stroke: "currentColor",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    strokeWidth: "1.8",
+    viewBox: "0 0 24 24",
+  };
+
+  if (icon === "calculator") {
+    return (
+      <svg {...commonProps}>
+        <rect height="18" rx="2.5" width="14" x="5" y="3" />
+        <path d="M8 7h8" />
+        <path d="M8 11h2" />
+        <path d="M12 11h2" />
+        <path d="M16 11h0" />
+        <path d="M8 15h2" />
+        <path d="M12 15h2" />
+        <path d="M16 15h0" />
+      </svg>
+    );
+  }
+
+  if (icon === "check") {
+    return (
+      <svg {...commonProps}>
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="m8.5 12.2 2.2 2.2 4.8-5" />
+      </svg>
+    );
+  }
+
+  if (icon === "compare") {
+    return (
+      <svg {...commonProps}>
+        <circle cx="6" cy="16" r="2" />
+        <circle cx="12" cy="8" r="2" />
+        <circle cx="18" cy="14" r="2" />
+        <path d="m7.7 14.8 2.7-5" />
+        <path d="m13.8 9.2 2.5 3.6" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...commonProps}>
+      <rect height="13" rx="2" width="16" x="4" y="7" />
+      <path d="M9 7V5.8A1.8 1.8 0 0 1 10.8 4h2.4A1.8 1.8 0 0 1 15 5.8V7" />
+      <path d="M4 12h16" />
     </svg>
   );
 }
