@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import advokaterJuristerLonn2025Snapshot from "@/content/blog/data/advokater-jurister-lonn-2025.json";
 import bestBetalteYrker2025Snapshot from "@/content/blog/data/best-betalte-yrker-2025.json";
+import brannmannLonn2025Snapshot from "@/content/blog/data/brannmann-lonn-2025.json";
 import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025.json";
 import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025.json";
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 import kirurgLonn2025Snapshot from "@/content/blog/data/kirurg-lonn-2025.json";
 import legeLonn2025Snapshot from "@/content/blog/data/lege-lonn-2025.json";
+import politiLonn2025Snapshot from "@/content/blog/data/politi-lonn-2025.json";
 import psykologLonn2025Snapshot from "@/content/blog/data/psykolog-lonn-2025.json";
 import sykepleiereHelsearbeidereLonn2025Snapshot from "@/content/blog/data/sykepleiere-helsearbeidere-lonn-2025.json";
 
@@ -34,11 +36,13 @@ const rowsPerPage = 25;
 const snapshots = {
   "advokater-jurister-lonn-2025": advokaterJuristerLonn2025Snapshot as OccupationSalarySnapshot,
   "best-betalte-yrker-2025": bestBetalteYrker2025Snapshot as OccupationSalarySnapshot,
+  "brannmann-lonn-2025": brannmannLonn2025Snapshot as OccupationSalarySnapshot,
   "butikksjef-lonn-2025": butikksjefLonn2025Snapshot as OccupationSalarySnapshot,
   "elektriker-lonn-2025": elektrikerLonn2025Snapshot as OccupationSalarySnapshot,
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
   "kirurg-lonn-2025": kirurgLonn2025Snapshot as OccupationSalarySnapshot,
   "lege-lonn-2025": legeLonn2025Snapshot as OccupationSalarySnapshot,
+  "politi-lonn-2025": politiLonn2025Snapshot as OccupationSalarySnapshot,
   "psykolog-lonn-2025": psykologLonn2025Snapshot as OccupationSalarySnapshot,
   "sykepleiere-helsearbeidere-lonn-2025": sykepleiereHelsearbeidereLonn2025Snapshot as OccupationSalarySnapshot,
 };
@@ -50,7 +54,10 @@ type BlogOccupationSalaryTableProps = {
 
 export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-2025", title }: BlogOccupationSalaryTableProps) {
   const snapshot = snapshots[snapshotId] ?? snapshots["best-betalte-yrker-2025"];
-  const occupationRows = snapshot.rows.filter((row): row is OccupationSalaryRow & { value: number } => typeof row.value === "number");
+  const occupationRows = useMemo(
+    () => snapshot.rows.filter((row): row is OccupationSalaryRow & { value: number } => typeof row.value === "number"),
+    [snapshot],
+  );
   const maxSalary = Math.max(...occupationRows.map((row) => row.value), 1);
   const minSalary = Math.min(...occupationRows.map((row) => row.value), 0);
 
@@ -65,7 +72,7 @@ export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-202
     }
 
     return occupationRows.filter((row) => normalizeText(row.label).includes(normalizedQuery));
-  }, [query]);
+  }, [occupationRows, query]);
 
   const pageCount = Math.max(Math.ceil(filteredRows.length / rowsPerPage), 1);
   const currentPageIndex = Math.min(pageIndex, pageCount - 1);

@@ -15,29 +15,12 @@ Before changing App Router, metadata, routing, server actions, caching, or data 
 - Read `PROJECT.MD` when work affects product positioning, page content, UX copy, blog strategy, information architecture, or feature prioritization.
 - Use `PROJECT.MD` as the source of truth for target audience, value proposition, product purpose, and editorial direction.
 
-## Blogginnlegg
-
-- Når du lager eller oppdaterer blogginnlegg, skal `description` fungere som en engasjerende hook på bloggforsiden, ikke bare en nøktern oppsummering. Den skal gi leseren lyst til å klikke videre, samtidig som den er presis og ikke overdriver innholdet.
-- Datadrevne blogginnlegg som handler om en bestemt periode, for eksempel "2025", skal bruke et frosset snapshot av tallgrunnlaget. Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
-- Desktop/Bravo-prosjektet er stabil innholdskilde for blogginnlegg. Hvis en midlertidig Codex-worktree brukes til utkast eller forhåndsvisning, skal MDX-fil, snapshot, public-assets, relevante komponentendringer og `daily-brief.md` synkes samlet til Desktop/Bravo før temaet regnes som ferdig.
-
-## Bloggbrief
-
-Når et blogginnlegg lages fra tema-køen, skal briefen under temaet følges.
-
-Briefen kan inneholde:
-- Tittel
-- Beskrivelse av hva innlegget skal svare på, hensikt og mål
-- Overskrifter og mellomoverskrifter som skal brukes eller vurderes
-- Interne lenker som skal inn i teksten
-- Eksterne lenker som skal brukes som kilder eller videre lesing
-
-Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på prosjektreglene og eksisterende blogginnlegg.
 
 ## Execution model
 
 - Default to code generation, not autonomous execution
 - Do not run commands unless explicitly instructed
+- Når oppgaven eksplisitt er en bloggautomatisering, skal Codex faktisk opprette/endre relevante filer i repoet. Kommandoer skal likevel begrenses til nødvendige inspeksjons-, format- og valideringskommandoer.
 
 ## Tech stack
 
@@ -88,6 +71,9 @@ Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på 
 - Do NOT install libraries unless necessary
 - Do NOT use outdated Next.js patterns
 - Do NOT refactor unrelated code
+
+## Safety
+- Do not publish content automatically.
 
 ## Behavior
 

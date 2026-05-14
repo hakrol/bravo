@@ -14,8 +14,10 @@ import {
 } from "@/components/blog-chart-examples";
 import { DoctorSalaryEditorialChart } from "@/components/blog-doctor-salary-chart";
 import { ElectricianSalaryBubbleChart, ElectricianSalaryEditorialChart } from "@/components/blog-electrician-salary-chart";
+import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@/components/blog-firefighter-salary-chart";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
+import { PoliceSalaryBubbleChart, PoliceSalaryEditorialChart } from "@/components/blog-police-salary-chart";
 import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import { BlogTeacherHourlySalaryChart, BlogTeacherSalaryChart } from "@/components/blog-teacher-salary-chart";
@@ -146,11 +148,15 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogElectricianSalaryChart,
     ElectricianSalaryBubbleChart,
     ElectricianSalaryEditorialChart,
+    FirefighterSalaryBubbleChart,
+    FirefighterSalaryEditorialChart,
     BlogPsychologistSalaryChart,
     DoctorSalaryBubbleChart,
     DoctorSalaryEditorialChart,
     BlogHandverkerSalaryChart,
     HealthSalaryBubbleChart,
+    PoliceSalaryBubbleChart,
+    PoliceSalaryEditorialChart,
     BlogOccupationSalaryTable,
     SurgeonSalaryBubbleChart,
     SurgeonSalaryEditorialChart,

@@ -65,7 +65,6 @@ Når innhold eller funksjoner bruker tall, undersøkelser, juridiske påstander 
 
 ## Innholdsprinsipper
 
-- Skriv på Norsk Bokmål.
 - Bruk klart og konkret språk.
 - Forklar tall slik at de blir praktisk anvendelige.
 - Skill mellom fakta, tolkning og råd.
@@ -78,8 +77,6 @@ Når innhold eller funksjoner bruker tall, undersøkelser, juridiske påstander 
 - Gjør første steg enkelt: søk, velg yrke, sammenlign lønn.
 - Prioriter raske svar med mulighet for dypere innsikt.
 - Vis siste tilgjengelige periode eller oppdateringsinformasjon når data presenteres.
-- Bruk serverkomponenter og strukturert datahenting der det passer.
-- Hold SSB-logikk samlet i `/lib`, og hold komponenter gjenbrukbare.
 - Bygg for tillit: tydelige kilder, ryddige forklaringer og presise begreper.
 
 ## Posisjonering
