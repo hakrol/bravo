@@ -124,7 +124,9 @@ Produksjonsklare visuelle dataelementer:
 - Boblediagram: `<BlogChart type="bubble" />`
 - Redaksjonelt stolpediagram: egen bloggkomponent bygget på `EditorialDivergingBarChart`
 - Søkbar yrkesliste: `<BlogOccupationSalaryTable snapshotId="..." />`
+- Kjønnsdelt lønnskort: `<BlogGenderSalaryCards />`
 
+Alle blogginnlegg som handler om lønn for ett konkret yrke skal ha `BlogGenderSalaryCards` der det passer naturlig tidlig i innlegget, vanligvis etter første hovedtabell eller etter avsnittet som forklarer hovedtallet. Komponenten skal vise medianlønn for kvinner og menn, med veksling mellom årslønn, månedslønn og timelønn. Bruk samme periode og kilde som innleggets hovedtall. Kjønnsdelte lønnstall skal ligge i et frosset snapshot under src/content/blog/data/ før innlegget regnes som ferdig. Hvis SSB ikke publiserer kjønnsdelte tall for yrket, skal innlegget forklare hvorfor komponenten ikke brukes.
 
 Datadrevne blogginnlegg skal som hovedregel inneholde minst 2 visuelle dataelementer. Velg blant disse tre produksjonsklare typene:
 
