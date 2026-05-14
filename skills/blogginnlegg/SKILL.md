@@ -89,7 +89,11 @@ Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på 
 
 - Blogginnlegg skal skrives på naturlig Norsk Bokmål med direkte og konkret språk.
 - Skriv konkret, tydelig og uten fluff.
-- Unngå fet tekst for å fremheve poeng
+- Unngå fet tekst for å fremheve poeng.
+- Ikke start med “X omtales ofte som…”
+- Ikke skriv “det er viktig å merke seg at…” med mindre det faktisk trengs.
+- Bruk konkret subjekt: “En brannmann…”, “Lønnen…”, “SSB-tallene…”
+- Gå rett på hva leseren prøver å forstå.
 - Første setning i innlegget skal være en engasjerende hook, men ikke bruk den samme hook-strukturen i hvert innlegg. Hook skal være relevant for temaet, ikke en generisk klisjé. Maks 2-3 setninger.
 - Bruk `du` når brukeren ber om direkte rådgivende bloggtekst.
 - Forklar vanskelige begreper enkelt, uten å bli barnslig.
@@ -263,3 +267,4 @@ Unngå å løse et systemproblem ved å håndstyle ett enkelt innlegg.
 - Prioriter konkrete observasjoner før generelle forklaringer.
 - Ikke gjør alle avsnitt “perfekt balanserte”.
 - Skriv som en erfaren fagperson, ikke som en SEO-tekstgenerator.
+
