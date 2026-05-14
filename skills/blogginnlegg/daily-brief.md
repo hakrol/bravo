@@ -14,9 +14,7 @@ For generelle bloggstandarder, følg:
 - Lag ett nytt blogginnlegg per kjøring.
 - Bruk første ukryssede tema under `Tema-kø`.
 - Ikke skriv flere innlegg samtidig.
-- Ikke publiser direkte.
-- Ikke installer nye biblioteker.
-- Ikke refaktorer kode som ikke er relevant for blogginnlegget.
+- Hvis `Ikke startet` er tom, skal ingen nye innlegg lages.
 
 ## Arbeidsflyt
 
@@ -38,22 +36,6 @@ Eksempel:
 - [x] Hvordan forberede seg til lønnssamtale - `src/content/blog/lonnssamtale-forberedelse.mdx` - 2026-04-29
 ```
 
-## Redaksjonelle føringer
-
-- Skriv på Norsk Bokmål.
-- Skriv konkret, hjelpsomt og uten fluff.
-- Bruk direkte `du`-språk når innlegget gir råd.
-- Koble praktiske råd til lønnsdata når det er relevant.
-- Bruk interne lenker bare når de hjelper leseren videre.
-- La `description` fungere som en presis og engasjerende hook på bloggforsiden.
-
-## Data
-
-- Hvis innlegget bruker SSB-data, følg SSB-reglene i prosjektet.
-- Hvis innlegget handler om en bestemt periode, bruk eller opprett et frosset snapshot.
-- Ikke la historiske blogginnlegg lese direkte fra `latest`-data.
-- Hvis tallgrunnlaget ikke er klart, lag et ikke-datadrevet innlegg eller noter tydelig hva som mangler.
-
 ## Tema-kø
 
 Bruk første ukryssede tema i listen under.
@@ -62,6 +44,8 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Hva tjener en brannmann? - `src/content/blog/hva-tjener-en-brannmann.mdx` - 2026-05-14
+- [x] Hva tjener en politi? - `src/content/blog/hva-tjener-en-politi.mdx` - 2026-05-12
 - [x] Hva tjener en elektriker? - `src/content/blog/hva-tjener-en-elektriker.mdx` - 2026-05-10
 - [x] Hva tjener advokater og jurister? - `src/content/blog/hva-tjener-advokater-og-jurister.mdx` - 2026-05-01
 - [x] Hva tjener sykepleiere og andre helsearbeidere? - `src/content/blog/hva-tjener-sykepleiere-og-andre-helsearbeidere.mdx` - 2026-05-02

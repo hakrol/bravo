@@ -3,7 +3,7 @@ name: blogginnlegg
 description: Skriv, oppdater og kvalitetssikre blogginnlegg for Bravo-prosjektet. Bruk når Codex skal lage nye bloggposter, forbedre eksisterende blogginnhold, justere bloggstruktur, legge inn bilder, tabeller, eksempler, sitater eller innholdsfortegnelse, eller oppdatere felles bloggkomponenter og bloggstiler.
 ---
 
-# Blogginnlegg
+# Innholdsregler
 
 ## Oversikt
 
@@ -13,11 +13,22 @@ Blogginnleggene skal hjelpe norske lesere med å forstå lønn, lønnsstatistikk
 
 Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller eller fagterminologi. Tonen skal være konkret, hjelpsom og rolig, uten salgspreg, overdrevne løfter eller generiske SEO-avsnitt.
 
+## Prioritering ved konflikt
+
+Hvis regler overlapper eller virker motstridende:
+
+1. Oppgavespesifikk brief i `daily-brief.md`
+2. Denne skillen
+3. `PROJECT.MD`
+4. `AGENTS.MD`
+
+Bruk den mest spesifikke regelen som passer oppgaven.
+
 ## Arbeidsflyt
 
 1. Les alltid [src/content/blog/README.md](src/content/blog/README.md) før du skriver eller oppdaterer et blogginnlegg.
 2. Hvis oppgaven påvirker bloggvisning, bloggkomponenter eller Next.js-oppsett, les relevant dokumentasjon i `node_modules/next/dist/docs/` før du koder.
-3. Finn ut om oppgaven gjelder:
+3. Identifiser lavest riktige nivå for endringen:
    - nytt innlegg i `src/content/blog/`
    - eksisterende innlegg i `src/content/blog/`
    - bilder i `public/blogg/<slug>/`
@@ -59,9 +70,24 @@ Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller ell
 - `src/app/globals.css`
   Felles bloggstil for sitater, eksempler, tabeller og innholdsfortegnelse.
 
+
+
+## Bloggbrief
+
+Når et blogginnlegg lages fra tema-køen, skal briefen under temaet følges.
+
+Briefen kan inneholde:
+- Tittel
+- Beskrivelse av hva innlegget skal svare på, hensikt og mål
+- Overskrifter og mellomoverskrifter som skal brukes eller vurderes
+- Interne lenker som skal inn i teksten
+- Eksterne lenker som skal brukes som kilder eller videre lesing
+
+Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på prosjektreglene og eksisterende blogginnlegg.
+
 ## Regler for blogginnhold
 
-- Skriv på norsk bokmål og bruk `ÆØÅ`.
+- Blogginnlegg skal skrives på naturlig Norsk Bokmål med direkte og konkret språk.
 - Skriv konkret, tydelig og uten fluff.
 - Unngå fet tekst for å fremheve poeng
 - Første setning i innlegget skal være en engasjerende hook, men ikke bruk den samme hook-strukturen i hvert innlegg. Hook skal være relevant for temaet, ikke en generisk klisjé. Maks 2-3 setninger.
@@ -73,6 +99,20 @@ Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller ell
 - Hold frontmatter ryddig og komplett.
 - Legg nye innlegg i `src/content/blog/`.
 - Legg bilder i `public/blogg/<slug>/`.
+
+### Innledning
+
+Innledningen skal raskt etablere relevans og leseretning.
+
+Vanlige innganger:
+- Statistikk
+- Spørsmål
+- Problem/pain point
+- Kontrast eller overraskelse
+
+Hooken skal være relevant for temaet og basert på faktisk innhold i innlegget.
+
+Avslutt innledningen med et frampek.
 
 ## Diagramkrav for datadrevne blogginnlegg
 
@@ -126,6 +166,13 @@ Minstekrav:
 - Sørg for at hero-bilder også er relevante for temaet, siden de brukes i metadata og deling.
 - Unngå keyword stuffing i `alt`-tekst og filnavn.
 
+Unngå:
+- “komplett guide”-språk
+- kunstig lange introduksjoner
+- overskrifter som bare gjentar søkeord
+- SEO-fyll mellom faktiske poenger
+- seksjoner som ikke tilfører ny informasjon
+
 ## Data og SSB
 
 - Hvis innlegget bruker SSB-data, følg reglene i `/lib/ssb/docs.md` når filen finnes i prosjektet.
@@ -134,6 +181,14 @@ Minstekrav:
 - Datadrevne innlegg som handler om en bestemt periode, for eksempel 2025, skal bruke et frosset snapshot under `src/content/blog/data/`.
 - Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
 - Forklar kilde, periode, målemetode og viktige avgrensninger når tall brukes.
+
+## Datadisiplin
+
+- Ikke presenter estimater som fakta.
+- Ikke trekk årsakssammenhenger direkte fra lønnsstatistikk uten grunnlag.
+- Skill tydelig mellom observerte tall og egne forklaringer.
+- Ikke overdriv konklusjoner fra små forskjeller i datasettet.
+- Forklar usikkerhet eller begrensninger når tallgrunnlaget er svakt.
 
 ## Regler for bloggkomponenter
 
@@ -144,6 +199,8 @@ Minstekrav:
 - Bruk `Example`-komponenten for formuleringer, manus og forslag leseren kan bruke selv.
 - Bruk `Table`, `TableHead`, `TableBody`, `TableRow`, `TableHeader` og `TableCell` for tabeller i innlegg.
 - Bruk `ToolCallout` når innlegget bør peke videre til et relevant verktøy som Lønnsjekk.
+- Ikke lag nye komponenter hvis eksisterende komponenter dekker behovet godt nok.
+- Foretrekk små lokale forbedringer fremfor nye abstraksjoner.
 
 ## Bilder
 
@@ -160,16 +217,23 @@ Anbefalt størrelse:
 
 Bruk beskrivende `alt`-tekst når bildet settes inn i MDX.
 
-## Kvalitetssjekk før du er ferdig
+## Ferdigdefinisjon
 
-- Stemmer `slug`, `coverImage` og filplassering?
-- Er `description` en presis hook som gir leseren lyst til å åpne innlegget?
-- Har innlegget tydelige `##`-overskrifter?
-- Bruker innlegget riktige bloggkomponenter i stedet for lokale hacks?
-- Ser sitater, eksempler og tabeller ut som ulike elementtyper?
-- Er endringen gjort på riktig nivå: innhold, komponent eller global stil?
-- Hvis innlegget bruker data: finnes det et frosset snapshot når perioden er historisk?
-- Hvis automasjonen brukes: er `daily-brief.md` bare krysset av etter at hele bloggpakken ligger i samme arbeidskopi?
+Et blogginnlegg regnes bare som ferdig når:
+
+- MDX-filen finnes i `src/content/blog/`
+- frontmatter følger eksisterende format
+- `title`, `description`, `seoTitle`, `seoDescription`, `slug` og `coverImage` er satt
+- `description` fungerer som en presis og engasjerende hook
+- innlegget har tydelige `##`-overskrifter
+- innlegget svarer tydelig og tidlig på hovedspørsmålet i tittelen
+- minst én relevant intern lenke er brukt hvis briefen oppgir interne lenker
+- riktige bloggkomponenter brukes i stedet for lokale hacks
+- sitater, eksempler og tabeller bruker riktige komponenter eller stiler
+- endringen er gjort på riktig nivå: innhold, komponent eller global stil
+- kilder er brukt og forklart når tall eller eksterne fakta brukes
+- historiske SSB-tall kommer fra frosset snapshot
+- `daily-brief.md` er oppdatert med filsti og dato når automasjonen brukes
 
 ## Når du må endre bloggdesignet
 
@@ -180,3 +244,22 @@ Gjør endringen i den felles bloggstakken først:
 3. Oppdater innleggene til å bruke komponenten i stedet for rå HTML eller lokale spesialløsninger.
 
 Unngå å løse et systemproblem ved å håndstyle ett enkelt innlegg.
+
+
+
+## Unngå typiske AI-feil
+
+- Ikke start med brede selvfølgeligheter som “I dagens arbeidsmarked...”
+- Ikke bruk generiske fraser som “det finnes mange faktorer som spiller inn” uten å konkretisere dem.
+- Ikke avslutt hvert avsnitt med en oppsummerende læresetning.
+- Ikke bruk overdrevne formuleringer som “alt du trenger å vite”.
+- Ikke skriv lange balanserende avsnitt der ingen ting egentlig sies.
+- Ikke gjenta søkeord mekanisk.
+- Ikke bruk like setningsrytmer i mange avsnitt på rad.
+- Ikke lag konklusjoner som er sterkere enn datagrunnlaget.
+- Skriv heller kort, konkret og litt ujevnt enn glatt og generisk.
+- Varier lengden på avsnitt og setninger naturlig.
+- Ikke skriv alle seksjoner med identisk struktur.
+- Prioriter konkrete observasjoner før generelle forklaringer.
+- Ikke gjør alle avsnitt “perfekt balanserte”.
+- Skriv som en erfaren fagperson, ikke som en SEO-tekstgenerator.

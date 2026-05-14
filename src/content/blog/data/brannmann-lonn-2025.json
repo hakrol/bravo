@@ -1,0 +1,18 @@
+{
+  "id": "brannmann-lonn-2025",
+  "title": "Hva tjener brannmenn og nærliggende beredskapsyrker i 2025",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall personer gjelder 2025K4 der det brukes i diagram.",
+  "rows": [
+    { "code": "3355", "label": "Politibetjenter mv.", "href": "/yrke/politibetjenter-mv-lonn", "value": 63920, "average": 64630, "p25": 56140, "p75": 71550, "employees": 12145 },
+    { "code": "5411", "label": "Brannkonstabler", "href": "/yrke/brannkonstabler-lonn", "value": 60510, "average": 62090, "p25": 55610, "p75": 65950, "employees": 4307 },
+    { "code": "3258", "label": "Ambulansepersonell", "href": "/yrke/ambulansepersonell-lonn", "value": 59260, "average": 57610, "p25": 52430, "p75": 64510, "employees": 5638 },
+    { "code": "5413", "label": "Fengselsbetjenter", "href": "/yrke/fengselsbetjenter-lonn", "value": 55900, "average": 53920, "p25": 46210, "p75": 62490, "employees": 3687 },
+    { "code": "0-9", "label": "Alle yrker samlet", "href": "/yrker", "value": 55800, "average": 62070, "p25": 45650, "p75": 69940 },
+    { "code": "3351", "label": "Tollere", "href": "/yrke/tollere-lonn", "value": 53680, "average": 53690, "p25": 49290, "p75": 58490, "employees": 1145 },
+    { "code": "5414", "label": "Vektere", "href": "/yrke/vektere-lonn", "value": 43450, "average": 45360, "p25": 40490, "p75": 47070, "employees": 10460 },
+    { "code": "5419", "label": "Andre sikkerhetsarbeidere", "href": "/yrke/andre-sikkerhetsarbeidere-lonn", "value": 42340, "average": 43460, "p25": 37520, "p75": 47890, "employees": 3309 }
+  ]
+}
