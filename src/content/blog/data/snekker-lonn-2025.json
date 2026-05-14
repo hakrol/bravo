@@ -1,0 +1,31 @@
+{
+  "id": "snekker-lonn-2025",
+  "title": "Hva tjener snekkere og nærliggende håndverksyrker i 2025",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall personer gjelder 2025K4 der det brukes i diagram.",
+  "rows": [
+    { "code": "7411", "label": "Elektrikere", "href": "/yrke/elektrikere-lonn", "value": 54930, "average": 54460, "p25": 48390, "p75": 61540, "employees": 34783 },
+    { "code": "7126", "label": "Rørleggere og VVS-montører", "href": "/yrke/rorleggere-og-vvs-montorer-lonn", "value": 53750, "average": 53110, "p25": 47230, "p75": 59180, "employees": 21230 },
+    { "code": "7114", "label": "Betongarbeidere", "href": "/yrke/betongarbeidere-lonn", "value": 53420, "average": 54140, "p25": 47460, "p75": 60280, "employees": 10861 },
+    { "code": "7112", "label": "Murere", "href": "/yrke/murere-lonn", "value": 48710, "average": 49770, "p25": 44420, "p75": 54120, "employees": 4211 },
+    { "code": "7122", "label": "Gulv- og flisleggere", "href": "/yrke/gulv-og-flisleggere-lonn", "value": 48710, "average": 50450, "p25": 44650, "p75": 54070, "employees": 2362 },
+    { "code": "7115", "label": "Tømrere og snekkere", "href": "/yrke/tomrere-og-snekkere-lonn", "value": 47900, "average": 48020, "p25": 43680, "p75": 52810, "employees": 46454 },
+    { "code": "7119", "label": "Andre bygningsarbeidere", "href": "/yrke/andre-bygningsarbeidere-lonn", "value": 46470, "average": 48180, "p25": 42700, "p75": 52310, "employees": 7229 },
+    { "code": "7131", "label": "Malere og byggtapetserere", "href": "/yrke/malere-og-byggtapetserere-lonn", "value": 45900, "average": 47310, "p25": 42270, "p75": 50340, "employees": 7753 },
+    { "code": "7522", "label": "Møbelsnekkere", "href": "/yrke/mobelsnekkere-lonn", "value": 45300, "average": 46300, "p25": 40590, "p75": 50490, "employees": 2075 }
+  ],
+  "apprenticeship": {
+    "code": "7115",
+    "label": "Tømrere og snekkere",
+    "href": "/laerling/tomrere-og-snekkere-laerling-lonn",
+    "value": 24360,
+    "average": 25560,
+    "p25": 17170,
+    "p75": 31780,
+    "source": "SSB tabell 12851",
+    "period": "2025",
+    "note": "Målemetode: median avtalt månedslønn. Lærlinger. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025."
+  }
+}
