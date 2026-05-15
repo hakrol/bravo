@@ -114,6 +114,30 @@ const staticRoutes = [
     changeFrequency: "yearly" as const,
   },
   {
+    path: "/hjelpeside",
+    filePath: "src/app/hjelpeside/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/kilder",
+    filePath: "src/app/kilder/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/ordbok",
+    filePath: "src/app/ordbok/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/redaksjonelle-retningslinjer",
+    filePath: "src/app/redaksjonelle-retningslinjer/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
     path: "/personvern",
     filePath: "src/app/personvern/page.tsx",
     priority: 0.2,

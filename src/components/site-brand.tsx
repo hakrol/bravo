@@ -31,9 +31,11 @@ export function SiteBrand({ size = "header" }: SiteBrandProps) {
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
           {"L\u00f8nnsinnsikt"}
         </p>
-        <p className="truncate text-sm text-[var(--muted)]">
-          {"Full innsikt i l\u00f8nn"}
-        </p>
+        {!isHeader ? (
+          <p className="truncate text-sm text-[var(--muted)]">
+            {"Full innsikt i l\u00f8nn"}
+          </p>
+        ) : null}
       </div>
     </Link>
   );
