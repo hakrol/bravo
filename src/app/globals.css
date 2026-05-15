@@ -65,6 +65,60 @@ body {
   }
 }
 
+@keyframes salary-float {
+  0%,
+  100% {
+    opacity: 0.26;
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    opacity: 0.62;
+    transform: translate3d(0.35rem, -0.7rem, 0);
+  }
+}
+
+@keyframes salary-glow {
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: translate3d(-0.4rem, 0, 0) scale(1);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: translate3d(0.45rem, -0.35rem, 0) scale(1.025);
+  }
+}
+
+@keyframes bar-shimmer {
+  0%,
+  72%,
+  100% {
+    transform: translateX(-85%);
+    opacity: 0;
+  }
+
+  38% {
+    opacity: 1;
+  }
+
+  56% {
+    transform: translateX(230%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .fade-up-delay,
+  [class*="salary-float"],
+  [class*="salary-glow"],
+  [class*="bar-shimmer"] {
+    animation: none !important;
+  }
+}
+
 .blog-post-page {
   background:
     linear-gradient(180deg, #fbfbf8 0%, #ffffff 36rem);
