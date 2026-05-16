@@ -18,6 +18,8 @@ export type TopOccupationSpecialRow = {
   averageMonthlySalary: TopOccupationMetric;
   medianMonthlySalary: TopOccupationMetric;
   estimatedAnnualSalary: number;
+  salaryGrowthPercent?: number;
+  realSalaryGrowthPercent?: number;
   workforce?: number;
   intro: string;
   salaryDrivers: string[];
@@ -50,19 +52,22 @@ const specialistDrivers = [
 ];
 
 export function getTopOccupationsSpecialData(): TopOccupationSpecialData {
-  const average = readGeneratedDataset("occupation-latest-average.json");
+  const monthlySalary = readGeneratedDataset("occupation-distribution-latest.json");
   const median = readGeneratedDataset("occupation-latest-median.json");
   const workforce = readGeneratedDataset("occupation-workforce-timeseries.json");
-  const averageRows = buildSalaryMetricMap(average);
-  const medianRows = buildSalaryMetricMap(median);
+  const averageTimeseries = readGeneratedDataset("occupation-average-timeseries.json");
+  const inflation = readGeneratedDataset("inflation-quarter-series.json");
+  const averageRows = buildMonthlySalaryMetricMap(monthlySalary, "02");
+  const medianRows = buildMonthlySalaryMetricMap(median, "01");
   const workforceRows = buildLatestWorkforceMap(workforce);
+  const growthRows = buildSalaryGrowthMap(averageTimeseries, inflation);
 
   const rows = Array.from(averageRows.entries())
     .filter(([occupationCode, metric]) => isFourDigitOccupationCode(occupationCode) && metric.all)
     .sort((left, right) => (right[1].all ?? 0) - (left[1].all ?? 0))
     .slice(0, 10)
     .map(([occupationCode, averageMonthlySalary], index) => {
-      const occupationLabel = findOccupationLabel(average, occupationCode) ?? occupationCode;
+      const occupationLabel = findOccupationLabel(monthlySalary, occupationCode) ?? occupationCode;
       const intro =
         getOccupationDescription(occupationCode)?.intro ??
         `${occupationLabel} er en yrkesgruppe i SSBs yrkesstatistikk. Lønnsnivået bør tolkes sammen med ansvar, kompetansekrav og hvor mange som er registrert i yrket.`;
@@ -75,6 +80,8 @@ export function getTopOccupationsSpecialData(): TopOccupationSpecialData {
         averageMonthlySalary,
         medianMonthlySalary: medianRows.get(occupationCode) ?? {},
         estimatedAnnualSalary: (averageMonthlySalary.all ?? 0) * 12,
+        salaryGrowthPercent: growthRows.get(occupationCode)?.salaryGrowthPercent,
+        realSalaryGrowthPercent: growthRows.get(occupationCode)?.realSalaryGrowthPercent,
         workforce: workforceRows.get(occupationCode),
         intro,
         salaryDrivers: buildSalaryDrivers(occupationLabel),
@@ -83,13 +90,166 @@ export function getTopOccupationsSpecialData(): TopOccupationSpecialData {
 
   return {
     rows,
-    periodLabel: findFirstPeriodLabel(average) ?? "siste tilgjengelige periode",
+    periodLabel: findLatestAnnualPeriodLabel(monthlySalary) ?? "siste tilgjengelige periode",
     medianPeriodLabel: findFirstPeriodLabel(median) ?? "siste tilgjengelige periode",
     workforcePeriodLabel: findLatestWorkforcePeriodLabel(workforce),
-    source: average.source ?? "Statistisk sentralbyrå",
-    updated: average.updated ?? "",
+    source: monthlySalary.source ?? "Statistisk sentralbyrå",
+    updated: monthlySalary.updated ?? "",
     averageMonthlySalaryAllOccupations: averageRows.get("0-9")?.all,
   };
+}
+
+function buildSalaryGrowthMap(
+  salaryDataset: SsbNormalizedDataset,
+  inflationDataset: SsbNormalizedDataset,
+) {
+  const latestPeriod = findLatestSalaryPeriodLabel(salaryDataset);
+  const previousPeriod = latestPeriod ? getPreviousYearQuarter(latestPeriod) : undefined;
+  const inflationGrowth = latestPeriod && previousPeriod
+    ? calculateInflationGrowth(inflationDataset, latestPeriod, previousPeriod)
+    : undefined;
+  const growthMap = new Map<
+    string,
+    {
+      salaryGrowthPercent?: number;
+      realSalaryGrowthPercent?: number;
+    }
+  >();
+
+  if (!latestPeriod || !previousPeriod) {
+    return growthMap;
+  }
+
+  const latestValues = buildPeriodSalaryValueMap(salaryDataset, latestPeriod);
+  const previousValues = buildPeriodSalaryValueMap(salaryDataset, previousPeriod);
+
+  for (const [occupationCode, latestValue] of latestValues.entries()) {
+    const previousValue = previousValues.get(occupationCode);
+
+    if (!previousValue || previousValue === 0) {
+      continue;
+    }
+
+    const salaryGrowthPercent = ((latestValue - previousValue) / previousValue) * 100;
+    const realSalaryGrowthPercent =
+      inflationGrowth === undefined
+        ? undefined
+        : (((1 + salaryGrowthPercent / 100) / (1 + inflationGrowth / 100)) - 1) * 100;
+
+    growthMap.set(occupationCode, {
+      salaryGrowthPercent,
+      realSalaryGrowthPercent,
+    });
+  }
+
+  return growthMap;
+}
+
+function buildPeriodSalaryValueMap(dataset: SsbNormalizedDataset, periodLabel: string) {
+  const valueMap = new Map<string, number>();
+
+  for (const row of dataset.rows) {
+    const occupation = row.dimensions.Yrke;
+    const gender = row.dimensions.Kjonn;
+    const period = row.dimensions.Tid;
+
+    if (
+      !occupation ||
+      !gender ||
+      !period ||
+      row.value === null ||
+      gender.code !== "0" ||
+      period.label !== periodLabel ||
+      !isFourDigitOccupationCode(occupation.code)
+    ) {
+      continue;
+    }
+
+    valueMap.set(occupation.code, row.value);
+  }
+
+  return valueMap;
+}
+
+function findLatestSalaryPeriodLabel(dataset: SsbNormalizedDataset) {
+  const periods = new Set<string>();
+
+  for (const row of dataset.rows) {
+    const period = row.dimensions.Tid;
+
+    if (period?.label) {
+      periods.add(period.label);
+    }
+  }
+
+  return Array.from(periods).sort(comparePeriodLabels).at(-1);
+}
+
+function findLatestAnnualPeriodLabel(dataset: SsbNormalizedDataset) {
+  const periods = new Set<string>();
+
+  for (const row of dataset.rows) {
+    const period = row.dimensions.Tid;
+
+    if (period?.label) {
+      periods.add(period.label);
+    }
+  }
+
+  return Array.from(periods).sort(comparePeriodLabels).at(-1);
+}
+
+function getPreviousYearQuarter(periodLabel: string) {
+  const match = periodLabel.match(/^(\d{4})K([1-4])$/);
+
+  if (!match) {
+    return undefined;
+  }
+
+  return `${Number(match[1]) - 1}K${match[2]}`;
+}
+
+function calculateInflationGrowth(
+  dataset: SsbNormalizedDataset,
+  latestQuarter: string,
+  previousQuarter: string,
+) {
+  const latestMonth = quarterToMonth(latestQuarter);
+  const previousMonth = quarterToMonth(previousQuarter);
+
+  if (!latestMonth || !previousMonth) {
+    return undefined;
+  }
+
+  const latestValue = findInflationValue(dataset, latestMonth);
+  const previousValue = findInflationValue(dataset, previousMonth);
+
+  if (!latestValue || !previousValue) {
+    return undefined;
+  }
+
+  return ((latestValue - previousValue) / previousValue) * 100;
+}
+
+function quarterToMonth(periodLabel: string) {
+  const match = periodLabel.match(/^(\d{4})K([1-4])$/);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const monthByQuarter: Record<string, string> = {
+    "1": "03",
+    "2": "06",
+    "3": "09",
+    "4": "12",
+  };
+
+  return `${match[1]}M${monthByQuarter[match[2]]}`;
+}
+
+function findInflationValue(dataset: SsbNormalizedDataset, monthLabel: string) {
+  return dataset.rows.find((row) => row.dimensions.Tid?.label === monthLabel)?.value ?? undefined;
 }
 
 function readGeneratedDataset(fileName: string): SsbNormalizedDataset {
@@ -97,14 +257,34 @@ function readGeneratedDataset(fileName: string): SsbNormalizedDataset {
   return JSON.parse(readFileSync(filePath, "utf8")) as SsbNormalizedDataset;
 }
 
-function buildSalaryMetricMap(dataset: SsbNormalizedDataset) {
+function buildMonthlySalaryMetricMap(dataset: SsbNormalizedDataset, measureCode: "01" | "02") {
+  const latestPeriod = findLatestAnnualPeriodLabel(dataset);
   const rowMap = new Map<string, TopOccupationMetric>();
+
+  if (!latestPeriod) {
+    return rowMap;
+  }
 
   for (const row of dataset.rows) {
     const occupation = row.dimensions.Yrke;
     const gender = row.dimensions.Kjonn;
+    const period = row.dimensions.Tid;
+    const measure = row.dimensions.MaaleMetode;
+    const content = row.dimensions.ContentsCode;
+    const sector = row.dimensions.Sektor;
+    const workingTime = row.dimensions.AvtaltVanlig;
 
-    if (!occupation || !gender || row.value === null) {
+    if (
+      !occupation ||
+      !gender ||
+      !period ||
+      row.value === null ||
+      period.label !== latestPeriod ||
+      measure?.code !== measureCode ||
+      content?.code !== "Manedslonn" ||
+      sector?.code !== "ALLE" ||
+      workingTime?.code !== "0"
+    ) {
       continue;
     }
 
