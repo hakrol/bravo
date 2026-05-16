@@ -109,12 +109,25 @@ body {
   }
 }
 
+@keyframes mobile-sheet-up {
+  from {
+    opacity: 0.72;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fade-up,
   .fade-up-delay,
   [class*="salary-float"],
   [class*="salary-glow"],
-  [class*="bar-shimmer"] {
+  [class*="bar-shimmer"],
+  [class*="mobile-sheet-up"] {
     animation: none !important;
   }
 }

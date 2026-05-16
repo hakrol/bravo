@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type {
   TopOccupationMetric,
@@ -42,8 +42,10 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
   const [salaryView, setSalaryView] = useState<SalaryView>("monthly");
   const [genderView, setGenderView] = useState<GenderView>("all");
   const [selectedCode, setSelectedCode] = useState(data.rows[0]?.occupationCode);
+  const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const rowRefs = useRef(new Map<string, HTMLButtonElement>());
+  const mobileRowRefs = useRef(new Map<string, HTMLButtonElement>());
   const previousRects = useRef(new Map<string, DOMRect>());
 
   const rankedRows = useMemo(
@@ -83,6 +85,31 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
     const frame = requestAnimationFrame(() => setLoaded(true));
     return () => cancelAnimationFrame(frame);
   }, []);
+
+  const closeMobileSheet = useCallback(() => {
+    setIsMobileSheetOpen(false);
+    window.setTimeout(() => {
+      mobileRowRefs.current.get(selectedRow.occupationCode)?.focus();
+    }, 0);
+  }, [selectedRow.occupationCode]);
+
+  useEffect(() => {
+    if (!isMobileSheetOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMobileSheet();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [closeMobileSheet, isMobileSheetOpen]);
 
   useLayoutEffect(() => {
     const nextRects = new Map<string, DOMRect>();
@@ -133,7 +160,57 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
         aria-hidden="true"
       />
 
-      <section className="px-4 pb-7 pt-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
+      <div className="md:hidden">
+        <MobileSpecialHero
+          data={data}
+        />
+
+        <MobileKeyStatsStrip
+          averageTopTen={averageTopTen}
+          lastValue={lastValue}
+          topValue={topValue}
+        />
+
+        <MobileFilterBar
+          genderView={genderView}
+          salaryMode={salaryMode}
+          salaryView={salaryView}
+          setGenderView={setGenderView}
+          setSalaryMode={setSalaryMode}
+          setSalaryView={setSalaryView}
+        />
+
+        <MobileRankingList
+          genderView={genderView}
+          loaded={loaded}
+          maxValue={maxValue}
+          rankedRows={rankedRows}
+          rowRefs={mobileRowRefs}
+          salaryMode={salaryMode}
+          salaryView={salaryView}
+          selectedCode={selectedRow.occupationCode}
+          onSelect={(row) => {
+            setSelectedCode(row.occupationCode);
+            setIsMobileSheetOpen(true);
+          }}
+        />
+
+        <MobileOccupationSheet
+          averageTopTen={averageTopTen}
+          dataLabel={dataLabel}
+          genderView={genderView}
+          isOpen={isMobileSheetOpen}
+          lastValue={lastValue}
+          row={selectedRow}
+          salaryMode={salaryMode}
+          salaryView={salaryView}
+          selectedRank={selectedRank}
+          topValue={topValue}
+          onClose={closeMobileSheet}
+        />
+      </div>
+
+      <section className="hidden px-4 pb-7 pt-12 sm:px-6 sm:pt-16 md:block lg:px-8 lg:pt-20">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-4xl">
             <h1 className="max-w-4xl text-5xl font-black leading-[0.92] tracking-[-0.045em] text-[#0f1115] sm:text-7xl lg:text-8xl">
@@ -182,7 +259,7 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
         </div>
       </section>
 
-      <section className="px-4 pb-6 sm:px-6 lg:px-8">
+      <section className="hidden px-4 pb-6 sm:px-6 md:block lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1.12fr)_minmax(420px,0.88fr)] lg:items-start">
           <section className="rounded-[5px] border border-white/70 bg-white/75 p-4 shadow-[0_30px_90px_rgba(49,38,20,0.10)] backdrop-blur-xl sm:p-5">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3 px-1">
@@ -192,7 +269,7 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
                 </h2>
               </div>
               <p className="rounded-[5px] bg-[#f3ead9] px-3 py-1.5 text-xs font-bold text-[#6c5a39]">
-                {getSalaryViewLabel(salaryView, salaryMode)}
+                {getSalaryViewLabel(salaryView)}
               </p>
             </div>
 
@@ -283,6 +360,474 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
   );
 }
 
+function MobileSpecialHero({
+  data,
+}: {
+  data: TopOccupationSpecialData;
+}) {
+  return (
+    <section className="px-4 pb-2 pt-5">
+      <div className="mx-auto max-w-md">
+        <p className="inline-flex rounded-[5px] border border-[#ead9bd] bg-white/70 px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.15em] text-[#b27806] shadow-[0_8px_18px_rgba(49,38,20,0.06)]">
+          Spesial
+        </p>
+        <h1 className="mt-3 text-[2.85rem] font-black leading-[0.9] tracking-[-0.055em] text-[#0f1115]">
+          Topp 10 yrker med høyest lønn
+        </h1>
+        <p className="mt-3 text-[15px] leading-6 text-[#4c5560]">
+          Yrker øverst i SSBs lønnsstatistikk, rangert og forklart.
+        </p>
+        <p className="mt-2 text-[11px] font-bold leading-5 text-[#66717b]">
+          Kilde: SSB · Periode: {formatCompactPeriodLabel(data.periodLabel)}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function MobileKeyStatsStrip({
+  topValue,
+  lastValue,
+  averageTopTen,
+}: {
+  topValue: number;
+  lastValue: number;
+  averageTopTen: number;
+}) {
+  const stats = [
+    { label: "Høyest", value: formatMoney(topValue) },
+    { label: "Lavest", value: formatMoney(lastValue) },
+    { label: "Snitt", value: formatMoney(averageTopTen) },
+  ];
+
+  return (
+    <section aria-label="Nøkkeltall" className="px-4 pb-2 pt-1">
+      <div className="-mx-4 flex snap-x gap-1.5 overflow-x-auto px-4 pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="min-w-[7.85rem] snap-start rounded-[5px] border border-[#eadfce] bg-white/80 px-2.5 py-2 shadow-[0_10px_22px_rgba(49,38,20,0.05)]"
+          >
+            <p className="text-[9px] font-black uppercase tracking-[0.11em] text-[#7d8790]">
+              {stat.label}
+            </p>
+            <p className="mt-1 whitespace-nowrap text-[15px] font-black tracking-[-0.035em] text-[#101418]">
+              {stat.value}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function MobileFilterBar({
+  salaryMode,
+  salaryView,
+  genderView,
+  setSalaryMode,
+  setSalaryView,
+  setGenderView,
+}: {
+  salaryMode: SalaryMode;
+  salaryView: SalaryView;
+  genderView: GenderView;
+  setSalaryMode: (value: SalaryMode) => void;
+  setSalaryView: (value: SalaryView) => void;
+  setGenderView: (value: GenderView) => void;
+}) {
+  return (
+    <section className="sticky top-0 z-40 border-y border-[#e6dac8] bg-[#fbf8f2]/90 px-2.5 py-1.5 shadow-[0_10px_24px_rgba(49,38,20,0.075)] backdrop-blur-xl">
+      <div className="mx-auto grid max-w-md gap-2">
+        <div className="grid grid-cols-3 gap-1.5">
+          <MobileSegmentedControl
+            ariaLabel="Velg lønnsmål"
+            options={[
+              { label: "Gj.snitt", value: "average" },
+              { label: "Median", value: "median" },
+            ]}
+            value={salaryMode}
+            onChange={(value) => setSalaryMode(value as SalaryMode)}
+          />
+          <MobileSegmentedControl
+            ariaLabel="Velg visning"
+            options={[
+              { label: "År", value: "annual" },
+              { label: "Mnd", value: "monthly" },
+              { label: "Time", value: "hourly" },
+            ]}
+            value={salaryView}
+            onChange={(value) => setSalaryView(value as SalaryView)}
+          />
+          <MobileSegmentedControl
+            ariaLabel="Velg kjønn"
+            options={[
+              { label: "Alle", value: "all" },
+              { label: "K", value: "women" },
+              { label: "M", value: "men" },
+            ]}
+            value={genderView}
+            onChange={(value) => setGenderView(value as GenderView)}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileSegmentedControl({
+  ariaLabel,
+  options,
+  value,
+  onChange,
+}: {
+  ariaLabel: string;
+  options: Array<{ label: string; value: string }>;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div
+      aria-label={ariaLabel}
+      className="grid grid-flow-col overflow-hidden rounded-[5px] border border-[#e1d4c2] bg-white/58 p-px"
+      role="group"
+    >
+      {options.map((option) => {
+        const active = option.value === value;
+
+        return (
+          <button
+            key={option.value}
+            aria-pressed={active}
+            className={[
+              "min-h-9 rounded-[5px] px-1 text-[11px] font-black transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0f766e]",
+              active
+                ? "bg-white text-[#0f5f58] shadow-[0_8px_18px_rgba(49,38,20,0.10)]"
+                : "text-[#59636d]",
+            ].join(" ")}
+            onClick={() => onChange(option.value)}
+            type="button"
+          >
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function MobileRankingList({
+  rankedRows,
+  selectedCode,
+  maxValue,
+  salaryMode,
+  salaryView,
+  genderView,
+  loaded,
+  rowRefs,
+  onSelect,
+}: {
+  rankedRows: TopOccupationSpecialRow[];
+  selectedCode: string;
+  maxValue: number;
+  salaryMode: SalaryMode;
+  salaryView: SalaryView;
+  genderView: GenderView;
+  loaded: boolean;
+  rowRefs: { current: Map<string, HTMLButtonElement> };
+  onSelect: (row: TopOccupationSpecialRow) => void;
+}) {
+  return (
+    <section className="px-4 pb-7 pt-3">
+      <div className="mx-auto max-w-md">
+        <div className="mb-2 flex items-end justify-between gap-3">
+          <h2 className="text-lg font-black tracking-[-0.04em] text-[#101418]">
+            Rangering
+          </h2>
+          <p className="text-[11px] font-bold text-[#66717b]">
+            Sortert etter {getSalaryViewLabel(salaryView).toLowerCase()}
+          </p>
+        </div>
+        <p className="mb-2 text-[11px] leading-4 text-[#68727d]">
+          Trykk på et yrke for detaljer.
+        </p>
+
+        <div className="grid gap-2">
+          {rankedRows.map((row, index) => (
+            <MobileRankingRow
+              key={row.occupationCode}
+              genderView={genderView}
+              index={index}
+              loaded={loaded}
+              maxValue={maxValue}
+              row={row}
+              salaryMode={salaryMode}
+              salaryView={salaryView}
+              selected={row.occupationCode === selectedCode}
+              signal={getOccupationSignal(row, rankedRows, salaryMode, salaryView, genderView)}
+              refCallback={(node) => {
+                if (node) {
+                  rowRefs.current.set(row.occupationCode, node);
+                } else {
+                  rowRefs.current.delete(row.occupationCode);
+                }
+              }}
+              onSelect={() => onSelect(row)}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileRankingRow({
+  row,
+  index,
+  maxValue,
+  salaryMode,
+  salaryView,
+  genderView,
+  selected,
+  loaded,
+  signal,
+  refCallback,
+  onSelect,
+}: {
+  row: TopOccupationSpecialRow;
+  index: number;
+  maxValue: number;
+  salaryMode: SalaryMode;
+  salaryView: SalaryView;
+  genderView: GenderView;
+  selected: boolean;
+  loaded: boolean;
+  signal: string;
+  refCallback: (node: HTMLButtonElement | null) => void;
+  onSelect: () => void;
+}) {
+  const value = getComparableSalary(row, salaryMode, salaryView, genderView);
+  const visual = getOccupationVisual(row, index);
+  const width = Math.max(8, (value / maxValue) * 100);
+
+  return (
+    <button
+      ref={refCallback}
+      aria-expanded={selected}
+      className={[
+        "rounded-[5px] border px-2.5 py-2.5 text-left transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0f766e]",
+        selected
+          ? "border-[#f0c25d] bg-[linear-gradient(135deg,#ffffff,#fff7e6)] shadow-[0_16px_34px_rgba(103,76,28,0.13)]"
+          : "border-[#e9dece] bg-white/80 shadow-[0_10px_22px_rgba(49,38,20,0.05)] active:scale-[0.99]",
+        loaded ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+      ].join(" ")}
+      onClick={onSelect}
+      style={{ transitionDelay: `${index * 28}ms` }}
+      type="button"
+    >
+      <div className="grid grid-cols-[2.1rem_minmax(0,1fr)] gap-2.5">
+        <div
+          className="grid h-8 w-8 place-items-center rounded-[5px] text-sm font-black"
+          style={{ backgroundColor: selected ? visual.accent : visual.soft, color: selected ? "#ffffff" : visual.ink }}
+        >
+          {index + 1}
+        </div>
+        <div className="min-w-0">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h3 className="overflow-hidden text-[14px] font-black leading-[1.18] tracking-[-0.025em] text-[#101418] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2]">
+                {row.occupationLabel}
+              </h3>
+              {index < 3 ? (
+                <span
+                  className="mt-1 inline-flex rounded-[5px] px-1.5 py-0.5 text-[8px] font-black uppercase tracking-[0.1em]"
+                  style={{ backgroundColor: visual.soft, color: visual.ink }}
+                >
+                  {signal}
+                </span>
+              ) : null}
+            </div>
+            <div className="shrink-0 text-right">
+              <p className="whitespace-nowrap text-[15px] font-black tracking-[-0.035em] text-[#101418]">
+                <CountUpMoney value={value} />
+              </p>
+              <p className="mt-0.5 text-[8px] font-black uppercase tracking-[0.11em] text-[#7d8790]">
+                {getMobileSalaryUnitLabel(salaryView)}
+              </p>
+            </div>
+          </div>
+          <div className="mt-2 h-1 overflow-hidden rounded-[5px] bg-[#ede7dc]">
+            <div
+              className="h-full rounded-[5px] transition-all duration-700 ease-out"
+              style={{
+                width: loaded ? `${width}%` : "0%",
+                background: `linear-gradient(90deg, ${visual.accent}, ${mixWithWhite(visual.accent)})`,
+                boxShadow: `0 0 14px ${hexToRgba(visual.accent, 0.16)}`,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+function MobileOccupationSheet({
+  row,
+  selectedRank,
+  salaryMode,
+  salaryView,
+  genderView,
+  averageTopTen,
+  topValue,
+  lastValue,
+  dataLabel,
+  isOpen,
+  onClose,
+}: {
+  row: TopOccupationSpecialRow;
+  selectedRank: number;
+  salaryMode: SalaryMode;
+  salaryView: SalaryView;
+  genderView: GenderView;
+  averageTopTen: number;
+  topValue: number;
+  lastValue: number;
+  dataLabel: string;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  const value = getComparableSalary(row, salaryMode, salaryView, genderView);
+  const visual = getOccupationVisual(row, selectedRank - 1);
+
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 md:hidden">
+      <button
+        aria-label="Lukk detaljvisning"
+        className="absolute inset-0 bg-[#1b2430]/28 backdrop-blur-[2px]"
+        onClick={onClose}
+        type="button"
+      />
+      <section
+        aria-modal="true"
+        className="absolute inset-x-0 bottom-0 max-h-[88vh] overflow-y-auto rounded-t-[18px] border border-white/70 bg-[#fffdf8] shadow-[0_-24px_70px_rgba(27,36,48,0.22)] motion-safe:animate-[mobile-sheet-up_180ms_ease-out]"
+        role="dialog"
+      >
+        <div className="sticky top-0 z-10 border-b border-[#e7dccd] bg-[#fffdf8]/92 px-4 pb-3 pt-2 backdrop-blur">
+          <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-[#d8c9b5]" />
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex min-w-0 items-start gap-3">
+              <div
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-[5px] text-2xl shadow-inner"
+                style={{ backgroundColor: visual.soft, color: visual.accent }}
+              >
+                {visual.icon}
+              </div>
+              <div className="min-w-0">
+                <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#0f766e]">
+                  #{selectedRank} på topplisten
+                </p>
+                <h2 className="mt-1 text-2xl font-black leading-[1.02] tracking-[-0.045em] text-[#101418]">
+                  {row.occupationLabel}
+                </h2>
+              </div>
+            </div>
+            <button
+              aria-label="Lukk"
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-[5px] border border-[#e4d8c8] bg-white text-xl font-black text-[#59636d] shadow-[0_8px_18px_rgba(49,38,20,0.08)]"
+              onClick={onClose}
+              type="button"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        <div className="grid gap-5 px-4 pb-7 pt-4">
+          <div className="grid grid-cols-2 gap-2.5">
+            <MetricCard label={getSalaryViewLabel(salaryView)} value={formatMoney(value)} />
+            <MetricCard
+              label="Estimert årslønn"
+              tone="green"
+              value={formatMoney(getMetricValue(row.averageMonthlySalary, genderView) * 12)}
+            />
+            <MetricCard
+              label="Arbeidstakere"
+              value={row.workforce ? numberFormatter.format(row.workforce) : "Ikke vist"}
+            />
+            <MetricCard label="Plassering" value={`#${selectedRank} av 10`} />
+            {row.salaryGrowthPercent !== undefined ? (
+              <MetricCard
+                label="Lønnsvekst"
+                tone={isPositive(row.salaryGrowthPercent) ? "green" : "default"}
+                value={formatPercentage(row.salaryGrowthPercent)}
+              />
+            ) : null}
+            {row.realSalaryGrowthPercent !== undefined ? (
+              <MetricCard
+                label="Reallønnsvekst"
+                tone={isPositive(row.realSalaryGrowthPercent) ? "green" : "default"}
+                value={formatPercentage(row.realSalaryGrowthPercent)}
+              />
+            ) : null}
+          </div>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.16em] text-[#29313a]">
+              Om yrket
+            </h3>
+            <p className="mt-2 text-sm leading-7 text-[#4f5964]">{row.intro}</p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.16em] text-[#29313a]">
+              Lønn påvirkes ofte av
+            </h3>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {row.salaryDrivers.map((driver) => (
+                <span key={driver} className="rounded-[5px] bg-[#e8f4ed] px-3 py-1.5 text-xs font-bold text-[#0f5f45]">
+                  {driver}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-[5px] border border-[#e7dccd] bg-white/70 p-4">
+            <h3 className="text-xs font-black uppercase tracking-[0.16em] text-[#29313a]">
+              Sammenligning
+            </h3>
+            <div className="mt-3 divide-y divide-[#eadfce]">
+              <MobileDifferenceRow label="Mot topp 10-snitt" value={value - averageTopTen} />
+              <MobileDifferenceRow label="Mot høyeste lønn" value={value - topValue} />
+              <MobileDifferenceRow label="Mot lavest i topp 10" value={value - lastValue} />
+            </div>
+          </section>
+
+          <p className="text-xs leading-5 text-[#6c7480]">
+            Viser {dataLabel} for {getGenderLabel(genderView).toLowerCase()}.
+          </p>
+
+          {row.href ? (
+            <Link
+              className="inline-flex min-h-12 items-center justify-center rounded-[5px] bg-[linear-gradient(135deg,#0f766e,#0f5f58)] px-5 py-3 text-sm font-black text-white shadow-[0_16px_34px_rgba(15,118,110,0.22)]"
+              href={row.href}
+            >
+              Se full yrkesside
+              <span aria-hidden="true" className="ml-2">
+                →
+              </span>
+            </Link>
+          ) : null}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function RankingCard({
   row,
   index,
@@ -365,7 +910,7 @@ function RankingCard({
             <CountUpMoney value={value} />
           </p>
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7d8790]">
-            {getSalaryViewLabel(salaryView, salaryMode).toLowerCase()}
+            {getSalaryViewLabel(salaryView).toLowerCase()}
           </p>
         </div>
       </div>
@@ -425,7 +970,7 @@ function OccupationDetailPanel({
 
       <div className="grid gap-6 p-6 sm:p-7">
         <div className="grid gap-3 sm:grid-cols-2">
-          <MetricCard label={getSalaryViewLabel(salaryView, salaryMode)} value={formatMoney(value)} />
+          <MetricCard label={getSalaryViewLabel(salaryView)} value={formatMoney(value)} />
           <MetricCard
             label="Estimert årslønn"
             tone="green"
@@ -565,6 +1110,25 @@ function MethodPoint({ title, text }: { title: string; text: string }) {
   );
 }
 
+function MobileDifferenceRow({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)_6.5rem] items-center gap-3 py-3 first:pt-0 last:pb-0">
+      <div className="min-w-0">
+        <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[#7d8790]">{label}</p>
+        <p
+          className={[
+            "mt-1 text-lg font-black tracking-[-0.03em]",
+            value >= 0 ? "text-[#0f766e]" : "text-[#b24a3c]",
+          ].join(" ")}
+        >
+          {formatSignedMoney(value)}
+        </p>
+      </div>
+      <MiniLine positive={value >= 0} compact />
+    </div>
+  );
+}
+
 function DifferenceCard({ label, value }: { label: string; value: number }) {
   return (
     <div className="min-w-0">
@@ -577,11 +1141,16 @@ function DifferenceCard({ label, value }: { label: string; value: number }) {
   );
 }
 
-function MiniLine({ positive }: { positive: boolean }) {
+function MiniLine({ positive, compact = false }: { positive: boolean; compact?: boolean }) {
   const color = positive ? "#7bc39f" : "#ef9b8c";
 
   return (
-    <svg className="mt-3 h-8 w-full" viewBox="0 0 110 32" role="img" aria-label="Miniutvikling">
+    <svg
+      className={compact ? "h-7 w-full" : "mt-3 h-8 w-full"}
+      viewBox="0 0 110 32"
+      role="img"
+      aria-label="Miniutvikling"
+    >
       <path
         d="M2 24 C16 21 20 15 31 19 C42 23 44 10 55 14 C67 18 70 7 82 10 C93 13 98 8 108 5"
         fill="none"
@@ -725,7 +1294,7 @@ function isPositive(value?: number) {
   return value !== undefined && value >= 0;
 }
 
-function getSalaryViewLabel(salaryView: SalaryView, _salaryMode?: SalaryMode) {
+function getSalaryViewLabel(salaryView: SalaryView) {
   if (salaryView === "annual") {
     return "Estimert årslønn";
   }
@@ -737,6 +1306,18 @@ function getSalaryViewLabel(salaryView: SalaryView, _salaryMode?: SalaryMode) {
   return "Månedslønn";
 }
 
+function getMobileSalaryUnitLabel(salaryView: SalaryView) {
+  if (salaryView === "annual") {
+    return "per år";
+  }
+
+  if (salaryView === "hourly") {
+    return "per time";
+  }
+
+  return "per måned";
+}
+
 function formatPeriodLabel(periodLabel?: string) {
   const match = periodLabel?.match(/^(\d{4})K([1-4])$/);
 
@@ -745,6 +1326,16 @@ function formatPeriodLabel(periodLabel?: string) {
   }
 
   return `${Number(match[2])}. kvartal ${match[1]}`;
+}
+
+function formatCompactPeriodLabel(periodLabel?: string) {
+  const match = periodLabel?.match(/^(\d{4})K([1-4])$/);
+
+  if (!match) {
+    return periodLabel ?? "siste periode";
+  }
+
+  return match[1];
 }
 
 function formatSignedMoney(value: number) {
@@ -759,14 +1350,17 @@ function useAnimatedNumber(value: number) {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let animationFrame = 0;
 
     if (mediaQuery.matches) {
-      displayValueRef.current = value;
-      setDisplayValue(value);
-      return;
+      animationFrame = requestAnimationFrame(() => {
+        displayValueRef.current = value;
+        setDisplayValue(value);
+      });
+
+      return () => cancelAnimationFrame(animationFrame);
     }
 
-    let animationFrame = 0;
     const startValue = displayValueRef.current;
     const difference = value - startValue;
     const startTime = performance.now();

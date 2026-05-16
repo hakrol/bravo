@@ -70,6 +70,13 @@ const TOOL_LINKS = [
   },
 ];
 
+const SPECIAL_LINKS = [
+  {
+    href: "/spesial/topp-10-yrker",
+    title: "Topp 10 yrker med høyest lønn",
+  },
+];
+
 const EXTERNAL_SOURCE_LINKS = [
   {
     href: "https://www.ssb.no/arbeid-og-lonn/lonn-og-arbeidskraftkostnader",
@@ -444,6 +451,23 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 <span className="min-w-0">{buildApprenticeshipSidebarLabel(occupationText.titleLabel)}</span>
               </Link>
             ) : null}
+
+            <section>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                Spesial
+              </p>
+              <div className="mt-4 grid gap-3">
+                {SPECIAL_LINKS.map((link) => (
+                  <Link
+                    className="text-sm font-medium leading-5 text-slate-700 transition hover:text-slate-950 hover:underline hover:decoration-slate-300 hover:underline-offset-4"
+                    href={link.href}
+                    key={link.href}
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
+            </section>
 
             <section>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
