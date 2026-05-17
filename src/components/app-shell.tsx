@@ -13,6 +13,10 @@ function isAdminPath(pathname: string | null) {
   return pathname === "/admin" || pathname?.startsWith("/admin/") === true;
 }
 
+function isImmersiveSpecialPath(pathname: string | null) {
+  return pathname === "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest";
+}
+
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const headerRegionRef = useRef<HTMLDivElement>(null);
@@ -59,7 +63,7 @@ export function AppShell({ children }: AppShellProps) {
     };
   }, []);
 
-  if (isAdminPath(pathname)) {
+  if (isAdminPath(pathname) || isImmersiveSpecialPath(pathname)) {
     return <>{children}</>;
   }
 
