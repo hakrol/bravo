@@ -70,10 +70,12 @@ function Hero() {
       <div className="mx-auto grid min-h-[92svh] max-w-[1500px] px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-24 lg:px-12">
         <div className="grid items-end gap-8 pb-8 pt-28 sm:items-center sm:gap-14 sm:py-8 lg:grid-cols-[minmax(0,0.86fr)_minmax(360px,0.5fr)] lg:py-20">
           <div className="max-w-5xl">
-            <h1 className="max-w-[22rem] font-serif text-6xl font-black leading-[0.86] tracking-normal text-[#fff8ed] min-[390px]:text-7xl sm:hidden">
+            <h1 className="max-w-full overflow-visible font-serif text-7xl font-black leading-[0.86] tracking-normal text-[#fff8ed] min-[390px]:text-8xl sm:hidden">
               <span className="block">I disse</span>
-              <span className="block">yrkene øker</span>
-              <span className="block">kvinneandelen</span>
+              <span className="block">yrkene</span>
+              <span className="block">øker</span>
+              <span className="block">kvinne-</span>
+              <span className="block">andelen</span>
               <span className="block">raskest</span>
             </h1>
             <h1 className="hidden max-w-5xl font-serif font-black leading-[0.86] tracking-normal text-[#fff8ed] sm:block sm:text-[clamp(4.6rem,9vw,9.6rem)]">

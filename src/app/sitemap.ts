@@ -108,6 +108,18 @@ const staticRoutes = [
     changeFrequency: "weekly" as const,
   },
   {
+    path: "/spesial",
+    filePath: "src/app/spesial/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/spesial/topp-10-yrker",
+    filePath: "src/app/spesial/topp-10-yrker/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest",
     filePath: "src/app/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/page.tsx",
     priority: 0.6,
