@@ -18,7 +18,7 @@ const percentFormatter = new Intl.NumberFormat("nb-NO", {
 });
 
 const introImageSrc =
-  "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/spesial-kvinneandel-seksjon-1.png";
+  "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/spesial-kvinneandel-seksjon-1-2.png";
 const introImagePath = path.join(process.cwd(), "public", introImageSrc);
 
 export function WomenShareSpecialArticle({ data }: WomenShareSpecialArticleProps) {
@@ -134,8 +134,8 @@ function IntroSection({ data }: { data: WomenShareSpecialData }) {
 
 function IntroImageFigure() {
   return (
-    <figure className="mt-16 grid gap-8 lg:grid-cols-[500px_minmax(240px,0.34fr)] lg:items-end">
-      <div className="relative isolate w-full max-w-[500px] overflow-hidden bg-[#e8decf] p-2.5 shadow-[18px_18px_0_#d6c4aa]">
+    <figure className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,760px)_minmax(240px,0.34fr)] lg:items-end">
+      <div className="relative isolate w-full max-w-[760px] overflow-hidden bg-[#e8decf] p-2.5 shadow-[18px_18px_0_#d6c4aa] sm:p-3">
         <div
           className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(22,119,100,0.16),transparent_30%),linear-gradient(135deg,#f6efe4,#d9c7ac)]"
           aria-hidden="true"
@@ -144,11 +144,11 @@ function IntroImageFigure() {
         <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-[#167764]/10" aria-hidden="true" />
         <Image
           alt="Kvinnelig lege skriver notater under en pasientsamtale."
-          className="relative aspect-square w-full object-cover"
-          height={500}
-          sizes="(min-width: 1024px) 500px, 100vw"
+          className="relative aspect-[5/4] w-full object-cover"
+          height={800}
+          sizes="(min-width: 1024px) 760px, 100vw"
           src={introImageSrc}
-          width={500}
+          width={1000}
         />
       </div>
 
