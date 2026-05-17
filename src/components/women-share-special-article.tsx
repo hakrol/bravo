@@ -1,4 +1,7 @@
-import Link from "next/link";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import Image from "next/image";
+import { WomenShareSpecialNav } from "@/components/women-share-special-nav";
 import type { WomenShareSpecialData, WomenShareSpecialRow } from "@/lib/women-share-special";
 
 type WomenShareSpecialArticleProps = {
@@ -14,17 +17,15 @@ const percentFormatter = new Intl.NumberFormat("nb-NO", {
   minimumFractionDigits: 1,
 });
 
-const heroLineRows = [
-  { label: "Allmennpraktiserende leger", start: 49.3, end: 57.4 },
-  { label: "Andre sivilingeniører", start: 35.2, end: 42.8 },
-  { label: "Havbruksarbeidere", start: 13.8, end: 21.3 },
-  { label: "Politibetjenter", start: 31.0, end: 38.4 },
-];
+const introImageSrc =
+  "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/spesial-kvinneandel-seksjon-1.png";
+const introImagePath = path.join(process.cwd(), "public", introImageSrc);
 
 export function WomenShareSpecialArticle({ data }: WomenShareSpecialArticleProps) {
   return (
     <main className="min-h-screen bg-[#f7f3eb] text-[#151614]">
-      <Hero data={data} />
+      <WomenShareSpecialNav title="I disse yrkene øker kvinneandelen raskest" />
+      <Hero />
       <article>
         <IntroSection data={data} />
         <FindingsSection data={data} />
@@ -38,12 +39,23 @@ export function WomenShareSpecialArticle({ data }: WomenShareSpecialArticleProps
   );
 }
 
-function Hero({ data }: { data: WomenShareSpecialData }) {
+function Hero() {
   return (
-    <section className="relative isolate min-h-[92svh] overflow-hidden bg-[#090c0d] text-white">
-      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_75%_28%,rgba(94,188,157,0.28),transparent_30%),radial-gradient(circle_at_38%_78%,rgba(199,150,79,0.18),transparent_32%),linear-gradient(135deg,#08090a_0%,#101819_48%,#050606_100%)]" />
+    <section
+      className="relative isolate min-h-[92svh] overflow-hidden bg-[#090c0d] text-white"
+      id="special-hero"
+    >
+      <Image
+        alt=""
+        className="absolute inset-0 -z-30 h-full w-full object-cover opacity-78 [object-position:61%_center] min-[390px]:[object-position:64%_center] sm:opacity-74 sm:[object-position:66%_center] lg:opacity-82"
+        fill
+        priority
+        sizes="100vw"
+        src="/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/hero-kvinneandel-vokser-raskest.png"
+      />
+      <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_70%_22%,rgba(94,188,157,0.18),transparent_30%),linear-gradient(90deg,#070909_0%,rgba(7,9,9,0.88)_38%,rgba(7,9,9,0.30)_74%,rgba(7,9,9,0.52)_100%),linear-gradient(180deg,rgba(7,9,9,0.30)_0%,rgba(7,9,9,0.24)_34%,rgba(7,9,9,0.88)_78%,#070909_100%)] sm:bg-[radial-gradient(circle_at_76%_30%,rgba(94,188,157,0.20),transparent_28%),linear-gradient(90deg,#070909_0%,rgba(7,9,9,0.94)_22%,rgba(7,9,9,0.72)_48%,rgba(7,9,9,0.20)_78%,rgba(7,9,9,0.58)_100%),linear-gradient(180deg,rgba(7,9,9,0.38)_0%,rgba(7,9,9,0.08)_42%,#070909_100%)]" />
       <div
-        className="absolute inset-0 -z-10 opacity-[0.18] [background-image:linear-gradient(rgba(255,255,255,0.10)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.10)_1px,transparent_1px)] [background-size:72px_72px]"
+        className="absolute inset-0 -z-10 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.10)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.10)_1px,transparent_1px)] [background-size:72px_72px]"
         aria-hidden="true"
       />
       <div
@@ -51,75 +63,41 @@ function Hero({ data }: { data: WomenShareSpecialData }) {
         aria-hidden="true"
       />
 
-      <div className="mx-auto grid min-h-[92svh] max-w-[1500px] grid-rows-[auto_1fr] px-5 pb-10 pt-6 sm:px-8 lg:px-12">
-        <div className="flex items-center justify-between gap-6 text-xs font-semibold uppercase text-white/65">
-          <Link className="tracking-[0.28em]" href="/">
-            Lønnsinnsikt
-          </Link>
-          <span className="tracking-[0.2em]">Spesial</span>
-        </div>
-
-        <div className="grid items-center gap-14 py-14 lg:grid-cols-[minmax(0,0.92fr)_minmax(420px,0.78fr)] lg:py-20">
+      <div className="mx-auto grid min-h-[92svh] max-w-[1500px] px-5 pb-10 pt-16 sm:px-8 sm:pb-12 sm:pt-24 lg:px-12">
+        <div className="grid items-end gap-8 pb-8 pt-28 sm:items-center sm:gap-14 sm:py-8 lg:grid-cols-[minmax(0,0.86fr)_minmax(360px,0.5fr)] lg:py-20">
           <div className="max-w-5xl">
-            <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#d3aa6c]">
-              Arbeidsliv / SSB-analyse
-            </p>
-            <h1 className="mt-7 max-w-5xl font-serif text-[clamp(3.6rem,9vw,9.4rem)] font-black leading-[0.86] tracking-normal text-[#fff8ed]">
+            <h1 className="max-w-[22rem] font-serif text-6xl font-black leading-[0.86] tracking-normal text-[#fff8ed] min-[390px]:text-7xl sm:hidden">
+              <span className="block">I disse</span>
+              <span className="block">yrkene øker</span>
+              <span className="block">kvinneandelen</span>
+              <span className="block">raskest</span>
+            </h1>
+            <h1 className="hidden max-w-5xl font-serif font-black leading-[0.86] tracking-normal text-[#fff8ed] sm:block sm:text-[clamp(4.6rem,9vw,9.6rem)]">
               I disse yrkene øker kvinneandelen raskest
             </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-white/78 sm:text-xl sm:leading-9">
-              En gjennomgang av lønnstakerdata viser hvilke større yrker som har flyttet
-              kjønnsbalansen mest siden {formatPeriod(data.startPeriod)}.
+            <p className="mt-7 max-w-[21.5rem] text-[1.02rem] leading-7 text-white/84 min-[390px]:max-w-[23rem] min-[390px]:text-lg min-[390px]:leading-8 sm:mt-8 sm:max-w-3xl sm:text-2xl sm:leading-10 sm:text-white/82">
+              Kvinner har tatt en større plass i flere store yrker som lenge var dominert
+              av menn. Øverst ligger allmennpraktiserende leger, fulgt av blant annet
+              sivilingeniører, havbruksarbeidere og politibetjenter.
             </p>
-            <p className="mt-7 text-sm leading-6 text-white/52">
-              {data.source} tabell {data.tableId}. Sammenligning: {formatPeriod(data.startPeriod)} til{" "}
-              {formatPeriod(data.endPeriod)}. Minst {formatNumber(data.minimumWorkforce)} lønnstakere
-              i begge perioder.
+            <p className="mt-6 font-serif text-6xl font-black leading-none text-[#f2c079]/95 min-[390px]:text-7xl sm:hidden">
+              +8,2%
             </p>
           </div>
 
-          <HeroVisual />
+          <HeroDataSignal />
         </div>
       </div>
     </section>
   );
 }
 
-function HeroVisual() {
+function HeroDataSignal() {
   return (
-    <div className="relative min-h-[26rem] overflow-hidden lg:min-h-[42rem]" aria-hidden="true">
-      <div className="absolute inset-y-8 left-6 right-0 rounded-l-[999px] border border-white/10 bg-white/[0.035]" />
-      <div className="absolute inset-0">
-        {heroLineRows.map((row, index) => {
-          const y = 70 + index * 86;
-          const startX = 74 + row.start * 4.2;
-          const endX = 74 + row.end * 4.2;
-
-          return (
-            <svg
-              key={row.label}
-              className="absolute left-0 top-0 h-full w-full overflow-visible"
-              viewBox="0 0 520 520"
-            >
-              <path
-                d={`M ${startX} ${y} C ${startX + 72} ${y - 26}, ${endX - 70} ${y + 34}, ${endX} ${y}`}
-                fill="none"
-                stroke={index === 0 ? "#f2c079" : "#6fbca4"}
-                strokeLinecap="round"
-                strokeWidth={index === 0 ? 8 : 5}
-              />
-              <circle cx={startX} cy={y} fill="#111717" r="9" stroke="#fff5e5" strokeWidth="3" />
-              <circle cx={endX} cy={y} fill={index === 0 ? "#f2c079" : "#6fbca4"} r="12" />
-            </svg>
-          );
-        })}
-      </div>
-      <div className="absolute bottom-10 right-2 max-w-[18rem] text-right">
-        <p className="font-serif text-7xl font-black leading-none text-[#f2c079]/95 sm:text-8xl">
-          +8,2
-        </p>
-        <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/52">
-          prosentpoeng i toppfunnet
+    <div className="relative hidden min-h-[36rem] lg:block" aria-hidden="true">
+      <div className="absolute bottom-12 right-0 max-w-[18rem] text-right">
+        <p className="font-serif text-7xl font-black leading-none text-[#f2c079]/90 sm:text-8xl">
+          +8,2%
         </p>
       </div>
     </div>
@@ -129,38 +107,61 @@ function HeroVisual() {
 function IntroSection({ data }: { data: WomenShareSpecialData }) {
   return (
     <section className="px-5 py-20 sm:px-8 sm:py-28">
-      <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-[minmax(0,0.72fr)_minmax(280px,0.28fr)]">
-        <div className="max-w-3xl">
+      <div className="mx-auto max-w-6xl">
+        <div className="max-w-4xl">
           <p className="font-serif text-3xl leading-tight text-[#181917] sm:text-5xl sm:leading-tight">
-            Det er ikke bare i de klassisk kvinnedominerte yrkene kvinneandelen øker.
-            Flere store profesjons- og beredskapsyrker har hatt en tydelig forskyvning.
+            Kvinneandelen øker ikke bare i yrker der kvinner allerede er i flertall.
+            Flere store yrker som lenge har hatt mange menn, er i endring.
           </p>
-          <div className="mt-12 space-y-8 text-lg leading-9 text-[#4b4d47]">
+          <div className="mt-12 max-w-3xl space-y-8 text-lg leading-9 text-[#4b4d47]">
             <p>
-              Lønnsinnsikt har sett på 4-siffer-yrker i SSBs lønnstakerstatistikk og sammenlignet
-              kvinneandelen i {formatPeriod(data.startPeriod)} med {formatPeriod(data.endPeriod)}.
-              For å unngå at små yrker dominerer listen, er bare yrker med minst{" "}
-              {formatNumber(data.minimumWorkforce)} lønnstakere i begge perioder tatt med.
+              Lønnsinnsikt har sammenlignet kvinneandelen i norske yrker fra{" "}
+              {formatPeriod(data.startPeriod)} til {formatPeriod(data.endPeriod)}. For å få en
+              ryddig liste har vi bare tatt med yrker med minst {formatNumber(data.minimumWorkforce)}{" "}
+              lønnstakere i begge perioder.
             </p>
             <p>
-              Resultatet er et bilde av gradvis strukturell endring. Noen yrker har passert
-              vippepunktet og blitt kvinnemajoritet. Andre er fortsatt klart mannsdominerte,
-              men beveger seg raskere enn resten av arbeidsmarkedet.
+              Noen yrker har nå flere kvinner enn menn. Andre er fortsatt mannsdominerte,
+              men har fått en klart større andel kvinner på få år.
             </p>
           </div>
         </div>
-
-        <aside className="border-l border-[#d9cfbf] pl-6 text-sm leading-7 text-[#68665d]">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#96713d]">
-            Avgrensning
-          </p>
-          <p className="mt-4">
-            Dette er en pilot for en ny spesialartikkeltype. Tallene viser lønnstakere,
-            ikke alle sysselsatte, og bør leses som en endring i registrert yrkessammensetning.
-          </p>
-        </aside>
+        {existsSync(introImagePath) ? <IntroImageFigure /> : null}
       </div>
     </section>
+  );
+}
+
+function IntroImageFigure() {
+  return (
+    <figure className="mt-16 grid gap-8 lg:grid-cols-[500px_minmax(240px,0.34fr)] lg:items-end">
+      <div className="relative isolate w-full max-w-[500px] overflow-hidden bg-[#e8decf] p-2.5 shadow-[18px_18px_0_#d6c4aa]">
+        <div
+          className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_12%_18%,rgba(22,119,100,0.16),transparent_30%),linear-gradient(135deg,#f6efe4,#d9c7ac)]"
+          aria-hidden="true"
+        />
+        <div className="absolute -right-7 -top-7 h-24 w-24 rounded-full border border-[#96713d]/35" aria-hidden="true" />
+        <div className="absolute -bottom-6 -left-6 h-20 w-20 rounded-full bg-[#167764]/10" aria-hidden="true" />
+        <Image
+          alt="Kvinnelig lege skriver notater under en pasientsamtale."
+          className="relative aspect-square w-full object-cover"
+          height={500}
+          sizes="(min-width: 1024px) 500px, 100vw"
+          src={introImageSrc}
+          width={500}
+        />
+      </div>
+
+      <figcaption className="border-l border-[#d8cdbb] pl-5 text-sm leading-7 text-[#68645b]">
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#96713d]">
+          I toppen
+        </p>
+        <p className="mt-4">
+          Allmennpraktiserende leger er yrket i utvalget der kvinneandelen har økt mest.
+          I 2025 var 57,4 prosent av lønnstakerne kvinner.
+        </p>
+      </figcaption>
+    </figure>
   );
 }
 
