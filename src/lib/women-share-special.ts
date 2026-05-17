@@ -1,11 +1,13 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { getOccupationDetailHref } from "@/lib/occupation-detail-pages";
 import type { SsbNormalizedDataset } from "@/lib/types";
 
 export type WomenShareSpecialRow = {
   rank: number;
   occupationCode: string;
   occupationLabel: string;
+  href: string | null;
   startShare: number;
   endShare: number;
   changePercentagePoints: number;
@@ -16,9 +18,21 @@ export type WomenShareSpecialRow = {
   totalChange: number;
 };
 
+export type WomenShareSpecialTimeSeriesPoint = {
+  period: string;
+  share: number;
+};
+
+export type WomenShareSpecialTimeSeries = {
+  occupationCode: string;
+  occupationLabel: string;
+  points: WomenShareSpecialTimeSeriesPoint[];
+};
+
 export type WomenShareSpecialData = {
   rows: WomenShareSpecialRow[];
   comparisonRows: WomenShareSpecialRow[];
+  timeSeries: WomenShareSpecialTimeSeries[];
   startPeriod: string;
   endPeriod: string;
   minimumWorkforce: number;
@@ -49,6 +63,12 @@ export function getWomenShareSpecialData(): WomenShareSpecialData {
   const rowMap = buildWorkforceRowMap(dataset, START_PERIOD, endPeriod);
   const rows = buildRankedRows(rowMap, START_PERIOD, endPeriod, MINIMUM_WORKFORCE);
   const topRows = rows.slice(0, 10);
+  const timeSeries = buildTimeSeries(
+    dataset,
+    topRows.map((row) => row.occupationCode),
+    START_PERIOD,
+    endPeriod,
+  );
   const topFinding = topRows[0];
   const lowStartFinding =
     topRows
@@ -67,6 +87,7 @@ export function getWomenShareSpecialData(): WomenShareSpecialData {
   return {
     rows: topRows,
     comparisonRows: rows.slice(0, 16),
+    timeSeries,
     startPeriod: START_PERIOD,
     endPeriod,
     minimumWorkforce: MINIMUM_WORKFORCE,
@@ -78,6 +99,85 @@ export function getWomenShareSpecialData(): WomenShareSpecialData {
     lowStartFinding,
     largestWomenGrowth,
   };
+}
+
+function buildTimeSeries(
+  dataset: SsbNormalizedDataset,
+  occupationCodes: string[],
+  startPeriod: string,
+  endPeriod: string,
+) {
+  const acceptedOccupationCodes = new Set(occupationCodes);
+  const rowMap = new Map<string, WorkforceDraft>();
+
+  for (const row of dataset.rows) {
+    const occupation = row.dimensions.Yrke;
+    const gender = row.dimensions.Kjonn;
+    const age = row.dimensions.Alder;
+    const content = row.dimensions.ContentsCode;
+    const period = row.dimensions.Tid;
+
+    if (
+      !occupation ||
+      !gender ||
+      !age ||
+      !content ||
+      !period ||
+      row.value === null ||
+      age.code !== "999D" ||
+      content.code !== "Lonsstakere" ||
+      !acceptedOccupationCodes.has(occupation.code) ||
+      comparePeriodLabels(period.code, startPeriod) < 0 ||
+      comparePeriodLabels(period.code, endPeriod) > 0
+    ) {
+      continue;
+    }
+
+    const key = `${occupation.code}|${period.code}`;
+    const draft =
+      rowMap.get(key) ??
+      {
+        occupationCode: occupation.code,
+        occupationLabel: occupation.label,
+        period: period.code,
+      };
+
+    if (gender.code === "0") {
+      draft.total = row.value;
+    }
+
+    if (gender.code === "2") {
+      draft.women = row.value;
+    }
+
+    rowMap.set(key, draft);
+  }
+
+  return occupationCodes
+    .map((occupationCode) => {
+      const points = Array.from(rowMap.values())
+        .filter(
+          (row) =>
+            row.occupationCode === occupationCode &&
+            row.total !== undefined &&
+            row.total > 0 &&
+            row.women !== undefined,
+        )
+        .sort((left, right) => comparePeriodLabels(left.period, right.period))
+        .map((row) => ({
+          period: row.period,
+          share: ((row.women ?? 0) / (row.total ?? 1)) * 100,
+        }));
+
+      return {
+        occupationCode,
+        occupationLabel:
+          rowMap.get(`${occupationCode}|${points.at(-1)?.period}`)?.occupationLabel ??
+          occupationCode,
+        points,
+      };
+    })
+    .filter((series) => series.points.length > 0);
 }
 
 function readGeneratedDataset(fileName: string): SsbNormalizedDataset {
@@ -171,6 +271,7 @@ function buildRankedRows(
       rank: 0,
       occupationCode: endDraft.occupationCode,
       occupationLabel: endDraft.occupationLabel,
+      href: getOccupationDetailHref(endDraft.occupationCode, endDraft.occupationLabel),
       startShare,
       endShare,
       changePercentagePoints: endShare - startShare,

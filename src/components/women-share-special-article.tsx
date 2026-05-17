@@ -1,6 +1,8 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import Image from "next/image";
+import Link from "next/link";
+import { QuarterlyWomenShareChart } from "@/components/quarterly-women-share-chart";
 import { WomenShareSpecialNav } from "@/components/women-share-special-nav";
 import type { WomenShareSpecialData, WomenShareSpecialRow } from "@/lib/women-share-special";
 
@@ -20,6 +22,9 @@ const percentFormatter = new Intl.NumberFormat("nb-NO", {
 const introImageSrc =
   "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/spesial-kvinneandel-seksjon-1-2.png";
 const introImagePath = path.join(process.cwd(), "public", introImageSrc);
+const aquacultureImageSrc =
+  "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest/spesial-kvinneandel-seksjon-2-1.png";
+const aquacultureImagePath = path.join(process.cwd(), "public", aquacultureImageSrc);
 
 export function WomenShareSpecialArticle({ data }: WomenShareSpecialArticleProps) {
   return (
@@ -30,9 +35,8 @@ export function WomenShareSpecialArticle({ data }: WomenShareSpecialArticleProps
         <IntroSection data={data} />
         <FindingsSection data={data} />
         <LargeBarSection rows={data.rows} />
+        {existsSync(aquacultureImagePath) ? <AquacultureImageSection /> : null}
         <NarrativeBreak data={data} />
-        <SlopeSection rows={data.rows.slice(0, 8)} />
-        <ContrastSection data={data} />
         <MethodSection data={data} />
       </article>
     </main>
@@ -219,18 +223,27 @@ function LargeBarSection({ rows }: { rows: WomenShareSpecialRow[] }) {
     <section className="bg-[#fbfaf7] px-5 py-20 sm:px-8 sm:py-32">
       <div className="mx-auto max-w-7xl">
         <SectionHeader
-          kicker="Første graf"
+          kicker=""
           title="Yrker der kvinneandelen økte mest"
-          text="Målt i prosentpoeng fra fjerde kvartal 2016 til fjerde kvartal 2025. Listen viser større 4-siffer-yrker i SSBs lønnstakerstatistikk."
+          text="Målt i prosentpoeng fra fjerde kvartal 2016 til fjerde kvartal 2025."
         />
 
         <div className="mt-16 space-y-8">
           {rows.map((row) => (
             <div key={row.occupationCode} className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)_8rem] lg:items-center">
               <div>
-                <p className="font-serif text-2xl font-black leading-tight text-[#171814]">
-                  {row.occupationLabel}
-                </p>
+                {row.href ? (
+                  <Link
+                    className="font-serif text-2xl font-black leading-tight text-[#171814] underline decoration-[#167764]/35 underline-offset-4 transition hover:text-[#167764] hover:decoration-[#167764]"
+                    href={row.href}
+                  >
+                    {row.occupationLabel}
+                  </Link>
+                ) : (
+                  <p className="font-serif text-2xl font-black leading-tight text-[#171814]">
+                    {row.occupationLabel}
+                  </p>
+                )}
                 <p className="mt-1 text-sm text-[#777166]">
                   {formatPercent(row.startShare)} til {formatPercent(row.endShare)}
                 </p>
@@ -252,170 +265,59 @@ function LargeBarSection({ rows }: { rows: WomenShareSpecialRow[] }) {
   );
 }
 
-function NarrativeBreak({ data }: { data: WomenShareSpecialData }) {
+function AquacultureImageSection() {
   return (
-    <section className="bg-[#111715] px-5 py-24 text-[#f7f3eb] sm:px-8 sm:py-36">
-      <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:items-end">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#d3aa6c]">
-            Kontrasten
-          </p>
-          <p className="mt-6 font-serif text-6xl font-black leading-[0.92] sm:text-8xl">
-            Tallene beveger seg sakte. Men retningen er tydelig.
+    <section className="bg-[#fbfaf7] px-5 pb-24 pt-4 sm:px-8 sm:pb-32">
+      <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="font-serif text-3xl leading-tight text-[#181917] sm:text-5xl">
+            Blant havbruksarbeidere har kvinneandelen økt betraktelig, selv om yrket
+            fortsatt har flest menn.
           </p>
         </div>
-        <div className="max-w-2xl space-y-8 text-lg leading-9 text-white/72">
-          <p>
-            I toppen av listen ligger ikke ett samlet fagfelt, men yrker fra helse,
-            teknologi, havbruk, politi, juss og ledelse. Det gjør utviklingen mindre
-            som en enkel trend og mer som en bred forskyvning i hvem som går inn i
-            ulike kompetanseyrker.
-          </p>
-          <p>
-            For {data.lowStartFinding.occupationLabel.toLowerCase()} er kvinneandelen fortsatt bare{" "}
-            {formatPercent(data.lowStartFinding.endShare)}. Likevel er økningen på{" "}
-            {formatPercent(data.lowStartFinding.changePercentagePoints)} prosentpoeng stor nok til
-            å plassere yrket høyt i utvalget.
-          </p>
-        </div>
+
+        <figure className="mx-auto mt-14 max-w-[1000px]">
+          <Image
+            alt="Arbeid i havbruk, brukt som illustrasjon for økt kvinneandel blant havbruksarbeidere."
+            className="aspect-[5/4] w-full object-cover"
+            height={800}
+            sizes="(min-width: 1024px) 1000px, 100vw"
+            src={aquacultureImageSrc}
+            width={1000}
+          />
+        </figure>
       </div>
     </section>
   );
 }
 
-function SlopeSection({ rows }: { rows: WomenShareSpecialRow[] }) {
+function NarrativeBreak({ data }: { data: WomenShareSpecialData }) {
   return (
-    <section className="px-5 py-20 sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeader
-          kicker="Ny graf"
-          title="Fra startpunkt til siste kvartal"
-          text="Linjene viser hvor stor del av lønnstakerne som var kvinner i start- og sluttperioden. Hver linje er ett yrke."
-        />
-        <div className="mt-14 overflow-x-auto pb-4">
-          <div className="min-w-[760px]">
-            <SlopeChart rows={rows} />
+    <section className="bg-[#111715] px-5 py-20 text-[#f7f3eb] sm:px-8 sm:py-28">
+      <div className="mx-auto max-w-[1500px]">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.45fr)_minmax(0,0.55fr)] lg:items-end">
+          <h2 className="max-w-4xl font-serif text-4xl font-black leading-[0.98] sm:text-6xl">
+            Kvinneandelen øker kvartal for kvartal
+          </h2>
+          <div className="max-w-2xl space-y-6 text-lg leading-9 text-white/72">
+          <p>
+            Havbruksarbeidere skiller seg tydeligst ut. Kvinneandelen er fortsatt lav,
+            men har økt fra 13,8 til 21,3 prosent.
+          </p>
+          <p>
+            Blant allmennpraktiserende leger har kvinner gått fra knapt halvparten til
+            klart flertall i samme periode.
+          </p>
+          </div>
+        </div>
+
+        <div className="mt-16 overflow-x-auto pb-4">
+          <div className="min-w-[980px]">
+            <QuarterlyWomenShareChart series={data.timeSeries} />
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function SlopeChart({ rows }: { rows: WomenShareSpecialRow[] }) {
-  const width = 960;
-  const height = 560;
-  const leftX = 230;
-  const rightX = 730;
-  const topY = 50;
-  const bottomY = 490;
-
-  return (
-    <svg className="h-auto w-full" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Kvinneandel fra 2016K4 til 2025K4">
-      <line x1={leftX} x2={leftX} y1={topY} y2={bottomY} stroke="#d8cdbb" strokeWidth="2" />
-      <line x1={rightX} x2={rightX} y1={topY} y2={bottomY} stroke="#d8cdbb" strokeWidth="2" />
-      <text fill="#7b7367" fontSize="18" fontWeight="700" x={leftX} y="26" textAnchor="middle">
-        2016K4
-      </text>
-      <text fill="#7b7367" fontSize="18" fontWeight="700" x={rightX} y="26" textAnchor="middle">
-        2025K4
-      </text>
-
-      {[20, 40, 60, 80].map((tick) => {
-        const y = shareToY(tick, topY, bottomY);
-
-        return (
-          <g key={tick}>
-            <line x1={leftX - 20} x2={rightX + 20} y1={y} y2={y} stroke="#ebe2d6" strokeWidth="1" />
-            <text fill="#948a7c" fontSize="13" x={leftX - 34} y={y + 5} textAnchor="end">
-              {tick} %
-            </text>
-          </g>
-        );
-      })}
-
-      {rows.map((row, index) => {
-        const startY = shareToY(row.startShare, topY, bottomY);
-        const endY = shareToY(row.endShare, topY, bottomY);
-        const tone = index === 0 ? "#167764" : "#b98a45";
-
-        return (
-          <g key={row.occupationCode}>
-            <line x1={leftX} x2={rightX} y1={startY} y2={endY} stroke={tone} strokeLinecap="round" strokeWidth={index === 0 ? 5 : 3} />
-            <circle cx={leftX} cy={startY} fill="#f7f3eb" r="7" stroke={tone} strokeWidth="3" />
-            <circle cx={rightX} cy={endY} fill={tone} r="8" />
-            <text fill="#23241f" fontSize="16" fontWeight={index === 0 ? "800" : "600"} x={leftX - 36} y={startY + 5} textAnchor="end">
-              {row.occupationLabel}
-            </text>
-            <text fill="#23241f" fontSize="16" fontWeight="800" x={rightX + 36} y={endY + 5}>
-              {formatPercent(row.endShare)}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-function ContrastSection({ data }: { data: WomenShareSpecialData }) {
-  const rows = [data.topFinding, data.lowStartFinding, data.largestWomenGrowth];
-
-  return (
-    <section className="bg-[#eee4d6] px-5 py-20 sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeader
-          kicker="Kontraster"
-          title="Tre forskjellige typer endring"
-          text="Kvinneandelen kan øke fordi et yrke vokser, fordi rekrutteringen endrer seg, eller fordi et tidligere mannsdominert yrke gradvis åpner seg."
-        />
-
-        <div className="mt-16 divide-y divide-[#cfc1ad] border-y border-[#cfc1ad]">
-          {rows.map((row) => (
-            <div key={row.occupationCode} className="grid gap-8 py-10 lg:grid-cols-[minmax(0,0.5fr)_minmax(0,0.5fr)] lg:items-center">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#8a6839]">
-                  {row.occupationCode}
-                </p>
-                <h3 className="mt-3 font-serif text-4xl font-black leading-tight text-[#171814] sm:text-5xl">
-                  {row.occupationLabel}
-                </h3>
-                <p className="mt-5 max-w-xl text-base leading-8 text-[#5a554d]">
-                  Antall kvinnelige lønnstakere økte fra {formatNumber(row.startWomen)} til{" "}
-                  {formatNumber(row.endWomen)}, mens totalstørrelsen på yrket endret seg med{" "}
-                  {formatSignedNumber(row.totalChange)}.
-                </p>
-              </div>
-              <BeforeAfterBars row={row} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function BeforeAfterBars({ row }: { row: WomenShareSpecialRow }) {
-  return (
-    <div className="space-y-7">
-      <ShareBar label="2016K4" value={row.startShare} />
-      <ShareBar label="2025K4" value={row.endShare} emphasis />
-    </div>
-  );
-}
-
-function ShareBar({ label, value, emphasis = false }: { label: string; value: number; emphasis?: boolean }) {
-  return (
-    <div>
-      <div className="mb-2 flex items-end justify-between gap-4">
-        <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#766f65]">{label}</p>
-        <p className={["font-serif text-4xl font-black", emphasis ? "text-[#167764]" : "text-[#383832]"].join(" ")}>
-          {formatPercent(value)}
-        </p>
-      </div>
-      <div className="h-6 bg-[#d8cdbb]">
-        <div className={["h-full", emphasis ? "bg-[#167764]" : "bg-[#9c7b4a]"].join(" ")} style={{ width: `${value}%` }} />
-      </div>
-    </div>
   );
 }
 
@@ -450,17 +352,17 @@ function MethodSection({ data }: { data: WomenShareSpecialData }) {
 function SectionHeader({ kicker, title, text }: { kicker: string; title: string; text: string }) {
   return (
     <header className="max-w-3xl">
-      <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#96713d]">{kicker}</p>
-      <h2 className="mt-4 font-serif text-5xl font-black leading-[0.96] text-[#171814] sm:text-7xl">
+      {kicker ? (
+        <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#96713d]">
+          {kicker}
+        </p>
+      ) : null}
+      <h2 className={["font-serif text-5xl font-black leading-[0.96] text-[#171814] sm:text-7xl", kicker ? "mt-4" : ""].join(" ")}>
         {title}
       </h2>
       <p className="mt-6 text-lg leading-8 text-[#5d5b53]">{text}</p>
     </header>
   );
-}
-
-function shareToY(share: number, topY: number, bottomY: number) {
-  return bottomY - (Math.min(85, Math.max(10, share)) / 85) * (bottomY - topY);
 }
 
 function formatPercent(value: number) {
