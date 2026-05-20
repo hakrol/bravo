@@ -5,6 +5,43 @@
   "period": "2025",
   "measure": "Median månedslønn",
   "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025.",
+  "gender": {
+    "occupationCode": "2611",
+    "occupationLabel": "Jurister og advokater",
+    "womenMonthlyMedian": 77650,
+    "menMonthlyMedian": 85830,
+    "period": "2025",
+    "source": "SSB tabell 11418"
+  },
+  "salaryDevelopment": {
+    "occupationCode": "2611",
+    "occupationLabel": "Jurister og advokater",
+    "period": "2021-2025",
+    "source": "SSB tabell 11418",
+    "measure": "Median månedslønn",
+    "rows": [
+      {
+        "label": "2021",
+        "value": 66670
+      },
+      {
+        "label": "2022",
+        "value": 69510
+      },
+      {
+        "label": "2023",
+        "value": 73880
+      },
+      {
+        "label": "2024",
+        "value": 77000
+      },
+      {
+        "label": "2025",
+        "value": 80830
+      }
+    ]
+  },
   "rows": [
     {
       "code": "2612",
