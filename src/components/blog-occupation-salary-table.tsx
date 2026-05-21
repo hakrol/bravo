@@ -10,6 +10,7 @@ import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 import kirurgLonn2025Snapshot from "@/content/blog/data/kirurg-lonn-2025.json";
 import legeLonn2025Snapshot from "@/content/blog/data/lege-lonn-2025.json";
+import piloterLonn2025Snapshot from "@/content/blog/data/piloter-lonn-2025.json";
 import politiLonn2025Snapshot from "@/content/blog/data/politi-lonn-2025.json";
 import psykologLonn2025Snapshot from "@/content/blog/data/psykolog-lonn-2025.json";
 import snekkerLonn2025Snapshot from "@/content/blog/data/snekker-lonn-2025.json";
@@ -43,6 +44,7 @@ const snapshots = {
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
   "kirurg-lonn-2025": kirurgLonn2025Snapshot as OccupationSalarySnapshot,
   "lege-lonn-2025": legeLonn2025Snapshot as OccupationSalarySnapshot,
+  "piloter-lonn-2025": piloterLonn2025Snapshot as OccupationSalarySnapshot,
   "politi-lonn-2025": politiLonn2025Snapshot as OccupationSalarySnapshot,
   "psykolog-lonn-2025": psykologLonn2025Snapshot as OccupationSalarySnapshot,
   "snekker-lonn-2025": snekkerLonn2025Snapshot as OccupationSalarySnapshot,

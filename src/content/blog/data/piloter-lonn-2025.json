@@ -1,0 +1,109 @@
+{
+  "id": "piloter-lonn-2025",
+  "title": "Hva tjener piloter og nærliggende luftfartsyrker i 2025",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall personer gjelder lønnstakere i 2025K4 der det brukes i diagram.",
+  "rows": [
+    {
+      "code": "3154",
+      "label": "Flygeledere",
+      "href": "/yrke/flygeledere-lonn",
+      "value": 121910,
+      "average": 112510,
+      "p25": 80450,
+      "p75": 145780,
+      "employees": 521
+    },
+    {
+      "code": "3153",
+      "label": "Flygere",
+      "href": "/yrke/flygere-lonn",
+      "value": 118440,
+      "average": 115630,
+      "p25": 73230,
+      "p75": 155350,
+      "employees": 2273
+    },
+    {
+      "code": "3155",
+      "label": "Teknikere innen luftfartssikkerhet",
+      "href": "/yrke/teknikere-innen-luftfartssikkerhet-lonn",
+      "value": 87240,
+      "average": 86500,
+      "p25": 77240,
+      "p75": 93990,
+      "employees": 670
+    },
+    {
+      "code": "315",
+      "label": "Skipoffiserer, flygere, flygeledere mv.",
+      "href": "/yrke/skipoffiserer-flygere-flygeledere-mv-lonn",
+      "value": 83000,
+      "average": 85220
+    },
+    {
+      "code": "3151",
+      "label": "Skipsmaskinister",
+      "href": "/yrke/skipsmaskinister-lonn",
+      "value": 81310,
+      "average": 80740
+    },
+    {
+      "code": "3152",
+      "label": "Dekksoffiserer og loser",
+      "href": "/yrke/dekksoffiserer-og-loser-lonn",
+      "value": 80000,
+      "average": 83090,
+      "p25": 67570,
+      "p75": 93210,
+      "employees": 8142
+    },
+    {
+      "code": "0-9",
+      "label": "Alle yrker samlet",
+      "href": "/yrker",
+      "value": 55800,
+      "average": 62070,
+      "p25": 45650,
+      "p75": 69940
+    },
+    {
+      "code": "4323",
+      "label": "Transportfunksjonærer",
+      "href": "/yrke/transportfunksjonaerer-lonn",
+      "value": 55230,
+      "average": 49680,
+      "employees": 7219
+    },
+    {
+      "code": "5111",
+      "label": "Flyverter, båtverter mv.",
+      "href": "/yrke/flyverter-batverter-mv-lonn",
+      "value": 41510,
+      "average": 43790,
+      "p25": 35040,
+      "p75": 51010,
+      "employees": 2720
+    }
+  ],
+  "genderMedian": {
+    "occupationLabel": "Flygere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 80620,
+    "menMonthlyMedian": 120830
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Flygere",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 98310 },
+      { "label": "2022", "value": 98050 },
+      { "label": "2023", "value": 111310 },
+      { "label": "2024", "value": 116350 },
+      { "label": "2025", "value": 118440 }
+    ]
+  }
+}

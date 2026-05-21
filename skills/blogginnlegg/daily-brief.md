@@ -15,6 +15,8 @@ For generelle bloggstandarder, følg:
 - Bruk første ukryssede tema under `Tema-kø`.
 - Ikke skriv flere innlegg samtidig.
 - Hvis `Ikke startet` er tom, skal ingen nye innlegg lages.
+- Når et tema har `Diagrammer`, skal hvert punkt være en enkel diagramtype som skal inkluderes i innlegget hvis datagrunnlaget finnes eller kan hentes etter bloggskillens regler.
+- Hvis et oppgitt diagram ikke kan lages, skal Codex forklare hvorfor før temaet regnes som ferdig.
 
 ## Arbeidsflyt
 
@@ -36,6 +38,37 @@ Eksempel:
 - [x] Hvordan forberede seg til lønnssamtale - `src/content/blog/lonnssamtale-forberedelse.mdx` - 2026-04-29
 ```
 
+## Mal for nye temaer
+
+Legg nye bloggtemaer inn under `Ikke startet` med denne strukturen når du vil styre innholdet mer presist:
+
+```md
+- [ ] Hva tjener en eksempelrolle?
+  Tittel:
+  Hva tjener en eksempelrolle?
+
+  Beskrivelse:
+  Innlegget skal svare tydelig på hovedspørsmålet og forklare hvilke faktorer som påvirker lønnen.
+
+  Overskrifter:
+  - Hva tjener en eksempelrolle?
+  - Hva er timelønnen til en eksempelrolle?
+  - Hva påvirker lønnen?
+
+  Diagrammer:
+  - Kjønnsdelt lønnskort
+  - Boblediagram
+  - Søkbar yrkesliste
+
+  Interne lenker:
+  - /yrke/eksempelrolle-lonn
+
+  Eksterne lenker:
+  - https://www.ssb.no/
+```
+
+Bruk `Diagrammer` på samme måte som `Overskrifter`, `Interne lenker` og `Eksterne lenker`: det er en konkret bestilling, ikke bare et forslag. Fyll bare inn diagramtypen. Skill-reglene bestemmer komponent, plassering og datagrunnlag.
+
 ## Tema-kø
 
 Bruk første ukryssede tema i listen under.
@@ -44,6 +77,7 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Hvor mye tjener piloter? - `src/content/blog/hvor-mye-tjener-piloter.mdx` - 2026-05-21
 - [x] Hva tjener en snekker? - `src/content/blog/hva-tjener-en-snekker.mdx` - 2026-05-14
 - [x] Hva tjener en brannmann? - `src/content/blog/hva-tjener-en-brannmann.mdx` - 2026-05-14
 - [x] Hva tjener en politi? - `src/content/blog/hva-tjener-en-politi.mdx` - 2026-05-12

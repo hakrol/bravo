@@ -19,6 +19,7 @@ import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
+import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
 import { BlogSalaryDevelopmentChart } from "@/components/blog-salary-development-chart";
 import { PoliceSalaryBubbleChart, PoliceSalaryEditorialChart } from "@/components/blog-police-salary-chart";
 import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/components/blog-snekker-salary-chart";
@@ -164,6 +165,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     HealthSalaryBubbleChart,
     PoliceSalaryBubbleChart,
     PoliceSalaryEditorialChart,
+    PilotSalaryDevelopmentChart,
+    PilotSalaryEditorialChart,
     SnekkerSalaryBubbleChart,
     SnekkerSalaryEditorialChart,
     BlogOccupationSalaryTable,
