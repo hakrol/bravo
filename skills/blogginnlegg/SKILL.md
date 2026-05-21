@@ -82,8 +82,13 @@ Briefen kan inneholde:
 - Overskrifter og mellomoverskrifter som skal brukes eller vurderes
 - Interne lenker som skal inn i teksten
 - Eksterne lenker som skal brukes som kilder eller videre lesing
+- Diagramtyper som skal inkluderes
 
 Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på prosjektreglene og eksisterende blogginnlegg.
+
+Hvis briefen oppgir `Diagrammer`, er hvert punkt en påkrevd diagramtype. Brukeren skal bare trenge å skrive typen, for eksempel `Boblediagram` eller `Lønnsutviklingsdiagram`. Codex skal velge riktig eksisterende komponent, wrapper-komponent, plassering og datagrunnlag ut fra diagramreglene under.
+
+Codex skal ikke be brukeren fylle inn komponentnavn, formål, plassering eller datafil i tema-køen. Hvis et oppgitt diagram ikke kan lages med tilgjengelig datagrunnlag, skal Codex forklare hvorfor før temaet regnes som ferdig.
 
 ## Regler for blogginnhold
 
@@ -125,7 +130,15 @@ Produksjonsklare visuelle dataelementer:
 - Redaksjonelt stolpediagram: egen bloggkomponent bygget på `EditorialDivergingBarChart`
 - Søkbar yrkesliste: `<BlogOccupationSalaryTable snapshotId="..." />`
 - Kjønnsdelt lønnskort: `<BlogGenderSalaryCards />`
-- Femårs lønnsutvikling: `<BlogSalaryDevelopmentChart />`
+- Lønnsutviklingsdiagram: `<BlogSalaryDevelopmentChart />`, slik advokatinnlegget bruker via `<LegalSalaryDevelopmentChart />`
+
+Gyldige diagramtyper i `daily-brief.md`:
+- `Kjønnsdelt lønnskort`
+- `Boblediagram`
+- `Redaksjonelt stolpediagram`
+- `Søkbar yrkesliste`
+- `Lønnsutviklingsdiagram`
+- `Femårs lønnsutvikling`
 
 Alle blogginnlegg som handler om lønn for ett konkret yrke skal ha `BlogGenderSalaryCards` der det passer naturlig tidlig i innlegget, vanligvis etter første hovedtabell eller etter avsnittet som forklarer hovedtallet. Komponenten skal vise medianlønn for kvinner og menn, med veksling mellom årslønn, månedslønn og timelønn. Bruk samme periode og kilde som innleggets hovedtall. Kjønnsdelte lønnstall skal ligge i et frosset snapshot under src/content/blog/data/ før innlegget regnes som ferdig. Hvis SSB ikke publiserer kjønnsdelte tall for yrket, skal innlegget forklare hvorfor komponenten ikke brukes.
 
@@ -151,6 +164,7 @@ Arbeidsmønster:
 
 Minstekrav:
 - Bruk minst 2 av disse i datadrevne blogginnlegg.
+- Hvis `daily-brief.md` oppgir konkrete diagrammer, skal disse telle som påkrevde elementer og prioriteres over generelle forslag i denne skillen.
 - Bruk aldri to diagrammer rett etter hverandre uten forklarende tekst mellom.
 - Velg `BlogOccupationSalaryTable` når leseren bør kunne søke eller bla i flere yrker.
 - Velg boblediagram når antall lønnstakere er en viktig del av poenget.
@@ -238,6 +252,7 @@ Et blogginnlegg regnes bare som ferdig når:
 - innlegget har tydelige `##`-overskrifter
 - innlegget svarer tydelig og tidlig på hovedspørsmålet i tittelen
 - minst én relevant intern lenke er brukt hvis briefen oppgir interne lenker
+- alle diagramkrav fra `daily-brief.md` er fulgt, eller avvik er forklart tydelig
 - riktige bloggkomponenter brukes i stedet for lokale hacks
 - sitater, eksempler og tabeller bruker riktige komponenter eller stiler
 - endringen er gjort på riktig nivå: innhold, komponent eller global stil

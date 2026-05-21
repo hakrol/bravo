@@ -16,6 +16,11 @@ Overskrifter:
 - Hva er timelønnen til en elektriker?
 - Hvilke elektrikere tjener mest?
 
+Diagrammer:
+- Kjønnsdelt lønnskort
+- Boblediagram
+- Søkbar yrkesliste
+
 Interne lenker:
 - /yrke/elektrikere-lonn
 - /laerling/elektrikere-laerling-lonn
