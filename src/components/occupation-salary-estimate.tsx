@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
@@ -7,6 +10,9 @@ type OccupationSalaryEstimateProps = {
   monthlySalary?: number;
   monthlySalaryWomen?: number;
   monthlySalaryMen?: number;
+  contractedMonthlySalary?: number;
+  contractedMonthlySalaryWomen?: number;
+  contractedMonthlySalaryMen?: number;
   hourlySalaryHref?: string;
   embedded?: boolean;
 };
@@ -20,30 +26,63 @@ const VACATION_WEEKS = 5;
 const WORK_DAYS_PER_YEAR = 260;
 const VACATION_DAYS = VACATION_WEEKS * 5;
 
+type SalaryEstimateMode = "total" | "contracted";
+
 export function OccupationSalaryEstimate({
   occupationLabel,
   monthlySalary,
   monthlySalaryWomen,
   monthlySalaryMen,
+  contractedMonthlySalary,
+  contractedMonthlySalaryWomen,
+  contractedMonthlySalaryMen,
   hourlySalaryHref,
   embedded = false,
 }: OccupationSalaryEstimateProps) {
-  if (monthlySalary === undefined && monthlySalaryWomen === undefined && monthlySalaryMen === undefined) {
+  const [salaryMode, setSalaryMode] = useState<SalaryEstimateMode>("total");
+  const hasTotalSalary =
+    monthlySalary !== undefined || monthlySalaryWomen !== undefined || monthlySalaryMen !== undefined;
+  const hasContractedSalary =
+    contractedMonthlySalary !== undefined ||
+    contractedMonthlySalaryWomen !== undefined ||
+    contractedMonthlySalaryMen !== undefined;
+  const activeMode =
+    (salaryMode === "contracted" && hasContractedSalary) || (!hasTotalSalary && hasContractedSalary)
+      ? "contracted"
+      : "total";
+  const activeMonthlySalary =
+    activeMode === "contracted" ? contractedMonthlySalary : monthlySalary;
+  const activeMonthlySalaryWomen =
+    activeMode === "contracted" ? contractedMonthlySalaryWomen : monthlySalaryWomen;
+  const activeMonthlySalaryMen =
+    activeMode === "contracted" ? contractedMonthlySalaryMen : monthlySalaryMen;
+  const activeSalaryLabel =
+    activeMode === "contracted" ? "avtalt månedslønn" : "samlet median månedslønn";
+  const activeSalaryRowLabel =
+    activeMode === "contracted" ? "Avtalt månedslønn" : "Median samlet månedslønn";
+
+  if (!hasTotalSalary && !hasContractedSalary) {
     return null;
   }
 
   const formattedOccupationTitle = formatOccupationDisplayLabel(occupationLabel).toLowerCase();
-  const totalEstimate = monthlySalary !== undefined ? buildEstimate(monthlySalary) : undefined;
+  const totalEstimate = activeMonthlySalary !== undefined ? buildEstimate(activeMonthlySalary) : undefined;
   const womenEstimate =
-    monthlySalaryWomen !== undefined ? buildEstimate(monthlySalaryWomen) : undefined;
-  const menEstimate = monthlySalaryMen !== undefined ? buildEstimate(monthlySalaryMen) : undefined;
+    activeMonthlySalaryWomen !== undefined ? buildEstimate(activeMonthlySalaryWomen) : undefined;
+  const menEstimate = activeMonthlySalaryMen !== undefined ? buildEstimate(activeMonthlySalaryMen) : undefined;
   const shouldShowTotalEstimate =
     totalEstimate !== undefined && (womenEstimate === undefined || menEstimate === undefined);
 
   if (embedded) {
     return (
       <div className="space-y-6">
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
+        <SalaryModeToggle
+          activeMode={activeMode}
+          hasContractedSalary={hasContractedSalary}
+          onChange={setSalaryMode}
+        />
+
+        <div className="flex flex-wrap gap-2 text-xs leading-6 text-slate-600">
           <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
           <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
           <span>{POSITION_PERCENTAGE} % stilling</span>
@@ -55,22 +94,25 @@ export function OccupationSalaryEstimate({
         <div className="grid gap-4 lg:grid-cols-2">
           {shouldShowTotalEstimate && totalEstimate ? (
             <SalarySummaryCard
-              description="Median samlet månedslønn for alle i yrket."
+              description={`${capitalizeFirst(activeSalaryLabel)} for alle i yrket.`}
               estimate={totalEstimate}
+              salaryRowLabel={activeSalaryRowLabel}
               title="Alle"
             />
           ) : null}
           {womenEstimate ? (
             <SalarySummaryCard
-              description="Median samlet månedslønn for kvinner i yrket."
+              description={`${capitalizeFirst(activeSalaryLabel)} for kvinner i yrket.`}
               estimate={womenEstimate}
+              salaryRowLabel={activeSalaryRowLabel}
               title="Kvinner"
             />
           ) : null}
           {menEstimate ? (
             <SalarySummaryCard
-              description="Median samlet månedslønn for menn i yrket."
+              description={`${capitalizeFirst(activeSalaryLabel)} for menn i yrket.`}
               estimate={menEstimate}
+              salaryRowLabel={activeSalaryRowLabel}
               title="Menn"
             />
           ) : null}
@@ -111,7 +153,7 @@ export function OccupationSalaryEstimate({
             Hva er lønnen til {formattedOccupationTitle}?
           </h2>
           <p className="max-w-3xl text-sm leading-7 text-slate-700">
-            Vi har gjort et forenklet estimat basert på median samlet månedslønn, vanlig heltidsstilling,
+            Vi har gjort et forenklet estimat basert på valgt lønnsmål, vanlig heltidsstilling,
             standard feriepengesats og et fast skatteanslag.
           </p>
           {hourlySalaryHref ? (
@@ -134,27 +176,35 @@ export function OccupationSalaryEstimate({
             <span>{HOLIDAY_PAY_RATE} % feriepengesats</span>
             <span>{VACATION_WEEKS} uker ferie</span>
           </div>
+          <SalaryModeToggle
+            activeMode={activeMode}
+            hasContractedSalary={hasContractedSalary}
+            onChange={setSalaryMode}
+          />
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
           {shouldShowTotalEstimate && totalEstimate ? (
             <SalarySummaryCard
-              description="Median samlet månedslønn for alle i yrket."
+              description={`${capitalizeFirst(activeSalaryLabel)} for alle i yrket.`}
               estimate={totalEstimate}
+              salaryRowLabel={activeSalaryRowLabel}
               title="Alle"
             />
           ) : null}
           {womenEstimate ? (
             <SalarySummaryCard
-              description="Median samlet månedslønn for kvinner i yrket."
+              description={`${capitalizeFirst(activeSalaryLabel)} for kvinner i yrket.`}
               estimate={womenEstimate}
+              salaryRowLabel={activeSalaryRowLabel}
               title="Kvinner"
             />
           ) : null}
           {menEstimate ? (
             <SalarySummaryCard
-              description="Median samlet månedslønn for menn i yrket."
+              description={`${capitalizeFirst(activeSalaryLabel)} for menn i yrket.`}
               estimate={menEstimate}
+              salaryRowLabel={activeSalaryRowLabel}
               title="Menn"
             />
           ) : null}
@@ -187,25 +237,91 @@ export function OccupationSalaryEstimate({
 
 type SalaryEstimate = ReturnType<typeof buildEstimate>;
 
+type SalaryModeToggleProps = {
+  activeMode: SalaryEstimateMode;
+  hasContractedSalary: boolean;
+  onChange: (mode: SalaryEstimateMode) => void;
+};
+
+function SalaryModeToggle({ activeMode, hasContractedSalary, onChange }: SalaryModeToggleProps) {
+  const options: Array<{
+    key: SalaryEstimateMode;
+    label: string;
+    description: string;
+    disabled?: boolean;
+  }> = [
+    {
+      key: "total",
+      label: "Samlet median månedslønn",
+      description:
+        "Samlet median månedslønn inkluderer avtalt månedslønn, bonus og uregelmessige tillegg. Overtid er ikke med.",
+    },
+    {
+      key: "contracted",
+      label: "Avtalt median månedslønn",
+      description:
+        "Avtalt median månedslønn er den faste lønnen som er avtalt for jobben, uten bonus, uregelmessige tillegg og overtid.",
+      disabled: !hasContractedSalary,
+    },
+  ];
+
+  return (
+    <div className="flex flex-wrap gap-2" role="group" aria-label="Velg lønnsmål for estimatet">
+      {options.map((option) => {
+        const isActive = option.key === activeMode;
+        const wrapperClassName = `inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition ${
+          option.disabled
+            ? "border-slate-200 bg-slate-100 text-slate-400"
+            : isActive
+              ? "border-emerald-900 bg-emerald-900 text-white shadow-[0_10px_24px_rgba(6,78,59,0.18)]"
+              : "border-slate-200 bg-white text-slate-700 hover:border-slate-950/30"
+        }`;
+
+        return (
+          <span
+            className={wrapperClassName}
+            key={option.key}
+          >
+            <button
+              className={option.disabled ? "cursor-not-allowed" : "cursor-pointer"}
+              disabled={option.disabled}
+              onClick={() => onChange(option.key)}
+              type="button"
+            >
+              {option.label}
+            </button>
+            <MetricInfoButton
+              description={option.description}
+              label={option.label}
+              variant="muted"
+            />
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 type SalarySummaryCardProps = {
   title: string;
   description: string;
   estimate: SalaryEstimate;
+  salaryRowLabel: string;
 };
 
-function SalarySummaryCard({ title, description, estimate }: SalarySummaryCardProps) {
+function SalarySummaryCard({ title, description, estimate, salaryRowLabel }: SalarySummaryCardProps) {
   return (
-    <div className="rounded-md border border-slate-200 bg-[#f7fafc] px-4 py-4 sm:px-5 sm:py-5">
+    <div className="rounded-[5px] border border-slate-200 bg-slate-50 px-4 py-4 sm:px-5 sm:py-5">
       <div className="space-y-4">
         <div className="space-y-1">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-950">
             {title}
           </p>
           <p className="text-sm leading-6 text-slate-600">{description}</p>
         </div>
 
         <div className="space-y-3">
-          <SummaryRow label="Median samlet månedslønn" value={formatCurrency(estimate.monthlySalary)} strong />
+          <SummaryRow label={salaryRowLabel} value={formatCurrency(estimate.monthlySalary)} strong />
           <SummaryRow label="Årslønn" value={formatCurrency(estimate.annualSalary)} />
           <SummaryRow label="Timelønn" value={formatCurrency(estimate.hourlySalary)} />
           <SummaryRow label="Daglønn (7,5 t)" value={formatCurrency(estimate.dailySalary)} />
@@ -298,11 +414,11 @@ function SummaryCard({
 }: SummaryCardProps) {
   const accentClasses =
     accent === "warm"
-      ? "border-amber-300 bg-[#fff4cf]"
-      : "border-slate-200 bg-[#f7fafc]";
+      ? "border-amber-200 bg-amber-50"
+      : "border-slate-200 bg-slate-50";
 
   return (
-    <div className={`rounded-md border px-4 py-4 sm:px-5 sm:py-5 ${accentClasses}`}>
+    <div className={`rounded-[5px] border px-4 py-4 sm:px-5 sm:py-5 ${accentClasses}`}>
       <div className="space-y-5">
         <p className="text-sm font-semibold text-slate-900">{title}</p>
 
@@ -421,6 +537,10 @@ function formatCurrency(value: number) {
   return `${value.toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
   })} kr`;
+}
+
+function capitalizeFirst(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function formatDecimal(value: number) {

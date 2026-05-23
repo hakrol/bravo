@@ -11,8 +11,8 @@ const ageFormatter = new Intl.NumberFormat("nb-NO", {
 
 const seriesDefinitions = [
   { key: "averageAll", label: "Begge kjønn", color: "#14532d" },
-  { key: "averageWomen", label: "Kvinner", color: "#b45309" },
-  { key: "averageMen", label: "Menn", color: "#1d4ed8" },
+  { key: "averageWomen", label: "Kvinner", color: "#ec1f74" },
+  { key: "averageMen", label: "Menn", color: "#2563eb" },
 ] as const;
 
 const filterOptions = [
@@ -114,16 +114,13 @@ export function OccupationAgeTimeSeriesChart({
   const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
-    <section
-      className="rounded-[5px] bg-white p-5 shadow-sm sm:p-6"
-      style={{ border: "2px solid #000" }}
-    >
+    <section className="border-t border-slate-200 bg-transparent pt-8">
       <div className="flex flex-col gap-4">
         <div className="space-y-2">
-          <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
+          <h3 className="text-xl font-semibold text-slate-950">
             Gjennomsnittsalder over tid
           </h3>
-          <p className="text-sm text-[var(--muted)]">
+          <p className="text-sm leading-6 text-slate-600">
             Kvartalsvis utvikling i gjennomsnittsalder i yrket.
           </p>
         </div>
@@ -131,24 +128,25 @@ export function OccupationAgeTimeSeriesChart({
         {latestValues.length > 0 ? (
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Siste data
               </p>
               <MetricInfoButton
                 description={`Her ser du siste registrerte gjennomsnittsalder for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`}
                 label="Siste data"
+                variant="muted"
               />
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {latestPeriodLabel ? (
-                <span className="rounded-md border border-black/10 bg-[#f7fafc] px-3 py-2 text-sm font-semibold text-slate-700">
+                <span className="rounded-[5px] border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm">
                   {formatPeriodLabel(latestPeriodLabel)}
                 </span>
               ) : null}
               {latestValues.map((entry) => (
                 <div
                   key={`latest-${entry.key}`}
-                  className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none text-slate-700"
+                  className="rounded-[5px] border border-slate-200 bg-white px-3 py-2 text-sm leading-none text-slate-700 shadow-sm"
                 >
                   <span className="text-[15px]">{entry.label}: </span>
                   <span className="text-[15px] font-semibold text-slate-950">
@@ -171,10 +169,10 @@ export function OccupationAgeTimeSeriesChart({
                 disabled={!isAvailable}
                 className={`rounded-full border px-3 py-1.5 text-sm transition ${
                   !isAvailable
-                    ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
+                    ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
                     : isActive
-                      ? "border-slate-950 bg-slate-950 text-white"
-                      : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
+                      ? "border-emerald-900 bg-emerald-900 text-white shadow-[0_10px_24px_rgba(6,78,59,0.18)]"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-950/30"
                 }`}
                 onClick={() => {
                   if (isAvailable) {
@@ -231,7 +229,7 @@ export function OccupationAgeTimeSeriesChart({
                   x={paddingLeft - 10}
                   y={y + 4}
                 >
-                  {ageFormatter.format(tickValue)} ar
+                  {ageFormatter.format(tickValue)} år
                 </text>
               </g>
             );
@@ -331,7 +329,7 @@ export function OccupationAgeTimeSeriesChart({
 }
 
 function formatAge(value: number) {
-  return `${ageFormatter.format(value)} ar`;
+  return `${ageFormatter.format(value)} år`;
 }
 
 function formatPeriodLabel(value: string) {

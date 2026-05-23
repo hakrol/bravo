@@ -46,9 +46,9 @@ const distributionLabels: Record<DistributionRow["id"], string> = {
 };
 
 const distributionAccents: Record<DistributionRow["id"], string> = {
-  total: "from-slate-200 via-slate-100 to-slate-200",
-  women: "from-amber-200 via-amber-100 to-amber-200",
-  men: "from-emerald-200 via-emerald-100 to-emerald-200",
+  total: "from-slate-200 via-slate-300 to-slate-200",
+  women: "from-pink-100 via-pink-200 to-pink-100",
+  men: "from-blue-100 via-blue-300 to-blue-100",
 };
 
 export function OccupationSalaryDistributionSection({
@@ -111,17 +111,32 @@ export function OccupationSalaryDistributionSection({
                 medianPosition,
               )
             : 0;
+        const tone = getDistributionTone(row.id);
+        const spread = calculateSpread(row.metrics.p25, row.metrics.p75);
 
         return (
-          <article key={row.id} className="space-y-3">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-              {row.label}
-            </p>
-            <div className="grid gap-2 md:hidden">
+          <article
+            key={row.id}
+            className="border-t border-slate-200 pt-6 first:border-t-0 first:pt-0"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <DistributionAvatar id={row.id} />
+                <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-950">
+                  {row.label}
+                </p>
+              </div>
+              {distribution.periodLabel ? (
+                <p className={`shrink-0 rounded-[10px] px-3 py-1.5 text-sm font-semibold shadow-sm ${tone.period}`}>
+                  {distribution.periodLabel}
+                </p>
+              ) : null}
+            </div>
+            <div className="mt-6 grid gap-2 md:hidden">
               {row.metrics.p25 !== undefined ? (
                 <MobileDistributionPoint
                   label="25% tjener mindre"
-                  tone="bg-slate-700"
+                  tone={tone.dot}
                   value={row.metrics.p25}
                 />
               ) : null}
@@ -129,14 +144,14 @@ export function OccupationSalaryDistributionSection({
                 <MobileDistributionPoint
                   infoDescription="Median er lønnen som ligger i midten når alle lønningene sorteres fra lavest til høyest. Det er et godt mål fordi det viser det typiske lønnsnivået uten å bli dratt opp av noen få svært høye lønninger."
                   label="Median"
-                  tone="bg-[var(--primary)]"
+                  tone={tone.dot}
                   value={row.metrics.median}
                 />
               ) : null}
               {row.metrics.p75 !== undefined ? (
                 <MobileDistributionPoint
                   label="25% tjener mer"
-                  tone="bg-slate-700"
+                  tone={tone.dot}
                   value={row.metrics.p75}
                 />
               ) : null}
@@ -148,12 +163,12 @@ export function OccupationSalaryDistributionSection({
                 />
               ) : null}
             </div>
-            <div className="relative hidden px-1 md:block">
-              <div className="relative h-20">
-                <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-slate-300" />
+            <div className="relative mt-8 hidden px-1 md:block">
+              <div className="relative h-28">
+                <div className="absolute left-0 right-0 top-1/2 h-1 -translate-y-1/2 rounded-full bg-slate-200" />
                 {p25Position !== null && p75Position !== null ? (
                   <div
-                    className={`absolute top-1/2 h-4 -translate-y-1/2 rounded-full bg-gradient-to-r ${row.accentClassName}`}
+                    className={`absolute top-1/2 h-3 -translate-y-1/2 rounded-full bg-gradient-to-r ${row.accentClassName}`}
                     style={{
                       left: `${p25Position}%`,
                       width: `${Math.max(p75Position - p25Position, 1)}%`,
@@ -166,7 +181,8 @@ export function OccupationSalaryDistributionSection({
                     labelAnchor={markerLayout.p25.labelAnchor}
                     labelOffsetY={markerLayout.p25.labelOffsetY}
                     position={p25Position}
-                    tone="bg-slate-700"
+                    tone={tone.dot}
+                    toneClassName="text-slate-500"
                     value={row.metrics.p25}
                     valueAnchor={markerLayout.p25.valueAnchor}
                     valueOffsetY={markerLayout.p25.valueOffsetY}
@@ -179,8 +195,8 @@ export function OccupationSalaryDistributionSection({
                     labelAnchor={markerLayout.median.labelAnchor}
                     labelOffsetY={markerLayout.median.labelOffsetY}
                     position={medianPosition}
-                    tone="bg-[var(--primary)]"
-                    toneClassName="text-[var(--primary-strong)]"
+                    tone={tone.dot}
+                    toneClassName="text-slate-950"
                     value={row.metrics.median}
                     valueAnchor={markerLayout.median.valueAnchor}
                     valueOffsetY={markerLayout.median.valueOffsetY}
@@ -192,7 +208,8 @@ export function OccupationSalaryDistributionSection({
                     labelAnchor={markerLayout.p75.labelAnchor}
                     labelOffsetY={markerLayout.p75.labelOffsetY}
                     position={p75Position}
-                    tone="bg-slate-700"
+                    tone={tone.dot}
+                    toneClassName="text-slate-500"
                     value={row.metrics.p75}
                     valueAnchor={markerLayout.p75.valueAnchor}
                     valueOffsetY={markerLayout.p75.valueOffsetY}
@@ -210,6 +227,20 @@ export function OccupationSalaryDistributionSection({
                 ) : null}
               </div>
             </div>
+            {spread !== undefined ? (
+              <div className={`mt-6 flex items-center gap-4 rounded-[5px] px-4 py-4 ${tone.calloutBg}`}>
+                <span
+                  aria-hidden="true"
+                  className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-white text-lg font-semibold ${tone.calloutIcon}`}
+                >
+                  ↕
+                </span>
+                <p className="text-sm leading-6 text-slate-700 sm:text-base">
+                  Forskjell mellom 25 % som tjener minst og 25 % som tjener mest:{" "}
+                  <strong className={`font-bold ${tone.text}`}>{formatCurrency(spread)}</strong>
+                </p>
+              </div>
+            ) : null}
           </article>
         );
       })}
@@ -242,6 +273,60 @@ function MobileDistributionPoint({
       </span>
     </div>
   );
+}
+
+function DistributionAvatar({ id }: { id: DistributionRow["id"] }) {
+  const tone = getDistributionTone(id);
+
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-2xl font-semibold ${tone.avatar}`}
+    >
+      {id === "women" ? "♀" : id === "men" ? "♂" : "•"}
+    </span>
+  );
+}
+
+function getDistributionTone(id: DistributionRow["id"]) {
+  if (id === "women") {
+    return {
+      avatar: "bg-pink-100 text-pink-600 shadow-[0_8px_18px_rgba(236,72,153,0.14)]",
+      calloutBg: "bg-pink-50",
+      calloutIcon: "border-pink-200 text-pink-500",
+      dot: "bg-pink-500",
+      period: "bg-pink-50 text-pink-900",
+      text: "text-pink-600",
+    };
+  }
+
+  if (id === "men") {
+    return {
+      avatar: "bg-blue-100 text-blue-600 shadow-[0_8px_18px_rgba(37,99,235,0.14)]",
+      calloutBg: "bg-blue-50",
+      calloutIcon: "border-blue-200 text-blue-600",
+      dot: "bg-blue-600",
+      period: "bg-blue-50 text-blue-900",
+      text: "text-blue-600",
+    };
+  }
+
+  return {
+    avatar: "bg-slate-100 text-slate-700",
+    calloutBg: "bg-slate-50",
+    calloutIcon: "border-slate-200 text-slate-700",
+    dot: "bg-slate-700",
+    period: "bg-slate-100 text-slate-700",
+    text: "text-slate-700",
+  };
+}
+
+function calculateSpread(min?: number, max?: number) {
+  if (min === undefined || max === undefined) {
+    return undefined;
+  }
+
+  return Math.max(0, max - min);
 }
 
 function buildDistributionRow(

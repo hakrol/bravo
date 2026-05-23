@@ -72,10 +72,10 @@ export function OccupationPurchasingPowerLineChart({
     return null;
   }
 
-  const chartWidth = 820;
+  const chartWidth = 900;
   const chartHeight = 300;
-  const paddingLeft = 48;
-  const paddingRight = 24;
+  const paddingLeft = 76;
+  const paddingRight = 34;
   const paddingTop = 18;
   const paddingBottom = 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
@@ -118,13 +118,10 @@ export function OccupationPurchasingPowerLineChart({
   const latestPeriodLabel = latestValues[0]?.periodLabel;
 
   return (
-    <section
-      className="rounded-[5px] bg-white p-5 shadow-sm sm:p-6"
-      style={{ border: "2px solid #000" }}
-    >
+    <section className="bg-transparent">
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
-          {`Reallønnsvekst ${series.occupationLabel}`}
+        <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+          {`Utvikling i reallønnsvekst for ${series.occupationLabel}`}
         </h3>
 
         {latestValues.length > 0 ? (
@@ -140,14 +137,14 @@ export function OccupationPurchasingPowerLineChart({
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {latestPeriodLabel ? (
-                <span className="rounded-md border border-black/10 bg-[#f7fafc] px-3 py-2 text-sm font-semibold text-slate-700">
+                <span className="rounded-[5px] border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm">
                   {formatPeriodLabel(latestPeriodLabel)}
                 </span>
               ) : null}
               {latestValues.map((entry) => (
                 <div
                   key={`latest-${entry.key}`}
-                  className={`rounded-md border border-black/10 bg-white px-3 py-2 text-sm leading-none ${
+                  className={`rounded-[5px] border border-slate-200 bg-white px-4 py-2 text-sm leading-none shadow-sm ${
                     entry.value > 0 ? "text-emerald-700" : entry.value < 0 ? "text-red-700" : "text-slate-700"
                   }`}
                 >
@@ -172,8 +169,8 @@ export function OccupationPurchasingPowerLineChart({
                 !isAvailable
                   ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
                   : isActive
-                    ? "border-slate-950 bg-slate-950 text-white"
-                    : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
+                    ? "border-emerald-900 bg-emerald-900 text-white shadow-[0_10px_24px_rgba(6,78,59,0.18)]"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-950/30"
               }`}
               onClick={() => {
                 if (isAvailable) {
@@ -189,7 +186,7 @@ export function OccupationPurchasingPowerLineChart({
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto">
+      <div className="mt-8 overflow-x-auto">
         <svg
           aria-label={`Reallønnsvekst for ${series.occupationLabel}`}
           className="w-full"
@@ -202,7 +199,7 @@ export function OccupationPurchasingPowerLineChart({
             return (
               <g key={tickValue}>
                 <line
-                  stroke={tickValue === 0 ? "rgba(27,36,48,0.22)" : "rgba(27,36,48,0.09)"}
+                  stroke={tickValue === 0 ? "rgba(27, 36, 48, 0.2)" : "rgba(27, 36, 48, 0.14)"}
                   strokeDasharray={tickValue === 0 ? undefined : "4 6"}
                   strokeWidth={tickValue === 0 ? "1.5" : "1"}
                   x1={paddingLeft}
@@ -211,8 +208,8 @@ export function OccupationPurchasingPowerLineChart({
                   y2={y}
                 />
                 <text
-                  fill="#5f6773"
-                  fontSize="12"
+                  fill="#000000"
+                  fontSize="13"
                   textAnchor="end"
                   x={paddingLeft - 10}
                   y={y + 4}
@@ -258,8 +255,8 @@ export function OccupationPurchasingPowerLineChart({
             return (
               <text
                 key={`year-${tick.label}-${tick.index}`}
-                fill="#5f6773"
-                fontSize="12"
+                fill="#000000"
+                fontSize="13"
                 textAnchor="middle"
                 x={x}
                 y={chartHeight - 18}

@@ -5,16 +5,21 @@ import { useState } from "react";
 type MetricInfoButtonProps = {
   label: string;
   description: string;
+  variant?: "default" | "muted";
 };
 
-export function MetricInfoButton({ label, description }: MetricInfoButtonProps) {
+export function MetricInfoButton({ label, description, variant = "default" }: MetricInfoButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const buttonClassName =
+    variant === "muted"
+      ? "inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-[10px] font-semibold text-slate-500 shadow-sm transition hover:bg-slate-50"
+      : "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#d6e2d7] bg-white text-[11px] font-semibold text-[var(--primary-strong)] shadow-sm transition hover:bg-[#f5f8f5]";
 
   return (
     <>
       <button
         aria-label={`Vis forklaring for ${label.toLowerCase()}`}
-        className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#d6e2d7] bg-white text-[11px] font-semibold text-[var(--primary-strong)] shadow-sm transition hover:bg-[#f5f8f5]"
+        className={buttonClassName}
         onClick={() => setIsOpen(true)}
         type="button"
       >
