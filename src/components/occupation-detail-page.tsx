@@ -6,6 +6,7 @@ import { OccupationSalaryEstimate } from "@/components/occupation-salary-estimat
 import { MetricInfoButton } from "@/components/metric-info-button";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
+import { PageShareButton } from "@/components/page-share-button";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
 import {
   getOccupationFiveYearGrowthComparison,
@@ -182,6 +183,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 lønnsutvikling og arbeidsmarkedstall for {occupationText.seoLabel}, basert på
                 tall fra Statistisk sentralbyrå.
               </p>
+              <PageShareButton
+                text={`Se lønn, lønnsutvikling og arbeidsmarkedstall for ${occupationText.seoLabel}.`}
+                title={`Lønn for ${occupationText.titleLabel}`}
+              />
             </div>
 
             {medianGrowthMetrics ? (
