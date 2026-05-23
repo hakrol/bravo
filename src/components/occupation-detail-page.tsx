@@ -72,6 +72,10 @@ const TOOL_LINKS = [
 
 const SPECIAL_LINKS = [
   {
+    href: "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest",
+    title: "I disse yrkene øker kvinneandelen raskest",
+  },
+  {
     href: "/spesial/topp-10-yrker",
     title: "Topp 10 yrker med høyest lønn",
   },
@@ -137,6 +141,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     womenP75: distribution?.women?.p75,
     menP25: distribution?.men?.p25,
     menP75: distribution?.men?.p75,
+    womenEmployees: laborMarket?.genderBreakdown?.women,
+    menEmployees: laborMarket?.genderBreakdown?.men,
+    employmentPeriodLabel: laborMarket?.genderBreakdown?.periodLabel,
   });
   const distributionSummary = buildDistributionSummary({
     totalP25: distribution?.total?.p25,
@@ -161,18 +168,13 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   );
   return (
     <main className="min-h-screen bg-[#f7fafc] text-slate-950">
-      <section className="px-4 pb-6 text-white sm:px-6 lg:px-8">
+      <section className="px-4 pb-6 pt-3 text-white sm:px-6 lg:px-8">
         <div
-          className="mx-auto w-full max-w-7xl rounded-b-[8px] bg-[#0f2f22] px-5 py-6 shadow-[0_24px_60px_rgba(15,47,34,0.14)] sm:px-8 sm:py-8 lg:px-12"
-          style={{
-            borderBottom: "2px solid #000",
-            borderLeft: "2px solid #000",
-            borderRight: "2px solid #000",
-          }}
+          className="mx-auto w-full max-w-7xl rounded-[5px] bg-[radial-gradient(circle_at_20%_15%,rgba(12,116,77,0.56),transparent_32%),linear-gradient(135deg,#053428_0%,#072d25_52%,#0b3b2e_100%)] px-5 py-7 shadow-[0_24px_60px_rgba(15,47,34,0.16)] sm:px-8 sm:py-9 lg:px-12"
         >
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:items-end">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
             <div className="max-w-4xl space-y-4">
-              <h1 className="max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.03em] sm:text-5xl">
+              <h1 className="max-w-4xl text-3xl font-semibold leading-tight sm:text-5xl">
                 Lønn for {occupationText.titleLabel}
               </h1>
               <p className="max-w-3xl text-base leading-7 text-emerald-50 sm:text-lg sm:leading-8">
@@ -182,46 +184,38 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </p>
             </div>
 
-            <div className="lg:justify-self-end">
-              <div
-                className="flex w-full max-w-sm items-start justify-between gap-4 rounded-[5px] bg-white px-5 py-4 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-5 lg:max-w-none"
-                style={{ border: "2px solid #000" }}
-              >
-                <div className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className={`mt-1 text-2xl leading-none sm:text-3xl ${
-                      medianGrowthMetrics === null
-                        ? "text-slate-950"
-                        : medianGrowthMetrics.salaryGrowth >= 0
-                          ? "text-emerald-700"
-                          : "text-red-700"
-                    }`}
-                  >
-                    {medianGrowthMetrics === null ? "→" : medianGrowthMetrics.salaryGrowth >= 0 ? "↑" : "↓"}
-                  </span>
-                  <p
-                    className={`whitespace-nowrap text-4xl font-semibold tracking-[-0.04em] sm:text-5xl ${
-                      medianGrowthMetrics === null
-                        ? "text-slate-950"
-                        : medianGrowthMetrics.salaryGrowth >= 0
-                          ? "text-emerald-700"
-                          : "text-red-700"
-                    }`}
-                  >
-                    {formatPercent(medianGrowthMetrics?.salaryGrowth)}
-                  </p>
+            {medianGrowthMetrics ? (
+              <div className="lg:justify-self-end">
+                <div className="flex w-full max-w-sm items-start justify-between gap-4 rounded-[5px] bg-white px-5 py-5 text-slate-950 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-6 lg:max-w-none">
+                  <div className="flex flex-1 flex-col items-center text-center">
+                    <div className="flex items-center justify-center gap-3">
+                      <span
+                        aria-hidden="true"
+                        className={`text-4xl leading-none ${
+                          medianGrowthMetrics.salaryGrowth >= 0 ? "text-emerald-700" : "text-red-700"
+                        }`}
+                      >
+                        {medianGrowthMetrics.salaryGrowth >= 0 ? "↑" : "↓"}
+                      </span>
+                      <p
+                        className={`whitespace-nowrap text-4xl font-semibold sm:text-5xl ${
+                          medianGrowthMetrics.salaryGrowth >= 0 ? "text-emerald-700" : "text-red-700"
+                        }`}
+                      >
+                        {formatPercent(medianGrowthMetrics.salaryGrowth)}
+                      </p>
+                    </div>
+                    <p className="mt-3 text-xs font-medium leading-5 text-slate-600 sm:whitespace-nowrap">
+                      Lønnsvekst siste år ({medianGrowthMetrics.previousPeriodLabel}–{medianGrowthMetrics.latestPeriodLabel})
+                    </p>
+                  </div>
+                  <MetricInfoButton
+                    description={`Lønnsvekst siste år viser endringen i median månedslønn for begge kjønn fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}.`}
+                    label="Lønnsvekst siste år"
+                  />
                 </div>
-                <MetricInfoButton
-                  description={
-                    medianGrowthMetrics
-                      ? `Lønnsvekst siste år viser endringen i median månedslønn for begge kjønn fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}.`
-                      : "Lønnsvekst siste år viser endringen i median månedslønn for begge kjønn sammenlignet med året før."
-                  }
-                  label="Lønnsvekst siste år"
-                />
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
       </section>
@@ -231,10 +225,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
           <div className="space-y-6">
             {topSummary ? (
               <section
-                className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
-                style={{ border: "2px solid #000" }}
+                className="rounded-[5px] border border-slate-200 bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
               >
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
                   Kort oppsummert
                 </p>
                 <p className="mt-3 max-w-4xl text-base leading-7 text-slate-950 sm:text-lg sm:leading-8">
@@ -250,30 +243,31 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </section>
 
             {distribution ? (
-              <section className="space-y-4">
+              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Lønnsfordeling for {occupationText.titleLabel}
                   </h2>
                   <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
                     {distributionSummary}
                   </p>
                 </div>
-                <div
-                  className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6"
-                  style={{ border: "2px solid #000" }}
-                >
+                <div className="mt-8">
                   <OccupationSalaryDistributionSection distribution={distribution} />
                 </div>
               </section>
             ) : null}
 
-            <section aria-label="Lønnsutvikling" className="space-y-4" id="lonnsutvikling">
+            <section
+              aria-label="Lønnsutvikling"
+              className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+              id="lonnsutvikling"
+            >
               <div className="space-y-3">
-                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                   Lønnsutvikling for {occupationText.titleLabel}
                 </h2>
-                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
                     {salaryDevelopmentSummary}{" "}
                   <Link
                     className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
@@ -283,32 +277,42 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                   </Link>
                 </p>
               </div>
-              <OccupationSalaryTimeSeriesChart
-                description="Se utviklingen i månedslønn per år. Grafen viser median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB."
-                series={detail.data.medianBasicSalarySeries}
-                variant="classic-emphasis"
-                title={`Utvikling i månedslønn for ${occupationText.titleLabel}`}
-              />
+              <div className="mt-8">
+                <OccupationSalaryTimeSeriesChart
+                  description="Se utviklingen i månedslønn per år. Grafen viser median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB."
+                  series={detail.data.medianBasicSalarySeries}
+                  variant="classic-emphasis"
+                  title={`Utvikling i månedslønn for ${occupationText.titleLabel}`}
+                />
+              </div>
             </section>
 
-            <section className="space-y-4">
-              <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                {purchasingPowerSummary}
-              </p>
-              <OccupationPurchasingPowerLineChart
-                series={detail.data.trendData.purchasingPowerSeries}
-              />
+            <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
+              <div className="space-y-3">
+                <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                  Reallønnsvekst for {occupationText.titleLabel}
+                </h2>
+                <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  {purchasingPowerSummary}
+                </p>
+              </div>
+              <div className="mt-8">
+                <OccupationPurchasingPowerLineChart
+                  series={detail.data.trendData.purchasingPowerSeries}
+                />
+              </div>
             </section>
 
             {hasEstimate ? (
-              <section className="space-y-4">
+              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Lønnsestimat for {occupationText.titleLabel}
                   </h2>
-                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    Her ser du et forenklet lønnsestimat basert på median samlet månedslønn i yrket.
-                    Vi bruker vanlig heltidsstilling, standard feriepengesats og et fast
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    Her ser du et forenklet lønnsestimat der du kan veksle mellom samlet median
+                    månedslønn og avtalt månedslønn i yrket. Vi bruker vanlig heltidsstilling,
+                    standard feriepengesats og et fast
                     skatteanslag for å vise timelønn, årslønn, feriepengeestimat og omtrent hva det
                     kan gi utbetalt.{" "}
                     <Link
@@ -318,7 +322,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       Les også hvor mye mer kan man be om i lønn?
                     </Link>
                   </p>
-                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
                     Vil du se mer om timesats for yrket?{" "}
                     <Link
                       className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
@@ -329,11 +333,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     .
                   </p>
                 </div>
-                <div
-                  className="rounded-[5px] bg-white p-5 shadow-sm sm:p-6"
-                  style={{ border: "2px solid #000" }}
-                >
+                <div className="mt-8">
                   <OccupationSalaryEstimate
+                    contractedMonthlySalary={contractedDistribution?.total?.median}
+                    contractedMonthlySalaryMen={contractedDistribution?.men?.median}
+                    contractedMonthlySalaryWomen={contractedDistribution?.women?.median}
                     embedded
                     monthlySalary={estimateMonthlySalary}
                     monthlySalaryMen={estimateMonthlySalaryMen}
@@ -345,22 +349,21 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             {relatedRows.length > 0 ? (
-              <section className="space-y-4">
+              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Relaterte jobber for {occupationText.titleLabel}
                   </h2>
-                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
                     {relatedJobsSummary}
                   </p>
                 </div>
-                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                   {relatedRows.map((row) => (
                     <Link
-                      className="rounded-[5px] bg-white px-4 py-4 transition hover:bg-[#f7fafc]"
+                      className="group flex h-full flex-col rounded-[5px] border border-slate-200 bg-slate-50 px-4 py-4 shadow-sm transition hover:border-emerald-700/25 hover:bg-white hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)]"
                       href={row.href}
                       key={row.occupationCode}
-                      style={{ border: "2px solid #000" }}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <span className="block text-base font-semibold text-slate-950">
@@ -368,15 +371,15 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                         </span>
                         <span
                           aria-hidden="true"
-                          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-black/10 bg-white text-slate-700"
+                          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition group-hover:border-emerald-700/25 group-hover:text-emerald-800"
                         >
                           <OccupationGroupIcon groupCode={row.groupCode} />
                         </span>
                       </div>
-                      <dl className="mt-4 space-y-3 text-sm">
+                      <dl className="mt-5 space-y-3 text-sm">
                         {buildRelatedJobSalaryRows(row).map((salaryRow) => (
                           <div
-                            className="flex items-center justify-between gap-4 border-t border-black/10 pt-3"
+                            className="flex items-center justify-between gap-4 border-t border-slate-200 pt-3"
                             key={salaryRow.label}
                           >
                             <dt className="text-slate-600">{salaryRow.label}</dt>
@@ -393,37 +396,38 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             {laborMarket ? (
-              <section className="space-y-4">
+              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Arbeidsmarkedet for {occupationText.titleLabel}
                   </h2>
-                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
                     {laborMarketSummary}
                   </p>
                 </div>
-                <OccupationWorkforceTimeSeriesChart
-                  description="Se utviklingen i antall lønnstakere per kvartal, fordelt på kvinner og menn."
-                  points={laborMarket.workforcePoints}
-                />
-                <OccupationAgeTimeSeriesChart
-                  occupationLabel={occupationText.titleLabel}
-                  points={laborMarket.ageSeries}
-                />
+                <div className="mt-8 space-y-5">
+                  <OccupationWorkforceTimeSeriesChart
+                    description="Se utviklingen i antall lønnstakere per kvartal, fordelt på kvinner og menn."
+                    points={laborMarket.workforcePoints}
+                  />
+                  <OccupationAgeTimeSeriesChart
+                    occupationLabel={occupationText.titleLabel}
+                    points={laborMarket.ageSeries}
+                  />
+                </div>
               </section>
             ) : null}
 
           </div>
 
           <aside
-            className="self-start space-y-7 rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.04)]"
-            style={{ border: "2px solid #000" }}
+            className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6 sm:py-6 lg:sticky lg:top-6"
           >
-            <section>
+            <section className="border-b border-slate-200 pb-5">
               <p className="text-sm leading-6 text-slate-600">
                 Data fra{" "}
                 <a
-                  className="font-semibold text-slate-700 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-950"
+                  className="font-semibold text-slate-800 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-950"
                   href={EXTERNAL_SOURCE_LINKS[0].href}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -439,7 +443,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
             {apprenticeshipPage ? (
               <Link
-                className="flex items-center gap-3 rounded-[5px] px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-slate-950"
+                className="flex items-center gap-3 border-b border-slate-200 py-5 text-sm font-medium text-slate-700 transition hover:text-slate-950"
                 href={apprenticeshipPage.href}
               >
                 <span
@@ -452,7 +456,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </Link>
             ) : null}
 
-            <section>
+            <section className="border-b border-slate-200 py-5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Spesial
               </p>
@@ -469,7 +473,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </div>
             </section>
 
-            <section>
+            <section className="border-b border-slate-200 py-5">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Verktøy
               </p>
@@ -488,7 +492,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </section>
 
             {BLOG_LINKS.length > 0 ? (
-              <section>
+              <section className="pt-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Fra bloggen
                 </p>
@@ -512,8 +516,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
       <section className="px-4 pb-10 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-7xl lg:pr-[364px]">
           <div
-            className="rounded-[5px] bg-white px-4 py-4 text-sm leading-6 text-slate-600 shadow-sm sm:px-5"
-            style={{ border: "2px solid #000" }}
+            className="rounded-[5px] border border-slate-200 bg-white px-5 py-5 text-sm leading-6 text-slate-600 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
           >
             <p>
               Hensikten med Lønnsinnsikt er å gjøre lønnsstatistikk enklere å forstå og bruke for
@@ -539,6 +542,9 @@ type SalaryCompositionCardData = {
   contractedMedian?: number;
   totalMedian?: number;
   extraMedian?: number;
+  p25?: number;
+  p75?: number;
+  tone: "women" | "men" | "neutral";
 };
 
 type SalaryCompositionCardProps = {
@@ -546,44 +552,57 @@ type SalaryCompositionCardProps = {
 };
 
 function SalaryCompositionCard({ card }: SalaryCompositionCardProps) {
+  const tone = getSalaryCompositionTone(card.tone);
+
   return (
     <article
-      className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-6"
-      style={{ border: "2px solid #000" }}
+      className="overflow-hidden rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_18px_55px_rgba(15,23,42,0.08)] sm:p-6"
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-2">
-          {card.icon ? <div className="mr-1 shrink-0">{card.icon}</div> : null}
-          <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
+        <div className="flex items-center gap-3">
+          {card.icon ? <div className="shrink-0">{card.icon}</div> : null}
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-950">
             {card.title}
           </p>
         </div>
-        {card.caption ? <p className="shrink-0 text-sm text-slate-500">{card.caption}</p> : null}
+        {card.caption ? (
+          <p className={`shrink-0 rounded-[10px] px-3 py-1.5 text-sm font-semibold shadow-sm ${tone.period}`}>
+            {card.caption}
+          </p>
+        ) : null}
       </div>
 
-      <div className="mt-5 flex items-center gap-2">
-        <p className="text-sm font-medium text-slate-600">Månedslønn</p>
+      <div className="mt-5 flex items-center gap-1.5">
+        <p className="text-sm font-medium text-slate-600">Månedslønn (median)</p>
         <MetricInfoButton
-          description="Dette er median samlet månedslønn. Tallet inkluderer avtalt månedslønn, bonus og uregelmessige tillegg. Overtid er ikke med."
+          description="Dette er samlet median månedslønn. Tallet inkluderer avtalt månedslønn, bonus og uregelmessige tillegg. Overtid er ikke med."
           label={`${card.title} månedslønn forklart`}
+          variant="muted"
         />
       </div>
-      <p className="mt-1 text-4xl font-semibold tracking-[-0.05em] text-slate-950 tabular-nums sm:text-5xl">
+      <p className="mt-1 text-[2.5rem] font-bold leading-none text-slate-950 tabular-nums sm:text-[2.75rem]">
         {formatKr(card.totalMedian)}
       </p>
 
-      <dl className="mt-5 grid gap-2">
+      <dl className={`mt-5 overflow-hidden rounded-[6px] ${tone.rows}`}>
         <SalaryCompositionRow
-          info="Avtalt månedslønn er lønnen som er avtalt for jobben, uten bonus, uregelmessige tillegg og overtid."
-          label="Avtalt månedslønn"
+          info="Avtalt månedslønn er medianen for lønnen som er avtalt for jobben, uten bonus, uregelmessige tillegg og overtid."
+          label="Avtalt månedslønn (median)"
           value={formatKr(card.contractedMedian)}
         />
         <SalaryCompositionRow
-          info="Bonus og tillegg er forskjellen mellom samlet og avtalt månedslønn. Det består av bonus og uregelmessige tillegg. Overtid er ikke med."
-          label="Bonus og tillegg"
+          info="Bonus og tillegg vises som forskjellen mellom samlet median månedslønn og avtalt median månedslønn når begge tall finnes. Det består av bonus og uregelmessige tillegg. Overtid er ikke med."
+          label="Bonus og tillegg (median)"
           value={formatKr(card.extraMedian)}
         />
       </dl>
+
+      <SalaryCompositionRangeLine
+        max={card.p75}
+        median={card.totalMedian}
+        min={card.p25}
+        tone={card.tone}
+      />
     </article>
   );
 }
@@ -600,10 +619,10 @@ function SalaryCompositionRow({
   strong?: boolean;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 rounded-[5px] bg-slate-50 px-4 py-3">
-      <dt className="flex min-w-0 items-center gap-2 text-sm text-slate-600">
+    <div className="flex items-baseline justify-between gap-4 border-b border-white/65 px-4 py-3 last:border-b-0">
+      <dt className="flex min-w-0 items-center gap-2 text-sm font-medium text-slate-600">
         <span className="truncate">{label}</span>
-        {info ? <MetricInfoButton description={info} label={`${label} forklart`} /> : null}
+        {info ? <MetricInfoButton description={info} label={`${label} forklart`} variant="muted" /> : null}
       </dt>
       <dd
         className={
@@ -614,6 +633,43 @@ function SalaryCompositionRow({
       >
         {value}
       </dd>
+    </div>
+  );
+}
+
+function SalaryCompositionRangeLine({
+  min,
+  median,
+  max,
+  tone,
+}: {
+  min?: number;
+  median?: number;
+  max?: number;
+  tone: SalaryCompositionCardData["tone"];
+}) {
+  if (min === undefined || median === undefined || max === undefined || min >= max) {
+    return null;
+  }
+
+  const accent = getSalaryCompositionTone(tone).accent;
+  const medianPosition = `${Math.min(100, Math.max(0, ((median - min) / (max - min)) * 100))}%`;
+
+  return (
+    <div className="mt-8">
+      <div className={`relative h-0.5 rounded-full ${accent.line}`}>
+        <span className={`absolute left-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full ${accent.dot}`} />
+        <span
+          className={`absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ${accent.dot}`}
+          style={{ left: medianPosition }}
+        />
+        <span className={`absolute right-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full ${accent.dot}`} />
+      </div>
+      <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-sm text-slate-700">
+        <p className="font-medium tabular-nums">{formatKrPlain(min)}</p>
+        <p className="text-center font-medium text-slate-500">De fleste ligger mellom</p>
+        <p className="text-right font-medium tabular-nums">{formatKrPlain(max)}</p>
+      </div>
     </div>
   );
 }
@@ -640,10 +696,13 @@ function buildSalaryCompositionCards({
       icon: <MetricAvatar tone="women" />,
       contractedMedian: contractedDistribution?.women?.median,
       totalMedian: distribution?.women?.median,
+      p25: distribution?.women?.p25,
+      p75: distribution?.women?.p75,
       extraMedian: calculatePositiveDifference(
         distribution?.women?.median,
         contractedDistribution?.women?.median,
       ),
+      tone: "women",
     });
   }
 
@@ -655,10 +714,13 @@ function buildSalaryCompositionCards({
       icon: <MetricAvatar tone="men" />,
       contractedMedian: contractedDistribution?.men?.median,
       totalMedian: distribution?.men?.median,
+      p25: distribution?.men?.p25,
+      p75: distribution?.men?.p75,
       extraMedian: calculatePositiveDifference(
         distribution?.men?.median,
         contractedDistribution?.men?.median,
       ),
+      tone: "men",
     });
   }
 
@@ -669,10 +731,13 @@ function buildSalaryCompositionCards({
       caption: latestSalaryPeriodLabel,
       contractedMedian: contractedDistribution?.total?.median,
       totalMedian: distribution?.total?.median,
+      p25: distribution?.total?.p25,
+      p75: distribution?.total?.p75,
       extraMedian: calculatePositiveDifference(
         distribution?.total?.median,
         contractedDistribution?.total?.median,
       ),
+      tone: "neutral",
     });
   }
 
@@ -789,16 +854,52 @@ function buildRelatedJobSalaryRows(
 }
 
 function MetricAvatar({ tone }: { tone: "women" | "men" }) {
+  const className =
+    tone === "women"
+      ? "bg-pink-100 text-pink-600 shadow-[0_8px_18px_rgba(236,72,153,0.16)]"
+      : "bg-sky-100 text-blue-600 shadow-[0_8px_18px_rgba(37,99,235,0.16)]";
+
   return (
     <span
       aria-hidden="true"
-      className={`inline-flex h-5 w-5 items-center justify-center text-sm font-semibold ${
-        tone === "women" ? "text-pink-500" : "text-sky-600"
-      }`}
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-2xl font-semibold ${className}`}
     >
       {tone === "women" ? "♀" : "♂"}
     </span>
   );
+}
+
+function getSalaryCompositionTone(tone: SalaryCompositionCardData["tone"]) {
+  if (tone === "women") {
+    return {
+      period: "bg-pink-50 text-pink-900",
+      rows: "bg-gradient-to-r from-pink-50 to-white",
+      accent: {
+        dot: "bg-pink-500",
+        line: "bg-pink-500",
+      },
+    };
+  }
+
+  if (tone === "men") {
+    return {
+      period: "bg-blue-50 text-blue-900",
+      rows: "bg-gradient-to-r from-blue-50 to-white",
+      accent: {
+        dot: "bg-blue-600",
+        line: "bg-blue-600",
+      },
+    };
+  }
+
+  return {
+    period: "bg-slate-100 text-slate-700",
+    rows: "bg-gradient-to-r from-slate-50 to-white",
+    accent: {
+      dot: "bg-slate-700",
+      line: "bg-slate-700",
+    },
+  };
 }
 
 function formatKr(value?: number) {
@@ -1217,6 +1318,9 @@ function buildTopSummary({
   womenP75,
   menP25,
   menP75,
+  womenEmployees,
+  menEmployees,
+  employmentPeriodLabel,
 }: {
   periodLabel?: string;
   totalMedian?: number;
@@ -1228,6 +1332,9 @@ function buildTopSummary({
   womenP75?: number;
   menP25?: number;
   menP75?: number;
+  womenEmployees?: number;
+  menEmployees?: number;
+  employmentPeriodLabel?: string;
 }) {
   if (totalMedian === undefined && womenMedian === undefined && menMedian === undefined) {
     return null;
@@ -1260,8 +1367,12 @@ function buildTopSummary({
   const sourceSentence = rangeSentence
     ? `${rangeSentence}, ${periodLabel ? `basert på SSB-data for ${periodLabel.toLowerCase()}` : "basert på siste tilgjengelige SSB-data"}.`
     : `${periodLabel ? `Basert på SSB-data for ${periodLabel.toLowerCase()}` : "Basert på siste tilgjengelige SSB-data"}.`;
+  const employeeSentence =
+    womenEmployees !== undefined && menEmployees !== undefined
+      ? `SSB registrerer ${formatNumber(womenEmployees)} kvinner og ${formatNumber(menEmployees)} menn som arbeidstakere i yrket${employmentPeriodLabel ? ` i ${formatQuarterCodeLabel(employmentPeriodLabel).toLowerCase()}` : ""}.`
+      : null;
 
-  return [medianSentence, sourceSentence]
+  return [medianSentence, sourceSentence, employeeSentence]
     .filter((part): part is string => Boolean(part))
     .join(" ");
 }

@@ -10,8 +10,8 @@ const currencyFormatter = new Intl.NumberFormat("nb-NO", {
 
 const seriesDefinitions = [
   { key: "valueAll", label: "Begge kjønn", color: "#14532d" },
-  { key: "valueWomen", label: "Kvinner", color: "#b45309" },
-  { key: "valueMen", label: "Menn", color: "#1d4ed8" },
+  { key: "valueWomen", label: "Kvinner", color: "#ec1f74" },
+  { key: "valueMen", label: "Menn", color: "#2563eb" },
 ] as const;
 
 const filterOptions = [
@@ -101,10 +101,10 @@ export function OccupationSalaryTimeSeriesChart({
       ? Math.ceil((maxValue + axisStep) / axisStep) * axisStep
       : Math.ceil(maxValue / axisStep) * axisStep;
   const chartRange = Math.max(chartMax - chartMin, 1);
-  const chartWidth = 820;
+  const chartWidth = 900;
   const chartHeight = 320;
-  const paddingLeft = 48;
-  const paddingRight = 72;
+  const paddingLeft = 86;
+  const paddingRight = 90;
   const paddingTop = 16;
   const paddingBottom = 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
@@ -131,6 +131,24 @@ export function OccupationSalaryTimeSeriesChart({
       value: latestPoint.value,
     }];
   });
+  const growthValues = activeSeries.flatMap((definition) => {
+    const firstPoint = getFirstSeriesPoint(series.points, definition.key);
+    const latestPoint = getLatestSeriesPoint(series.points, definition.key);
+
+    if (!firstPoint || !latestPoint || firstPoint.value === 0) {
+      return [];
+    }
+
+    return [
+      {
+        key: definition.key,
+        label: definition.label,
+        firstPeriodLabel: firstPoint.periodLabel,
+        latestPeriodLabel: latestPoint.periodLabel,
+        value: ((latestPoint.value - firstPoint.value) / firstPoint.value) * 100,
+      },
+    ];
+  });
   const latestPeriodLabel = latestValues[0]?.periodLabel;
   const valueFormatter = valueDisplay === "hourly" ? formatHourlyValue : formatCurrency;
   const axisValueFormatter = valueDisplay === "hourly" ? formatHourlyAxisValue : formatAxisCurrency;
@@ -139,10 +157,14 @@ export function OccupationSalaryTimeSeriesChart({
   const isClassicEmphasis = variant === "classic-emphasis";
   const containerClasses = isModern
     ? "rounded-[5px] bg-white p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] sm:p-6"
-    : `bg-[var(--surface)] p-4 shadow-sm sm:p-6 ${containerClassName ?? "rounded-[5px]"}`;
+    : isClassicEmphasis
+      ? `bg-transparent p-0 ${containerClassName ?? ""}`
+      : `bg-[var(--surface)] p-4 shadow-sm sm:p-6 ${containerClassName ?? "rounded-[5px]"}`;
   const chartFrameClasses = isModern
     ? "mt-6 overflow-x-auto rounded-md border border-black bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:p-4"
-    : "mt-6 overflow-x-auto";
+    : isClassicEmphasis
+      ? "mt-8 overflow-x-auto"
+      : "mt-6 overflow-x-auto";
   const gridStroke = isModern
     ? "rgba(15, 23, 42, 0.10)"
     : isClassicEmphasis
@@ -161,13 +183,13 @@ export function OccupationSalaryTimeSeriesChart({
 
   return (
     <section className="grid gap-6">
-      <section className={containerClasses} style={{ border: "2px solid #000" }}>
+      <section className={containerClasses} style={isModern ? { border: "2px solid #000" } : undefined}>
         <div className="flex flex-col gap-4">
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
+            <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
               {title ?? `Utvikling i månedslønn for ${series.occupationLabel}`}
             </h3>
-            <p className="text-sm leading-6 text-[var(--muted)]">
+            <p className="text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
               {description ??
                 `${series.occupationLabel} lønnsutvikling i Norge. Se median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
             </p>
@@ -189,10 +211,12 @@ export function OccupationSalaryTimeSeriesChart({
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 {latestPeriodLabel ? (
-                  <span className={`rounded-md border px-3 py-2 text-sm font-semibold ${
+                  <span className={`rounded-[5px] border px-4 py-2 text-sm font-semibold ${
                     isModern
                       ? "border-black/10 bg-slate-950 text-white"
-                      : "border-black/10 bg-[#f7fafc] text-slate-700"
+                      : isClassicEmphasis
+                        ? "border-slate-200 bg-white text-slate-950 shadow-sm"
+                        : "border-black/10 bg-[#f7fafc] text-slate-700"
                   }`}>
                     {formatPeriodLabel(latestPeriodLabel)}
                   </span>
@@ -200,10 +224,12 @@ export function OccupationSalaryTimeSeriesChart({
                 {latestValues.map((entry) => (
                   <div
                     key={`latest-${entry.key}`}
-                    className={`rounded-md border px-3 py-2 text-sm leading-none ${
+                    className={`rounded-[5px] border px-4 py-2 text-sm leading-none ${
                       isModern
                         ? "border-black/10 bg-white text-slate-700 shadow-[0_8px_20px_rgba(15,23,42,0.06)]"
-                        : "border-black/10 bg-white text-slate-700"
+                        : isClassicEmphasis
+                          ? "border-slate-200 bg-white text-slate-700 shadow-sm"
+                          : "border-black/10 bg-white text-slate-700"
                     }`}
                   >
                     <span className={`text-[15px] ${isModern ? "block text-xs uppercase tracking-[0.14em] text-slate-500" : ""}`}>
@@ -232,10 +258,10 @@ export function OccupationSalaryTimeSeriesChart({
                     !isAvailable
                       ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
                       : isActive
-                      ? "border-slate-950 bg-slate-950 text-white"
+                      ? "border-emerald-900 bg-emerald-900 text-white shadow-[0_10px_24px_rgba(6,78,59,0.18)]"
                       : isModern
                         ? "border-black/10 bg-slate-50 text-slate-700 hover:border-slate-950/30"
-                        : "border-black/10 bg-white text-slate-700 hover:border-slate-950/30"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-slate-950/30"
                   }`}
                   onClick={() => {
                     if (isAvailable) {
@@ -269,6 +295,27 @@ export function OccupationSalaryTimeSeriesChart({
               </div>
             ))}
           </div>
+
+          {growthValues.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {growthValues.map((entry) => (
+                <div
+                  key={`growth-${entry.key}`}
+                  className="rounded-[5px] bg-slate-50 px-3 py-2 text-sm text-slate-700"
+                >
+                  <span>{entry.label}: </span>
+                  <strong className="font-semibold text-slate-950">
+                    {formatGrowthPercent(entry.value)}
+                  </strong>
+                  <span>
+                    {" "}
+                    i perioden {formatPeriodLabel(entry.firstPeriodLabel)}–
+                    {formatPeriodLabel(entry.latestPeriodLabel)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         <div className={chartFrameClasses}>
@@ -478,6 +525,15 @@ function formatCurrency(value: number) {
   return `${currencyFormatter.format(value)} kr`;
 }
 
+function formatGrowthPercent(value: number) {
+  const sign = value > 0 ? "+" : "";
+
+  return `${sign}${value.toLocaleString("nb-NO", {
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 1,
+  })} %`;
+}
+
 function formatAxisCurrency(value: number) {
   return currencyFormatter.format(Math.round(value));
 }
@@ -552,6 +608,29 @@ function getLatestSeriesPoint(
 ) {
   for (let index = points.length - 1; index >= 0; index -= 1) {
     const point = points[index];
+    const value = point[key];
+
+    if (value !== undefined) {
+      return {
+        periodLabel: point.periodLabel,
+        value,
+      };
+    }
+  }
+
+  return null;
+}
+
+function getFirstSeriesPoint(
+  points: Array<{
+    periodLabel: string;
+    valueAll?: number;
+    valueWomen?: number;
+    valueMen?: number;
+  }>,
+  key: SeriesKey,
+) {
+  for (const point of points) {
     const value = point[key];
 
     if (value !== undefined) {
