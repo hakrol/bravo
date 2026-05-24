@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
 import { HomeOccupationSalarySearch } from "@/components/home-occupation-salary-search";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
+import { getAllBlogPosts } from "@/lib/blog";
 import {
   getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets,
+  getOccupationPurchasingPowerTimeSeries,
   getOccupationSalaryTimeSeries,
 } from "@/lib/ssb";
 import { siteConfig } from "@/lib/site-config";
@@ -32,21 +35,29 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [{ latestDataset, previousDataset }, allOccupationsSalarySeries] = await Promise.all([
+  const [
+    { latestDataset, previousDataset },
+    allOccupationsSalarySeries,
+    allOccupationsPurchasingPowerSeries,
+    blogPosts,
+  ] = await Promise.all([
     getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets(),
     getOccupationSalaryTimeSeries("0-9"),
+    getOccupationPurchasingPowerTimeSeries("0-9"),
+    getAllBlogPosts(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(latestDataset, previousDataset);
+  const latestBlogPosts = blogPosts.slice(0, 3);
 
   return (
-    <div className="px-5 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
+    <div className="px-5 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-7xl">
         <HomeOccupationSalarySearch
+          allOccupationsPurchasingPowerSeries={allOccupationsPurchasingPowerSeries}
           allOccupationsSalarySeries={allOccupationsSalarySeries}
-          lastUpdated={latestDataset.updated}
-          periodLabel={overview.periodLabel}
           rows={overview.rows}
         />
+        <HomeLatestBlogSection posts={latestBlogPosts} />
       </div>
     </div>
   );

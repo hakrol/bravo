@@ -2824,6 +2824,7 @@ function buildOccupationPurchasingPowerTimeSeriesPoints(
         {
           periodCode,
           periodLabel: formatQuarterLabel(periodCode),
+          inflationIndex: inflationPoint.averageIndex,
           salaryGrowthAll,
           salaryGrowthWomen,
           salaryGrowthMen,
