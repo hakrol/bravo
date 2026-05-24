@@ -433,6 +433,7 @@ export type OccupationPurchasingPowerDetail = {
 export type OccupationPurchasingPowerTimeSeriesPoint = {
   periodCode: string;
   periodLabel: string;
+  inflationIndex?: number;
   salaryGrowthAll?: number;
   salaryGrowthWomen?: number;
   salaryGrowthMen?: number;

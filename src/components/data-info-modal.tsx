@@ -22,10 +22,7 @@ export function DataInfoModal({ title, description }: DataInfoModalProps) {
       </button>
 
       {isOpen ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4"
-          onClick={() => setIsOpen(false)}
-        >
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" onClick={() => setIsOpen(false)}>
           <div
             aria-modal="true"
             className="w-full max-w-lg rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
@@ -49,12 +46,7 @@ export function DataInfoModal({ title, description }: DataInfoModalProps) {
             </div>
 
             <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
-              <p>
-                Tallene viser median månedslønn for yrkene i tabellen,
-                hentet fra SSB. Månedslønn inkluderer avtalt lønn, bonus og
-                uregelmessige tillegg, men ikke overtid. Det betyr at halvparten
-                tjener mer og halvparten tjener mindre.
-              </p>
+              <p>{description}</p>
             </div>
           </div>
         </div>

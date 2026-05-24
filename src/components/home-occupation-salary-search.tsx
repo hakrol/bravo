@@ -1,141 +1,65 @@
-﻿'use client'
+"use client";
 
-import { useDeferredValue, useState } from "react";
-import { OccupationSalaryOverview, type OccupationSalaryRow } from "@/components/occupation-salary-overview";
-import { getOccupationGroupByCode, listOccupationGroups } from "@/lib/occupation-groups";
+import { useDeferredValue, useMemo, useState } from "react";
+import { AllOccupationsSalaryChart } from "@/components/all-occupations-salary-chart";
+import { HomeAboutInsightSection } from "@/components/home-about-insight-section";
+import { HomeHeroSearch } from "@/components/home-hero-search";
+import { HomeOccupationCards } from "@/components/home-occupation-cards";
+import type { OccupationSalaryRow } from "@/components/occupation-salary-overview";
+import type { OccupationPurchasingPowerTimeSeries, OccupationSalaryTimeSeries } from "@/lib/types";
 
 type HomeOccupationSalarySearchProps = {
+  allOccupationsPurchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
+  allOccupationsSalarySeries: OccupationSalaryTimeSeries;
   rows: OccupationSalaryRow[];
-  lastUpdated?: string;
-  periodLabel?: string;
 };
-
-type HomeOccupationGroupFilter = {
-  code: string;
-  shortLabel: string;
-};
-
-const homeOccupationGroups: HomeOccupationGroupFilter[] = [
-  ...listOccupationGroups().map((group) => ({ code: group.code, shortLabel: group.shortLabel })),
-  { code: "3", shortLabel: "Høgskoleyrker" },
-];
 
 export function HomeOccupationSalarySearch({
+  allOccupationsPurchasingPowerSeries,
+  allOccupationsSalarySeries,
   rows,
-  lastUpdated,
-  periodLabel,
 }: HomeOccupationSalarySearchProps) {
   const [query, setQuery] = useState("");
-  const [activeGroupCode, setActiveGroupCode] = useState("");
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = normalizeText(deferredQuery.trim());
-  const availableGroupCodes = new Set(
-    rows.map((row) => getTopGroupCode(row.occupationCode)).filter(Boolean),
+
+  const filteredRows = useMemo(
+    () =>
+      rows.filter((row) => {
+        if (!normalizedQuery) {
+          return true;
+        }
+
+        const occupationLabel = normalizeText(row.occupationLabel);
+        const occupationCode = normalizeText(row.occupationCode);
+        return occupationLabel.includes(normalizedQuery) || occupationCode.includes(normalizedQuery);
+      }),
+    [normalizedQuery, rows],
   );
-  const availableGroups = homeOccupationGroups.filter((group) => availableGroupCodes.has(group.code));
-
-  const filteredRows = rows.filter((row) => {
-    const matchesGroup = !activeGroupCode || activeGroupCode === getTopGroupCode(row.occupationCode);
-
-    if (!matchesGroup) {
-      return false;
-    }
-
-    if (!normalizedQuery) {
-      return true;
-    }
-
-    const occupationLabel = normalizeText(row.occupationLabel);
-    const occupationCode = normalizeText(row.occupationCode);
-    return occupationLabel.includes(normalizedQuery) || occupationCode.includes(normalizedQuery);
-  });
-
-  const activeGroupLabel =
-    getOccupationGroupByCode(activeGroupCode)?.shortLabel ??
-    homeOccupationGroups.find((group) => group.code === activeGroupCode)?.shortLabel;
 
   return (
-    <section className="relative z-10 grid gap-4">
-      <div className="-mt-18 relative z-10 mx-auto w-full max-w-4xl px-1 sm:-mt-20" id="yrke-sok">
-        <label className="grid gap-3" htmlFor="occupation-search">
-          <span className="text-center text-sm font-semibold tracking-[-0.01em] text-[var(--primary-strong)]">
-            Søk etter yrke
-          </span>
-          <input
-            id="occupation-search"
-            className="h-16 rounded-md border border-white/70 bg-white/76 px-6 text-lg text-slate-900 shadow-[0_12px_40px_rgba(22,61,38,0.08)] outline-none backdrop-blur transition placeholder:text-slate-400 focus:border-[var(--primary)] focus:bg-white"
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Skriv f.eks. regnskapsfører"
-            type="search"
-            value={query}
-          />
-        </label>
-        <p className="mt-3 text-center text-sm text-[var(--muted)]">
-          Oversikten filtreres fortløpende mens du skriver.
-        </p>
-      </div>
-
-      {availableGroups.length > 0 ? (
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-1">
-          <label className="mx-auto grid max-w-sm gap-2" htmlFor="occupation-group-filter">
-            <span className="text-center text-sm font-semibold text-[var(--primary-strong)]">
-              Velg yrkesgruppe
-            </span>
-            <select
-              id="occupation-group-filter"
-              className="h-12 rounded-md border border-[var(--border)] bg-white px-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-soft)]"
-              onChange={(event) => setActiveGroupCode(event.target.value)}
-              value={activeGroupCode}
-            >
-              <option value="">Alle yrkesgrupper</option>
-              {availableGroups.map((group) => (
-                <option key={group.code} value={group.code}>
-                  {group.shortLabel}
-                </option>
-              ))}
-            </select>
-          </label>
+    <>
+      <section className="fade-up relative isolate overflow-visible px-0 pt-8 pb-10 sm:pt-10 lg:pt-12">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(20,83,45,0.11),transparent_42%),linear-gradient(180deg,#fbfbf8_0%,#fafafa_72%)]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 opacity-80">
+          <span className="absolute left-[8%] top-[9%] h-2.5 w-2.5 rounded-full bg-[#dce8df]" />
+          <span className="absolute left-[24%] top-[2%] h-3 w-3 rounded-full bg-[#edf4ef]" />
+          <span className="absolute right-[17%] top-[5%] h-2 w-2 rounded-full bg-[#d6e4d9]" />
+          <span className="absolute right-[11%] top-[23%] h-2.5 w-2.5 rounded-full bg-[#dce8df]" />
+          <span className="absolute left-[18%] top-[24%] h-2 w-2 rounded-full bg-[#eef5ef]" />
         </div>
-      ) : null}
 
-      <OccupationSalaryOverview
-        description="Se median samlet månedslønn fordelt på yrker."
-        emptyStateText="Ingen yrker matcher søket ditt akkurat nå."
-        initialSortDirection="desc"
-        initialSortKey="medianMen"
-        lastUpdated={lastUpdated}
-        periodLabel={periodLabel}
-        rows={filteredRows}
-        showGrowthColumns={false}
-        showLastUpdated={false}
-        title={buildTitle(query.trim(), activeGroupLabel)}
-        variant="cards"
+        <HomeHeroSearch query={query} onQueryChange={setQuery} />
+        <HomeOccupationCards query={query} rows={filteredRows} sourceRows={rows} />
+      </section>
+
+      <AllOccupationsSalaryChart
+        purchasingPowerSeries={allOccupationsPurchasingPowerSeries}
+        series={allOccupationsSalarySeries}
       />
-    </section>
+      <HomeAboutInsightSection />
+    </>
   );
-}
-
-function buildTitle(query: string, activeGroupLabel?: string) {
-  const hasQuery = query.length > 0;
-  const hasGroup = Boolean(activeGroupLabel);
-
-  if (hasQuery && hasGroup) {
-    return `Treff for "${query}" i ${activeGroupLabel}`;
-  }
-
-  if (hasQuery) {
-    return `Treff for "${query}"`;
-  }
-
-  if (hasGroup) {
-    return `Yrker i ${activeGroupLabel}`;
-  }
-
-  return "Samlet månedslønn for alle yrker";
-}
-
-function getTopGroupCode(occupationCode: string) {
-  return occupationCode.charAt(0);
 }
 
 function normalizeText(value: string) {
