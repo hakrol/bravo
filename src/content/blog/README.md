@@ -10,7 +10,7 @@ title: "Tittel"
 description: "Kort beskrivelse"
 slug: "min-slug"
 publishedAt: "2026-04-03"
-coverImage: "/blogg/min-slug/cover.jpg"
+coverImage: "/blogg/min-slug/yrke-lonn.png"
 coverImageAlt: "Kort beskrivelse av hva hero-bildet viser"
 author: "Kristian"
 seoTitle: "Valgfri SEO-tittel"
@@ -74,7 +74,18 @@ seoTitle: "Hvor mye mer kan man be om i lønn? Konkrete tall og realistiske niv�
 seoDescription: "Se hva som er normalt lønnshopp ved årlig justering, økt ansvar og jobbskifte, og lær hvordan du beregner et realistisk lønnskrav."
 ```
 
-## Fast navngivningsregel for bilder
+## Fast bilderegel for automatiserte innlegg
+
+Automatiserte yrke/lønn-innlegg skal ikke lage eller generere egne hero-bilder. Sett likevel `coverImage` til en full artikkelspesifikk sti under `/blogg/<slug>/`, slik at bildet kan legges inn manuelt senere.
+
+```md
+coverImage: "/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"
+coverImageAlt: "To leger i hvite frakker med stetoskop og skrivebrett"
+```
+
+Bruk et beskrivende filnavn basert på yrket, for eksempel `lege-lonn.png`, `psykolog-lonn.png` eller `vernepleier-lonn.png`. Ikke opprett bildefilen eller generer bilde hvis brukeren skal legge inn bildet selv.
+
+## Fast navngivningsregel for egne bilder
 
 Legg alle blogg-bilder i:
 

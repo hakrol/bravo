@@ -25,7 +25,7 @@ For generelle bloggstandarder, følg:
 - Hvis en midlertidig Codex-worktree brukes til utkast, skal alle tilhørende filer synkes samlet til Desktop/Bravo før temaet regnes som ferdig:
   - MDX-innlegg
   - frosne data-snapshots
-  - filer under `public/blogg/<slug>/`
+  - eventuelle bilde- eller asset-filer som brukeren eksplisitt har bedt om. Vanlig bloggautomatisering skal bare sette artikkelspesifikk `coverImage`-sti og ikke lage bildefilen.
   - relevante komponentendringer
   - denne briefen
 - Kryss bare av temaet når hele bloggpakken finnes i samme arbeidskopi.
