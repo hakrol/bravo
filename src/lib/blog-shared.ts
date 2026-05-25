@@ -6,6 +6,7 @@ export type BlogFrontmatter = {
   slug: string;
   publishedAt: string;
   coverImage: string;
+  coverImageAlt?: string;
   author: string;
   draft?: boolean;
   seoTitle?: string;

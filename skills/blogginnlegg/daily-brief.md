@@ -17,6 +17,7 @@ For generelle bloggstandarder, følg:
 - Hvis `Ikke startet` er tom, skal ingen nye innlegg lages.
 - Når et tema har `Diagrammer`, skal hvert punkt være en enkel diagramtype som skal inkluderes i innlegget hvis datagrunnlaget finnes eller kan hentes etter bloggskillens regler.
 - Hvis et oppgitt diagram ikke kan lages, skal Codex forklare hvorfor før temaet regnes som ferdig.
+- Når et tema har `FAQ`, skal hvert punkt være et konkret spørsmål som skal inkluderes i innleggets FAQ-seksjon. Codex skal skrive korte, presise svar basert på innleggets datagrunnlag og plassere FAQ-en helt nederst i innlegget, etter oppsummering og kildeavsnitt når de finnes. Ikke legg inn `## FAQ`; komponenten viser overskriften `Ofte stilte spørsmål`.
 
 ## Arbeidsflyt
 
@@ -60,6 +61,11 @@ Legg nye bloggtemaer inn under `Ikke startet` med denne strukturen når du vil s
   - Boblediagram
   - Søkbar yrkesliste
 
+  FAQ:
+  - Hva er vanlig startlønn for en eksempelrolle?
+  - Hvor mye kan erfaring påvirke lønnen?
+  - Hvilket SSB-tall bør jeg sammenligne med?
+
   Interne lenker:
   - /yrke/eksempelrolle-lonn
 
@@ -67,7 +73,7 @@ Legg nye bloggtemaer inn under `Ikke startet` med denne strukturen når du vil s
   - https://www.ssb.no/
 ```
 
-Bruk `Diagrammer` på samme måte som `Overskrifter`, `Interne lenker` og `Eksterne lenker`: det er en konkret bestilling, ikke bare et forslag. Fyll bare inn diagramtypen. Skill-reglene bestemmer komponent, plassering og datagrunnlag.
+Bruk `Diagrammer` og `FAQ` på samme måte som `Overskrifter`, `Interne lenker` og `Eksterne lenker`: det er en konkret bestilling, ikke bare et forslag. For `Diagrammer` fyller du bare inn diagramtypen. For `FAQ` fyller du inn spørsmålene som skal besvares. Skill-reglene bestemmer komponent, plassering og datagrunnlag.
 
 ## Tema-kø
 
@@ -75,8 +81,10 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
+
 ### Ferdig
 
+- [x] Hva er årslønnen til en vernepleier? - `src/content/blog/hva-er-arslonnen-til-en-vernepleier.mdx` - 2026-05-25
 - [x] Hvor mye tjener piloter? - `src/content/blog/hvor-mye-tjener-piloter.mdx` - 2026-05-21
 - [x] Hva tjener en snekker? - `src/content/blog/hva-tjener-en-snekker.mdx` - 2026-05-14
 - [x] Hva tjener en brannmann? - `src/content/blog/hva-tjener-en-brannmann.mdx` - 2026-05-14

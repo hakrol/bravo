@@ -76,17 +76,9 @@ Bruk den mest spesifikke regelen som passer oppgaven.
 
 Når et blogginnlegg lages fra tema-køen, skal briefen under temaet følges.
 
-Briefen kan inneholde:
-- Tittel
-- Beskrivelse av hva innlegget skal svare på, hensikt og mål
-- Overskrifter og mellomoverskrifter som skal brukes eller vurderes
-- Interne lenker som skal inn i teksten
-- Eksterne lenker som skal brukes som kilder eller videre lesing
-- Diagramtyper som skal inkluderes
-
-Hvis briefen mangler noen av feltene, skal Codex bruke beste skjønn basert på prosjektreglene og eksisterende blogginnlegg.
-
 Hvis briefen oppgir `Diagrammer`, er hvert punkt en påkrevd diagramtype. Brukeren skal bare trenge å skrive typen, for eksempel `Boblediagram` eller `Lønnsutviklingsdiagram`. Codex skal velge riktig eksisterende komponent, wrapper-komponent, plassering og datagrunnlag ut fra diagramreglene under.
+
+Hvis briefen oppgir `FAQ`, er hvert punkt et påkrevd spørsmål. Codex skal inkludere en FAQ-seksjon med `<FAQ>` og `<FAQItem question="...">`, skrive korte svar som bygger på innleggets innhold og datagrunnlag, og plassere FAQ-en helt nederst i innlegget, etter oppsummering og kildeavsnitt når de finnes. Ikke legg inn en egen Markdown-overskrift som `## FAQ`; komponenten skal selv vise den eneste overskriften: `Ofte stilte spørsmål`.
 
 Codex skal ikke be brukeren fylle inn komponentnavn, formål, plassering eller datafil i tema-køen. Hvis et oppgitt diagram ikke kan lages med tilgjengelig datagrunnlag, skal Codex forklare hvorfor før temaet regnes som ferdig.
 
@@ -184,6 +176,7 @@ Minstekrav:
 - Bruk viktige nøkkelord naturlig, ikke mekanisk.
 - Foretrekk tydelige overskrifter som matcher det brukeren faktisk søker etter.
 - Bruk beskrivende `alt`-tekst på bilder som tilfører informasjon.
+- Skriv `alt`-tekst slik at den også fungerer som første, korte setning i bildeteksten.
 - Bruk interne lenker når de styrker leserreisen eller utdyper temaet.
 - Velg beskrivende bildefilnavn uten mellomrom, parenteser eller tilfeldige kopinavn.
 - Bruk tom `alt` på dekorative bilder som ikke tilfører informasjon.
@@ -223,6 +216,7 @@ Unngå:
 - Bruk `Example`-komponenten for formuleringer, manus og forslag leseren kan bruke selv.
 - Bruk `Table`, `TableHead`, `TableBody`, `TableRow`, `TableHeader` og `TableCell` for tabeller i innlegg.
 - Bruk `ToolCallout` når innlegget bør peke videre til et relevant verktøy som Lønnsjekk.
+- Bruk `FAQ` og `FAQItem` når `daily-brief.md` oppgir FAQ-spørsmål. FAQ skal alltid stå helt nederst, uten egen Markdown-overskrift over komponenten. Svarene skal være korte, konkrete og ikke gjenta hele avsnitt fra innlegget.
 - Ikke lag nye komponenter hvis eksisterende komponenter dekker behovet godt nok.
 - Foretrekk små lokale forbedringer fremfor nye abstraksjoner.
 
@@ -239,7 +233,7 @@ Anbefalt størrelse:
 - hero-bilde: `1600 x 1000 px`
 - bilder i innlegg: rundt `1200 px` bredde
 
-Bruk beskrivende `alt`-tekst når bildet settes inn i MDX.
+Bruk beskrivende `alt`-tekst når bildet settes inn i MDX. Sett også `coverImageAlt` i frontmatter med en kort, konkret beskrivelse av selve hero-bildet, for eksempel `To piloter som sitter i cockpit`. Bloggbilder får automatisk en liten grå bildetekst under bildet. For MDX-bilder bygger første setning på `alt`-teksten, og for hero-bilder bygger den på `coverImageAlt`. Andre setning skal være: `Illustrasjonen er AI-generert og brukes for visualisering av temaet.`
 
 ## Ferdigdefinisjon
 
