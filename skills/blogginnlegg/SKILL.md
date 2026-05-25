@@ -31,7 +31,7 @@ Bruk den mest spesifikke regelen som passer oppgaven.
 3. Identifiser lavest riktige nivå for endringen:
    - nytt innlegg i `src/content/blog/`
    - eksisterende innlegg i `src/content/blog/`
-   - bilder i `public/blogg/<slug>/`
+   - standard coverbilde i frontmatter
    - felles bloggkomponenter i `src/components/`
    - felles bloggstil i `src/app/globals.css`
 4. Gjør endringer på lavest riktige nivå:
@@ -52,8 +52,8 @@ Bruk den mest spesifikke regelen som passer oppgaven.
 - `src/content/blog/*.mdx`
   Selve blogginnholdet.
 
-- `public/blogg/<slug>/`
-  Bilder per innlegg.
+- `public/blogg/<slug>/<yrke-lonn>.png`
+  Artikkelspesifikk coversti for automatiserte yrke/lønn-innlegg. Filen skal ikke opprettes eller genereres av automasjonen.
 
 - `src/lib/blog.ts`
   Laster blogginnhold, frontmatter og innholdsfortegnelse.
@@ -99,7 +99,7 @@ Codex skal ikke be brukeren fylle inn komponentnavn, formål, plassering eller d
 - Bruk `##` og `###` for struktur. Det gir automatisk innholdsfortegnelse.
 - Hold frontmatter ryddig og komplett.
 - Legg nye innlegg i `src/content/blog/`.
-- Legg bilder i `public/blogg/<slug>/`.
+- For automatiserte yrke/lønn-innlegg skal det ikke lages eller genereres et nytt hero-bilde. Sett likevel `coverImage` til en full artikkelspesifikk sti, for eksempel `"/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"`, slik at brukeren kan legge inn bildet selv.
 
 ### Innledning
 
@@ -224,6 +224,12 @@ Unngå:
 
 Følg reglene i [src/content/blog/README.md](src/content/blog/README.md):
 
+- Automatiserte yrke/lønn-innlegg skal ikke lage eller generere egne bilder.
+- Sett likevel `coverImage` til en full artikkelspesifikk sti under `/blogg/<slug>/`, for eksempel `coverImage: "/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"`.
+- Bruk et beskrivende filnavn basert på yrket, for eksempel `lege-lonn.png`, `psykolog-lonn.png` eller `vernepleier-lonn.png`.
+- Bruk en konkret `coverImageAlt` som beskriver det planlagte hero-bildet.
+- Ikke opprett bildefilen eller generer bilde. Brukeren legger inn bildet selv.
+- Hvis brukeren eksplisitt ber om egne bilder, gjelder navngivningen under:
 - hero-bilde: `yrke-lonn.*` - yrke er det sentrale temaet i innlegget, og lønn er det sentrale temaet i innlegget. Eksempel: `psykolog-lonn.*`
 - vanlige bilder: `inline-1.*`, `inline-2.*`
 - figurer og grafer: `figure-1.*`, `figure-2.*`
@@ -233,7 +239,7 @@ Anbefalt størrelse:
 - hero-bilde: `1600 x 1000 px`
 - bilder i innlegg: rundt `1200 px` bredde
 
-Bruk beskrivende `alt`-tekst når bildet settes inn i MDX. Sett også `coverImageAlt` i frontmatter med en kort, konkret beskrivelse av selve hero-bildet, for eksempel `To piloter som sitter i cockpit`. Bloggbilder får automatisk en liten grå bildetekst under bildet. For MDX-bilder bygger første setning på `alt`-teksten, og for hero-bilder bygger den på `coverImageAlt`. Andre setning skal være: `Illustrasjonen er AI-generert og brukes for visualisering av temaet.`
+Bruk beskrivende `alt`-tekst når bildet settes inn i MDX. Sett også `coverImageAlt` i frontmatter med en kort, konkret beskrivelse av selve hero-bildet. Bloggbilder får automatisk en liten grå bildetekst under bildet. For MDX-bilder bygger første setning på `alt`-teksten, og for hero-bilder bygger den på `coverImageAlt`.
 
 ## Ferdigdefinisjon
 
