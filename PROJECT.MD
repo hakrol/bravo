@@ -12,18 +12,6 @@ Jobbsøkere er også en viktig målgruppe. De bruker lønnsdata til å vurdere j
 
 Sekundærmålgruppen er ledere, HR, rekrutterere og selskaper som trenger benchmark-data for lønn. De bruker siden for å forstå markedet, nivåforskjeller, lønnsutvikling og konkurransedyktige rammer for roller og yrkesgrupper.
 
-## Kjerneverdi
-
-Lønnsinnsikt gjør lønnsstatistikk operativt nyttig. Siden skal svare på spørsmål som:
-
-- Hva tjener folk i min rolle?
-- Hvordan ligger jeg an sammenlignet med markedet?
-- Hva er medianlønn og gjennomsnittslønn for yrket mitt?
-- Hvordan varierer lønn mellom kvinner og menn i samme yrke?
-- Hvilke yrker og yrkesgrupper har høyest lønnsnivå eller sterkest utvikling?
-- Har lønnen min holdt tritt med prisvekst og kjøpekraft?
-- Hva er et realistisk nivå før en lønnssamtale eller et jobbskifte?
-
 ## Produktområder
 
 ### Forside

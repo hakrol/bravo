@@ -15,8 +15,10 @@ import {
 import { DoctorSalaryEditorialChart } from "@/components/blog-doctor-salary-chart";
 import { ElectricianSalaryBubbleChart, ElectricianSalaryEditorialChart } from "@/components/blog-electrician-salary-chart";
 import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@/components/blog-firefighter-salary-chart";
+import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
+import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
@@ -26,6 +28,11 @@ import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/compone
 import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import { BlogTeacherHourlySalaryChart, BlogTeacherSalaryChart } from "@/components/blog-teacher-salary-chart";
+import {
+  VernepleierGenderSalaryCards,
+  VernepleierSalaryBubbleChart,
+  VernepleierSalaryDevelopmentChart,
+} from "@/components/blog-vernepleier-salary-chart";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
 
 function slugifyHeading(value: string) {
@@ -93,10 +100,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
         </h3>
       );
     },
-    img: ({ alt = "", ...props }) => (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img alt={alt} className="my-8 w-full rounded-[5px] border border-[var(--border)]" {...props} />
-    ),
+    img: BlogMdxImage,
     Example: ({ children, title, ...props }) => (
       <div className="blog-example" {...props}>
         {title ? <p className="blog-example-title">{title}</p> : null}
@@ -117,6 +121,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
         </Link>
       </div>
     ),
+    FAQ: BlogFAQ,
+    FAQItem: BlogFAQItem,
     Table: ({ children, ...props }) => (
       <div className="blog-table-wrap">
         <table className="blog-table" {...props}>
@@ -174,6 +180,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     SurgeonSalaryEditorialChart,
     BlogTeacherHourlySalaryChart,
     BlogTeacherSalaryChart,
+    VernepleierGenderSalaryCards,
+    VernepleierSalaryBubbleChart,
+    VernepleierSalaryDevelopmentChart,
     NorwayOccupationSalary2025Chart,
     SalaryJumpBarChart,
     SalaryLevelStackedChart,

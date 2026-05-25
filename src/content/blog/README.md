@@ -11,6 +11,7 @@ description: "Kort beskrivelse"
 slug: "min-slug"
 publishedAt: "2026-04-03"
 coverImage: "/blogg/min-slug/cover.jpg"
+coverImageAlt: "Kort beskrivelse av hva hero-bildet viser"
 author: "Kristian"
 seoTitle: "Valgfri SEO-tittel"
 seoDescription: "Valgfri SEO-beskrivelse"
@@ -38,6 +39,9 @@ Bruk disse feltene bevisst i frontmatter:
 
 - `slug`
   Skal være kort, beskrivende og skrevet med små bokstaver og bindestreker.
+
+- `coverImageAlt`
+  Skal beskrive selve hero-bildet kort og konkret, for eksempel `To piloter som sitter i cockpit`. Brukes både som alt-tekst og som første setning i den lille grå bildeteksten under hero-bildet.
 
 Anbefalt praksis:
 
@@ -108,6 +112,7 @@ Beste praksis for bilder i blogginnlegg:
 - Unngå mellomrom, parenteser, `IMG_1234`, `final-final` og kopinavn som `(1)`.
 - Bruk relevant `alt`-tekst på bilder som tilfører informasjon.
 - La `alt`-teksten beskrive hva bildet viser i konteksten av innlegget.
+- Bloggbilder får automatisk en liten grå bildetekst under bildet. For MDX-bilder bygger første setning på `alt`-teksten, og for hero-bilder bygger den på `coverImageAlt`. Andre setning er: `Illustrasjonen er AI-generert og brukes for visualisering av temaet.`
 - Ikke fyll `alt`-teksten med søkeord.
 - Hvis bildet er dekorativt og ikke tilfører informasjon, bruk tom `alt`.
 - Bruk hero-bilder som faktisk passer til temaet i innlegget, siden de også brukes i deling og metadata.
@@ -155,6 +160,9 @@ Bruk felles bloggkomponenter i MDX når mønsteret skal kunne gjenbrukes i flere
 - `ToolCallout`
   Brukes når et innlegg naturlig bør peke videre til et verktøy, for eksempel Lønnsjekk.
 
+- `FAQ` og `FAQItem`
+  Brukes når briefen ber om en FAQ-seksjon eller når innlegget bør svare kort på konkrete tilleggsspørsmål. Bruk spørsmålene fra `daily-brief.md` når de er oppgitt. FAQ skal alltid stå helt nederst i innlegget, uten egen Markdown-overskrift over komponenten. Komponenten viser selv overskriften `Ofte stilte spørsmål`.
+
 - `BlogChart`
   Brukes til redaksjonelle diagrammer i blogginnlegg. Komponenten støtter horisontale og vertikale stolpediagrammer, linje og area. Bruk den når tallene skal leses som en del av artikkelen, ikke som et dashboard.
 
@@ -168,6 +176,19 @@ Eksempel:
   title="Vil du sjekke om lønnen din ligger høyt, lavt eller midt på?"
   description="Bruk Lønnsjekk for å sammenligne lønnen din med relevante tall og få et mer konkret grunnlag før du bestemmer hva du skal be om."
 />
+```
+
+Eksempel på FAQ:
+
+```mdx
+<FAQ>
+  <FAQItem question="Hva er forskjellen på medianlønn og gjennomsnittslønn?">
+    Medianlønn viser midtpunktet i lønnsfordelingen, mens gjennomsnittet kan trekkes opp eller ned av svært høye eller lave lønninger.
+  </FAQItem>
+  <FAQItem question="Bør jeg bruke månedslønn eller årslønn når jeg sammenligner?">
+    Bruk samme måleenhet gjennom hele sammenligningen. SSB-tallene presenteres ofte som månedslønn, mens årslønn er en enkel omregning.
+  </FAQItem>
+</FAQ>
 ```
 
 ## Diagrammer i blogginnlegg

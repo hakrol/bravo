@@ -15,6 +15,7 @@ import politiLonn2025Snapshot from "@/content/blog/data/politi-lonn-2025.json";
 import psykologLonn2025Snapshot from "@/content/blog/data/psykolog-lonn-2025.json";
 import snekkerLonn2025Snapshot from "@/content/blog/data/snekker-lonn-2025.json";
 import sykepleiereHelsearbeidereLonn2025Snapshot from "@/content/blog/data/sykepleiere-helsearbeidere-lonn-2025.json";
+import vernepleierLonn2025Snapshot from "@/content/blog/data/vernepleier-lonn-2025.json";
 
 type OccupationSalaryRow = {
   code?: string;
@@ -49,6 +50,7 @@ const snapshots = {
   "psykolog-lonn-2025": psykologLonn2025Snapshot as OccupationSalarySnapshot,
   "snekker-lonn-2025": snekkerLonn2025Snapshot as OccupationSalarySnapshot,
   "sykepleiere-helsearbeidere-lonn-2025": sykepleiereHelsearbeidereLonn2025Snapshot as OccupationSalarySnapshot,
+  "vernepleier-lonn-2025": vernepleierLonn2025Snapshot as OccupationSalarySnapshot,
 };
 
 type BlogOccupationSalaryTableProps = {

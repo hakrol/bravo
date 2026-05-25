@@ -37,6 +37,7 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     slug: assertRequiredString(data.slug, "slug"),
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
+    coverImageAlt: trimOptionalString(data.coverImageAlt),
     author: assertRequiredString(data.author, "author"),
     draft: data.draft === true,
     seoTitle: trimOptionalString(data.seoTitle),

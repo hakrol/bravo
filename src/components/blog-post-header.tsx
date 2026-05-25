@@ -6,7 +6,15 @@ type BlogPostHeaderProps = {
   post: BlogPost;
 };
 
+const aiCaptionText = "Illustrasjonen er AI-generert og brukes for visualisering av temaet.";
+
+function sentence(value: string) {
+  return /[.!?]$/.test(value) ? value : `${value}.`;
+}
+
 export function BlogPostHeader({ post }: BlogPostHeaderProps) {
+  const coverImageDescription = post.coverImageAlt ?? `Illustrasjon til artikkelen ${post.title}`;
+
   return (
     <header className="blog-post-hero">
       <div className="blog-post-hero-card">
@@ -32,17 +40,22 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
           </div>
         </div>
 
-        <div className="blog-post-hero-image">
-          <Image
-            alt={post.title}
-            className="blog-post-hero-img"
-            fill
-            priority
-            quality={92}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 55vw, 620px"
-            src={post.coverImage}
-          />
-        </div>
+        <figure className="blog-post-hero-figure">
+          <div className="blog-post-hero-image">
+            <Image
+              alt={coverImageDescription}
+              className="blog-post-hero-img"
+              fill
+              priority
+              quality={92}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 55vw, 620px"
+              src={post.coverImage}
+            />
+          </div>
+          <figcaption className="blog-post-hero-caption">
+            {sentence(coverImageDescription)} {aiCaptionText}
+          </figcaption>
+        </figure>
       </div>
     </header>
   );

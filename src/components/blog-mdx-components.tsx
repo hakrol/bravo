@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
+import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
+import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
 
@@ -69,10 +71,7 @@ export function buildBlogMdxComponents(tableOfContents: BlogTableOfContentsItem[
       </h3>
     );
   },
-  img: ({ alt = "", ...props }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img alt={alt} className="my-8 w-full rounded-[5px] border border-[var(--border)]" {...props} />
-  ),
+  img: BlogMdxImage,
   Example: ({ children, title, ...props }) => (
     <div className="blog-example" {...props}>
       {title ? <p className="blog-example-title">{title}</p> : null}
@@ -94,6 +93,8 @@ export function buildBlogMdxComponents(tableOfContents: BlogTableOfContentsItem[
       </Link>
     </div>
   ),
+  FAQ: BlogFAQ,
+  FAQItem: BlogFAQItem,
   Table: ({ children, ...props }) => (
     <div className="blog-table-wrap">
       <table className="blog-table" {...props}>
