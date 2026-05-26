@@ -17,7 +17,7 @@ For generelle bloggstandarder, følg:
 - Hvis `Ikke startet` er tom, skal ingen nye innlegg lages.
 - Når et tema har `Diagrammer`, skal hvert punkt være en enkel diagramtype som skal inkluderes i innlegget hvis datagrunnlaget finnes eller kan hentes etter bloggskillens regler.
 - Hvis et oppgitt diagram ikke kan lages, skal Codex forklare hvorfor før temaet regnes som ferdig.
-- Når et tema har `FAQ`, skal hvert punkt være et konkret spørsmål som skal inkluderes i innleggets FAQ-seksjon. Codex skal skrive korte, presise svar basert på innleggets datagrunnlag og plassere FAQ-en helt nederst i innlegget, etter oppsummering og kildeavsnitt når de finnes. Ikke legg inn `## FAQ`; komponenten viser overskriften `Ofte stilte spørsmål`.
+- Når et tema har `FAQ`, skal hvert punkt være et konkret spørsmål som skal inkluderes i innleggets FAQ-seksjon. Codex skal skrive korte, presise svar basert på innleggets datagrunnlag og plassere FAQ-en naturlig mot slutten av innlegget, vanligvis før oppsummeringen.
 
 ## Arbeidsflyt
 
@@ -25,7 +25,7 @@ For generelle bloggstandarder, følg:
 - Hvis en midlertidig Codex-worktree brukes til utkast, skal alle tilhørende filer synkes samlet til Desktop/Bravo før temaet regnes som ferdig:
   - MDX-innlegg
   - frosne data-snapshots
-  - eventuelle bilde- eller asset-filer som brukeren eksplisitt har bedt om. Vanlig bloggautomatisering skal bare sette artikkelspesifikk `coverImage`-sti og ikke lage bildefilen.
+  - filer under `public/blogg/<slug>/`
   - relevante komponentendringer
   - denne briefen
 - Kryss bare av temaet når hele bloggpakken finnes i samme arbeidskopi.
@@ -39,39 +39,6 @@ Eksempel:
 - [x] Hvordan forberede seg til lønnssamtale - `src/content/blog/lonnssamtale-forberedelse.mdx` - 2026-04-29
 ```
 
-## Mal for nye temaer
-
-Legg nye bloggtemaer inn under `Ikke startet` med denne strukturen når du vil styre innholdet mer presist:
-
-```md
-- [ ] Hva tjener en eksempelrolle?
-  Tittel:
-  Hva tjener en eksempelrolle?
-
-  Beskrivelse:
-  Innlegget skal svare tydelig på hovedspørsmålet og forklare hvilke faktorer som påvirker lønnen.
-
-  Overskrifter:
-  - Hva tjener en eksempelrolle?
-  - Hva er timelønnen til en eksempelrolle?
-  - Hva påvirker lønnen?
-
-  Diagrammer:
-  - Kjønnsdelt lønnskort
-  - Boblediagram
-  - Søkbar yrkesliste
-
-  FAQ:
-  - Hva er vanlig startlønn for en eksempelrolle?
-  - Hvor mye kan erfaring påvirke lønnen?
-  - Hvilket SSB-tall bør jeg sammenligne med?
-
-  Interne lenker:
-  - /yrke/eksempelrolle-lonn
-
-  Eksterne lenker:
-  - https://www.ssb.no/
-```
 
 Bruk `Diagrammer` og `FAQ` på samme måte som `Overskrifter`, `Interne lenker` og `Eksterne lenker`: det er en konkret bestilling, ikke bare et forslag. For `Diagrammer` fyller du bare inn diagramtypen. For `FAQ` fyller du inn spørsmålene som skal besvares. Skill-reglene bestemmer komponent, plassering og datagrunnlag.
 
@@ -81,9 +48,46 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
+[ ] Hva er årslønnen til en maler?
+Tittel:
+Hva er årslønnen til en maler?
+
+Beskrivelse:
+Innlegget skal gi leseren svar på hva malere tjener, hvordan lønnen har utviklet seg, hvilke typer malere som finnes, og hvilke arbeidsoppgaver som påvirker lønnen. Hvis du ikke har konkrete svar, så skal du ikke lage et generelt svar, men hoppe over det.
+
+Overskrifter:
+
+Hva er årslønnen til en maler?
+Hvordan har lønnen utviklet seg de siste 5 årene?
+Hvilke malere tjener mest?
+Hvordan blir man maler?
+
+Diagrammer:
+
+Kjønnsdelt lønnskort
+Lønnsutviklingsdiagram
+Boblediagram
+Søkbar yrkesliste
+
+FAQ:
+
+Hva er timelønnen til en maler?
+Hvor lang utdannelse er maler?
+Hvor mange jobber som maler?
+Hva er gjennomsnittsalderen for malere?
+
+Interne lenker:
+
+/yrke/malere-lonn
+/laerling/maler-laerling-lonn
+
+Eksterne lenker:
+
+https://utdanning.no/yrker/beskrivelse/maler
 
 ### Ferdig
 
+- [x] Hvor mye tjener en rørlegger i året? - `src/content/blog/hvor-mye-tjener-en-rorlegger-i-aret.mdx` - 2026-05-26
 - [x] Hva er årslønnen til en vernepleier? - `src/content/blog/hva-er-arslonnen-til-en-vernepleier.mdx` - 2026-05-25
 - [x] Hvor mye tjener piloter? - `src/content/blog/hvor-mye-tjener-piloter.mdx` - 2026-05-21
 - [x] Hva tjener en snekker? - `src/content/blog/hva-tjener-en-snekker.mdx` - 2026-05-14

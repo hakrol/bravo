@@ -198,6 +198,7 @@ Unngå:
 - Datadrevne innlegg som handler om en bestemt periode, for eksempel 2025, skal bruke et frosset snapshot under `src/content/blog/data/`.
 - Ikke la historiske blogginnlegg lese direkte fra `latest`-JSON eller andre datakilder som endrer seg når SSB-data oppdateres.
 - Forklar kilde, periode, målemetode og viktige avgrensninger når tall brukes.
+- Skriv kvartaler med lesbar tekst, for eksempel `1. kvartal 2025` eller `4. kvartal 2025`. Ikke bruk kompakte periodekoder som `2025K1` eller `2025K4` i publisert bloggtekst, FAQ eller kildeavsnitt.
 
 ## Datadisiplin
 
