@@ -82,6 +82,24 @@ Hvis briefen oppgir `FAQ`, er hvert punkt et påkrevd spørsmål. Codex skal ink
 
 Codex skal ikke be brukeren fylle inn komponentnavn, formål, plassering eller datafil i tema-køen. Hvis et oppgitt diagram ikke kan lages med tilgjengelig datagrunnlag, skal Codex forklare hvorfor før temaet regnes som ferdig.
 
+## Forklareringsinnlegg
+
+Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen innholdstype, ikke som et vanlig blogginnlegg.
+
+- Legg innlegget i `src/content/forklarer/` som `.mdx`.
+- Bruk frontmatter med `title`, `description`, `slug`, `publishedAt`, `author`, `term`, `seoTitle` og `seoDescription`. Bruk `relatedTerms` når det finnes naturlige relaterte forklaringer.
+- Bruk URL-strukturen `/forklarer/<slug>`.
+- Ikke lag blogg-coverbilde, og ikke bruk `coverImage` eller `coverImageAlt`.
+- Ikke publiser eksternt eller automatisk.
+- Bruk brukerens oppgitte overskrifter som hovedstruktur, og legg bare til ekstra seksjoner når de er nødvendige for å forklare begrepet godt.
+- Svar direkte i starten: forklar hva begrepet betyr før du går inn i nyanser, eksempler og misforståelser.
+- Skriv på Norsk Bokmål med rolig, konkret og forklarende språk.
+- Prioriter praktisk bruk i lønnssammenheng, forskjeller mot nærliggende begreper, eksempler og vanlige misforståelser.
+- Bruk interne lenker til relevante verktøy, yrkessider, blogginnlegg, ordbok eller andre forklareringsinnlegg når det hjelper leseren.
+- Forklareringsinnlegg viser en minimalistisk høyresidebar med andre ord og begreper. Listen skal bare inneholde begreper som faktisk har egen forklarerside, og maksimalt 25 lenker.
+- Ikke bruk `FAQ` og `FAQItem` i forklareringsinnlegg med mindre brukeren eksplisitt ber om FAQ.
+- Unngå generiske SEO-avsnitt. Hvert forklareringsinnlegg skal ha én tydelig søkeintensjon.
+
 ## Regler for blogginnhold
 
 - Blogginnlegg skal skrives på naturlig Norsk Bokmål med direkte og konkret språk.

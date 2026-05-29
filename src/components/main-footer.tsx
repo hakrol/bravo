@@ -24,6 +24,8 @@ const footerGroups = [
     links: [
       { href: "/ressurser", label: "Ressurser" },
       { href: "/spesial", label: "Spesial" },
+      { href: "/forklarer", label: "Forklarer" },
+      { href: "/ordbok", label: "Ordbok" },
       { href: "/blogg", label: "Blogg" },
     ],
   },
@@ -33,7 +35,6 @@ const footerGroups = [
       { href: "/om", label: "Om" },
       { href: "/hjelpeside", label: "Hjelpeside" },
       { href: "/kilder", label: "Kilder" },
-      { href: "/ordbok", label: "Ordbok" },
       { href: "/redaksjonelle-retningslinjer", label: "Redaksjonelle retningslinjer" },
       { href: "/personvern", label: "Personvern" },
     ],

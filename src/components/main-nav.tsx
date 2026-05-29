@@ -29,12 +29,9 @@ function isActivePath(pathname: string, href: string) {
 
 export function MainNav() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [openPathname, setOpenPathname] = useState<string | null>(null);
   const menuId = useId();
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+  const isOpen = pathname !== null && openPathname === pathname;
 
   useEffect(() => {
     if (!isOpen) {
@@ -43,7 +40,7 @@ export function MainNav() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsOpen(false);
+        setOpenPathname(null);
       }
     };
 
@@ -62,7 +59,7 @@ export function MainNav() {
         aria-label={isOpen ? "Lukk hovedmeny" : "Åpne hovedmeny"}
         className="inline-flex h-11 w-11 items-center justify-center rounded-[5px] border border-[var(--border)] bg-white text-[var(--foreground)] shadow-[0_10px_24px_rgba(27,36,48,0.08)] transition hover:border-[rgba(20,83,45,0.28)] hover:text-[var(--primary-strong)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)] lg:hidden"
         type="button"
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={() => setOpenPathname((current) => (current === pathname ? null : pathname))}
       >
         <span className="sr-only">{isOpen ? "Lukk hovedmeny" : "Åpne hovedmeny"}</span>
         <span aria-hidden="true" className="relative h-4 w-5">

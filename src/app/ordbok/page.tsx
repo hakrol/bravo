@@ -37,9 +37,22 @@ const dictionaryEntries: DictionaryEntry[] = [
       "Avtalt lønn som betales regelmessig, uavhengig av bonus, overtid og andre variable tillegg.",
   },
   {
+    term: "Fagforening",
+    definition:
+      "En organisasjon for arbeidstakere som kan forhandle om lønn, arbeidsvilkår og rettigheter på vegne av medlemmene.",
+    explanationHref: "/forklarer/fagforening",
+  },
+  {
+    term: "Feriepengegrunnlag",
+    definition:
+      "Beløpet feriepengene beregnes av, vanligvis arbeidsvederlag som er utbetalt i opptjeningsåret.",
+    explanationHref: "/forklarer/feriepengegrunnlag",
+  },
+  {
     term: "Gjennomsnittslønn",
     definition:
       "Summen av lønn delt på antall personer eller arbeidsforhold. Gjennomsnitt kan påvirkes mye av svært høye eller lave lønninger.",
+    explanationHref: "/forklarer/gjennomsnittslonn",
   },
   {
     term: "Grunnlønn",
@@ -50,6 +63,12 @@ const dictionaryEntries: DictionaryEntry[] = [
     term: "Heltid",
     definition:
       "Arbeidstid som tilsvarer full stilling. Hva som regnes som heltid kan variere mellom yrker, tariffområder og arbeidstidsordninger.",
+  },
+  {
+    term: "Helgetillegg",
+    definition:
+      "Ekstra betaling for arbeid i helgen, vanligvis bestemt av tariffavtale, arbeidsavtale eller lokale lønnsregler.",
+    explanationHref: "/forklarer/helgetillegg",
   },
   {
     term: "Indeks",
@@ -85,6 +104,7 @@ const dictionaryEntries: DictionaryEntry[] = [
     term: "Lønnsfordeling",
     definition:
       "Hvordan lønnen er spredt i en gruppe. Fordelingen kan vise om de fleste ligger tett rundt et nivå, eller om det er store forskjeller.",
+    explanationHref: "/forklarer/lonnsfordeling",
   },
   {
     term: "Lønnsnivå",
@@ -110,6 +130,13 @@ const dictionaryEntries: DictionaryEntry[] = [
     term: "Medianlønn",
     definition:
       "Lønnen i midten av fordelingen. Halvparten tjener mindre og halvparten tjener mer. Median er ofte nyttig når du vil forstå hva som er vanlig lønn.",
+    explanationHref: "/forklarer/medianlonn",
+  },
+  {
+    term: "Minstelønn",
+    definition:
+      "Den laveste lønnen en arbeidstaker kan ha når lov, forskrift, tariffavtale eller arbeidsavtale setter en bindende nedre grense.",
+    explanationHref: "/forklarer/minstelonn",
   },
   {
     term: "Månedslønn",
@@ -155,6 +182,7 @@ const dictionaryEntries: DictionaryEntry[] = [
     term: "Tariffavtale",
     definition:
       "En avtale mellom arbeidsgiver eller arbeidsgiverorganisasjon og arbeidstakerorganisasjon om lønn og arbeidsvilkår.",
+    explanationHref: "/forklarer/tariffavtale",
   },
   {
     term: "Timelønn",
