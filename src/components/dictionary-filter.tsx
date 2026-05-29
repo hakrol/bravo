@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 export type DictionaryEntry = Readonly<{
   term: string;
   definition: string;
+  explanationHref?: string;
 }>;
 
 type DictionaryFilterProps = Readonly<{
@@ -69,15 +71,38 @@ export function DictionaryFilter({ entries }: DictionaryFilterProps) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {filteredEntries.map((entry) => (
-          <article
-            key={entry.term}
-            className="rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-5 shadow-[0_14px_36px_rgba(27,36,48,0.05)]"
-          >
-            <h2 className="text-xl font-extrabold leading-tight text-slate-950">{entry.term}</h2>
-            <p className="mt-3 text-base leading-7 text-slate-700">{entry.definition}</p>
-          </article>
-        ))}
+        {filteredEntries.map((entry) => {
+          const cardContent = (
+            <>
+              <h2 className="text-xl font-extrabold leading-tight text-slate-950 transition group-hover:text-[#14532d]">
+                {entry.term}
+              </h2>
+              <p className="mt-3 text-base leading-7 text-slate-700">{entry.definition}</p>
+              {entry.explanationHref ? (
+                <span className="mt-4 inline-flex text-sm font-extrabold text-[var(--primary-strong)] underline underline-offset-4 transition group-hover:text-[var(--accent)]">
+                  Les forklaring
+                </span>
+              ) : null}
+            </>
+          );
+
+          return entry.explanationHref ? (
+            <Link
+              key={entry.term}
+              className="group block rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-5 no-underline shadow-[0_14px_36px_rgba(27,36,48,0.05)] transition hover:border-[#14532d] hover:bg-[#f4f7f1] hover:shadow-[0_18px_42px_rgba(20,83,45,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#14532d]"
+              href={entry.explanationHref}
+            >
+              {cardContent}
+            </Link>
+          ) : (
+            <article
+              key={entry.term}
+              className="rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-5 shadow-[0_14px_36px_rgba(27,36,48,0.05)]"
+            >
+              {cardContent}
+            </article>
+          );
+        })}
       </div>
     </div>
   );

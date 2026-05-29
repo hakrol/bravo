@@ -3,6 +3,7 @@ import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
 import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-detail-view-models";
+import { getAllForklarerPosts } from "@/lib/forklarer";
 import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 import { listOccupationGroups } from "@/lib/occupation-groups";
@@ -108,6 +109,12 @@ const staticRoutes = [
     changeFrequency: "weekly" as const,
   },
   {
+    path: "/forklarer",
+    filePath: "src/app/forklarer/page.tsx",
+    priority: 0.6,
+    changeFrequency: "weekly" as const,
+  },
+  {
     path: "/spesial",
     filePath: "src/app/spesial/page.tsx",
     priority: 0.6,
@@ -164,8 +171,9 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [blogPosts, occupationPages, hourlySalaryPages, occupationIndex, apprenticeshipIndex] = await Promise.all([
+  const [blogPosts, forklarerPosts, occupationPages, hourlySalaryPages, occupationIndex, apprenticeshipIndex] = await Promise.all([
     getAllBlogPosts().catch(() => []),
+    getAllForklarerPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getHourlySalaryPages().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
@@ -173,6 +181,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
+  const latestForklarerDate = getLatestDate(forklarerPosts.map((post) => post.publishedAt));
   const occupationContentLastModified = occupationIndex?.generatedAt
     ? new Date(occupationIndex.generatedAt)
     : undefined;
@@ -185,6 +194,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified:
         route.path === "/blogg"
           ? latestBlogDate
+          : route.path === "/forklarer"
+            ? latestForklarerDate
           : await readLastModifiedFromFile(route.filePath),
       changeFrequency: route.changeFrequency,
       priority: route.priority,
@@ -203,6 +214,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly",
     priority: 0.7,
     images: post.coverImage ? [getAbsoluteUrl(post.coverImage)] : undefined,
+  }));
+
+  const forklarerRoutes: MetadataRoute.Sitemap = forklarerPosts.map((post) => ({
+    url: getAbsoluteUrl(`/forklarer/${post.slug}`),
+    lastModified: new Date(post.publishedAt),
+    changeFrequency: "monthly",
+    priority: 0.6,
   }));
 
   const occupationRoutes: MetadataRoute.Sitemap = occupationPages.map((entry) => ({
@@ -230,6 +248,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...routes,
     ...groupRoutes,
     ...blogRoutes,
+    ...forklarerRoutes,
     ...occupationRoutes,
     ...hourlySalaryRoutes,
     ...apprenticeshipRoutes,
