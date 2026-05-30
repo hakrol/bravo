@@ -380,6 +380,8 @@ body {
 
 .blog-prose {
   color: var(--foreground);
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .blog-prose > * + * {
@@ -469,7 +471,28 @@ body {
 }
 
 .blog-prose img {
+  height: auto;
+  max-width: 100%;
   border-radius: 5px;
+}
+
+@media (max-width: 640px) {
+  .blog-prose h2 {
+    font-size: 1.75rem;
+    line-height: 1.15;
+  }
+
+  .blog-prose h3 {
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .blog-prose p,
+  .blog-prose li,
+  .blog-prose blockquote {
+    font-size: 1.03rem;
+    line-height: 1.8;
+  }
 }
 
 .blog-image-figure {
