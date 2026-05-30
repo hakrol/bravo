@@ -100,8 +100,8 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
       />
 
       <article className="mx-auto grid w-full max-w-6xl gap-12">
-        <header className="max-w-3xl">
-          <div>
+        <header className="w-full max-w-3xl min-w-0">
+          <div className="min-w-0">
             <nav aria-label="Brødsmuler" className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500">
               <Link className="text-[var(--primary-strong)] no-underline hover:underline" href="/forklarer">
                 Forklarer
@@ -111,7 +111,7 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
             </nav>
 
             <p className="mt-8 text-lg font-extrabold text-slate-950">Hva er</p>
-            <h1 className="mt-2 max-w-3xl text-5xl font-extrabold leading-[0.98] text-slate-950 sm:text-7xl">
+            <h1 className="mt-2 max-w-full text-[2.25rem] font-extrabold leading-[1.02] text-slate-950 [overflow-wrap:anywhere] sm:text-7xl sm:leading-[0.98] sm:[overflow-wrap:normal]">
               {post.term}
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700">{post.description}</p>
@@ -121,8 +121,8 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
           </div>
         </header>
 
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,42rem)_12rem] lg:items-start lg:gap-10">
-          <div className="w-full max-w-3xl">
+        <div className="grid min-w-0 gap-12 lg:grid-cols-[minmax(0,42rem)_12rem] lg:items-start lg:gap-10">
+          <div className="w-full max-w-3xl min-w-0">
             <BlogProse>{post.content}</BlogProse>
           </div>
 

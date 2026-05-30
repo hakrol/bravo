@@ -39,7 +39,7 @@ export function HomeOccupationSalarySearch({
 
   return (
     <>
-      <section className="fade-up relative isolate overflow-visible px-0 pt-8 pb-10 sm:pt-10 lg:pt-12">
+      <section className="fade-up relative left-1/2 isolate w-screen -translate-x-1/2 overflow-hidden px-5 pt-8 pb-10 sm:px-6 sm:pt-10 lg:px-8 lg:pt-12">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(20,83,45,0.11),transparent_42%),linear-gradient(180deg,#fbfbf8_0%,#fafafa_72%)]" />
         <div className="pointer-events-none absolute inset-0 -z-10 opacity-80">
           <span className="absolute left-[8%] top-[9%] h-2.5 w-2.5 rounded-full bg-[#dce8df]" />
