@@ -1,0 +1,53 @@
+{
+  "id": "maler-lonn-2025",
+  "title": "Hva er årslønnen til en maler?",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 2025K4.",
+  "rows": [
+    { "code": "7127", "label": "Kuldemontører mv.", "href": "/yrke/kuldemontorer-mv-lonn", "value": 56830, "average": 54400, "p25": 45000, "p75": 65140, "employees": 1434, "jobs": 1476, "averageAge": 36.3 },
+    { "code": "7411", "label": "Elektrikere", "href": "/yrke/elektrikere-lonn", "value": 54930, "average": 54460, "p25": 48390, "p75": 61540, "employees": 34783, "jobs": 35425, "averageAge": 35.6 },
+    { "code": "7126", "label": "Rørleggere og VVS-montører", "href": "/yrke/rorleggere-og-vvs-montorer-lonn", "value": 53750, "average": 53110, "p25": 47230, "p75": 59180, "employees": 21230, "jobs": 21454, "averageAge": 39.2 },
+    { "code": "7114", "label": "Betongarbeidere", "href": "/yrke/betongarbeidere-lonn", "value": 53420, "average": 54140, "p25": 47460, "p75": 60280, "employees": 10861, "jobs": 11013, "averageAge": 41.0 },
+    { "code": "7122", "label": "Gulv- og flisleggere", "href": "/yrke/gulv-og-flisleggere-lonn", "value": 48710, "average": 50450, "p25": 44650, "p75": 54070, "employees": 2362, "jobs": 2422, "averageAge": 42.9 },
+    { "code": "7112", "label": "Murere", "href": "/yrke/murere-lonn", "value": 48710, "average": 49770, "p25": 44420, "p75": 54120, "employees": 4211, "jobs": 4251, "averageAge": 42.9 },
+    { "code": "7132", "label": "Overflatebehandlere og lakkerere", "href": "/yrke/overflatebehandlere-og-lakkerere-lonn", "value": 48690, "average": 49230, "p25": 43840, "p75": 53950, "employees": 5154, "jobs": 5214, "averageAge": 41.8 },
+    { "code": "7115", "label": "Tømrere og snekkere", "href": "/yrke/tomrere-og-snekkere-lonn", "value": 47900, "average": 48020, "p25": 43680, "p75": 52810, "employees": 46454, "jobs": 47191, "averageAge": 39.8 },
+    { "code": "7133", "label": "Feiere, fasaderenholdere mv.", "href": "/yrke/feiere-fasaderenholdere-mv-lonn", "value": 47800, "average": 48340, "p25": 44300, "p75": 52780, "employees": 857, "jobs": 881, "averageAge": 41.7 },
+    { "code": "7124", "label": "Isolatører mv.", "href": "/yrke/isolatorer-mv-lonn", "value": 47740, "average": 48610, "p25": 43840, "p75": 52190, "employees": 2619, "jobs": 2652, "averageAge": 42.6 },
+    { "code": "7125", "label": "Glassarbeidere", "href": "/yrke/glassarbeidere-lonn", "value": 47120, "average": 48690, "p25": 42600, "p75": 52460, "employees": 1428, "jobs": 1444, "averageAge": 43.0 },
+    { "code": "7119", "label": "Andre bygningsarbeidere", "href": "/yrke/andre-bygningsarbeidere-lonn", "value": 46470, "average": 48180, "p25": 42700, "p75": 52310, "employees": 7229, "jobs": 7436, "averageAge": 39.9 },
+    { "code": "7131", "label": "Malere og byggtapetserere", "href": "/yrke/malere-og-byggtapetserere-lonn", "value": 45900, "average": 47310, "p25": 42270, "p75": 50340, "employees": 7753, "jobs": 7901, "averageAge": 43.0 },
+    { "code": "7522", "label": "Møbelsnekkere", "href": "/yrke/mobelsnekkere-lonn", "value": 45300, "average": 46300, "p25": 40590, "p75": 50490, "employees": 2075, "jobs": 2145, "averageAge": 43.0 },
+    { "code": "7123", "label": "Gips- og sparklingsarbeidere", "href": "/yrke/gips-og-sparklingsarbeidere-lonn", "value": null, "average": null, "p25": null, "p75": null, "employees": 18, "jobs": 18, "averageAge": 44.7 },
+    { "code": "7316", "label": "Dekormalere mv.", "href": "/yrke/dekormalere-mv-lonn", "value": null, "average": null, "p25": null, "p75": null, "employees": 17, "jobs": 17, "averageAge": 44.7 }
+  ],
+  "genderMedian": {
+    "occupationLabel": "Malere og byggtapetserere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 44060,
+    "menMonthlyMedian": 46080
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Malere og byggtapetserere",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 38160 },
+      { "label": "2022", "value": 39920 },
+      { "label": "2023", "value": 42100 },
+      { "label": "2024", "value": 43930 },
+      { "label": "2025", "value": 45900 }
+    ]
+  },
+  "apprenticeship": {
+    "code": "7131",
+    "label": "Malere og byggtapetserere",
+    "href": "/laerling/malere-og-byggtapetserere-laerling-lonn",
+    "value": 33290,
+    "source": "SSB tabell 12851",
+    "period": "2025",
+    "note": "Målemetode: median avtalt månedslønn. Lærlinger. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025."
+  }
+}

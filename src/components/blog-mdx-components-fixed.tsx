@@ -3,6 +3,11 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  BussjaforerTrikkeforereGenderSalaryCards,
+  BussjaforerTrikkeforereSalaryBubbleChart,
+  BussjaforerTrikkeforereSalaryDevelopmentChart,
+} from "@/components/blog-bussjaforer-trikkeforere-salary-chart";
+import {
   BlogElectricianSalaryChart,
   BlogPsychologistSalaryChart,
   DoctorSalaryBubbleChart,
@@ -19,6 +24,7 @@ import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
+import { MalerGenderSalaryCards, MalerSalaryBubbleChart, MalerSalaryDevelopmentChart } from "@/components/blog-maler-salary-chart";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
@@ -163,6 +169,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ),
     BlogChart,
     BlogElectricianSalaryChart,
+    BussjaforerTrikkeforereGenderSalaryCards,
+    BussjaforerTrikkeforereSalaryBubbleChart,
+    BussjaforerTrikkeforereSalaryDevelopmentChart,
     ElectricianSalaryBubbleChart,
     ElectricianSalaryEditorialChart,
     FirefighterSalaryBubbleChart,
@@ -175,6 +184,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     LegalSalaryDevelopmentChart,
     BlogSalaryDevelopmentChart,
     HealthSalaryBubbleChart,
+    MalerGenderSalaryCards,
+    MalerSalaryBubbleChart,
+    MalerSalaryDevelopmentChart,
     PoliceSalaryBubbleChart,
     PoliceSalaryEditorialChart,
     PilotSalaryDevelopmentChart,

@@ -110,7 +110,7 @@ Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen i
 - Ikke skriv “det er viktig å merke seg at…” med mindre det faktisk trengs.
 - Bruk konkret subjekt: “En brannmann…”, “Lønnen…”, “SSB-tallene…”
 - Gå rett på hva leseren prøver å forstå.
-- Første setning i innlegget skal være en engasjerende hook, men ikke bruk den samme hook-strukturen i hvert innlegg. Hook skal være relevant for temaet, ikke en generisk klisjé. Maks 2-3 setninger.
+- Første setning i innlegget skal være en engasjerende hook. Hook skal være relevant for temaet, ikke en generisk klisjé.
 - Bruk `du` når brukeren ber om direkte rådgivende bloggtekst.
 - Forklar vanskelige begreper enkelt, uten å bli barnslig.
 - Skill mellom fakta, tolkning og råd.
@@ -122,15 +122,14 @@ Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen i
 
 ### Innledning
 
+Før du skriver innledningen til et blogginnlegg, les `skills/blogginnlegg/Eksempler-tekst.txt`.
+
+Bruk eksemplene som stilreferanse:
+- Følg mønstrene under `Bra intro` for rytme, konkretisering og åpning.
+- Unngå mønstrene under `Dårlig intro`, spesielt generiske åpninger, SEO-fyll og formuleringer som bare sier at temaet er viktig.
+- Ikke kopier eksemplene ordrett. Bruk dem til å vurdere om introen er konkret, nyttig og relevant for akkurat dette innlegget.
+
 Innledningen skal raskt etablere relevans og leseretning.
-
-Vanlige innganger:
-- Statistikk
-- Spørsmål
-- Problem/pain point
-- Kontrast eller overraskelse
-
-Hooken skal være relevant for temaet og basert på faktisk innhold i innlegget.
 
 Avslutt innledningen med et frampek.
 

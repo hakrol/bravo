@@ -48,45 +48,11 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
-[ ] Hva er årslønnen til en maler?
-Tittel:
-Hva er årslønnen til en maler?
-
-Beskrivelse:
-Innlegget skal gi leseren svar på hva malere tjener, hvordan lønnen har utviklet seg, hvilke typer malere som finnes, og hvilke arbeidsoppgaver som påvirker lønnen. Hvis du ikke har konkrete svar, så skal du ikke lage et generelt svar, men hoppe over det.
-
-Overskrifter:
-
-Hva er årslønnen til en maler?
-Hvordan har lønnen utviklet seg de siste 5 årene?
-Hvilke malere tjener mest?
-Hvordan blir man maler?
-
-Diagrammer:
-
-Kjønnsdelt lønnskort
-Lønnsutviklingsdiagram
-Boblediagram
-Søkbar yrkesliste
-
-FAQ:
-
-Hva er timelønnen til en maler?
-Hvor lang utdannelse er maler?
-Hvor mange jobber som maler?
-Hva er gjennomsnittsalderen for malere?
-
-Interne lenker:
-
-/yrke/malere-lonn
-/laerling/maler-laerling-lonn
-
-Eksterne lenker:
-
-https://utdanning.no/yrker/beskrivelse/maler
 
 ### Ferdig
 
+- [x] Hva tjener bussjåfører og trikkeførere? - `src/content/blog/hva-tjener-bussjaforer-og-trikkeforere.mdx` - 2026-05-30
+- [x] Hva er årslønnen til en maler? - `src/content/blog/hva-er-arslonnen-til-en-maler.mdx` - 2026-05-30
 - [x] Hvor mye tjener en rørlegger i året? - `src/content/blog/hvor-mye-tjener-en-rorlegger-i-aret.mdx` - 2026-05-26
 - [x] Hva er årslønnen til en vernepleier? - `src/content/blog/hva-er-arslonnen-til-en-vernepleier.mdx` - 2026-05-25
 - [x] Hvor mye tjener piloter? - `src/content/blog/hvor-mye-tjener-piloter.mdx` - 2026-05-21
