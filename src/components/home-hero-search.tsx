@@ -7,7 +7,7 @@ type HomeHeroSearchProps = {
 
 export function HomeHeroSearch({ query, onQueryChange }: HomeHeroSearchProps) {
   return (
-    <div className="mx-auto flex max-w-5xl flex-col items-center px-1 text-center">
+    <div className="mx-auto flex max-w-5xl flex-col items-center px-0 text-center">
       <h1 className="max-w-4xl text-5xl font-semibold leading-none text-slate-950 sm:text-6xl lg:text-7xl">
         Hva tjener folk
         <span className="mt-1 block text-[var(--primary)]">i ditt yrke</span>

@@ -15,7 +15,7 @@ const preferredOccupationMatchers = [
   ["elektrikere"],
   ["flygere", "flyger"],
   ["legespesialister"],
-  ["programvareutviklere", "utviklere"],
+  ["sykepleiere"],
   ["dommere"],
 ];
 
@@ -31,9 +31,9 @@ export function HomeOccupationCards({ query, rows, sourceRows }: HomeOccupationC
     : getPreferredOccupationRows(sourceRows);
 
   return (
-    <div className="mx-auto mt-9 w-full max-w-7xl px-1">
+    <div className="mx-auto mt-9 w-full max-w-7xl min-w-0 px-0">
       {highlightedRows.length > 0 ? (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2 xl:grid-cols-3">
           {highlightedRows.map((row) => (
             <OccupationHighlightCard key={row.rowKey} row={row} />
           ))}
@@ -62,9 +62,9 @@ export function HomeOccupationCards({ query, rows, sourceRows }: HomeOccupationC
 function OccupationHighlightCard({ row }: { row: OccupationSalaryRow }) {
   const detailHref = getOccupationDetailHref(row.occupationCode, row.occupationLabel);
   const content = (
-    <article className="min-h-32 rounded-md border border-black/8 bg-white/90 p-5 shadow-[0_16px_36px_rgba(27,36,48,0.07)] transition hover:-translate-y-0.5 hover:border-[var(--primary)]/25 hover:shadow-[0_20px_44px_rgba(27,36,48,0.1)]">
+    <article className="min-h-32 w-full min-w-0 max-w-full rounded-md border border-black/8 bg-white/90 p-5 shadow-[0_16px_36px_rgba(27,36,48,0.07)] transition hover:-translate-y-0.5 hover:border-[var(--primary)]/25 hover:shadow-[0_20px_44px_rgba(27,36,48,0.1)]">
       <div className="min-w-0">
-        <h3 className="flex items-center gap-2 text-base font-semibold leading-snug text-slate-950">
+        <h3 className="flex min-w-0 items-center gap-2 text-base font-semibold leading-snug text-slate-950">
           <span className="truncate">{row.occupationLabel}</span>
           {detailHref ? (
             <span aria-hidden="true" className="shrink-0 text-[var(--primary-strong)]">
@@ -92,7 +92,7 @@ function OccupationHighlightCard({ row }: { row: OccupationSalaryRow }) {
 
   return (
     <Link
-      className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
+      className="block w-full min-w-0 max-w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
       href={detailHref}
     >
       {content}
