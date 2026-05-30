@@ -96,6 +96,7 @@ Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen i
 - Skriv på Norsk Bokmål med rolig, konkret og forklarende språk.
 - Prioriter praktisk bruk i lønnssammenheng, forskjeller mot nærliggende begreper, eksempler og vanlige misforståelser.
 - Bruk interne lenker til relevante verktøy, yrkessider, blogginnlegg, ordbok eller andre forklareringsinnlegg når det hjelper leseren.
+- Eksterne kilder skal inkorporeres naturlig i teksten der opplysningen brukes. Ikke avslutt forklareringsinnlegg med et eget `Kilder:`-avsnitt.
 - Forklareringsinnlegg viser en minimalistisk høyresidebar med andre ord og begreper. Listen skal bare inneholde begreper som faktisk har egen forklarerside, og maksimalt 25 lenker.
 - Ikke bruk `FAQ` og `FAQItem` i forklareringsinnlegg med mindre brukeren eksplisitt ber om FAQ.
 - Unngå generiske SEO-avsnitt. Hvert forklareringsinnlegg skal ha én tydelig søkeintensjon.
