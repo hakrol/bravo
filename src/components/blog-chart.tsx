@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 export type BlogChartDatum = {
   label: string;
+  shortLabel?: string;
   value: number;
   size?: number;
   sizeLabel?: string;
@@ -188,8 +189,19 @@ export function BlogChart({
 
       {chart}
 
-      <figcaption className="blog-chart-footer">
-        <span>{source ? `Kilde: ${source}` : "Kilde ikke oppgitt"}</span>
+      <figcaption className={`blog-chart-footer${resolvedType === "bubble" ? " blog-chart-bubble-footer" : ""}`}>
+        {resolvedType === "bubble" ? (
+          <span className="blog-chart-bubble-source">
+            <span aria-hidden="true" className="blog-chart-bubble-info">
+              i
+            </span>
+            <span>
+              <strong>Kilde:</strong> {source || "Kilde ikke oppgitt"}
+            </span>
+          </span>
+        ) : (
+          <span>{source ? `Kilde: ${source}` : "Kilde ikke oppgitt"}</span>
+        )}
         {note ? <span>{note}</span> : null}
         {caption ? <span>{caption}</span> : null}
       </figcaption>
@@ -222,8 +234,8 @@ function BubbleChart({
   }
 
   const width = 920;
-  const height = 520;
-  const padding = { top: 78, right: 118, bottom: 92, left: 118 };
+  const height = 640;
+  const padding = { top: 78, right: 34, bottom: 112, left: 34 };
   const plotWidth = width - padding.left - padding.right;
   const plotHeight = height - padding.top - padding.bottom;
   const values = points.map((point) => point.value);
@@ -239,7 +251,7 @@ function BubbleChart({
   const layoutPoints = points.map((point, index) => {
     const color = getBubbleColor(point, index, primaryColor, highlightColor);
     const radius = getBubbleRadius(point, maxSize);
-    const x = xForValue(point.value);
+    const rawX = xForValue(point.value);
     const y = padding.top + getBubbleLane(point, index) * plotHeight;
 
     return {
@@ -252,8 +264,8 @@ function BubbleChart({
       color,
       labelOffset: getBubbleLabelOffset(point, radius),
       radius,
-      x,
-      y,
+      x: clamp(rawX, padding.left + radius + 2, padding.left + plotWidth - radius - 2),
+      y: clamp(y, padding.top + radius + 2, padding.top + plotHeight - radius - 2),
     };
   });
   const activeLayout = activePoint ? layoutPoints.find((entry) => entry.point.label === activePoint.label) : undefined;
@@ -301,13 +313,27 @@ function BubbleChart({
     <div className="blog-chart-svg-wrap blog-chart-bubble-wrap" onClick={closeTooltip} onMouseLeave={hideHoverTooltip}>
       <svg onClick={closeTooltip} role="img" viewBox={`0 0 ${width} ${height}`}>
         {xAxisLabel ? <title>{xAxisLabel}</title> : null}
+        {[0.1, 0.25, 0.42, 0.59, 0.76, 0.92].map((lane) => {
+          const y = padding.top + lane * plotHeight;
+
+          return (
+            <line
+              key={lane}
+              className="blog-chart-bubble-row-gridline"
+              x1={padding.left}
+              x2={width - padding.right}
+              y1={y}
+              y2={y}
+            />
+          );
+        })}
         {ticks.map((tick) => {
           const x = xForValue(tick);
 
           return (
             <g key={tick}>
-              <line className="blog-chart-bubble-gridline" x1={x} x2={x} y1={padding.top + 12} y2={padding.top + plotHeight - 8} />
-              <text className="blog-chart-bubble-tick" textAnchor="middle" x={x} y={height - 42}>
+              <line className="blog-chart-bubble-gridline" x1={x} x2={x} y1={padding.top} y2={padding.top + plotHeight} />
+              <text className="blog-chart-bubble-tick" textAnchor="middle" x={x} y={height - 48}>
                 {tick.toLocaleString("nb-NO")}
               </text>
             </g>
@@ -323,9 +349,11 @@ function BubbleChart({
         {layoutPoints.map(({ activePayload, color, labelOffset, point, radius, x, y }) => {
           const active = activePoint?.label === point.label;
           const hasActivePoint = Boolean(activePoint);
-          const labelX = clamp(x + labelOffset.x, padding.left + 70, width - padding.right - 70);
-          const labelY = clamp(y + labelOffset.y, padding.top + 22, padding.top + plotHeight - 18);
+          const resolvedLabelOffset = getResolvedBubbleLabelOffset(labelOffset, radius);
+          const labelX = clamp(x + resolvedLabelOffset.x, padding.left + 28, width - padding.right - 44);
+          const labelY = clamp(y + resolvedLabelOffset.y, padding.top + 26, padding.top + plotHeight - 22);
           const showLabel = shouldShowBubbleLabel(point, radius);
+          const displayLabel = point.shortLabel ?? point.label;
           const sizeText = point.sizeLabel ?? `${(point.size ?? 0).toLocaleString("nb-NO")} lønnstakere`;
 
           return (
@@ -351,8 +379,18 @@ function BubbleChart({
                 onMouseEnter={() => showHoverTooltip(activePayload)}
               />
               {showLabel ? (
-                <text className="blog-chart-bubble-label" textAnchor={labelOffset.anchor} x={labelX} y={labelY}>
-                  {point.label}
+                <text
+                  className="blog-chart-bubble-label"
+                  data-highlight={point.category === "highlight" ? "true" : undefined}
+                  textAnchor={resolvedLabelOffset.anchor}
+                  x={labelX}
+                  y={labelY}
+                >
+                  {displayLabel.split("\n").map((line, index) => (
+                    <tspan key={`${line}-${index}`} x={labelX} dy={index === 0 ? 0 : "1.18em"}>
+                      {line}
+                    </tspan>
+                  ))}
                 </text>
               ) : null}
             </g>
@@ -370,7 +408,7 @@ function BubbleChart({
           />
         ) : null}
         {xAxisLabel ? (
-          <text className="blog-chart-bubble-axis-label" textAnchor="middle" x={padding.left + plotWidth / 2} y={height - 10}>
+          <text className="blog-chart-bubble-axis-label" textAnchor="middle" x={padding.left + plotWidth / 2} y={height - 12}>
             {xAxisLabel}
           </text>
         ) : null}
@@ -430,7 +468,7 @@ function BubbleTooltip({
 }
 
 function buildBubbleTicks(minValue: number, maxValue: number) {
-  if (minValue >= 40000 && maxValue <= 80000) {
+  if (minValue >= 45000 && maxValue <= 80000) {
     return [45000, 54000, 63000, 71000, 80000];
   }
 
@@ -449,7 +487,7 @@ function getBubbleColor(point: BlogChartDatum, index: number, primaryColor: stri
   }
 
   if (point.category === "highlight") {
-    return highlightColor;
+    return "#0f6b3d";
   }
 
   if (point.label === "Jordmødre") {
@@ -460,7 +498,7 @@ function getBubbleColor(point: BlogChartDatum, index: number, primaryColor: stri
     return "#d8c0ac";
   }
 
-  const backgroundPalette = ["#8a9a8c", "#d8cfc3", "#7c8f82", "#c9b8a7", "#aab0a3"];
+  const backgroundPalette = ["#aeb8ad", "#ded6cb", "#c9d0c2", "#d8cec2", "#9faf9f", "#e2ddd3"];
   return backgroundPalette[index % backgroundPalette.length] ?? primaryColor;
 }
 
@@ -470,14 +508,14 @@ function getBubbleOpacity(point: BlogChartDatum) {
   }
 
   if (point.category === "highlight") {
-    return 0.96;
+    return 0.98;
   }
 
   if (["Jordmødre", "Spesialsykepleiere"].includes(point.label)) {
     return 0.86;
   }
 
-  return 0.62;
+  return 0.72;
 }
 
 function getBubbleRadius(point: BlogChartDatum, maxSize: number) {
@@ -541,6 +579,19 @@ function getBubbleLabelOffset(point: BlogChartDatum, radius: number): { x: numbe
   };
 
   return offsets[point.label] ?? { x: radius + 12, y: 4, anchor: "start" };
+}
+
+function getResolvedBubbleLabelOffset(
+  offset: { x: number; y: number; anchor?: "start" | "middle" | "end" },
+  radius: number,
+) {
+  const minHorizontalGap = radius + 14;
+
+  return {
+    anchor: "start" as const,
+    x: Math.max(Math.abs(offset.x), minHorizontalGap),
+    y: 4,
+  };
 }
 
 function clamp(value: number, min: number, max: number) {

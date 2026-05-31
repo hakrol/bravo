@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-19T10:57:33.024Z",
+  "generatedAt": "2026-05-31T07:56:25.630Z",
   "source": "ssb",
   "datasets": [
     {
@@ -8,8 +8,8 @@
       "fileName": "occupation-latest-average.json",
       "tableId": "11658",
       "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
-      "updated": "2026-02-05T07:00:00Z",
+      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2026K1",
+      "updated": "2026-05-07T06:00:00Z",
       "rowCount": 1749,
       "dimensions": [
         "Kjonn",
@@ -58,9 +58,9 @@
       "fileName": "occupation-average-timeseries.json",
       "tableId": "11658",
       "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
-      "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 69960,
+      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2026K1",
+      "updated": "2026-05-07T06:00:00Z",
+      "rowCount": 71709,
       "dimensions": [
         "Kjonn",
         "Alder",
@@ -142,9 +142,9 @@
       "fileName": "occupation-workforce-timeseries.json",
       "tableId": "11658",
       "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
-      "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 139920,
+      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2026K1",
+      "updated": "2026-05-07T06:00:00Z",
+      "rowCount": 143418,
       "dimensions": [
         "Kjonn",
         "Alder",
@@ -158,9 +158,9 @@
       "fileName": "occupation-age-timeseries.json",
       "tableId": "11658",
       "tableKey": "occupationDetailed",
-      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2025K4",
-      "updated": "2026-02-05T07:00:00Z",
-      "rowCount": 69960,
+      "title": "11658: Yrkes- (4-siffernivå), kjønns- og aldersfordeling for lønnstakere, jobber og lønn 2016K1-2026K1",
+      "updated": "2026-05-07T06:00:00Z",
+      "rowCount": 71709,
       "dimensions": [
         "Kjonn",
         "Alder",
@@ -261,9 +261,9 @@
       "key": "inflationQuarterSeries",
       "fileName": "inflation-quarter-series.json",
       "tableId": "14700",
-      "title": "14700: Konsumprisindeks, etter vare- og tjenestegruppe (2025=100) 2000M01-2026M03",
-      "updated": "2026-04-10T06:00:00Z",
-      "rowCount": 315,
+      "title": "14700: Konsumprisindeks (KPI), etter vare- og tjenestegruppe (2025=100) 2000M01-2026M04",
+      "updated": "2026-05-11T06:00:00Z",
+      "rowCount": 316,
       "dimensions": [
         "VareTjenesteGrp",
         "ContentsCode",
