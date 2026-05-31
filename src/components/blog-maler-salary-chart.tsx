@@ -30,22 +30,27 @@ type MalerSalarySnapshot = {
 
 const bubbleLabels = [
   "Rørleggere og VVS-montører",
-  "Betongarbeidere",
-  "Overflatebehandlere og lakkerere",
-  "Tømrere og snekkere",
-  "Andre bygningsarbeidere",
-  "Malere og byggtapetserere",
+  "Elektrikere",
   "Møbelsnekkere",
+  "Murere",
+  "Malere og byggtapetserere",
+  "Tømrere og snekkere",
 ];
 
 const bubbleLayout: Record<string, Pick<BlogChartDatum, "lane" | "labelOffset" | "showLabel" | "radiusBoost">> = {
-  "Rørleggere og VVS-montører": { lane: 0.34, labelOffset: { x: 8, y: -34, anchor: "start" }, radiusBoost: 5 },
-  Betongarbeidere: { lane: 0.58, labelOffset: { x: -10, y: 34, anchor: "end" } },
-  "Overflatebehandlere og lakkerere": { lane: 0.25, labelOffset: { x: 12, y: -28, anchor: "start" } },
-  "Tømrere og snekkere": { lane: 0.75, labelOffset: { x: 0, y: 36, anchor: "middle" }, radiusBoost: 6 },
-  "Andre bygningsarbeidere": { lane: 0.45, labelOffset: { x: -16, y: -26, anchor: "end" } },
-  "Malere og byggtapetserere": { lane: 0.62, labelOffset: { x: 18, y: 20, anchor: "start" }, radiusBoost: 3 },
-  Møbelsnekkere: { lane: 0.15, labelOffset: { x: 16, y: 8, anchor: "start" } },
+  "Rørleggere og VVS-montører": { lane: 0.09, labelOffset: { x: 34, y: -8, anchor: "start" }, radiusBoost: 3, showLabel: true },
+  Elektrikere: { lane: 0.26, labelOffset: { x: 34, y: 6, anchor: "start" }, radiusBoost: 3, showLabel: true },
+  Møbelsnekkere: { lane: 0.43, labelOffset: { x: 42, y: 8, anchor: "start" }, radiusBoost: 4, showLabel: true },
+  Murere: { lane: 0.6, labelOffset: { x: 36, y: 8, anchor: "start" }, showLabel: true },
+  "Malere og byggtapetserere": { lane: 0.78, labelOffset: { x: 42, y: -10, anchor: "start" }, radiusBoost: 5, showLabel: true },
+  "Tømrere og snekkere": { lane: 0.92, labelOffset: { x: 42, y: -10, anchor: "start" }, radiusBoost: 12, showLabel: true },
+};
+
+const bubbleDisplayLabels: Record<string, string> = {
+  "Rørleggere og VVS-montører": "Rørleggere og\nVVS-montører",
+  Møbelsnekkere: "Snekkere",
+  "Malere og byggtapetserere": "Malere og\nbyggtapetserere",
+  "Tømrere og snekkere": "Tømrere og\nsnekkere",
 };
 
 function getSnapshot() {
@@ -65,6 +70,7 @@ function getBubbleData(): BlogChartDatum[] {
     return [
       {
         label: row.label,
+        shortLabel: bubbleDisplayLabels[row.label],
         value: row.value,
         size: row.employees,
         sizeLabel: `${row.employees.toLocaleString("nb-NO")} lønnstakere`,

@@ -874,8 +874,8 @@ body {
 .blog-chart-bubble-figure {
   border-top: 0;
   border-bottom: 1px solid rgba(17, 17, 17, 0.08);
-  background: #fff7ee;
-  padding: 2.2rem clamp(1rem, 4vw, 2.2rem) 1.1rem;
+  background: #f7f1ea;
+  padding: clamp(2.7rem, 5vw, 4.1rem) clamp(1.35rem, 5vw, 3.5rem) 1.4rem;
 }
 
 .blog-salary-development-figure {
@@ -892,8 +892,8 @@ body {
 }
 
 .blog-chart-bubble-figure .blog-chart-header {
-  justify-items: center;
-  text-align: center;
+  justify-items: start;
+  text-align: left;
 }
 
 .blog-salary-development-figure .blog-chart-header {
@@ -931,10 +931,11 @@ body {
 
 .blog-prose .blog-chart-bubble-figure .blog-chart-title,
 .blog-chart-bubble-figure .blog-chart-title {
-  max-width: 18ch;
-  font-size: clamp(2.15rem, 7vw, 3.85rem);
-  font-weight: 780;
-  line-height: 0.98;
+  width: 100%;
+  max-width: 100%;
+  font-size: 50px;
+  font-weight: 820;
+  line-height: 1.05;
 }
 
 .blog-prose .blog-salary-development-figure .blog-chart-title,
@@ -954,10 +955,10 @@ body {
 }
 
 .blog-chart-bubble-figure .blog-chart-subtitle {
-  max-width: 42rem;
-  color: #2d2b28;
-  font-size: 1rem;
-  line-height: 1.62;
+  max-width: 48rem;
+  color: #4b5563;
+  font-size: 1.32rem;
+  line-height: 1.48;
 }
 
 .blog-salary-development-figure .blog-chart-subtitle {
@@ -1313,8 +1314,9 @@ body {
 }
 
 .blog-chart-bubble-wrap {
-  margin-top: 1.6rem;
-  padding-bottom: 0.35rem;
+  margin-top: clamp(3.1rem, 6vw, 4.6rem);
+  overflow-x: hidden;
+  padding-bottom: 0.55rem;
   scrollbar-width: none;
 }
 
@@ -1323,7 +1325,8 @@ body {
 }
 
 .blog-chart-bubble-wrap svg {
-  min-width: 720px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .blog-salary-development-axis-heading {
@@ -1395,18 +1398,25 @@ body {
 }
 
 .blog-chart-bubble-gridline {
-  stroke: rgba(17, 17, 17, 0.045);
+  stroke: rgba(91, 76, 61, 0.16);
+  stroke-dasharray: 5 7;
+  stroke-width: 1;
+}
+
+.blog-chart-bubble-row-gridline {
+  stroke: rgba(91, 76, 61, 0.11);
+  stroke-dasharray: 5 7;
   stroke-width: 1;
 }
 
 .blog-chart-bubble-axis {
-  stroke: rgba(17, 17, 17, 0.32);
-  stroke-width: 1.6;
+  stroke: #121923;
+  stroke-width: 2.2;
 }
 
 .blog-chart-bubble {
   cursor: pointer;
-  filter: drop-shadow(0 0.42rem 0.95rem rgba(44, 32, 24, 0.1));
+  filter: drop-shadow(0 0.65rem 1.25rem rgba(44, 32, 24, 0.13));
   transition:
     opacity 150ms ease,
     r 150ms ease,
@@ -1414,26 +1424,31 @@ body {
 }
 
 .blog-chart-bubble-label {
-  fill: #211f1c;
-  font-size: 0.9rem;
-  font-weight: 780;
+  fill: #343a42;
+  font-size: 1.02rem;
+  font-weight: 720;
   letter-spacing: 0;
   line-height: 1.12;
   pointer-events: none;
 }
 
+.blog-chart-bubble-label[data-highlight="true"] {
+  fill: #0f6b3d;
+  font-weight: 820;
+}
+
 .blog-chart-bubble-tick {
-  fill: #26231f;
-  font-size: 0.86rem;
+  fill: #363e48;
+  font-size: 1.02rem;
   font-variant-numeric: tabular-nums;
-  font-weight: 760;
+  font-weight: 780;
   letter-spacing: 0;
 }
 
 .blog-chart-bubble-axis-label {
-  fill: #5f5a53;
-  font-size: 0.82rem;
-  font-weight: 720;
+  fill: #363e48;
+  font-size: 1rem;
+  font-weight: 780;
   letter-spacing: 0;
 }
 
@@ -1479,8 +1494,36 @@ body {
 }
 
 .blog-chart-bubble-figure .blog-chart-footer {
-  border-top-color: rgba(17, 17, 17, 0.1);
-  color: #6d6258;
+  gap: 0.75rem;
+  margin-top: 2.1rem;
+  border-top-color: rgba(91, 76, 61, 0.16);
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.blog-chart-bubble-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.blog-chart-bubble-source strong {
+  color: #101820;
+}
+
+.blog-chart-bubble-info {
+  display: inline-grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid #127444;
+  border-radius: 999px;
+  color: #127444;
+  font-size: 1rem;
+  font-weight: 820;
+  line-height: 1;
 }
 
 .blog-salary-development-figure .blog-chart-footer {
@@ -1752,6 +1795,35 @@ body {
   .blog-chart-subtitle {
     font-size: 0.92rem;
     line-height: 1.62;
+  }
+
+  .blog-prose .blog-chart-bubble-figure .blog-chart-title,
+  .blog-chart-bubble-figure .blog-chart-title {
+    max-width: 100%;
+    font-size: clamp(2.15rem, 11vw, 3.15rem);
+    line-height: 1.06;
+  }
+
+  .blog-chart-bubble-figure .blog-chart-subtitle {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .blog-chart-bubble-figure {
+    padding: 2rem 1rem 1.1rem;
+  }
+
+  .blog-chart-bubble-wrap {
+    margin-top: 2.45rem;
+  }
+
+  .blog-chart-bubble-label {
+    font-size: 0.82rem;
+  }
+
+  .blog-chart-bubble-tick,
+  .blog-chart-bubble-axis-label {
+    font-size: 0.78rem;
   }
 
   .blog-salary-development-figure {
