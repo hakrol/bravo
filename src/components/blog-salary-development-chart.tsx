@@ -19,16 +19,18 @@ type BlogSalaryDevelopmentChartProps = {
 };
 
 const defaultColors = ["#14532d", "#b45309", "#2563eb", "#7c3aed"];
-const width = 920;
-const height = 520;
+const width = 1180;
+const height = 560;
 const plot = {
-  top: 50,
-  right: 278,
-  bottom: 80,
-  left: 88,
+  top: 52,
+  right: 190,
+  bottom: 82,
+  left: 108,
 };
 const plotWidth = width - plot.left - plot.right;
 const plotHeight = height - plot.top - plot.bottom;
+const calloutFill = "#f7fbf4";
+const calloutStroke = "#d6e1d2";
 
 export function BlogSalaryDevelopmentChart({
   title,
@@ -45,13 +47,9 @@ export function BlogSalaryDevelopmentChart({
   }
 
   const primarySeries = normalizedSeries[0];
-  const primaryStart = primarySeries.points[0];
-  const primaryEnd = primarySeries.points.at(-1);
   const values = normalizedSeries.flatMap((entry) => entry.points.map((point) => point.value));
   const axis = getAxis(values);
   const labels = primarySeries.points.map((point) => point.label);
-  const growthValue = primaryStart && primaryEnd ? primaryEnd.value - primaryStart.value : 0;
-  const growthPercent = primaryStart && primaryEnd && primaryStart.value > 0 ? (growthValue / primaryStart.value) * 100 : 0;
   const titleId = `${slugify(title)}-title`;
 
   const xForIndex = (index: number) => plot.left + (index / Math.max(labels.length - 1, 1)) * plotWidth;
@@ -59,25 +57,40 @@ export function BlogSalaryDevelopmentChart({
     plot.top + plotHeight - ((value - axis.min) / Math.max(axis.max - axis.min, 1)) * plotHeight;
 
   return (
-    <figure className="blog-chart blog-chart-bubble-figure" aria-labelledby={titleId}>
+    <figure className="blog-chart blog-salary-development-figure" aria-labelledby={titleId}>
       <div className="blog-chart-header">
         <div>
-          <h3 className="blog-chart-title" id={titleId}>
+          <h3 className="blog-chart-title" id={titleId} style={{ fontSize: "50px", lineHeight: 1.08 }}>
             {title}
           </h3>
           {subtitle ? <p className="blog-chart-subtitle">{subtitle}</p> : null}
         </div>
       </div>
 
-      <div className="blog-chart-svg-wrap blog-chart-bubble-wrap">
-        <svg aria-label={`${title}. ${yAxisLabel}.`} role="img" viewBox={`0 0 ${width} ${height}`}>
+      <p className="blog-salary-development-axis-heading">{yAxisLabel} (kroner)</p>
+
+      <div className="blog-chart-svg-wrap blog-salary-development-wrap" style={{ overflowX: "hidden" }}>
+        <svg
+          aria-label={`${title}. ${yAxisLabel}.`}
+          role="img"
+          style={{ maxWidth: "100%", minWidth: 0, width: "100%" }}
+          viewBox={`0 0 ${width} ${height}`}
+        >
           {axis.ticks.map((tick) => {
             const y = yForValue(tick);
 
             return (
               <g key={tick}>
-                <line className="blog-chart-bubble-gridline" x1={plot.left} x2={width - plot.right} y1={y} y2={y} />
-                <text className="blog-chart-bubble-tick" textAnchor="end" x={plot.left - 14} y={y + 5}>
+                {tick > axis.min ? (
+                  <line
+                    className="blog-salary-development-gridline"
+                    x1={plot.left}
+                    x2={width - plot.right}
+                    y1={y}
+                    y2={y}
+                  />
+                ) : null}
+                <text className="blog-salary-development-y-tick" textAnchor="end" x={plot.left - 28} y={y + 7}>
                   {formatAxisCurrency(tick)}
                 </text>
               </g>
@@ -89,8 +102,7 @@ export function BlogSalaryDevelopmentChart({
 
             return (
               <g key={label}>
-                <line className="blog-chart-bubble-gridline" x1={x} x2={x} y1={plot.top} y2={plot.top + plotHeight} />
-                <text className="blog-chart-bubble-tick" textAnchor="middle" x={x} y={height - 30}>
+                <text className="blog-salary-development-x-tick" textAnchor="middle" x={x} y={plot.top + plotHeight + 50}>
                   {label}
                 </text>
               </g>
@@ -98,7 +110,14 @@ export function BlogSalaryDevelopmentChart({
           })}
 
           <line
-            className="blog-chart-bubble-axis"
+            className="blog-salary-development-y-axis"
+            x1={plot.left}
+            x2={plot.left}
+            y1={plot.top}
+            y2={plot.top + plotHeight}
+          />
+          <line
+            className="blog-salary-development-x-axis"
             x1={plot.left}
             x2={width - plot.right}
             y1={plot.top + plotHeight}
@@ -115,10 +134,12 @@ export function BlogSalaryDevelopmentChart({
             const path = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
             const firstPoint = points[0];
             const lastPoint = points.at(-1);
+            const growthValue = firstPoint && lastPoint ? lastPoint.value - firstPoint.value : 0;
+            const growthPercent = firstPoint && lastPoint && firstPoint.value > 0 ? (growthValue / firstPoint.value) * 100 : 0;
 
             return (
               <g key={entry.label}>
-                <path d={path} fill="none" stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
+                <path d={path} fill="none" stroke={color} strokeLinecap="round" strokeLinejoin="round" strokeWidth="5.5" />
                 {points.map((point, index) => {
                   const isEndpoint = index === 0 || index === points.length - 1;
 
@@ -128,58 +149,127 @@ export function BlogSalaryDevelopmentChart({
                         aria-label={`${entry.label}, ${point.label}: ${formatCurrency(point.value)}`}
                         cx={point.x}
                         cy={point.y}
-                        fill="#fff7ee"
-                        r={isEndpoint ? 6 : 4}
+                        fill="#fffaf5"
+                        r={isEndpoint ? 10 : 9}
                         stroke={color}
-                        strokeWidth="3"
+                        strokeWidth="4"
                       />
-                      {isEndpoint ? (
-                        <text
-                          className="blog-chart-bubble-label"
-                          textAnchor={index === 0 ? "start" : "end"}
-                          x={point.x + (index === 0 ? 12 : -12)}
-                          y={point.y - 12}
-                        >
-                          {formatCurrency(point.value)}
-                        </text>
-                      ) : null}
                     </g>
                   );
                 })}
                 {firstPoint && lastPoint ? (
                   <g>
-                    <line
-                      className="blog-chart-bubble-gridline"
-                      strokeDasharray="4 6"
-                      strokeWidth="1.5"
-                      x1={firstPoint.x}
-                      x2={lastPoint.x}
-                      y1={lastPoint.y}
-                      y2={lastPoint.y}
+                    <ValueCallout
+                      color={color}
+                      text={formatCurrency(firstPoint.value)}
+                      variant="start"
+                      x={firstPoint.x}
+                      y={firstPoint.y}
                     />
-                    <text fill={color} fontSize="17" fontWeight="800" x={lastPoint.x + 18} y={lastPoint.y - 6}>
-                      {entry.label}
-                    </text>
-                    <text fill="#6d6258" fontSize="14" fontWeight="700" x={lastPoint.x + 18} y={lastPoint.y + 16}>
-                      {formatSignedCurrency(growthValue)} ({formatSignedPercent(growthPercent)})
-                    </text>
+                    <ValueCallout
+                      color={color}
+                      text={formatCurrency(lastPoint.value)}
+                      variant="end"
+                      x={lastPoint.x}
+                      y={lastPoint.y}
+                    />
+                    <GrowthCallout
+                      color={color}
+                      text={`${formatSignedCurrency(growthValue)}\n(${formatSignedPercent(growthPercent)})`}
+                      x={lastPoint.x}
+                      y={lastPoint.y}
+                    />
                   </g>
                 ) : null}
               </g>
             );
           })}
-
-          <text className="blog-chart-bubble-axis-label" textAnchor="middle" x={plot.left + plotWidth / 2} y={height - 8}>
-            {yAxisLabel}
-          </text>
         </svg>
       </div>
 
-      <figcaption className="blog-chart-footer">
-        <span>Kilde: {source}</span>
+      <figcaption className="blog-chart-footer blog-salary-development-footer">
+        <span className="blog-salary-development-source">
+          <span aria-hidden="true" className="blog-salary-development-info">
+            i
+          </span>
+          <span>
+            <strong>Kilde:</strong> {source}
+          </span>
+        </span>
         {note ? <span>{note}</span> : null}
       </figcaption>
     </figure>
+  );
+}
+
+function ValueCallout({
+  color,
+  text,
+  variant,
+  x,
+  y,
+}: {
+  color: string;
+  text: string;
+  variant: "start" | "end";
+  x: number;
+  y: number;
+}) {
+  const width = getCalloutWidth(text, 24);
+  const height = 46;
+  const isEnd = variant === "end";
+  const boxX = isEnd ? x - width + 112 : x - 18;
+  const boxY = isEnd ? y - 86 : y - 88;
+  const pointerTipY = y - 8;
+  const pointer = isEnd
+    ? `${x + 10},${boxY + height - 1} ${x + 10},${pointerTipY} ${x + 28},${boxY + height - 1}`
+    : `${x + 7},${boxY + height - 1} ${x + 7},${pointerTipY} ${x + 25},${boxY + height - 1}`;
+
+  return (
+    <g className={`blog-salary-development-callout blog-salary-development-callout-${variant}`}>
+      <rect
+        fill={isEnd ? color : calloutFill}
+        height={height}
+        rx="5"
+        stroke={isEnd ? color : calloutStroke}
+        width={width}
+        x={boxX}
+        y={boxY}
+      />
+      <polygon fill={isEnd ? color : calloutFill} points={pointer} stroke={isEnd ? color : calloutStroke} />
+      <text
+        fill={isEnd ? "#ffffff" : color}
+        fontSize="22"
+        fontWeight="820"
+        textAnchor="middle"
+        x={boxX + width / 2}
+        y={boxY + 30}
+      >
+        {text}
+      </text>
+    </g>
+  );
+}
+
+function GrowthCallout({ color, text, x, y }: { color: string; text: string; x: number; y: number }) {
+  const [value, percent] = text.split("\n");
+  const width = 138;
+  const height = 76;
+  const boxX = x + 36;
+  const boxY = y - 18;
+  const pointer = `${boxX},${boxY + 18} ${boxX - 16},${boxY + 28} ${boxX},${boxY + 38}`;
+
+  return (
+    <g className="blog-salary-development-growth">
+      <polygon fill={calloutFill} points={pointer} stroke={calloutStroke} />
+      <rect fill={calloutFill} height={height} rx="6" stroke={calloutStroke} width={width} x={boxX} y={boxY} />
+      <text fill={color} fontSize="22" fontWeight="820" x={boxX + 18} y={boxY + 32}>
+        {value}
+      </text>
+      <text fill={color} fontSize="22" fontWeight="820" x={boxX + 18} y={boxY + 60}>
+        {percent}
+      </text>
+    </g>
   );
 }
 
@@ -222,6 +312,10 @@ function formatSignedPercent(value: number) {
 
 function formatAxisCurrency(value: number) {
   return Math.round(value).toLocaleString("nb-NO");
+}
+
+function getCalloutWidth(text: string, padding: number) {
+  return Math.max(108, text.length * 12 + padding);
 }
 
 function slugify(value: string) {

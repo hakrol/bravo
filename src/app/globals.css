@@ -878,6 +878,13 @@ body {
   padding: 2.2rem clamp(1rem, 4vw, 2.2rem) 1.1rem;
 }
 
+.blog-salary-development-figure {
+  border-top: 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  background: #fffaf5;
+  padding: clamp(2.3rem, 5vw, 4.3rem) clamp(1.1rem, 5vw, 3.2rem) 1.35rem;
+}
+
 .blog-chart-header {
   display: grid;
   gap: 1rem;
@@ -887,6 +894,11 @@ body {
 .blog-chart-bubble-figure .blog-chart-header {
   justify-items: center;
   text-align: center;
+}
+
+.blog-salary-development-figure .blog-chart-header {
+  justify-items: start;
+  text-align: left;
 }
 
 .blog-chart-kicker {
@@ -925,6 +937,14 @@ body {
   line-height: 0.98;
 }
 
+.blog-prose .blog-salary-development-figure .blog-chart-title,
+.blog-salary-development-figure .blog-chart-title {
+  max-width: 20ch;
+  font-size: 30px;
+  font-weight: 820;
+  line-height: 1.08;
+}
+
 .blog-chart-subtitle {
   margin: 0.72rem 0 0;
   max-width: 60ch;
@@ -938,6 +958,13 @@ body {
   color: #2d2b28;
   font-size: 1rem;
   line-height: 1.62;
+}
+
+.blog-salary-development-figure .blog-chart-subtitle {
+  max-width: 68rem;
+  color: #4b5563;
+  font-size: clamp(1.08rem, 2vw, 1.45rem);
+  line-height: 1.35;
 }
 
 .blog-chart-tooltip {
@@ -1299,6 +1326,74 @@ body {
   min-width: 720px;
 }
 
+.blog-salary-development-axis-heading {
+  margin: clamp(2.2rem, 5vw, 4.1rem) 0 0;
+  color: #30343a;
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  font-weight: 820;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.blog-salary-development-wrap {
+  margin-top: 1.05rem;
+  overflow-x: hidden;
+  padding-bottom: 0.45rem;
+  scrollbar-width: none;
+}
+
+.blog-salary-development-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.blog-salary-development-wrap svg {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.blog-salary-development-gridline {
+  stroke: rgba(95, 81, 69, 0.2);
+  stroke-dasharray: 7 7;
+  stroke-width: 1.35;
+}
+
+.blog-salary-development-y-axis {
+  stroke: rgba(95, 81, 69, 0.16);
+  stroke-width: 1.35;
+}
+
+.blog-salary-development-x-axis {
+  stroke: #101820;
+  stroke-width: 2.35;
+}
+
+.blog-salary-development-y-tick {
+  fill: #4b5563;
+  font-size: 1.28rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.blog-salary-development-x-tick {
+  fill: #101820;
+  font-size: 1.22rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 820;
+  letter-spacing: 0;
+}
+
+.blog-salary-development-callout,
+.blog-salary-development-growth {
+  filter: drop-shadow(0 0.35rem 0.7rem rgba(44, 32, 24, 0.08));
+}
+
+.blog-salary-development-callout text,
+.blog-salary-development-growth text {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
 .blog-chart-bubble-gridline {
   stroke: rgba(17, 17, 17, 0.045);
   stroke-width: 1;
@@ -1386,6 +1481,38 @@ body {
 .blog-chart-bubble-figure .blog-chart-footer {
   border-top-color: rgba(17, 17, 17, 0.1);
   color: #6d6258;
+}
+
+.blog-salary-development-figure .blog-chart-footer {
+  margin-top: 1.45rem;
+  border-top-color: rgba(17, 17, 17, 0.1);
+  color: #4b5563;
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+}
+
+.blog-salary-development-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #4b5563;
+}
+
+.blog-salary-development-source strong {
+  color: #101820;
+}
+
+.blog-salary-development-info {
+  display: inline-grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid #127444;
+  border-radius: 999px;
+  color: #127444;
+  font-size: 1rem;
+  font-weight: 820;
+  line-height: 1;
 }
 
 .blog-chart-footer {
@@ -1625,6 +1752,36 @@ body {
   .blog-chart-subtitle {
     font-size: 0.92rem;
     line-height: 1.62;
+  }
+
+  .blog-salary-development-figure {
+    padding: 1.9rem 1rem 1.1rem;
+  }
+
+  .blog-prose .blog-salary-development-figure .blog-chart-title,
+  .blog-salary-development-figure .blog-chart-title {
+    max-width: 20ch;
+    font-size: 30px;
+    line-height: 1.08;
+  }
+
+  .blog-salary-development-figure .blog-chart-subtitle {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .blog-salary-development-axis-heading {
+    margin-top: 2.4rem;
+    font-size: 0.98rem;
+  }
+
+  .blog-salary-development-wrap svg {
+    min-width: 0;
+  }
+
+  .blog-salary-development-y-tick,
+  .blog-salary-development-x-tick {
+    font-size: 1.05rem;
   }
 
   .blog-chart-tooltip {
