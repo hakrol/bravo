@@ -76,7 +76,10 @@ export function BlogHeroCarousel({ posts }: BlogHeroCarouselProps) {
                 <div className="text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
                   Artikkel · {activePost.readingTimeMinutes} min lesetid
                 </div>
-                <h2 className="max-w-[10.5ch] text-4xl font-semibold tracking-[-0.075em] text-balance text-[var(--foreground)] sm:text-5xl lg:text-[4.25rem]">
+                <h2
+                  className="blog-title-fit max-w-[10.5ch] text-4xl font-semibold tracking-[-0.075em] text-balance text-[var(--foreground)] sm:text-5xl lg:text-[4.25rem]"
+                  lang="nb"
+                >
                   <Link
                     className="transition duration-200 hover:text-[var(--primary-strong)]"
                     href={`/blogg/${activePost.slug}`}
@@ -148,7 +151,10 @@ function CarouselSideCard({ direction, post, onClick }: CarouselSideCardProps) {
       <div className="text-[0.75rem] font-semibold uppercase tracking-[0.14em] text-[rgba(27,36,48,0.34)]">
         Artikkel · {post.readingTimeMinutes} min lesetid
       </div>
-      <h3 className="max-w-[11ch] text-[2.25rem] font-semibold tracking-[-0.07em] text-[rgba(27,36,48,0.28)]">
+      <h3
+        className="blog-title-fit max-w-[11ch] text-[2.25rem] font-semibold tracking-[-0.07em] text-[rgba(27,36,48,0.28)]"
+        lang="nb"
+      >
         {post.title}
       </h3>
       <div className="text-sm text-[rgba(27,36,48,0.3)]">{formatBlogDate(post.publishedAt)}</div>

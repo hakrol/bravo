@@ -1,0 +1,190 @@
+{
+  "id": "intensivsykepleier-lonn-2025",
+  "title": "Hvor mye tjener en intensivsykepleier?",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "SSB publiserer ikke egne lønnstall for intensivsykepleiere i tabell 11418. Tallene gjelder STYRK-08 2221 Spesialsykepleiere, der intensivsykepleiere inngår sammen med blant annet anestesisykepleiere, operasjonssykepleiere, barnesykepleiere og kreftsykepleiere. Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 2025K4.",
+  "occupationMapping": {
+    "styrk98Code": "2230101",
+    "styrk98Title": "INTENSIVSYKEPLEIER",
+    "styrk08Code": "2221",
+    "styrk08Title": "Spesialsykepleiere"
+  },
+  "rows": [
+    {
+      "code": "2222",
+      "label": "Jordmødre",
+      "href": "/yrke/jordmodre-lonn",
+      "value": 69660,
+      "average": 70480,
+      "p25": 62900,
+      "p75": 77300,
+      "employees": 2976,
+      "jobs": 3327,
+      "averageAge": 45
+    },
+    {
+      "code": "2221",
+      "label": "Spesialsykepleiere",
+      "href": "/yrke/spesialsykepleiere-lonn",
+      "value": 63810,
+      "average": 64770,
+      "p25": 58180,
+      "p75": 70030,
+      "employees": 30211,
+      "jobs": 33102,
+      "averageAge": 47.2
+    },
+    {
+      "code": "2262",
+      "label": "Farmasøyter",
+      "href": "/yrke/farmasoyter-lonn",
+      "value": 62840,
+      "average": 65720,
+      "p25": 56970,
+      "p75": 71420,
+      "employees": 1882,
+      "jobs": 2081,
+      "averageAge": 39.8
+    },
+    {
+      "code": "3258",
+      "label": "Ambulansepersonell",
+      "href": "/yrke/ambulansepersonell-lonn",
+      "value": 59260,
+      "average": 57610,
+      "p25": 52430,
+      "p75": 64510,
+      "employees": 5638,
+      "jobs": 7093,
+      "averageAge": 37.5
+    },
+    {
+      "code": "3211",
+      "label": "Radiografer mv.",
+      "href": "/yrke/radiografer-mv-lonn",
+      "value": 58080,
+      "average": 57270,
+      "p25": 51750,
+      "p75": 61950,
+      "employees": 3157,
+      "jobs": 3220,
+      "averageAge": 40.7
+    },
+    {
+      "code": "2223",
+      "label": "Sykepleiere",
+      "href": "/yrke/sykepleiere-lonn",
+      "value": 57830,
+      "average": 58290,
+      "p25": 52030,
+      "p75": 63040,
+      "employees": 61314,
+      "jobs": 70299,
+      "averageAge": 39.2
+    },
+    {
+      "code": "2224",
+      "label": "Vernepleiere",
+      "href": "/yrke/vernepleiere-lonn",
+      "value": 57190,
+      "average": 57350,
+      "p25": 51830,
+      "p75": 61950,
+      "employees": 22607,
+      "jobs": 27823,
+      "averageAge": 40.8
+    },
+    {
+      "code": "0-9",
+      "label": "Alle yrker",
+      "href": "/yrker",
+      "value": 55800,
+      "average": 62070,
+      "p25": 45650,
+      "p75": 69940,
+      "employees": 2839036,
+      "jobs": 3174526,
+      "averageAge": 42.5
+    },
+    {
+      "code": "2264",
+      "label": "Fysioterapeuter",
+      "href": "/yrke/fysioterapeuter-lonn",
+      "value": 54350,
+      "average": 54800,
+      "p25": 48190,
+      "p75": 59640,
+      "employees": 6241,
+      "jobs": 6584,
+      "averageAge": 40.9
+    },
+    {
+      "code": "2267",
+      "label": "Ergoterapeuter",
+      "href": "/yrke/ergoterapeuter-lonn",
+      "value": 52780,
+      "average": 52570,
+      "p25": 47680,
+      "p75": 57700,
+      "employees": 3125,
+      "jobs": 3281,
+      "averageAge": 39.9
+    },
+    {
+      "code": "5321",
+      "label": "Helsefagarbeidere",
+      "href": "/yrke/helsefagarbeidere-lonn",
+      "value": 51430,
+      "average": 50580,
+      "p25": 45860,
+      "p75": 55380,
+      "employees": 96139,
+      "jobs": 119739,
+      "averageAge": 44.4
+    },
+    {
+      "code": "3256",
+      "label": "Helsesekretærer",
+      "href": "/yrke/helsesekretaerer-lonn",
+      "value": 45710,
+      "average": 45500,
+      "p25": 43490,
+      "p75": 47580,
+      "employees": 9284,
+      "jobs": 9979,
+      "averageAge": 45.3
+    },
+    {
+      "code": "5329",
+      "label": "Andre pleiemedarbeidere",
+      "href": "/yrke/andre-pleiemedarbeidere-lonn",
+      "value": 45070,
+      "average": 46080,
+      "p25": 39830,
+      "p75": 50590,
+      "employees": 71067,
+      "jobs": 95196,
+      "averageAge": 38.8
+    }
+  ],
+  "genderMedian": {
+    "occupationLabel": "Spesialsykepleiere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 63260,
+    "menMonthlyMedian": 67840
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Spesialsykepleiere",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 53250 },
+      { "label": "2022", "value": 55440 },
+      { "label": "2023", "value": 59130 },
+      { "label": "2024", "value": 62090 },
+      { "label": "2025", "value": 63810 }
+    ]
+  }
+}
