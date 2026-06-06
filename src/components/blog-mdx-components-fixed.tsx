@@ -23,6 +23,11 @@ import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
+import {
+  IntensivsykepleierGenderSalaryCards,
+  IntensivsykepleierSalaryBubbleChart,
+  IntensivsykepleierSalaryDevelopmentChart,
+} from "@/components/blog-intensivsykepleier-salary-chart";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { MalerGenderSalaryCards, MalerSalaryBubbleChart, MalerSalaryDevelopmentChart } from "@/components/blog-maler-salary-chart";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
@@ -184,6 +189,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     LegalSalaryDevelopmentChart,
     BlogSalaryDevelopmentChart,
     HealthSalaryBubbleChart,
+    IntensivsykepleierGenderSalaryCards,
+    IntensivsykepleierSalaryBubbleChart,
+    IntensivsykepleierSalaryDevelopmentChart,
     MalerGenderSalaryCards,
     MalerSalaryBubbleChart,
     MalerSalaryDevelopmentChart,

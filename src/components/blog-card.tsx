@@ -27,7 +27,10 @@ export function BlogCard({ post }: BlogCardProps) {
         </div>
 
         <div className="space-y-3">
-          <h2 className="max-w-[15ch] text-[1.95rem] font-semibold tracking-[-0.065em] text-balance text-[var(--foreground)]">
+          <h2
+            className="blog-title-fit max-w-[15ch] text-[1.95rem] font-semibold tracking-[-0.065em] text-balance text-[var(--foreground)]"
+            lang="nb"
+          >
             <Link
               className="transition duration-200 group-hover:text-[var(--primary-strong)]"
               href={`/blogg/${post.slug}`}

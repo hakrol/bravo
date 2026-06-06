@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { formatBlogDate, type BlogPost } from "@/lib/blog";
 
 type BlogPostHeaderProps = {
@@ -18,26 +17,10 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
   return (
     <header className="blog-post-hero">
       <div className="blog-post-hero-card">
-        <div className="blog-post-hero-content">
-          <nav aria-label="Brødsmuler" className="blog-post-hero-breadcrumb">
-            <Link href="/blogg">Blogg</Link>
-            <span aria-hidden="true">→</span>
-            <span>{post.title}</span>
-          </nav>
-
-          <div>
-            <time className="blog-post-hero-date" dateTime={post.publishedAt}>
-              {formatBlogDate(post.publishedAt)}
-            </time>
-            <h1 className="blog-post-hero-title">{post.title}</h1>
-            <p className="blog-post-hero-description">{post.description}</p>
-          </div>
-
-          <div className="blog-post-hero-author">
-            <span>{post.author}</span>
-            <span aria-hidden="true">•</span>
-            <span>{post.readingTimeMinutes} min lesetid</span>
-          </div>
+        <div className="blog-post-hero-heading">
+          <h1 className="blog-post-hero-title" lang="nb">
+            {post.title}
+          </h1>
         </div>
 
         <figure className="blog-post-hero-figure">
@@ -48,7 +31,7 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
               fill
               priority
               quality={92}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 55vw, 620px"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 92vw, 1120px"
               src={post.coverImage}
             />
           </div>
@@ -56,6 +39,18 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
             {sentence(coverImageDescription)} {aiCaptionText}
           </figcaption>
         </figure>
+
+        <div className="blog-post-hero-content">
+          <p className="blog-post-hero-description">{post.description}</p>
+
+          <div className="blog-post-hero-author">
+            <span>{post.author}</span>
+            <span aria-hidden="true">•</span>
+            <time dateTime={post.publishedAt}>{formatBlogDate(post.publishedAt)}</time>
+            <span aria-hidden="true">•</span>
+            <span>{post.readingTimeMinutes} min lesetid</span>
+          </div>
+        </div>
       </div>
     </header>
   );

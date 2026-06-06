@@ -211,6 +211,10 @@ Unngå:
 ## Data og SSB
 
 - Hvis innlegget bruker SSB-data, følg reglene i `/lib/ssb/docs.md` når filen finnes i prosjektet.
+- Ved blogginnlegg om konkrete yrker eller lønn: bruk yrkeskoder bevisst. Den sjusifrede yrkeskoden kommer fra Yrkeskatalogen/STYRK98 og brukes ved rapportering, mens SSB-statistikk ofte grupperer yrker etter fire sifre i STYRK-08.
+- Husk at yrkeskode bestemmes av faktiske arbeidsoppgaver, ikke utdanning, bransje, lønn eller stillingstittel alene. Se `src/lib/ssb/docs.md` for detaljer om Yrkeskatalogen, Klass API og omkoding mellom STYRK98 og STYRK-08.
+- Når et blogginnlegg skal forklare arbeidsoppgaver, arbeidssted, utdanningsvei eller hva et konkret yrke innebærer, bruk Utdanning.no-dataene i `src/lib/utdanning/yrkesbeskrivelser.json` og reglene i `src/lib/utdanning/docs.md` som støttekilde. Koble helst via `styrk98[].yrkeskode_styrk98` mot 7-sifret kode i `src/lib/ssb/426.csv`.
+- Ikke presenter Utdanning.no-beskrivelser som SSB-data. Bruk SSB til lønn og yrkeskoder, og Utdanning.no til yrkesforklaring.
 - Bruk eksisterende funksjoner i `/lib/ssb/queries.ts` når innlegget krever nye SSB-uttrekk.
 - Ikke konstruer rå SSB-kall inne i komponenter eller blogginnlegg.
 - Datadrevne innlegg som handler om en bestemt periode, for eksempel 2025, skal bruke et frosset snapshot under `src/content/blog/data/`.

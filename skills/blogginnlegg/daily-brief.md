@@ -48,9 +48,9 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
-
 ### Ferdig
 
+- [x] Hvor mye tjener en intensivsykepleier? - `src/content/blog/hvor-mye-tjener-en-intensivsykepleier.mdx` - 2026-05-31
 - [x] Hva tjener bussjåfører og trikkeførere? - `src/content/blog/hva-tjener-bussjaforer-og-trikkeforere.mdx` - 2026-05-30
 - [x] Hva er årslønnen til en maler? - `src/content/blog/hva-er-arslonnen-til-en-maler.mdx` - 2026-05-30
 - [x] Hvor mye tjener en rørlegger i året? - `src/content/blog/hvor-mye-tjener-en-rorlegger-i-aret.mdx` - 2026-05-26

@@ -9,6 +9,9 @@ Hvorfor den fungerer:
 - Starter med et konkret poeng.
 - Peker mot hva leseren får svar på.
 
+### Bra intro: Engasjerende og svarer på spørsmålet.
+Piloter er luftens busssjåfører! En pilot er at stort ansvar og tjener mer enn de fleste. I 2025 var median månedslønn hele 118 440 kr, det vil si en årslønn på 1 421 280 kr.
+
 ## Dårlig intro
 
 ### Dårlig: generisk SEO-åpning
@@ -18,3 +21,13 @@ Hvorfor den er dårlig:
 - Sier nesten ingenting konkret.
 - Kunne passet på alle yrker.
 - Bruker tomme fraser i stedet for data eller leserbehov.
+
+
+### Dårlig: Dårlig ordbruk.
+Intensivsykepleier er et konkret yrke, men SSBs lønnsstatistikk viser ikke intensivsykepleiere som egen lønnsgruppe.
+
+Hvorfor den er dårlig:
+- Ordet "konkret" passer ikke, og får teksten til å høres rar ut. Bedre ville vært "Intensivsykepleier er ikke en egen lønnsgruppe i SSB sin statistikk."
+
+### Dårlig: 
+Pilotlønn er høy, men ett tall forteller ikke hele historien. SSB skiller mellom flygere, flygeledere, luftfartsteknikere og kabinpersonale, og nivåene ligger langt fra hverandre.
