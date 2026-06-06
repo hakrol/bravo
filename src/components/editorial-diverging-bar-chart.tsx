@@ -64,8 +64,8 @@ export function EditorialDivergingBarChart({
   const ariaTitle = `${title}. ${subtitleLabel}: ${subtitleText}`;
 
   return (
-    <figure className="my-10 w-full" aria-label={ariaTitle}>
-      <div className="mx-auto w-full max-w-[920px] overflow-visible">
+    <figure className="blog-editorial-chart-figure my-10 w-full" aria-label={ariaTitle}>
+      <div className="mx-auto w-full max-w-[60rem] overflow-visible">
         <svg
           className="h-auto w-full overflow-visible bg-white"
           role="img"
@@ -256,8 +256,8 @@ export function EditorialVerticalBarChart({
   const ariaTitle = `${title}. ${subtitleLabel}: ${subtitleText}`;
 
   return (
-    <figure className="my-10 w-full" aria-label={ariaTitle}>
-      <div className="mx-auto w-full max-w-[920px] overflow-visible">
+    <figure className="blog-editorial-chart-figure my-10 w-full" aria-label={ariaTitle}>
+      <div className="mx-auto w-full max-w-[60rem] overflow-visible">
         <svg
           className="h-auto w-full overflow-visible bg-white"
           role="img"

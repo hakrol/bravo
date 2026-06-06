@@ -62,12 +62,12 @@ export function HomeOccupationCards({ query, rows, sourceRows }: HomeOccupationC
 function OccupationHighlightCard({ row }: { row: OccupationSalaryRow }) {
   const detailHref = getOccupationDetailHref(row.occupationCode, row.occupationLabel);
   const content = (
-    <article className="min-h-32 w-full min-w-0 max-w-full rounded-md border border-black/8 bg-white/90 p-5 shadow-[0_16px_36px_rgba(27,36,48,0.07)] transition hover:-translate-y-0.5 hover:border-[var(--primary)]/25 hover:shadow-[0_20px_44px_rgba(27,36,48,0.1)]">
+    <article className="group min-h-32 w-full min-w-0 max-w-full rounded-md border border-black/8 bg-white/90 p-5 shadow-[0_16px_36px_rgba(27,36,48,0.07)] transition hover:-translate-y-0.5 hover:border-[#d98b2b]/35 hover:shadow-[0_20px_44px_rgba(217,139,43,0.12)]">
       <div className="min-w-0">
-        <h3 className="flex min-w-0 items-center gap-2 text-base font-semibold leading-snug text-slate-950">
+        <h3 className="flex min-w-0 items-center gap-2 text-base font-semibold leading-snug text-slate-950 transition-colors group-hover:text-[#d98b2b]">
           <span className="truncate">{row.occupationLabel}</span>
           {detailHref ? (
-            <span aria-hidden="true" className="shrink-0 text-[var(--primary-strong)]">
+            <span aria-hidden="true" className="shrink-0 text-[var(--primary-strong)] transition-colors group-hover:text-[#d98b2b]">
               &gt;
             </span>
           ) : null}

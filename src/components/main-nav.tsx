@@ -14,10 +14,20 @@ const navItems = [
 
 const toolItems = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
+  { href: "/bruttolonn-kalkulator", label: "Brutto/netto kalkulator" },
   { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
   { href: "/lanekalkulator", label: "Lånekalkulator" },
   { href: "/lonnsjekk", label: "Lønnssjekk" },
 ] as const;
+
+const desktopNavLinkBase =
+  "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-1.5 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#d98b2b] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
+
+const dropdownNavLinkBase =
+  "relative block rounded-[5px] px-4 py-3 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#d98b2b] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
+
+const mobileNavLinkBase =
+  "relative flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#d98b2b] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
 
 function isActivePath(pathname: string, href: string) {
   if (href === "/") {
@@ -93,7 +103,7 @@ export function MainNav() {
               key={item.href}
               aria-current={active ? "page" : undefined}
               className={[
-                "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
+                desktopNavLinkBase,
                 active
                   ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)] shadow-[inset_0_0_0_1px_rgba(20,83,45,0.08)]"
                   : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
@@ -109,7 +119,7 @@ export function MainNav() {
           <Link
             aria-current={pathname && isActivePath(pathname, "/verktoy") ? "page" : undefined}
             className={[
-              "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
+              desktopNavLinkBase,
               pathname &&
               (isActivePath(pathname, "/verktoy") ||
                 toolItems.some((item) => isActivePath(pathname, item.href)))
@@ -130,7 +140,7 @@ export function MainNav() {
                     key={item.href}
                     aria-current={active ? "page" : undefined}
                     className={[
-                      "rounded-[5px] px-4 py-3 text-sm font-semibold transition duration-200",
+                      dropdownNavLinkBase,
                       active
                         ? "bg-[rgba(20,83,45,0.1)] text-[var(--primary-strong)]"
                         : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
@@ -153,7 +163,7 @@ export function MainNav() {
               key={item.href}
               aria-current={active ? "page" : undefined}
               className={[
-                "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200",
+                desktopNavLinkBase,
                 active
                   ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)] shadow-[inset_0_0_0_1px_rgba(20,83,45,0.08)]"
                   : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
@@ -180,7 +190,7 @@ export function MainNav() {
           <Link
             aria-current={pathname && isActivePath(pathname, "/verktoy") ? "page" : undefined}
             className={[
-              "flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200",
+              mobileNavLinkBase,
               pathname && isActivePath(pathname, "/verktoy")
                 ? "bg-[rgba(20,83,45,0.1)] text-[var(--primary-strong)]"
                 : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
@@ -198,7 +208,7 @@ export function MainNav() {
                 key={item.href}
                 aria-current={active ? "page" : undefined}
                 className={[
-                  "flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200",
+                  mobileNavLinkBase,
                   active
                     ? "bg-[rgba(20,83,45,0.1)] text-[var(--primary-strong)]"
                     : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",

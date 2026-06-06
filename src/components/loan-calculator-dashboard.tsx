@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
+import { CalculatorPageVisual } from "@/components/calculator-page-visual";
 
 const MAX_DEBT_TO_INCOME = 5;
 const MAX_LOAN_TO_VALUE = 0.9;
@@ -84,14 +85,17 @@ export function LoanCalculatorDashboard() {
       <div className="relative rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
         <div className="relative space-y-5">
-          <div className="max-w-4xl space-y-3">
-            <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
-              Lånekalkulator
-            </h1>
-            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Se omtrent hvor mye du kan låne til bolig, og hvilken regel som faktisk begrenser
-              låneevnen din.
-            </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+            <CalculatorPageVisual variant="loan" />
+            <div className="max-w-4xl space-y-3">
+              <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+                Lånekalkulator
+              </h1>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                Se omtrent hvor mye du kan låne til bolig, og hvilken regel som faktisk begrenser
+                låneevnen din.
+              </p>
+            </div>
           </div>
 
           <section className="scroll-mt-8" id="lanekalkulator-kontrollpanel">
