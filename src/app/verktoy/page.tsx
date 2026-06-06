@@ -19,6 +19,12 @@ const tools = [
       "Regn om lønn mellom måned, år og time, og få en enklere oversikt over hva lønnen betyr.",
   },
   {
+    href: "/bruttolonn-kalkulator",
+    label: "Brutto- og nettolønn kalkulator",
+    description:
+      "Beregn nettolønn fra bruttolønn, eller bruttolønn fra nettolønn, med en enkel skattesats.",
+  },
+  {
     href: "/lanekalkulator",
     label: "Lånekalkulator",
     description:

@@ -1,6 +1,7 @@
 "use client";
 
 import { type Dispatch, type ReactNode, type SetStateAction, useState } from "react";
+import { CalculatorPageVisual } from "@/components/calculator-page-visual";
 
 const STANDARD_WEEKLY_HOUR_OPTIONS = ["35,5", "36", "37,5", "40"] as const;
 const DAY_HOURS = 7.5;
@@ -123,14 +124,17 @@ export function SalaryCalculatorDashboard() {
       <div className="relative overflow-hidden rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
         <div className="relative space-y-5">
-          <div className="max-w-4xl space-y-3">
-            <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
-              Lønnskalkulator
-            </h1>
-            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Beregn lønn, skatt, timelønn, feriepenger og netto utbetaling med en enkel
-              lønnskalkulator.
-            </p>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+            <CalculatorPageVisual variant="salary" />
+            <div className="max-w-4xl space-y-3">
+              <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+                Lønnskalkulator
+              </h1>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+                Beregn lønn, skatt, timelønn, feriepenger og netto utbetaling med en enkel
+                lønnskalkulator.
+              </p>
+            </div>
           </div>
 
           <section

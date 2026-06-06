@@ -423,6 +423,7 @@ body {
 }
 
 .blog-prose .blog-chart-figure,
+.blog-prose .blog-editorial-chart-figure,
 .blog-prose .blog-chart-bubble-figure,
 .blog-prose .blog-salary-development-figure {
   width: min(calc(100vw - 2rem), 60rem);
