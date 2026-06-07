@@ -1,33 +1,15 @@
-# Introeksempler for blogginnlegg
 
-## Bra intro
+#Eksempler på gode introduksjoner til Blogginnlegg:
 
-### Bra: konkret funn først
-Rørleggerlønn ligger høyt blant praktiske håndverksfag, men SSB-tallet dekker flere typer VVS-arbeid. I dette innlegget ser vi nærmere på hva rørleggere tjener og hvordan de står seg sammenlignet med andre.
+Nummer 1: 
 
-Hvorfor den fungerer:
-- Starter med et konkret poeng.
-- Peker mot hva leseren får svar på.
+Intensivsykepleier ligger i gruppen Spesialsykepleiere i SSB sin statistikk. I 2025 var median månedslønn 63 810 kroner. Det tilsvarer omtrent 765 720 kroner før skatt, eller rundt 393 kroner i timelønn. I dette innlegget dykker vi dypere ned i lønnen til en intensivsykepleier.
 
-### Bra intro: Engasjerende og svarer på spørsmålet.
-Piloter er luftens busssjåfører! En pilot er at stort ansvar og tjener mer enn de fleste. I 2025 var median månedslønn hele 118 440 kr, det vil si en årslønn på 1 421 280 kr.
+Nummer 2:
 
-## Dårlig intro
+Median årslønnen til en maler var 550 800 kroner i 2025. I dette innlegget ser vi på hvordan malerlønnen har utviklet seg, forskjellen mellom kvinner og menn og hva nærligende yrker tjener.
 
-### Dårlig: generisk SEO-åpning
-I dagens arbeidsmarked er det mange som lurer på hva en rørlegger tjener. Det finnes mange faktorer som spiller inn, og lønn kan variere fra person til person.
+Nummer 3:
 
-Hvorfor den er dårlig:
-- Sier nesten ingenting konkret.
-- Kunne passet på alle yrker.
-- Bruker tomme fraser i stedet for data eller leserbehov.
+Brannmenn har en spennende og risikofylt jobb. Noe som lønnen reflekterer. I 2025 var median månedslønn for brannmenn 60 510 kroner. Det tilsvarer omtrent 726 120 kroner i årslønn før skatt. Sammenlignet med median månedslønn for alle yrker samlet, tjener brannmenn mer enn de fleste.
 
-
-### Dårlig: Dårlig ordbruk.
-Intensivsykepleier er et konkret yrke, men SSBs lønnsstatistikk viser ikke intensivsykepleiere som egen lønnsgruppe.
-
-Hvorfor den er dårlig:
-- Ordet "konkret" passer ikke, og får teksten til å høres rar ut. Bedre ville vært "Intensivsykepleier er ikke en egen lønnsgruppe i SSB sin statistikk."
-
-### Dårlig: 
-Pilotlønn er høy, men ett tall forteller ikke hele historien. SSB skiller mellom flygere, flygeledere, luftfartsteknikere og kabinpersonale, og nivåene ligger langt fra hverandre.
