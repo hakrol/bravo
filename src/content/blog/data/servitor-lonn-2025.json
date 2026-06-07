@@ -1,0 +1,158 @@
+{
+  "id": "servitor-lonn-2025",
+  "title": "Hva er lønnen til en servitør?",
+  "source": "SSB tabell 11418, 11658 og 12851",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Lønnstallene gjelder STYRK-08 5131 Servitører. Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 4. kvartal 2025. Lærlingtall gjelder SSB tabell 12851 for lærlinger i STYRK-08 5131 Servitører i 2025.",
+  "occupationMapping": {
+    "styrk98Code": "5123111",
+    "styrk98Title": "SERVITØR",
+    "styrk08Code": "5131",
+    "styrk08Title": "Servitører"
+  },
+  "rows": [
+    {
+      "code": "5165",
+      "label": "Kjøreskolelærere",
+      "href": "/yrke/kjoreskolelaerere-lonn",
+      "value": 58310,
+      "employees": 2055
+    },
+    {
+      "code": "5163",
+      "label": "Begravelsesbyrå- og krematoriearbeidere",
+      "href": "/yrke/begravelsesbyra-og-krematoriearbeidere-lonn",
+      "value": 52790,
+      "employees": 1016
+    },
+    {
+      "code": "5153",
+      "label": "Vaktmestre",
+      "href": "/yrke/vaktmestre-lonn",
+      "value": 48190,
+      "employees": 22641
+    },
+    {
+      "code": "5151",
+      "label": "Renholdsledere i bedrifter",
+      "href": "/yrke/renholdsledere-i-bedrifter-lonn",
+      "value": 47600,
+      "employees": 2357
+    },
+    {
+      "code": "5113",
+      "label": "Reiseledere og guider",
+      "href": "/yrke/reiseledere-og-guider-lonn",
+      "value": 42220,
+      "employees": 2130
+    },
+    {
+      "code": "5169",
+      "label": "Andre personlige tjenesteytere",
+      "href": "/yrke/andre-personlige-tjenesteytere-lonn",
+      "value": 41800,
+      "employees": 497
+    },
+    {
+      "code": "5120",
+      "label": "Kokker",
+      "href": "/yrke/kokker-lonn",
+      "value": 41610,
+      "employees": 23462
+    },
+    {
+      "code": "5111",
+      "label": "Flyverter, båtverter mv.",
+      "href": "/yrke/flyverter-batverter-mv-lonn",
+      "value": 41510,
+      "employees": 2720
+    },
+    {
+      "code": "5141",
+      "label": "Frisører",
+      "href": "/yrke/frisorer-lonn",
+      "value": 39670,
+      "employees": 8898
+    },
+    {
+      "code": "5142",
+      "label": "Kosmetologer mv.",
+      "href": "/yrke/kosmetologer-mv-lonn",
+      "value": 39330,
+      "employees": 3038
+    },
+    {
+      "code": "5132",
+      "label": "Bartendere",
+      "href": "/yrke/bartendere-lonn",
+      "value": 37480,
+      "employees": 6975
+    },
+    {
+      "code": "5131",
+      "label": "Servitører",
+      "href": "/yrke/servitorer-lonn",
+      "value": 37350,
+      "average": 38370,
+      "p25": 34100,
+      "p75": 41190,
+      "employees": 24470,
+      "jobs": 32842,
+      "averageAge": 32.3
+    },
+    {
+      "code": "5164",
+      "label": "Dyrepassere og - trenere mv.",
+      "href": "/yrke/dyrepassere-og-trenere-mv-lonn",
+      "value": 36670,
+      "employees": 1133
+    }
+  ],
+  "genderMedian": {
+    "occupationLabel": "Servitører",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 36970,
+    "menMonthlyMedian": 38080
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Servitører",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 30200 },
+      { "label": "2022", "value": 32080 },
+      { "label": "2023", "value": 34000 },
+      { "label": "2024", "value": 35720 },
+      { "label": "2025", "value": 37350 }
+    ]
+  },
+  "laborMarket": {
+    "period": "4. kvartal 2025",
+    "employees": 24470,
+    "jobs": 32842,
+    "womenEmployees": 14879,
+    "menEmployees": 9591,
+    "womenShare": 60.8,
+    "menShare": 39.2,
+    "averageAge": 32.3
+  },
+  "apprenticeship": {
+    "occupationLabel": "Servitører",
+    "period": "2025",
+    "source": "SSB tabell 12851",
+    "monthlyMedian": 20240,
+    "averageMonthlySalary": 22760
+  },
+  "minimumWage": {
+    "source": "Arbeidstilsynet",
+    "period": "fra 15. juni 2025",
+    "industry": "Overnattings-, serverings- og cateringvirksomheter",
+    "rates": [
+      { "label": "Inntil 17 år", "hourlyRate": 142.58 },
+      { "label": "17 år", "hourlyRate": 152.08 },
+      { "label": "18 år", "hourlyRate": 166.34 },
+      { "label": "Begynnerlønn over 20 år / etter 4 måneder praksis over 18 år", "hourlyRate": 204.79 }
+    ]
+  }
+}

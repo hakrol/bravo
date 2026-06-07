@@ -18,6 +18,7 @@ For generelle bloggstandarder, følg:
 - Når et tema har `Diagrammer`, skal hvert punkt være en enkel diagramtype som skal inkluderes i innlegget hvis datagrunnlaget finnes eller kan hentes etter bloggskillens regler.
 - Hvis et oppgitt diagram ikke kan lages, skal Codex forklare hvorfor før temaet regnes som ferdig.
 - Når et tema har `FAQ`, skal hvert punkt være et konkret spørsmål som skal inkluderes i innleggets FAQ-seksjon. Codex skal skrive korte, presise svar basert på innleggets datagrunnlag og plassere FAQ-en naturlig mot slutten av innlegget, vanligvis før oppsummeringen.
+- Ikke legg inn generiske nøkkeltallstabeller som bare gjentar tall fra brødteksten. Bruk tabeller kun når det er en del av instruksen. 
 
 ## Arbeidsflyt
 
@@ -50,6 +51,7 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Hva er lønnen til en servitør? - `src/content/blog/hva-er-lonnen-til-en-servitor.mdx` - 2026-06-06
 - [x] Hvor mye tjener en intensivsykepleier? - `src/content/blog/hvor-mye-tjener-en-intensivsykepleier.mdx` - 2026-05-31
 - [x] Hva tjener bussjåfører og trikkeførere? - `src/content/blog/hva-tjener-bussjaforer-og-trikkeforere.mdx` - 2026-05-30
 - [x] Hva er årslønnen til en maler? - `src/content/blog/hva-er-arslonnen-til-en-maler.mdx` - 2026-05-30

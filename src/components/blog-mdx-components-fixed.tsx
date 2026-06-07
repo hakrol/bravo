@@ -34,6 +34,11 @@ import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-char
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
 import { BlogSalaryDevelopmentChart } from "@/components/blog-salary-development-chart";
+import {
+  ServitorGenderSalaryCards,
+  ServitorSalaryBubbleChart,
+  ServitorSalaryDevelopmentChart,
+} from "@/components/blog-servitor-salary-chart";
 import { PoliceSalaryBubbleChart, PoliceSalaryEditorialChart } from "@/components/blog-police-salary-chart";
 import {
   RorleggerGenderSalaryCards,
@@ -203,6 +208,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     RorleggerSalaryBubbleChart,
     RorleggerSalaryDevelopmentChart,
     RorleggerSalaryEditorialChart,
+    ServitorGenderSalaryCards,
+    ServitorSalaryBubbleChart,
+    ServitorSalaryDevelopmentChart,
     SnekkerSalaryBubbleChart,
     SnekkerSalaryEditorialChart,
     BlogOccupationSalaryTable,
