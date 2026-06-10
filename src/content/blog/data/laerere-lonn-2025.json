@@ -1,21 +1,30 @@
 {
   "id": "laerere-lonn-2025",
-  "title": "Hva er vanlig lønn for lærere?",
-  "source": "SSB tabell 11418",
+  "title": "Hva slags lærer tjener mest?",
+  "source": "SSB tabell 11418 og 11658",
   "period": "2025",
   "measure": "Median månedslønn",
   "reference": {
     "label": "Alle yrker",
     "value": 55800
   },
-  "note": "Tallene gjelder månedslønn for begge kjønn, alle sektorer, heltids- og deltidsansatte samlet. Prosent i figuren viser avvik fra medianen for alle yrker.",
+  "note": "Lønnstallene gjelder median månedslønn for alle sektorer og arbeidstid i alt i 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 4. kvartal 2025.",
+  "occupationMappingNote": "SSB bruker STYRK-08-koder i lønnsstatistikken. Rektorer og skoleledere ligger ikke i en egen rektorkode her, men i STYRK-08 1345 Ledere av utdanning og undervisning.",
   "chart": {
-    "title": "Hva er vanlig lærerlønn?",
+    "title": "Ledere av utdanning og undervisning ligger klart høyest",
     "kicker": "LÆRERLØNN",
     "subtitleLabel": "Median månedslønn",
-    "subtitleText": "i kroner for utvalgte læreryrker, SSB 2025",
+    "subtitleText": "i kroner for utvalgte lærer- og undervisningsyrker, SSB 2025",
     "brandText": null,
     "rows": [
+      {
+        "label": "Ledere av utdanning og undervisning",
+        "value": 75610
+      },
+      {
+        "label": "Spesialister i pedagogikk",
+        "value": 65980
+      },
       {
         "label": "Universitets- og høyskolelektorer/-lærere",
         "value": 62740
@@ -27,6 +36,10 @@
       {
         "label": "Grunnskolelærere",
         "value": 58750
+      },
+      {
+        "label": "Spesiallærere / spesialpedagoger",
+        "value": 56610
       },
       {
         "label": "Yrkesfaglærere",
@@ -49,6 +62,16 @@
     "subtitleLabel": "Estimert timelønn",
     "subtitleText": "månedslønn regnet om med 1 950 arbeidstimer i året",
     "rows": [
+      {
+        "label": "Ledere",
+        "hrefLabel": "Ledere av utdanning og undervisning",
+        "value": 465
+      },
+      {
+        "label": "Pedagogikk",
+        "hrefLabel": "Spesialister i pedagogikk",
+        "value": 406
+      },
       {
         "label": "UH-lærere",
         "hrefLabel": "Universitets- og høyskolelektorer/-lærere",
@@ -84,39 +107,132 @@
   },
   "rows": [
     {
+      "code": "1345",
+      "label": "Ledere av utdanning og undervisning",
+      "href": "/yrke/ledere-av-utdanning-og-undervisning-lonn",
+      "value": 75610,
+      "average": 77340,
+      "p25": 69170,
+      "p75": 82670,
+      "employees": 11373,
+      "jobs": 11883,
+      "averageAge": 51.4,
+      "description": "Har ansvar for drift og utvikling av skoler eller andre opplæringstilbud, og følger opp ansatte, kvalitet, læringsmiljø, planer og resultater."
+    },
+    {
+      "code": "2351",
+      "label": "Spesialister i pedagogikk",
+      "href": "/yrke/spesialister-i-pedagogikk-lonn",
+      "value": 65980,
+      "average": 63710,
+      "p25": 55210,
+      "p75": 70830,
+      "employees": 2052,
+      "jobs": 2330,
+      "averageAge": 46.7,
+      "description": "Arbeider med læring, utvikling og pedagogiske metoder, og gir faglige råd om hvordan undervisning og opplæring kan planlegges og forbedres."
+    },
+    {
       "code": "2310",
       "label": "Universitets- og høyskolelektorer/-lærere",
       "href": "/yrke/universitets-og-hoyskolelektorer-laerere-lonn",
       "value": 62740,
-      "differenceFromAllOccupationsPercent": 12.4
+      "average": 64140,
+      "p25": 50150,
+      "p75": 74880,
+      "employees": 32201,
+      "jobs": 39457,
+      "averageAge": 44,
+      "description": "Underviser og veileder studenter i høyere utdanning, og arbeider med faglig formidling, vurdering, forberedelser og ofte også forskning."
     },
     {
       "code": "2330",
       "label": "Lektorer mv. (videregående skole)",
       "href": "/yrke/lektorer-mv-videregaende-skole-lonn",
       "value": 61930,
-      "differenceFromAllOccupationsPercent": 11.0
+      "average": 62140,
+      "p25": 57220,
+      "p75": 68000,
+      "employees": 27182,
+      "jobs": 29930,
+      "averageAge": 47.1,
+      "description": "Underviser i fag på videregående nivå og følger opp læring, vurdering, faglig utvikling og klassemiljø gjennom skoleåret."
     },
     {
       "code": "2341",
       "label": "Grunnskolelærere",
       "href": "/yrke/grunnskolelaerere-lonn",
       "value": 58750,
-      "differenceFromAllOccupationsPercent": 5.3
+      "average": 58370,
+      "p25": 54710,
+      "p75": 62930,
+      "employees": 80852,
+      "jobs": 87725,
+      "averageAge": 42.5,
+      "description": "Lærer barn grunnleggende fag, ferdigheter og arbeidsvaner, og følger opp både læring, trivsel, utvikling og samarbeid med foresatte."
+    },
+    {
+      "code": "2352",
+      "label": "Spesiallærere / spesialpedagoger",
+      "href": "/yrke/spesiallaerere-spesialpedagoger-lonn",
+      "value": 56610,
+      "average": 56630,
+      "p25": 53620,
+      "p75": 60630,
+      "employees": 2929,
+      "jobs": 3063,
+      "averageAge": 44.6,
+      "description": "Gir tilpasset støtte til barn, unge eller voksne med særskilte behov, og tilrettelegger opplæring ut fra funksjon, læring og utvikling."
     },
     {
       "code": "2320",
       "label": "Yrkesfaglærere",
       "href": "/yrke/yrkesfaglaerere-lonn",
       "value": 56300,
-      "differenceFromAllOccupationsPercent": 0.9
+      "average": 56920,
+      "p25": 51830,
+      "p75": 61450,
+      "employees": 909,
+      "jobs": 1098,
+      "averageAge": 44.7,
+      "description": "Underviser i praktiske yrkesfag og knytter opplæringen tett til arbeidslivet, slik at elevene lærer metoder, verktøy og faglige krav."
     },
     {
       "code": "2342",
       "label": "Førskole-/barnehagelærere",
       "href": "/yrke/forskole-barnehagelaerere-lonn",
       "value": 53550,
-      "differenceFromAllOccupationsPercent": -4.0
+      "average": 52230,
+      "p25": 48210,
+      "p75": 55780,
+      "employees": 34386,
+      "jobs": 35153,
+      "averageAge": 40.4,
+      "description": "Legger til rette for lek, omsorg og læring for små barn, og følger opp utvikling, språk, samspill og trygge rammer i barnehagen."
     }
-  ]
+  ],
+  "genderMedian": {
+    "occupationLabel": "ledere av utdanning og undervisning",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 74420,
+    "menMonthlyMedian": 77420
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Ledere av utdanning og undervisning",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 62790 },
+      { "label": "2022", "value": 65000 },
+      { "label": "2023", "value": 69170 },
+      { "label": "2024", "value": 72300 },
+      { "label": "2025", "value": 75610 }
+    ]
+  },
+  "laborMarket": {
+    "period": "4. kvartal 2025",
+    "leaderEmployees": 11373,
+    "leaderJobs": 11883,
+    "leaderAverageAge": 51.4
+  }
 }

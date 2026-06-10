@@ -49,7 +49,13 @@ import {
 import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/components/blog-snekker-salary-chart";
 import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
-import { BlogTeacherHourlySalaryChart, BlogTeacherSalaryChart } from "@/components/blog-teacher-salary-chart";
+import {
+  BlogTeacherHourlySalaryChart,
+  BlogTeacherSalaryChart,
+  TeacherLeaderGenderSalaryCards,
+  TeacherLeaderSalaryDevelopmentChart,
+  TeacherSalaryBubbleChart,
+} from "@/components/blog-teacher-salary-chart";
 import {
   VernepleierGenderSalaryCards,
   VernepleierSalaryBubbleChart,
@@ -218,6 +224,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     SurgeonSalaryEditorialChart,
     BlogTeacherHourlySalaryChart,
     BlogTeacherSalaryChart,
+    TeacherLeaderGenderSalaryCards,
+    TeacherLeaderSalaryDevelopmentChart,
+    TeacherSalaryBubbleChart,
     VernepleierGenderSalaryCards,
     VernepleierSalaryBubbleChart,
     VernepleierSalaryDevelopmentChart,
