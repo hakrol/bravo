@@ -227,6 +227,13 @@
       { "label": "2023", "value": 69170 },
       { "label": "2024", "value": 72300 },
       { "label": "2025", "value": 75610 }
+    ],
+    "genderRows": [
+      { "label": "2021", "women": 61950, "men": 63830 },
+      { "label": "2022", "women": 64000, "men": 66660 },
+      { "label": "2023", "women": 68080, "men": 70590 },
+      { "label": "2024", "women": 71210, "men": 73930 },
+      { "label": "2025", "women": 74420, "men": 77420 }
     ]
   },
   "laborMarket": {

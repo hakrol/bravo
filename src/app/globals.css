@@ -933,6 +933,13 @@ body {
   padding: clamp(2.3rem, 5vw, 4.3rem) clamp(1.1rem, 5vw, 3.2rem) 1.35rem;
 }
 
+.blog-editorial-bar-figure {
+  border-top: 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  background: #fffaf5;
+  padding: clamp(2.35rem, 5vw, 4.3rem) clamp(1.1rem, 5vw, 3.2rem) 1.35rem;
+}
+
 .blog-chart-header {
   display: grid;
   gap: 1rem;
@@ -945,6 +952,11 @@ body {
 }
 
 .blog-salary-development-figure .blog-chart-header {
+  justify-items: start;
+  text-align: left;
+}
+
+.blog-editorial-bar-figure .blog-chart-header {
   justify-items: start;
   text-align: left;
 }
@@ -994,6 +1006,15 @@ body {
   line-height: 1.08;
 }
 
+.blog-prose .blog-editorial-bar-figure .blog-chart-title,
+.blog-editorial-bar-figure .blog-chart-title {
+  max-width: 18ch;
+  color: #101820;
+  font-size: clamp(2.35rem, 5vw, 3.15rem);
+  font-weight: 820;
+  line-height: 1.06;
+}
+
 .blog-chart-subtitle {
   margin: 0.72rem 0 0;
   max-width: 60ch;
@@ -1014,6 +1035,18 @@ body {
   color: #4b5563;
   font-size: clamp(1.08rem, 2vw, 1.45rem);
   line-height: 1.35;
+}
+
+.blog-editorial-bar-figure .blog-chart-subtitle {
+  max-width: 68rem;
+  color: #4b5563;
+  font-size: clamp(1.05rem, 1.85vw, 1.32rem);
+  line-height: 1.38;
+}
+
+.blog-editorial-bar-figure .blog-chart-subtitle strong {
+  color: #101820;
+  font-weight: 820;
 }
 
 .blog-chart-tooltip {
@@ -1386,6 +1419,54 @@ body {
   line-height: 1.25;
 }
 
+.blog-salary-development-controls {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  gap: 0.28rem;
+  margin-top: clamp(1.35rem, 3vw, 2rem);
+  border: 1px solid rgba(20, 83, 45, 0.16);
+  border-radius: 999px;
+  background: #f7fbf4;
+  padding: 0.28rem;
+}
+
+.blog-salary-development-toggle {
+  min-height: 2.35rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.45rem 0.95rem;
+  color: #14532d;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 780;
+  letter-spacing: 0;
+  line-height: 1.1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.blog-salary-development-toggle:hover,
+.blog-salary-development-toggle:focus-visible {
+  background: rgba(20, 83, 45, 0.08);
+}
+
+.blog-salary-development-toggle:focus-visible {
+  outline: 2px solid rgba(20, 83, 45, 0.34);
+  outline-offset: 2px;
+}
+
+.blog-salary-development-toggle[data-active="true"] {
+  background: #14532d;
+  color: #ffffff;
+  box-shadow: 0 0.45rem 0.9rem rgba(20, 83, 45, 0.12);
+}
+
 .blog-salary-development-wrap {
   margin-top: 1.05rem;
   overflow-x: hidden;
@@ -1442,6 +1523,115 @@ body {
 .blog-salary-development-callout text,
 .blog-salary-development-growth text {
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.blog-editorial-bar-axis-heading {
+  margin: clamp(2.15rem, 5vw, 3.8rem) 0 0;
+  color: #30343a;
+  font-size: clamp(1.02rem, 1.7vw, 1.2rem);
+  font-weight: 820;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+.blog-editorial-bar-wrap {
+  margin-top: 1.05rem;
+  overflow-x: hidden;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+}
+
+.blog-editorial-bar-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.blog-editorial-bar-svg {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.blog-editorial-bar-gridline {
+  stroke: rgba(95, 81, 69, 0.16);
+  stroke-dasharray: 7 7;
+  stroke-width: 1.2;
+}
+
+.blog-editorial-bar-zero-axis {
+  stroke: rgba(16, 24, 32, 0.42);
+  stroke-width: 1.7;
+}
+
+.blog-editorial-bar-rowline {
+  stroke: rgba(95, 81, 69, 0.1);
+  stroke-width: 1;
+}
+
+.blog-editorial-bar-tick {
+  fill: #5f665f;
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 720;
+  letter-spacing: 0;
+}
+
+.blog-editorial-bar-row {
+  animation: editorial-bar-rise 420ms ease both;
+}
+
+.blog-editorial-bar-row:hover .blog-editorial-bar-fill,
+.blog-editorial-bar-row:focus-within .blog-editorial-bar-fill {
+  filter: brightness(0.9) saturate(1.05);
+}
+
+.blog-editorial-bar-label {
+  fill: #273139;
+  font-weight: 640;
+  letter-spacing: 0;
+}
+
+.blog-editorial-bar-label[data-highlight="true"] {
+  fill: #102f1d;
+}
+
+.blog-editorial-bar-fill {
+  transition:
+    filter 150ms ease,
+    opacity 150ms ease,
+    width 420ms ease;
+}
+
+.blog-editorial-bar-reference-bg {
+  fill: rgba(216, 238, 227, 0.45);
+  stroke: rgba(20, 83, 45, 0.1);
+  stroke-width: 1;
+}
+
+.blog-editorial-bar-reference-badge rect {
+  fill: #eff8ef;
+  stroke: rgba(20, 83, 45, 0.22);
+}
+
+.blog-editorial-bar-reference-badge text {
+  fill: #14532d;
+  font-size: 0.78rem;
+  font-weight: 820;
+  letter-spacing: 0;
+  text-anchor: middle;
+}
+
+.blog-editorial-bar-value {
+  fill: #14532d;
+  font-variant-numeric: tabular-nums;
+  font-weight: 820;
+  letter-spacing: 0;
+}
+
+.blog-editorial-bar-brand {
+  fill: #101820;
   letter-spacing: 0;
 }
 
@@ -1604,6 +1794,50 @@ body {
   font-size: 1rem;
   font-weight: 820;
   line-height: 1;
+}
+
+.blog-editorial-bar-figure .blog-chart-footer {
+  margin-top: 1.45rem;
+  border-top-color: rgba(17, 17, 17, 0.1);
+  color: #4b5563;
+  font-size: clamp(0.9rem, 1.4vw, 1rem);
+}
+
+.blog-editorial-bar-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #4b5563;
+}
+
+.blog-editorial-bar-source strong {
+  color: #101820;
+}
+
+.blog-editorial-bar-info {
+  display: inline-grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid #127444;
+  border-radius: 999px;
+  color: #127444;
+  font-size: 1rem;
+  font-weight: 820;
+  line-height: 1;
+}
+
+@keyframes editorial-bar-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.45rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .blog-chart-footer {
@@ -1878,6 +2112,10 @@ body {
     padding: 1.9rem 1rem 1.1rem;
   }
 
+  .blog-editorial-bar-figure {
+    padding: 1.9rem 1rem 1.1rem;
+  }
+
   .blog-prose .blog-salary-development-figure .blog-chart-title,
   .blog-salary-development-figure .blog-chart-title {
     max-width: 20ch;
@@ -1890,18 +2128,68 @@ body {
     line-height: 1.45;
   }
 
+  .blog-prose .blog-editorial-bar-figure .blog-chart-title,
+  .blog-editorial-bar-figure .blog-chart-title {
+    max-width: 18ch;
+    font-size: clamp(2.05rem, 10vw, 2.85rem);
+    line-height: 1.07;
+  }
+
+  .blog-editorial-bar-figure .blog-chart-subtitle {
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+
   .blog-salary-development-axis-heading {
     margin-top: 2.4rem;
     font-size: 0.98rem;
+  }
+
+  .blog-salary-development-controls {
+    width: 100%;
+    justify-content: stretch;
+    margin-top: 1.25rem;
+  }
+
+  .blog-salary-development-toggle {
+    flex: 1 1 0;
+    padding-inline: 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  .blog-editorial-bar-axis-heading {
+    margin-top: 2.35rem;
+    font-size: 0.96rem;
   }
 
   .blog-salary-development-wrap svg {
     min-width: 0;
   }
 
+  .blog-editorial-bar-wrap {
+    overflow-x: auto;
+  }
+
+  .blog-editorial-bar-svg {
+    min-width: 680px;
+  }
+
   .blog-salary-development-y-tick,
   .blog-salary-development-x-tick {
     font-size: 1.05rem;
+  }
+
+  .blog-editorial-bar-label {
+    font-size: 0.86rem;
+  }
+
+  .blog-editorial-bar-value {
+    font-size: 0.86rem;
+  }
+
+  .blog-editorial-bar-tick,
+  .blog-editorial-bar-reference-badge text {
+    font-size: 0.72rem;
   }
 
   .blog-chart-tooltip {

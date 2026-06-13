@@ -29,6 +29,11 @@ type TeacherSalarySnapshot = {
       label: string;
       value: number;
     }[];
+    genderRows?: {
+      label: string;
+      women: number;
+      men: number;
+    }[];
   };
   chart: {
     title: string;
@@ -125,9 +130,29 @@ function getSalaryDevelopmentSeries(): BlogSalaryDevelopmentSeries[] {
   return [
     {
       color: "#14532d",
-      label: salaryDevelopment.occupationLabel,
+      label: "Begge kjønn",
       points: salaryDevelopment.rows,
     },
+    ...(salaryDevelopment.genderRows
+      ? [
+          {
+            color: "#b45309",
+            label: "Kvinner",
+            points: salaryDevelopment.genderRows.map((row) => ({
+              label: row.label,
+              value: row.women,
+            })),
+          },
+          {
+            color: "#0f766e",
+            label: "Menn",
+            points: salaryDevelopment.genderRows.map((row) => ({
+              label: row.label,
+              value: row.men,
+            })),
+          },
+        ]
+      : []),
   ];
 }
 
@@ -173,6 +198,7 @@ export function BlogTeacherSalaryChart() {
       data={chartRows}
       format="currency"
       kicker={snapshot.chart.kicker}
+      note="Tallene viser median månedslønn for utvalgte lærer- og undervisningsyrker."
       source={snapshot.source}
       subtitleLabel={snapshot.chart.subtitleLabel}
       subtitleText={snapshot.chart.subtitleText}
