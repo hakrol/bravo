@@ -37,6 +37,12 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/rente-og-avdrag-kalkulator",
+    filePath: "src/app/rente-og-avdrag-kalkulator/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/verktoy",
     filePath: "src/app/verktoy/page.tsx",
     priority: 0.7,
