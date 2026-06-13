@@ -31,6 +31,12 @@ const tools = [
       "Beregn hvor mye du kan låne til bolig, og se om inntekt, betjeningsevne eller egenkapital begrenser deg.",
   },
   {
+    href: "/rente-og-avdrag-kalkulator",
+    label: "Rente- og avdragskalkulator",
+    description:
+      "Beregn renter, avdrag, terminbeløp og total lånekostnad for annuitetslån og serielån.",
+  },
+  {
     href: "/sammenlign-lonn",
     label: "Sammenlign lønn",
     description:

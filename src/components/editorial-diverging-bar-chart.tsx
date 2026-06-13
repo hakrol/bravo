@@ -160,8 +160,11 @@ export function EditorialDivergingBarChart({
                 {isReference ? (
                   <rect
                     className="blog-editorial-bar-reference-bg"
+                    fill="rgba(216, 238, 227, 0.45)"
                     height={barHeight + 20}
                     rx="7"
+                    stroke="rgba(20, 83, 45, 0.1)"
+                    strokeWidth="1"
                     width={width - plot.left - 36}
                     x={plot.left - 12}
                     y={y - 10}
@@ -177,8 +180,27 @@ export function EditorialDivergingBarChart({
                 <rect className="blog-editorial-bar-fill" fill={fill} height={barHeight} rx="6" width={barWidth} x={barX} y={y} />
                 {isReference ? (
                   <g className="blog-editorial-bar-reference-badge">
-                    <rect height="26" rx="13" width="92" x={plot.left - 114} y={y + 6} />
-                    <text x={plot.left - 68} y={y + 24}>Alle yrker</text>
+                    <rect
+                      fill="#eff8ef"
+                      height="26"
+                      rx="13"
+                      stroke="rgba(20, 83, 45, 0.22)"
+                      strokeWidth="1"
+                      width="92"
+                      x={plot.left - 114}
+                      y={y + 6}
+                    />
+                    <text
+                      fill="#14532d"
+                      fontSize="12"
+                      fontWeight="820"
+                      letterSpacing="0"
+                      textAnchor="middle"
+                      x={plot.left - 68}
+                      y={y + 24}
+                    >
+                      Alle yrker
+                    </text>
                   </g>
                 ) : null}
                 <text
