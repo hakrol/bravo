@@ -21,13 +21,13 @@ const toolItems = [
 ] as const;
 
 const desktopNavLinkBase =
-  "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-1.5 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#d98b2b] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
+  "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-1.5 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[var(--nav-underline)] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
 
 const dropdownNavLinkBase =
-  "relative block rounded-[5px] px-4 py-3 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#d98b2b] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
+  "relative block rounded-[5px] px-4 py-3 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[var(--nav-underline)] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
 
 const mobileNavLinkBase =
-  "relative flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[#d98b2b] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
+  "relative flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[var(--nav-underline)] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
 
 function isActivePath(pathname: string, href: string) {
   if (href === "/") {

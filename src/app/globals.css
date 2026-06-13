@@ -12,6 +12,7 @@
   --primary: #14532d;
   --primary-strong: #163d26;
   --accent: #b45309;
+  --nav-underline: #d98b2b;
   --accent-soft: rgba(180, 83, 9, 0.14);
   --shadow: 0 24px 80px rgba(27, 36, 48, 0.08);
   --radius: 5px;
@@ -487,6 +488,36 @@ body {
 
 .blog-prose strong {
   font-weight: 700;
+}
+
+.blog-prose pre {
+  max-width: 100%;
+  overflow-x: hidden;
+  border: 1px solid rgba(27, 36, 48, 0.1);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 0.9rem 1rem;
+  white-space: pre-wrap;
+}
+
+.blog-prose pre code {
+  display: block;
+  max-width: 100%;
+  color: var(--foreground);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  white-space: inherit;
+  word-break: normal;
+}
+
+.blog-prose :not(pre) > code {
+  border-radius: 5px;
+  background: rgba(27, 36, 48, 0.06);
+  padding: 0.1rem 0.3rem;
+  color: var(--foreground);
+  font-size: 0.95em;
+  overflow-wrap: anywhere;
 }
 
 .blog-prose blockquote {

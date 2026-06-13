@@ -64,6 +64,29 @@ function serializeJsonLd(value: unknown) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
+function ForklarerHeroVisual() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none hidden min-h-56 min-w-0 justify-end lg:flex">
+      <div className="relative h-56 w-full max-w-[28rem]">
+        <div className="absolute right-0 top-0 h-44 w-[92%] rounded-[5px] border-2 border-[var(--nav-underline)] bg-[linear-gradient(135deg,rgba(217,139,43,0.1),rgba(255,255,255,0.2)_52%,rgba(217,139,43,0.04))] shadow-[0_24px_70px_rgba(217,139,43,0.12)]" />
+        <div className="absolute right-8 top-8 grid w-44 gap-3">
+          <span className="h-2 rounded-full bg-[var(--nav-underline)]" />
+          <span className="h-2 w-32 rounded-full bg-[var(--nav-underline)] opacity-75" />
+          <span className="h-2 w-24 rounded-full bg-[var(--nav-underline)] opacity-45" />
+        </div>
+        <div className="absolute bottom-11 left-14 flex h-20 items-end gap-3">
+          <span className="h-8 w-5 rounded-t-[5px] bg-[var(--nav-underline)] opacity-45" />
+          <span className="h-14 w-5 rounded-t-[5px] bg-[var(--nav-underline)] opacity-65" />
+          <span className="h-20 w-5 rounded-t-[5px] bg-[var(--nav-underline)]" />
+          <span className="h-11 w-5 rounded-t-[5px] bg-[var(--nav-underline)] opacity-55" />
+        </div>
+        <div className="absolute bottom-8 left-11 h-0.5 w-36 rounded-full bg-[var(--nav-underline)] opacity-55" />
+        <div className="absolute bottom-2 right-14 h-24 w-24 rounded-full border-2 border-[var(--nav-underline)] opacity-25" />
+      </div>
+    </div>
+  );
+}
+
 export default async function ForklarerPostPage({ params }: ForklarerPostPageProps) {
   const { slug } = await params;
   const post = await getForklarerPostBySlug(slug);
@@ -100,7 +123,7 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
       />
 
       <article className="mx-auto grid w-full max-w-6xl gap-12">
-        <header className="w-full max-w-3xl min-w-0">
+        <header className="grid w-full min-w-0 gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(18rem,1fr)] lg:items-start">
           <div className="min-w-0">
             <nav aria-label="Brødsmuler" className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500">
               <Link className="text-[var(--primary-strong)] no-underline hover:underline" href="/forklarer">
@@ -119,6 +142,8 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
               <span>{post.readingTimeMinutes} min lesetid</span>
             </div>
           </div>
+
+          <ForklarerHeroVisual />
         </header>
 
         <div className="grid min-w-0 gap-12 lg:grid-cols-[minmax(0,42rem)_12rem] lg:items-start lg:gap-10">
