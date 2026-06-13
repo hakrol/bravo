@@ -50,12 +50,12 @@ export function BlogGenderSalaryCards({
           </h3>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex max-w-full items-center gap-2">
           <div className="grid grid-cols-3 rounded-[5px] bg-slate-100 p-1" aria-label="Velg lønnsvisning">
             {salaryViews.map((view) => (
               <button
                 aria-pressed={salaryView === view.id}
-                className={`h-9 rounded-[5px] px-3 text-xs font-semibold transition ${
+                className={`h-9 min-w-[5.75rem] whitespace-nowrap rounded-[5px] px-3 text-xs font-semibold transition ${
                   salaryView === view.id
                     ? "bg-white text-slate-950 shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
                     : "text-slate-600 hover:bg-white/70 hover:text-slate-950"

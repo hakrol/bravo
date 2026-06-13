@@ -11,6 +11,7 @@ type EditorialDivergingBarChartProps = {
   subtitleLabel: string;
   subtitleText: string;
   source: string;
+  note?: string;
   brandText?: string | null;
   format?: "currency" | "percent";
   ticks?: number[];
@@ -30,17 +31,15 @@ type EditorialVerticalBarChartProps = {
 };
 
 const width = 920;
-const height = 820;
 const plot = {
-  top: 286,
-  right: 88,
-  bottom: 118,
+  top: 44,
+  right: 118,
+  bottom: 78,
   left: 332,
 };
 const plotWidth = width - plot.left - plot.right;
-const plotHeight = height - plot.top - plot.bottom;
 const rowStep = 58;
-const barHeight = 40;
+const barHeight = 38;
 const defaultPercentTicks = [-15, -10, -5, 0, 5, 10, 15];
 const sansFont = "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 const monoFont = "'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace";
@@ -51,6 +50,7 @@ export function EditorialDivergingBarChart({
   subtitleLabel,
   subtitleText,
   source,
+  note,
   brandText = null,
   format = "percent",
   ticks = defaultPercentTicks,
@@ -60,61 +60,33 @@ export function EditorialDivergingBarChart({
   const axisMax = Math.max(...ticks);
   const xForValue = (value: number) => plot.left + ((value - axisMin) / (axisMax - axisMin)) * plotWidth;
   const zeroX = xForValue(0);
-  const titleLines = splitTitle(title);
+  const chartHeight = Math.max(560, plot.top + data.length * rowStep + 104);
+  const plotHeight = chartHeight - plot.top - plot.bottom;
   const ariaTitle = `${title}. ${subtitleLabel}: ${subtitleText}`;
+  const axisLabel = format === "currency" ? `${subtitleLabel} (kroner)` : subtitleLabel;
 
   return (
-    <figure className="blog-editorial-chart-figure my-10 w-full" aria-label={ariaTitle}>
-      <div className="mx-auto w-full max-w-[60rem] overflow-visible">
+    <figure className="blog-chart blog-editorial-chart-figure blog-editorial-bar-figure" aria-label={ariaTitle}>
+      <div className="blog-chart-header">
+        <div>
+          <p className="blog-chart-kicker">{kicker}</p>
+          <h3 className="blog-chart-title">{title}</h3>
+          <p className="blog-chart-subtitle">
+            <strong>{subtitleLabel}</strong> {subtitleText}
+          </p>
+        </div>
+      </div>
+
+      <p className="blog-editorial-bar-axis-heading">{axisLabel}</p>
+
+      <div className="blog-editorial-bar-wrap">
         <svg
-          className="h-auto w-full overflow-visible bg-white"
+          className="blog-editorial-bar-svg"
           role="img"
-          viewBox={`0 0 ${width} ${height}`}
+          viewBox={`0 0 ${width} ${chartHeight}`}
           xmlns="http://www.w3.org/2000/svg"
         >
           <title>{ariaTitle}</title>
-          <rect fill="#fff7ee" height={height} width={width} />
-
-          <text
-            fill="#111111"
-            fontFamily={sansFont}
-            fontSize="20"
-            fontWeight="760"
-            letterSpacing="0.09em"
-            textAnchor="middle"
-            x={width / 2}
-            y="43"
-          >
-            {kicker.toUpperCase()}
-          </text>
-
-          {titleLines.map((line, index) => (
-            <text
-              key={line}
-              fill="#101820"
-              fontFamily={sansFont}
-              fontSize={titleLines.length > 1 ? 58 : 68}
-              fontWeight="760"
-              letterSpacing="0"
-              textAnchor="middle"
-              x={width / 2}
-              y={titleLines.length > 1 ? 100 + index * 64 : 118}
-            >
-              {line}
-            </text>
-          ))}
-
-          <text
-            fill="#111111"
-            fontFamily={sansFont}
-            fontSize="19"
-            textAnchor="middle"
-            x={width / 2}
-            y={titleLines.length > 1 ? 230 : 206}
-          >
-            <tspan fontWeight="760">{subtitleLabel}</tspan>
-            <tspan dx="12">{subtitleText}</tspan>
-          </text>
 
           <g aria-hidden="true">
             {ticks.map((tick) => {
@@ -122,13 +94,15 @@ export function EditorialDivergingBarChart({
               return (
                 <g key={tick}>
                   <line
-                    stroke={tick === 0 ? "#111111" : "rgba(17, 17, 17, 0.08)"}
-                    strokeWidth={tick === 0 ? 2.5 : 1}
+                    className={tick === 0 ? "blog-editorial-bar-zero-axis" : "blog-editorial-bar-gridline"}
                     x1={x}
                     x2={x}
                     y1={plot.top - 8}
-                    y2={plot.top + plotHeight + 10}
+                    y2={plot.top + plotHeight + 14}
                   />
+                  <text className="blog-editorial-bar-tick" textAnchor="middle" x={x} y={plot.top + plotHeight + 48}>
+                    {formatAxisTick(tick, format)}
+                  </text>
                 </g>
               );
             })}
@@ -137,10 +111,9 @@ export function EditorialDivergingBarChart({
               return (
                 <line
                   key={`${row.label}-grid`}
-                  stroke="rgba(17, 17, 17, 0.055)"
-                  strokeWidth="1"
+                  className="blog-editorial-bar-rowline"
                   x1={plot.left - 20}
-                  x2={width - plot.right}
+                  x2={width - plot.right + 8}
                   y1={y + barHeight / 2 + 2}
                   y2={y + barHeight / 2 + 2}
                 />
@@ -156,14 +129,15 @@ export function EditorialDivergingBarChart({
             const isPositive = row.value >= 0;
             const valueLabelX = isPositive ? valueX + 16 : valueX - 16;
             const valueAnchor = isPositive ? "start" : "end";
-            const labelWeight = row.highlight ? 760 : 620;
-            const fill = row.highlight ? "#d8c0ac" : getBarColor(row.value, axisMin, axisMax);
+            const isReference = isReferenceRow(row);
+            const labelWeight = row.highlight || isReference ? 780 : 640;
+            const fill = isReference ? "#d8c7b5" : row.highlight ? "#14532d" : getBarColor(row.value, axisMin, axisMax);
             const labelLines = splitLabel(row.label);
             const labelText = (
               <text
-                fill="#242424"
-                fontFamily={sansFont}
-                fontSize="19"
+                className="blog-editorial-bar-label"
+                data-highlight={row.highlight || isReference ? "true" : undefined}
+                fontSize="18"
                 fontWeight={labelWeight}
                 textAnchor="end"
               >
@@ -176,7 +150,23 @@ export function EditorialDivergingBarChart({
             );
 
             return (
-              <g key={row.label}>
+              <g
+                key={row.label}
+                className="blog-editorial-bar-row"
+                data-highlight={row.highlight ? "true" : undefined}
+                data-reference={isReference ? "true" : undefined}
+                style={{ animationDelay: `${index * 55}ms` }}
+              >
+                {isReference ? (
+                  <rect
+                    className="blog-editorial-bar-reference-bg"
+                    height={barHeight + 20}
+                    rx="7"
+                    width={width - plot.left - 36}
+                    x={plot.left - 12}
+                    y={y - 10}
+                  />
+                ) : null}
                 {row.href ? (
                   <a href={row.href} style={{ cursor: "pointer", textDecoration: "none" }}>
                     {labelText}
@@ -184,11 +174,17 @@ export function EditorialDivergingBarChart({
                 ) : (
                   labelText
                 )}
-                <rect fill={fill} height={barHeight} width={barWidth} x={barX} y={y} />
+                <rect className="blog-editorial-bar-fill" fill={fill} height={barHeight} rx="6" width={barWidth} x={barX} y={y} />
+                {isReference ? (
+                  <g className="blog-editorial-bar-reference-badge">
+                    <rect height="26" rx="13" width="92" x={plot.left - 114} y={y + 6} />
+                    <text x={plot.left - 68} y={y + 24}>Alle yrker</text>
+                  </g>
+                ) : null}
                 <text
-                  fill="#111111"
+                  className="blog-editorial-bar-value"
                   fontFamily={monoFont}
-                  fontSize="20"
+                  fontSize="19"
                   fontWeight={row.highlight ? 760 : 620}
                   textAnchor={valueAnchor}
                   x={valueLabelX}
@@ -201,29 +197,24 @@ export function EditorialDivergingBarChart({
           })}
 
           {brandText ? (
-            <text
-              fill="#000000"
-              fontFamily={sansFont}
-              fontSize="33"
-              fontWeight="760"
-              x="0"
-              y={height - 22}
-            >
+            <text className="blog-editorial-bar-brand" fontSize="28" fontWeight="760" x="0" y={chartHeight - 20}>
               {brandText}
             </text>
           ) : null}
-          <text
-            fill="#7a7a7a"
-            fontFamily={sansFont}
-            fontSize="19"
-            textAnchor="end"
-            x={width - 2}
-            y={height - 25}
-          >
-            Kilde: {source}
-          </text>
         </svg>
       </div>
+
+      <figcaption className="blog-chart-footer blog-editorial-bar-footer">
+        <span className="blog-editorial-bar-source">
+          <span aria-hidden="true" className="blog-editorial-bar-info">
+            i
+          </span>
+          <span>
+            <strong>Kilde:</strong> {source}
+          </span>
+        </span>
+        {note ? <span>{note}</span> : null}
+      </figcaption>
     </figure>
   );
 }
@@ -428,11 +419,23 @@ function splitLabel(label: string) {
 function getBarColor(value: number, axisMin: number, axisMax: number) {
   if (value < 0) {
     const intensity = Math.min(Math.abs(value / Math.min(axisMin, -1)), 1);
-    return blendColor("#c9f4e5", "#45e7d7", intensity);
+    return blendColor("#d8eee3", "#14532d", intensity);
   }
 
   const intensity = Math.min((value - Math.max(axisMin, 0)) / Math.max(axisMax - Math.max(axisMin, 0), 1), 1);
-  return blendColor("#efc0a8", "#ff1d0d", intensity);
+  return blendColor("#f0b69c", "#ef3b22", intensity);
+}
+
+function isReferenceRow(row: EditorialDivergingBarChartDatum) {
+  return row.label.trim().toLowerCase() === "alle yrker";
+}
+
+function formatAxisTick(value: number, format: "currency" | "percent") {
+  if (format === "currency") {
+    return value >= 1000 ? `${Math.round(value / 1000).toLocaleString("nb-NO")}k` : value.toLocaleString("nb-NO");
+  }
+
+  return `${value.toLocaleString("nb-NO")}%`;
 }
 
 function blendColor(start: string, end: string, amount: number) {

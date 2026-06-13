@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 export type BlogSalaryDevelopmentPoint = {
   label: string;
   value: number;
@@ -41,15 +45,16 @@ export function BlogSalaryDevelopmentChart({
   yAxisLabel = "Median månedslønn",
 }: BlogSalaryDevelopmentChartProps) {
   const normalizedSeries = series.filter((entry) => entry.points.length > 0);
+  const [selectedSeriesLabel, setSelectedSeriesLabel] = useState(normalizedSeries[0]?.label ?? "");
 
   if (normalizedSeries.length === 0) {
     return null;
   }
 
-  const primarySeries = normalizedSeries[0];
+  const selectedSeries = normalizedSeries.find((entry) => entry.label === selectedSeriesLabel) ?? normalizedSeries[0];
   const values = normalizedSeries.flatMap((entry) => entry.points.map((point) => point.value));
   const axis = getAxis(values);
-  const labels = primarySeries.points.map((point) => point.label);
+  const labels = selectedSeries.points.map((point) => point.label);
   const titleId = `${slugify(title)}-title`;
 
   const xForIndex = (index: number) => plot.left + (index / Math.max(labels.length - 1, 1)) * plotWidth;
@@ -66,6 +71,27 @@ export function BlogSalaryDevelopmentChart({
           {subtitle ? <p className="blog-chart-subtitle">{subtitle}</p> : null}
         </div>
       </div>
+
+      {normalizedSeries.length > 1 ? (
+        <div className="blog-salary-development-controls" aria-label="Velg kjønn">
+          {normalizedSeries.map((entry) => {
+            const selected = entry.label === selectedSeries.label;
+
+            return (
+              <button
+                key={entry.label}
+                aria-pressed={selected}
+                className="blog-salary-development-toggle"
+                data-active={selected ? "true" : undefined}
+                onClick={() => setSelectedSeriesLabel(entry.label)}
+                type="button"
+              >
+                {entry.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       <p className="blog-salary-development-axis-heading">{yAxisLabel} (kroner)</p>
 
@@ -124,8 +150,9 @@ export function BlogSalaryDevelopmentChart({
             y2={plot.top + plotHeight}
           />
 
-          {normalizedSeries.map((entry, seriesIndex) => {
-            const color = entry.color ?? defaultColors[seriesIndex % defaultColors.length];
+          {[selectedSeries].map((entry) => {
+            const seriesIndex = normalizedSeries.findIndex((seriesEntry) => seriesEntry.label === entry.label);
+            const color = entry.color ?? defaultColors[Math.max(seriesIndex, 0) % defaultColors.length];
             const points = entry.points.map((point, index) => ({
               ...point,
               x: xForIndex(index),
