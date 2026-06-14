@@ -51,6 +51,7 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Hva er gjennomsnittlig lønnsvekst i Norge? - `src/content/blog/hva-er-gjennomsnittlig-lonnsvekst-i-norge.mdx` - 2026-06-14
 - [x] Hva slags lærer tjener mest? - `src/content/blog/hva-slags-laerer-tjener-mest.mdx` - 2026-06-10
 - [x] Hva er lønnen til en servitør? - `src/content/blog/hva-er-lonnen-til-en-servitor.mdx` - 2026-06-06
 - [x] Hvor mye tjener en intensivsykepleier? - `src/content/blog/hvor-mye-tjener-en-intensivsykepleier.mdx` - 2026-05-31

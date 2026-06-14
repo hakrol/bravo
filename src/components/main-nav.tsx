@@ -14,6 +14,7 @@ const navItems = [
 
 const toolItems = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
+  { href: "/lonnsvekst", label: "Lønnsvekst" },
   { href: "/bruttolonn-kalkulator", label: "Brutto/netto kalkulator" },
   { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
   { href: "/lanekalkulator", label: "Lånekalkulator" },
