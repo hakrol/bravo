@@ -19,6 +19,12 @@ const tools = [
       "Regn om lønn mellom måned, år og time, og få en enklere oversikt over hva lønnen betyr.",
   },
   {
+    href: "/lonnsvekst",
+    label: "Lønnsvekst",
+    description:
+      "Beregn egen lønnsvekst, reallønnsvekst og om lønnen din har gitt bedre kjøpekraft.",
+  },
+  {
     href: "/bruttolonn-kalkulator",
     label: "Brutto- og nettolønn kalkulator",
     description:

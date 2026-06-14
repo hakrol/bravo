@@ -1,4 +1,4 @@
-type CalculatorPageVisualVariant = "salary" | "gross-net" | "loan";
+type CalculatorPageVisualVariant = "salary" | "gross-net" | "loan" | "growth";
 
 type CalculatorPageVisualProps = {
   variant?: CalculatorPageVisualVariant;
@@ -31,6 +31,15 @@ const variantConfig = {
     soft: "bg-sky-50",
     text: "text-sky-950",
     bar: "bg-sky-700",
+  },
+  growth: {
+    eyebrow: "Vekst",
+    value: "+4,3",
+    unit: "%",
+    accent: "bg-cyan-700",
+    soft: "bg-cyan-50",
+    text: "text-cyan-950",
+    bar: "bg-cyan-700",
   },
 } satisfies Record<CalculatorPageVisualVariant, {
   eyebrow: string;

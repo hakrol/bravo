@@ -1,0 +1,235 @@
+{
+  "id": "gjennomsnittlig-lonnsvekst-norge-2026",
+  "title": "Hva er gjennomsnittlig lønnsvekst i Norge?",
+  "source": "SSB tabell 11658 og 14700",
+  "period": "1. kvartal 2016 til 1. kvartal 2026",
+  "measure": "Gjennomsnittlig avtalt månedslønn og KPI",
+  "note": "Lønnstallene gjelder gjennomsnittlig avtalt månedslønn for begge kjønn, alle aldre og alle yrker i SSB tabell 11658. KPI-tallene gjelder totalindeks fra SSB tabell 14700 og er regnet om til kvartalssnitt. Reallønnsvekst er beregnet som lønnsvekst justert for KPI-vekst. Yrkeslisten sammenligner 1. kvartal 2021 med 1. kvartal 2026 og inkluderer bare yrker med minst 1 000 lønnstakere i 1. kvartal 2026.",
+  "salaryDevelopment": [
+    { "label": "2016", "periodCode": "2016K1", "value": 40920 },
+    { "label": "2017", "periodCode": "2017K1", "value": 41660 },
+    { "label": "2018", "periodCode": "2018K1", "value": 42660 },
+    { "label": "2019", "periodCode": "2019K1", "value": 44000 },
+    { "label": "2020", "periodCode": "2020K1", "value": 45590 },
+    { "label": "2021", "periodCode": "2021K1", "value": 46890 },
+    { "label": "2022", "periodCode": "2022K1", "value": 48460 },
+    { "label": "2023", "periodCode": "2023K1", "value": 50580 },
+    { "label": "2024", "periodCode": "2024K1", "value": 53670 },
+    { "label": "2025", "periodCode": "2025K1", "value": 56450 },
+    { "label": "2026", "periodCode": "2026K1", "value": 58900 }
+  ],
+  "growthRows": [
+    {
+      "label": "2017",
+      "periodCode": "2017K1",
+      "previousPeriodCode": "2016K1",
+      "salaryGrowth": 1.8,
+      "inflationGrowth": 2.6,
+      "realGrowth": -0.8,
+      "averageMonthlySalary": 41660,
+      "previousAverageMonthlySalary": 40920
+    },
+    {
+      "label": "2018",
+      "periodCode": "2018K1",
+      "previousPeriodCode": "2017K1",
+      "salaryGrowth": 2.4,
+      "inflationGrowth": 2.0,
+      "realGrowth": 0.4,
+      "averageMonthlySalary": 42660,
+      "previousAverageMonthlySalary": 41660
+    },
+    {
+      "label": "2019",
+      "periodCode": "2019K1",
+      "previousPeriodCode": "2018K1",
+      "salaryGrowth": 3.1,
+      "inflationGrowth": 3.0,
+      "realGrowth": 0.2,
+      "averageMonthlySalary": 44000,
+      "previousAverageMonthlySalary": 42660
+    },
+    {
+      "label": "2020",
+      "periodCode": "2020K1",
+      "previousPeriodCode": "2019K1",
+      "salaryGrowth": 3.6,
+      "inflationGrowth": 1.2,
+      "realGrowth": 2.4,
+      "averageMonthlySalary": 45590,
+      "previousAverageMonthlySalary": 44000
+    },
+    {
+      "label": "2021",
+      "periodCode": "2021K1",
+      "previousPeriodCode": "2020K1",
+      "salaryGrowth": 2.9,
+      "inflationGrowth": 2.9,
+      "realGrowth": 0.0,
+      "averageMonthlySalary": 46890,
+      "previousAverageMonthlySalary": 45590
+    },
+    {
+      "label": "2022",
+      "periodCode": "2022K1",
+      "previousPeriodCode": "2021K1",
+      "salaryGrowth": 3.3,
+      "inflationGrowth": 3.8,
+      "realGrowth": -0.5,
+      "averageMonthlySalary": 48460,
+      "previousAverageMonthlySalary": 46890
+    },
+    {
+      "label": "2023",
+      "periodCode": "2023K1",
+      "previousPeriodCode": "2022K1",
+      "salaryGrowth": 4.4,
+      "inflationGrowth": 6.6,
+      "realGrowth": -2.1,
+      "averageMonthlySalary": 50580,
+      "previousAverageMonthlySalary": 48460
+    },
+    {
+      "label": "2024",
+      "periodCode": "2024K1",
+      "previousPeriodCode": "2023K1",
+      "salaryGrowth": 6.1,
+      "inflationGrowth": 4.4,
+      "realGrowth": 1.6,
+      "averageMonthlySalary": 53670,
+      "previousAverageMonthlySalary": 50580
+    },
+    {
+      "label": "2025",
+      "periodCode": "2025K1",
+      "previousPeriodCode": "2024K1",
+      "salaryGrowth": 5.2,
+      "inflationGrowth": 2.8,
+      "realGrowth": 2.3,
+      "averageMonthlySalary": 56450,
+      "previousAverageMonthlySalary": 53670
+    },
+    {
+      "label": "2026",
+      "periodCode": "2026K1",
+      "previousPeriodCode": "2025K1",
+      "salaryGrowth": 4.3,
+      "inflationGrowth": 3.3,
+      "realGrowth": 1.0,
+      "averageMonthlySalary": 58900,
+      "previousAverageMonthlySalary": 56450
+    }
+  ],
+  "topOccupationGrowthRows": [
+    {
+      "code": "3351",
+      "label": "Tollere",
+      "href": "/yrke/tollere-lonn",
+      "salary2021": 38310,
+      "salary2026": 50520,
+      "change": 12210,
+      "growth": 31.9,
+      "employees": 1165
+    },
+    {
+      "code": "3131",
+      "label": "Energikontrolloperatører",
+      "href": "/yrke/energikontrolloperatorer-lonn",
+      "salary2021": 52710,
+      "salary2026": 69320,
+      "change": 16610,
+      "growth": 31.5,
+      "employees": 1704
+    },
+    {
+      "code": "2619",
+      "label": "Andre juridiske yrker",
+      "href": "/yrke/andre-juridiske-yrker-lonn",
+      "salary2021": 60840,
+      "salary2026": 79940,
+      "change": 19100,
+      "growth": 31.4,
+      "employees": 1183
+    },
+    {
+      "code": "2512",
+      "label": "Programvareutviklere",
+      "href": "/yrke/programvareutviklere-lonn",
+      "salary2021": 60120,
+      "salary2026": 78880,
+      "change": 18760,
+      "growth": 31.2,
+      "employees": 8212
+    },
+    {
+      "code": "5244",
+      "label": "Telefon- og nettselgere",
+      "href": "/yrke/telefon-og-nettselgere-lonn",
+      "salary2021": 35710,
+      "salary2026": 46820,
+      "change": 11110,
+      "growth": 31.1,
+      "employees": 3754
+    },
+    {
+      "code": "1412",
+      "label": "Restaurantsjefer",
+      "href": "/yrke/restaurantsjefer-lonn",
+      "salary2021": 40910,
+      "salary2026": 53300,
+      "change": 12390,
+      "growth": 30.3,
+      "employees": 3823
+    },
+    {
+      "code": "3323",
+      "label": "Innkjøpere",
+      "href": "/yrke/innkjopere-lonn",
+      "salary2021": 51990,
+      "salary2026": 67630,
+      "change": 15640,
+      "growth": 30.1,
+      "employees": 7793
+    },
+    {
+      "code": "1211",
+      "label": "Finans- og økonomisjefer",
+      "href": "/yrke/finans-og-okonomisjefer-lonn",
+      "salary2021": 82410,
+      "salary2026": 107090,
+      "change": 24680,
+      "growth": 29.9,
+      "employees": 8753
+    },
+    {
+      "code": "3355",
+      "label": "Politibetjenter mv.",
+      "href": "/yrke/politibetjenter-mv-lonn",
+      "salary2021": 47140,
+      "salary2026": 60740,
+      "change": 13600,
+      "growth": 28.9,
+      "employees": 12075
+    },
+    {
+      "code": "5132",
+      "label": "Bartendere",
+      "href": "/yrke/bartendere-lonn",
+      "salary2021": 29350,
+      "salary2026": 37820,
+      "change": 8470,
+      "growth": 28.9,
+      "employees": 6859
+    }
+  ],
+  "metadata": {
+    "salaryTableId": "11658",
+    "inflationTableId": "14700",
+    "salaryUpdated": "2026-05-07T06:00:00Z",
+    "inflationUpdated": "2026-05-11T06:00:00Z",
+    "latestPeriod": "1. kvartal 2026",
+    "previousPeriod": "1. kvartal 2025",
+    "fiveYearStart": "1. kvartal 2021",
+    "minimumEmployeesForTopList": 1000
+  }
+}

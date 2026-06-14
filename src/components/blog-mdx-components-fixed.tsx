@@ -24,6 +24,12 @@ import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import {
+  NorwayAverageSalaryDevelopmentChart,
+  NorwayRealSalaryGrowthChart,
+  NorwayTopOccupationSalaryGrowthChart,
+  NorwayTopOccupationSalaryGrowthTable,
+} from "@/components/blog-average-salary-growth-chart";
+import {
   IntensivsykepleierGenderSalaryCards,
   IntensivsykepleierSalaryBubbleChart,
   IntensivsykepleierSalaryDevelopmentChart,
@@ -222,6 +228,10 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogOccupationSalaryTable,
     SurgeonSalaryBubbleChart,
     SurgeonSalaryEditorialChart,
+    NorwayAverageSalaryDevelopmentChart,
+    NorwayRealSalaryGrowthChart,
+    NorwayTopOccupationSalaryGrowthChart,
+    NorwayTopOccupationSalaryGrowthTable,
     BlogTeacherHourlySalaryChart,
     BlogTeacherSalaryChart,
     TeacherLeaderGenderSalaryCards,
