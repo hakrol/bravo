@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { CSSProperties } from "react";
 
 export type BlogSalaryDevelopmentPoint = {
   label: string;
@@ -73,7 +74,11 @@ export function BlogSalaryDevelopmentChart({
       </div>
 
       {normalizedSeries.length > 1 ? (
-        <div className="blog-salary-development-controls" aria-label="Velg kjønn">
+        <div
+          className="blog-salary-development-controls"
+          aria-label="Velg serie"
+          style={{ "--series-count": normalizedSeries.length } as CSSProperties}
+        >
           {normalizedSeries.map((entry) => {
             const selected = entry.label === selectedSeries.label;
 
