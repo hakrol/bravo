@@ -1451,40 +1451,47 @@ body {
 }
 
 .blog-salary-development-controls {
-  display: inline-flex;
-  width: fit-content;
+  display: grid;
+  grid-template-columns: repeat(var(--series-count, 4), minmax(0, 1fr));
+  width: 100%;
   max-width: 100%;
-  gap: 0.28rem;
+  gap: 0.35rem;
   margin-top: clamp(1.35rem, 3vw, 2rem);
-  border: 1px solid rgba(20, 83, 45, 0.16);
-  border-radius: 999px;
-  background: #f7fbf4;
-  padding: 0.28rem;
+  border: 1px solid rgba(20, 83, 45, 0.14);
+  border-radius: 8px;
+  background: rgba(247, 251, 244, 0.78);
+  padding: 0.35rem;
 }
 
 .blog-salary-development-toggle {
-  min-height: 2.35rem;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  padding: 0.45rem 0.95rem;
+  min-width: 0;
+  min-height: 2.55rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.55rem 0.65rem;
   color: #14532d;
   font: inherit;
-  font-size: 0.92rem;
+  font-size: 0.86rem;
   font-weight: 780;
   letter-spacing: 0;
-  line-height: 1.1;
+  line-height: 1.18;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
   transition:
     background-color 150ms ease,
+    border-color 150ms ease,
     color 150ms ease,
     box-shadow 150ms ease;
 }
 
 .blog-salary-development-toggle:hover,
 .blog-salary-development-toggle:focus-visible {
-  background: rgba(20, 83, 45, 0.08);
+  border-color: rgba(20, 83, 45, 0.18);
+  background: #ffffff;
 }
 
 .blog-salary-development-toggle:focus-visible {
@@ -1494,8 +1501,9 @@ body {
 
 .blog-salary-development-toggle[data-active="true"] {
   background: #14532d;
+  border-color: #14532d;
   color: #ffffff;
-  box-shadow: 0 0.45rem 0.9rem rgba(20, 83, 45, 0.12);
+  box-shadow: 0 0.45rem 1rem rgba(20, 83, 45, 0.16);
 }
 
 .blog-salary-development-wrap {
@@ -2178,14 +2186,14 @@ body {
 
   .blog-salary-development-controls {
     width: 100%;
-    justify-content: stretch;
+    grid-template-columns: minmax(0, 1fr);
     margin-top: 1.25rem;
   }
 
   .blog-salary-development-toggle {
-    flex: 1 1 0;
     padding-inline: 0.65rem;
     font-size: 0.82rem;
+    white-space: normal;
   }
 
   .blog-editorial-bar-axis-heading {

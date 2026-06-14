@@ -1,0 +1,826 @@
+{
+  "id": "yrker-over-en-million-2025",
+  "title": "Hvilke yrker tjener over 1 million?",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025 og 1. kvartal 2021 til 1. kvartal 2026",
+  "measure": "Median avtalt årslønn",
+  "note": "Millionlisten bruker median avtalt månedslønn fra SSB tabell 11418 for 2025, omregnet til årslønn ved å gange med 12. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Femårsveksten bruker gjennomsnittlig avtalt månedslønn fra SSB tabell 11658, begge kjønn og alle aldre, sammenlignet fra 1. kvartal 2021 til 1. kvartal 2026.",
+  "rows": [
+    {
+      "code": "1112",
+      "label": "Toppledere i offentlig administrasjon",
+      "href": "/yrke/toppledere-i-offentlig-administrasjon-lonn",
+      "value": 1422360,
+      "monthlyValue": 118530
+    },
+    {
+      "code": "2612",
+      "label": "Dommere",
+      "href": "/yrke/dommere-lonn",
+      "value": 1421640,
+      "monthlyValue": 118470
+    },
+    {
+      "code": "3154",
+      "label": "Flygeledere",
+      "href": "/yrke/flygeledere-lonn",
+      "value": 1415880,
+      "monthlyValue": 117990
+    },
+    {
+      "code": "3153",
+      "label": "Flygere",
+      "href": "/yrke/flygere-lonn",
+      "value": 1336320,
+      "monthlyValue": 111360
+    },
+    {
+      "code": "1322",
+      "label": "Ledere av olje- og gassutvinning mv.",
+      "href": "/yrke/ledere-av-olje-og-gassutvinning-mv-lonn",
+      "value": 1291440,
+      "monthlyValue": 107620
+    },
+    {
+      "code": "1346",
+      "label": "Ledere av forsikring og finansvirksomhet",
+      "href": "/yrke/ledere-av-forsikring-og-finansvirksomhet-lonn",
+      "value": 1219800,
+      "monthlyValue": 101650
+    },
+    {
+      "code": "1211",
+      "label": "Finans- og økonomisjefer",
+      "href": "/yrke/finans-og-okonomisjefer-lonn",
+      "value": 1180200,
+      "monthlyValue": 98350
+    },
+    {
+      "code": "2212",
+      "label": "Legespesialister",
+      "href": "/yrke/legespesialister-lonn",
+      "value": 1148160,
+      "monthlyValue": 95680
+    },
+    {
+      "code": "1330",
+      "label": "Ledere av IKT-enheter",
+      "href": "/yrke/ledere-av-ikt-enheter-lonn",
+      "value": 1136400,
+      "monthlyValue": 94700
+    },
+    {
+      "code": "1223",
+      "label": "Forsknings- og utviklingsledere",
+      "href": "/yrke/forsknings-og-utviklingsledere-lonn",
+      "value": 1134000,
+      "monthlyValue": 94500
+    },
+    {
+      "code": "1212",
+      "label": "Personalsjefer",
+      "href": "/yrke/personalsjefer-lonn",
+      "value": 1122000,
+      "monthlyValue": 93500
+    },
+    {
+      "code": "2146",
+      "label": "Sivilingeniører (geofag, petro-leumsteknologi, metallurgi mv.)",
+      "href": "/yrke/sivilingeniorer-geofag-petro-leumsteknologi-metallurgi-mv-lonn",
+      "value": 1100040,
+      "monthlyValue": 91670
+    },
+    {
+      "code": "1111",
+      "label": "Politikere",
+      "href": "/yrke/politikere-lonn",
+      "value": 1064160,
+      "monthlyValue": 88680
+    },
+    {
+      "code": "2114",
+      "label": "Geologer og geofysikere",
+      "href": "/yrke/geologer-og-geofysikere-lonn",
+      "value": 1056000,
+      "monthlyValue": 88000
+    },
+    {
+      "code": "1221",
+      "label": "Salgs- og markedssjefer",
+      "href": "/yrke/salgs-og-markedssjefer-lonn",
+      "value": 1020000,
+      "monthlyValue": 85000
+    },
+    {
+      "code": "1213",
+      "label": "Strategi- og planleggingssjefer",
+      "href": "/yrke/strategi-og-planleggingssjefer-lonn",
+      "value": 1019040,
+      "monthlyValue": 84920
+    },
+    {
+      "code": "1312",
+      "label": "Ledere innen akvakultur mv.",
+      "href": "/yrke/ledere-innen-akvakultur-mv-lonn",
+      "value": 1018320,
+      "monthlyValue": 84860
+    }
+  ],
+  "allOccupationsMedianContractedMonthlySalary": 53190,
+  "allOccupationsMedianContractedAnnualSalary": 638280,
+  "topSalaryRows": [
+    {
+      "code": "1112",
+      "label": "Toppledere i offentlig administrasjon",
+      "href": "/yrke/toppledere-i-offentlig-administrasjon-lonn",
+      "monthlySalary": 118530,
+      "annualSalary": 1422360
+    },
+    {
+      "code": "2612",
+      "label": "Dommere",
+      "href": "/yrke/dommere-lonn",
+      "monthlySalary": 118470,
+      "annualSalary": 1421640
+    },
+    {
+      "code": "3154",
+      "label": "Flygeledere",
+      "href": "/yrke/flygeledere-lonn",
+      "monthlySalary": 117990,
+      "annualSalary": 1415880
+    },
+    {
+      "code": "3153",
+      "label": "Flygere",
+      "href": "/yrke/flygere-lonn",
+      "monthlySalary": 111360,
+      "annualSalary": 1336320
+    },
+    {
+      "code": "1322",
+      "label": "Ledere av olje- og gassutvinning mv.",
+      "href": "/yrke/ledere-av-olje-og-gassutvinning-mv-lonn",
+      "monthlySalary": 107620,
+      "annualSalary": 1291440
+    },
+    {
+      "code": "1346",
+      "label": "Ledere av forsikring og finansvirksomhet",
+      "href": "/yrke/ledere-av-forsikring-og-finansvirksomhet-lonn",
+      "monthlySalary": 101650,
+      "annualSalary": 1219800
+    },
+    {
+      "code": "1211",
+      "label": "Finans- og økonomisjefer",
+      "href": "/yrke/finans-og-okonomisjefer-lonn",
+      "monthlySalary": 98350,
+      "annualSalary": 1180200
+    },
+    {
+      "code": "2212",
+      "label": "Legespesialister",
+      "href": "/yrke/legespesialister-lonn",
+      "monthlySalary": 95680,
+      "annualSalary": 1148160
+    },
+    {
+      "code": "1330",
+      "label": "Ledere av IKT-enheter",
+      "href": "/yrke/ledere-av-ikt-enheter-lonn",
+      "monthlySalary": 94700,
+      "annualSalary": 1136400
+    },
+    {
+      "code": "1223",
+      "label": "Forsknings- og utviklingsledere",
+      "href": "/yrke/forsknings-og-utviklingsledere-lonn",
+      "monthlySalary": 94500,
+      "annualSalary": 1134000
+    },
+    {
+      "code": "1212",
+      "label": "Personalsjefer",
+      "href": "/yrke/personalsjefer-lonn",
+      "monthlySalary": 93500,
+      "annualSalary": 1122000
+    },
+    {
+      "code": "2146",
+      "label": "Sivilingeniører (geofag, petro-leumsteknologi, metallurgi mv.)",
+      "href": "/yrke/sivilingeniorer-geofag-petro-leumsteknologi-metallurgi-mv-lonn",
+      "monthlySalary": 91670,
+      "annualSalary": 1100040
+    }
+  ],
+  "topGrowthRows": [
+    {
+      "code": "8112",
+      "label": "Prosessoperatører (oppredning)",
+      "href": "/yrke/prosessoperatorer-oppredning-lonn",
+      "salary2021": 42520,
+      "salary2026": 58480,
+      "change": 15960,
+      "growth": 37.5,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 42520
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 43340
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 44990
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 48170
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 49020
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 58480
+        }
+      ]
+    },
+    {
+      "code": "4132",
+      "label": "Dataregistrere",
+      "href": "/yrke/dataregistrere-lonn",
+      "salary2021": 45640,
+      "salary2026": 61770,
+      "change": 16130,
+      "growth": 35.3,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 45640
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 48810
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 51640
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 55400
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 58380
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 61770
+        }
+      ]
+    },
+    {
+      "code": "8111",
+      "label": "Bergfagarbeidere",
+      "href": "/yrke/bergfagarbeidere-lonn",
+      "salary2021": 41120,
+      "salary2026": 55550,
+      "change": 14430,
+      "growth": 35.1,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 41120
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 42710
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 45000
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 48000
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 50860
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 55550
+        }
+      ]
+    },
+    {
+      "code": "5221",
+      "label": "Innehavere av kiosk/liten butikk",
+      "href": "/yrke/innehavere-av-kiosk-liten-butikk-lonn",
+      "salary2021": 37610,
+      "salary2026": 50450,
+      "change": 12840,
+      "growth": 34.1,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 37610
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 40870
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 42250
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 43940
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 48560
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 50450
+        }
+      ]
+    },
+    {
+      "code": "2434",
+      "label": "Salgskonsulenter innen IKT-produkter",
+      "href": "/yrke/salgskonsulenter-innen-ikt-produkter-lonn",
+      "salary2021": 56020,
+      "salary2026": 75050,
+      "change": 19030,
+      "growth": 34,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 56020
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 59120
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 63990
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 68140
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 70780
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 75050
+        }
+      ]
+    },
+    {
+      "code": "6122",
+      "label": "Egg- og fjærfeprodusenter",
+      "href": "/yrke/egg-og-fjaerfeprodusenter-lonn",
+      "salary2021": 32910,
+      "salary2026": 43880,
+      "change": 10970,
+      "growth": 33.3,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 32910
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 35450
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 37890
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 38570
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 42150
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 43880
+        }
+      ]
+    },
+    {
+      "code": "2355",
+      "label": "Andre lærere i estetiske fag",
+      "href": "/yrke/andre-laerere-i-estetiske-fag-lonn",
+      "salary2021": 38360,
+      "salary2026": 51060,
+      "change": 12700,
+      "growth": 33.1,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 38360
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 42520
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 42510
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 46950
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 48430
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 51060
+        }
+      ]
+    },
+    {
+      "code": "3155",
+      "label": "Teknikere innen luftfartssikkerhet",
+      "href": "/yrke/teknikere-innen-luftfartssikkerhet-lonn",
+      "salary2021": 59750,
+      "salary2026": 79050,
+      "change": 19300,
+      "growth": 32.3,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 59750
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 62160
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 63880
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 66010
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 70770
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 79050
+        }
+      ]
+    },
+    {
+      "code": "2653",
+      "label": "Koreografer og dansere",
+      "href": "/yrke/koreografer-og-dansere-lonn",
+      "salary2021": 41360,
+      "salary2026": 54660,
+      "change": 13300,
+      "growth": 32.2,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 41360
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 41160
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 43900
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 48670
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 51720
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 54660
+        }
+      ]
+    },
+    {
+      "code": "7311",
+      "label": "Presisjonsinstrumentmakere og -reparatører",
+      "href": "/yrke/presisjonsinstrumentmakere-og-reparatorer-lonn",
+      "salary2021": 43450,
+      "salary2026": 57380,
+      "change": 13930,
+      "growth": 32.1,
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 43450
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 44920
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 47930
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 51230
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 54380
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 57380
+        }
+      ]
+    }
+  ],
+  "salaryDevelopmentSeries": [
+    {
+      "code": "8112",
+      "label": "Prosessoperatører (oppredning)",
+      "href": "/yrke/prosessoperatorer-oppredning-lonn",
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 42520
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 43340
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 44990
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 48170
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 49020
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 58480
+        }
+      ]
+    },
+    {
+      "code": "4132",
+      "label": "Dataregistrere",
+      "href": "/yrke/dataregistrere-lonn",
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 45640
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 48810
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 51640
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 55400
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 58380
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 61770
+        }
+      ]
+    },
+    {
+      "code": "8111",
+      "label": "Bergfagarbeidere",
+      "href": "/yrke/bergfagarbeidere-lonn",
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 41120
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 42710
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 45000
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 48000
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 50860
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 55550
+        }
+      ]
+    },
+    {
+      "code": "5221",
+      "label": "Innehavere av kiosk/liten butikk",
+      "href": "/yrke/innehavere-av-kiosk-liten-butikk-lonn",
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 37610
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 40870
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 42250
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 43940
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 48560
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 50450
+        }
+      ]
+    },
+    {
+      "code": "2434",
+      "label": "Salgskonsulenter innen IKT-produkter",
+      "href": "/yrke/salgskonsulenter-innen-ikt-produkter-lonn",
+      "points": [
+        {
+          "label": "2021",
+          "periodCode": "2021K1",
+          "value": 56020
+        },
+        {
+          "label": "2022",
+          "periodCode": "2022K1",
+          "value": 59120
+        },
+        {
+          "label": "2023",
+          "periodCode": "2023K1",
+          "value": 63990
+        },
+        {
+          "label": "2024",
+          "periodCode": "2024K1",
+          "value": 68140
+        },
+        {
+          "label": "2025",
+          "periodCode": "2025K1",
+          "value": 70780
+        },
+        {
+          "label": "2026",
+          "periodCode": "2026K1",
+          "value": 75050
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "salaryTableId": "11418",
+    "growthTableId": "11658",
+    "salaryPeriod": "2025",
+    "growthStartPeriod": "1. kvartal 2021",
+    "growthEndPeriod": "1. kvartal 2026",
+    "generatedFromLocalSsbDataAt": "2026-06-14T15:15:06.457Z",
+    "overMillionThresholdAnnualSalary": 1000000,
+    "overMillionThresholdMonthlySalary": 83333.33333333333
+  }
+}
