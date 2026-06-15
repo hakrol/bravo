@@ -4,7 +4,14 @@ import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { cache } from "react";
 import { buildBlogMdxComponentsFixed } from "@/components/blog-mdx-components-fixed";
-import type { BlogFrontmatter, BlogPost, BlogPostPreview, BlogTableOfContentsItem } from "@/lib/blog-shared";
+import type {
+  BlogCategorySlug,
+  BlogFrontmatter,
+  BlogPost,
+  BlogPostPreview,
+  BlogTableOfContentsItem,
+} from "@/lib/blog-shared";
+import { getBlogCategory } from "@/lib/blog-taxonomy";
 import { siteConfig } from "@/lib/site-config";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
@@ -30,6 +37,15 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
   }
 
   const data = frontmatter as Record<string, unknown>;
+  const category = assertRequiredString(data.category, "category") as BlogCategorySlug;
+
+  if (!getBlogCategory(category)) {
+    throw new Error(`Blogginnlegget har ukjent kategori: ${category}`);
+  }
+
+  const tags = Array.isArray(data.tags)
+    ? data.tags.filter((tag): tag is string => typeof tag === "string" && tag.trim().length > 0).map((tag) => tag.trim())
+    : undefined;
 
   return {
     title: assertRequiredString(data.title, "title"),
@@ -39,6 +55,8 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
     coverImageAlt: trimOptionalString(data.coverImageAlt),
     author: assertRequiredString(data.author, "author"),
+    category,
+    tags,
     draft: data.draft === true,
     seoTitle: trimOptionalString(data.seoTitle),
     seoDescription: trimOptionalString(data.seoDescription),
@@ -155,6 +173,11 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
 export async function getBlogPostSlugs() {
   const posts = await getAllBlogPosts();
   return posts.map((post) => post.slug);
+}
+
+export async function getBlogPostsByCategory(category: BlogFrontmatter["category"]) {
+  const posts = await getAllBlogPosts();
+  return posts.filter((post) => post.category === category);
 }
 
 export function getBlogPostUrl(slug: string) {

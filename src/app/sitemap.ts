@@ -2,6 +2,7 @@ import { stat } from "node:fs/promises";
 import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
+import { blogCategories } from "@/lib/blog-taxonomy";
 import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-detail-view-models";
 import { getAllForklarerPosts } from "@/lib/forklarer";
 import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
@@ -228,6 +229,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     images: post.coverImage ? [getAbsoluteUrl(post.coverImage)] : undefined,
   }));
 
+  const blogCategoryRoutes: MetadataRoute.Sitemap = blogCategories.map((category) => {
+    const postsInCategory = blogPosts.filter((post) => post.category === category.slug);
+
+    return {
+      url: getAbsoluteUrl(category.href),
+      lastModified: getLatestDate(postsInCategory.map((post) => post.publishedAt)),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    };
+  });
+
   const forklarerRoutes: MetadataRoute.Sitemap = forklarerPosts.map((post) => ({
     url: getAbsoluteUrl(`/forklarer/${post.slug}`),
     lastModified: new Date(post.publishedAt),
@@ -260,6 +272,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...routes,
     ...groupRoutes,
     ...blogRoutes,
+    ...blogCategoryRoutes,
     ...forklarerRoutes,
     ...occupationRoutes,
     ...hourlySalaryRoutes,

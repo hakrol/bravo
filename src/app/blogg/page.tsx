@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { BlogCard } from "@/components/blog-card";
 import { BlogHeroCarousel } from "@/components/blog-hero-carousel";
 import { getAllBlogPosts } from "@/lib/blog";
+import { blogCategories } from "@/lib/blog-taxonomy";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
@@ -36,6 +38,18 @@ export default async function BlogPage() {
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-14 lg:gap-20">
         <BlogHeroCarousel posts={posts} />
 
+        <nav aria-label="Bloggkategorier" className="fade-up-delay flex flex-wrap gap-3">
+          {blogCategories.map((category) => (
+            <Link
+              key={category.slug}
+              className="blog-category-nav-link"
+              href={category.href}
+            >
+              <span>{category.label}</span>
+            </Link>
+          ))}
+        </nav>
+
         <section className="fade-up-delay flex flex-col gap-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -47,7 +61,6 @@ export default async function BlogPage() {
                 neste steg.
               </p>
             </div>
-            <p className="text-sm text-[var(--muted)]">{posts.length} artikler</p>
           </div>
 
           <div className="grid gap-x-8 gap-y-12 md:grid-cols-2 xl:grid-cols-3">

@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatBlogDate, type BlogPostPreview } from "@/lib/blog-shared";
+import { getBlogCategory } from "@/lib/blog-taxonomy";
 
 type BlogCardProps = {
   post: BlogPostPreview;
 };
 
 export function BlogCard({ post }: BlogCardProps) {
+  const category = getBlogCategory(post.category);
+
   return (
     <article className="group flex h-full flex-col transition duration-200 hover:-translate-y-0.5">
       <Link aria-label={`Les ${post.title}`} className="block overflow-hidden rounded-[5px]" href={`/blogg/${post.slug}`}>
@@ -22,8 +25,13 @@ export function BlogCard({ post }: BlogCardProps) {
       </Link>
 
       <div className="flex flex-1 flex-col gap-4 pt-5">
-        <div className="text-[0.76rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-          Artikkel · {post.readingTimeMinutes} min lesetid
+        <div className="flex flex-wrap items-center gap-2 text-[0.76rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+          {category ? (
+            <Link className="blog-meta-chip" href={category.href}>
+              {category.label}
+            </Link>
+          ) : null}
+          <span>Artikkel · {post.readingTimeMinutes} min lesetid</span>
         </div>
 
         <div className="space-y-3">
