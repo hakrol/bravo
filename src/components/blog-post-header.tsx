@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { formatBlogDate, type BlogPost } from "@/lib/blog";
+import { getBlogCategory } from "@/lib/blog-taxonomy";
 
 type BlogPostHeaderProps = {
   post: BlogPost;
@@ -13,6 +15,7 @@ function sentence(value: string) {
 
 export function BlogPostHeader({ post }: BlogPostHeaderProps) {
   const coverImageDescription = post.coverImageAlt ?? `Illustrasjon til artikkelen ${post.title}`;
+  const category = getBlogCategory(post.category);
 
   return (
     <header className="blog-post-hero">
@@ -41,6 +44,19 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
         </figure>
 
         <div className="blog-post-hero-content">
+          <div className="blog-post-meta-chips">
+            {category ? (
+              <Link className="blog-meta-chip" href={category.href}>
+                {category.label}
+              </Link>
+            ) : null}
+            {post.tags?.map((tag) => (
+              <span key={tag} className="blog-meta-chip blog-meta-chip-muted">
+                {tag}
+              </span>
+            ))}
+          </div>
+
           <p className="blog-post-hero-description">{post.description}</p>
 
           <div className="blog-post-hero-author">

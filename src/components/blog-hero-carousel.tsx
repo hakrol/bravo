@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useEffectEvent, useState } from "react";
 import { formatBlogDate, type BlogPostPreview } from "@/lib/blog-shared";
+import { getBlogCategory } from "@/lib/blog-taxonomy";
 
 type BlogHeroCarouselProps = {
   posts: BlogPostPreview[];
@@ -51,6 +52,7 @@ export function BlogHeroCarousel({ posts }: BlogHeroCarouselProps) {
   const activePost = posts[activeIndex];
   const previousPost = posts[getWrappedIndex(activeIndex - 1, posts.length)];
   const nextPost = posts[getWrappedIndex(activeIndex + 1, posts.length)];
+  const activeCategory = getBlogCategory(activePost.category);
 
   return (
     <section className="fade-up flex flex-col gap-8">
@@ -73,8 +75,13 @@ export function BlogHeroCarousel({ posts }: BlogHeroCarouselProps) {
           <article className="grid min-h-[440px] gap-8 rounded-[5px] border border-[rgba(27,36,48,0.06)] bg-white px-7 py-7 shadow-[0_18px_42px_rgba(27,36,48,0.04)] md:grid-cols-[minmax(0,0.78fr)_minmax(360px,1.02fr)] md:items-center md:px-8 md:py-8 lg:min-h-[480px] lg:gap-12 lg:px-10 lg:py-10">
             <div className="order-2 flex flex-col justify-center gap-6 md:order-1">
               <div className="space-y-4">
-                <div className="text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-                  Artikkel · {activePost.readingTimeMinutes} min lesetid
+                <div className="flex flex-wrap items-center gap-2 text-[0.8rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  {activeCategory ? (
+                    <Link className="blog-meta-chip" href={activeCategory.href}>
+                      {activeCategory.label}
+                    </Link>
+                  ) : null}
+                  <span>Artikkel · {activePost.readingTimeMinutes} min lesetid</span>
                 </div>
                 <h2
                   className="blog-title-fit max-w-[10.5ch] text-4xl font-semibold tracking-[-0.075em] text-balance text-[var(--foreground)] sm:text-5xl lg:text-[4.25rem]"

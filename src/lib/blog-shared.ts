@@ -8,10 +8,14 @@ export type BlogFrontmatter = {
   coverImage: string;
   coverImageAlt?: string;
   author: string;
+  category: BlogCategorySlug;
+  tags?: string[];
   draft?: boolean;
   seoTitle?: string;
   seoDescription?: string;
 };
+
+export type BlogCategorySlug = "lonn" | "lonnsforhandling";
 
 export type BlogPostPreview = BlogFrontmatter & {
   readingTimeMinutes: number;

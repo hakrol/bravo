@@ -13,6 +13,9 @@ publishedAt: "2026-04-03"
 coverImage: "/blogg/min-slug/yrke-lonn.png"
 coverImageAlt: "Kort beskrivelse av hva hero-bildet viser"
 author: "Kristian"
+category: "lonn"
+tags:
+  - "Snekker"
 seoTitle: "Valgfri SEO-tittel"
 seoDescription: "Valgfri SEO-beskrivelse"
 ---
@@ -43,6 +46,12 @@ Bruk disse feltene bevisst i frontmatter:
 - `coverImageAlt`
   Skal beskrive selve hero-bildet kort og konkret, for eksempel `To piloter som sitter i cockpit`. Brukes både som alt-tekst og som første setning i den lille grå bildeteksten under hero-bildet.
 
+- `category`
+  Skal være én av de godkjente bloggkategoriene. Bruk `lonn` for lønns-, yrkes- og lønnsutviklingsartikler. Bruk `lonnsforhandling` for guider om lønnssamtale, lønnskrav og forhandling.
+
+- `tags`
+  Valgfritt felt for spesifikke hovedtemaer i innlegget. Bruk bare tags når temaet er sentralt i artikkelen, ikke fordi ordet nevnes i en sammenligning.
+
 Anbefalt praksis:
 
 - La `title` være tydelig og lesbar, ikke pakket med søkeord.
@@ -70,6 +79,7 @@ Eksempel:
 title: "Hvor mye mer kan man be om i lønn?"
 description: "En konkret guide til hvor mye du realistisk kan be om i lønn, og hvordan du regner deg frem til et smart krav."
 slug: "hvor-mye-mer-kan-man-be-om-i-lonn"
+category: "lonnsforhandling"
 seoTitle: "Hvor mye mer kan man be om i lønn? Konkrete tall og realistiske nivåer"
 seoDescription: "Se hva som er normalt lønnshopp ved årlig justering, økt ansvar og jobbskifte, og lær hvordan du beregner et realistisk lønnskrav."
 ```
