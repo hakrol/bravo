@@ -66,7 +66,7 @@ export function BlogSalaryDevelopmentChart({
     <figure className="blog-chart blog-salary-development-figure" aria-labelledby={titleId}>
       <div className="blog-chart-header">
         <div>
-          <h3 className="blog-chart-title" id={titleId} style={{ fontSize: "50px", lineHeight: 1.08 }}>
+          <h3 className="blog-chart-title" id={titleId}>
             {title}
           </h3>
           {subtitle ? <p className="blog-chart-subtitle">{subtitle}</p> : null}

@@ -1309,7 +1309,7 @@ a.blog-meta-chip:focus-visible {
 .blog-prose .blog-salary-development-figure .blog-chart-title,
 .blog-salary-development-figure .blog-chart-title {
   max-width: 20ch;
-  font-size: 30px;
+  font-size: clamp(1.9rem, 5vw, 3.125rem);
   font-weight: 820;
   line-height: 1.08;
 }
@@ -2434,9 +2434,11 @@ a.blog-meta-chip:focus-visible {
 
   .blog-prose .blog-salary-development-figure .blog-chart-title,
   .blog-salary-development-figure .blog-chart-title {
-    max-width: 20ch;
-    font-size: 30px;
-    line-height: 1.08;
+    max-width: 100%;
+    font-size: clamp(1.58rem, 7.1vw, 2.05rem);
+    line-height: 1.1;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .blog-salary-development-figure .blog-chart-subtitle {
@@ -2446,9 +2448,11 @@ a.blog-meta-chip:focus-visible {
 
   .blog-prose .blog-editorial-bar-figure .blog-chart-title,
   .blog-editorial-bar-figure .blog-chart-title {
-    max-width: 18ch;
-    font-size: clamp(2.05rem, 10vw, 2.85rem);
-    line-height: 1.07;
+    max-width: 100%;
+    font-size: clamp(1.58rem, 7.1vw, 2.05rem);
+    line-height: 1.1;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .blog-editorial-bar-figure .blog-chart-subtitle {
