@@ -3,6 +3,7 @@ import type {
   OccupationDetailTrendData,
   OccupationLaborMarketStats,
   OccupationSalaryDistribution,
+  OccupationSectorSalaryTimeSeries,
   OccupationSalaryTimeSeries,
 } from "@/lib/ssb";
 
@@ -28,6 +29,7 @@ export type OccupationDetailPageData = {
     measureLabel: string;
   };
   laborMarketStats: OccupationLaborMarketStats | null;
+  sectorSalarySeries?: OccupationSectorSalaryTimeSeries | null;
   medianBasicSalarySeries: OccupationSalaryTimeSeries;
   relatedRows: OccupationRelatedSalaryRow[];
 };

@@ -21,6 +21,8 @@
   OccupationPurchasingPowerRow,
   OccupationSalaryDistribution,
   OccupationSalaryDistributionMetrics,
+  OccupationSectorSalaryTimeSeries,
+  OccupationSectorSalaryTimeSeriesPoint,
   OccupationSupplementTimeSeries,
   OccupationSupplementTimeSeriesPoint,
   OccupationSalaryTimeSeries,

@@ -46,7 +46,7 @@ export function PageShareButton({ title, text }: PageShareButtonProps) {
         onClick={handleShare}
         type="button"
       >
-        Del siden med en venn eller kollega
+        Tips en venn eller kollega
       </button>
       {status ? (
         <span aria-live="polite" className="text-sm font-medium text-emerald-50">

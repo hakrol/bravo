@@ -147,6 +147,19 @@ async function main() {
         }),
     },
     {
+      key: "occupationSectorSalaryLatest",
+      fileName: "occupation-sector-salary-latest.json",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
+      buildQuery: (metadata) =>
+        queries.buildOccupationTimeSeriesQuery(metadata, "*", {
+          MaaleMetode: ["01", "02"],
+          Sektor: ["A+B+D+E", "6500", "6100"],
+          Kjonn: ["0", "1", "2"],
+          AvtaltVanlig: "0",
+          ContentsCode: "Manedslonn",
+        }),
+    },
+    {
       key: "occupationContractedDistributionLatest",
       fileName: "occupation-contracted-distribution-latest.json",
       tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-31T07:56:25.630Z",
+  "generatedAt": "2026-06-17T10:07:02.974Z",
   "source": "ssb",
   "datasets": [
     {
@@ -93,6 +93,23 @@
       "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 6984,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "Sektor",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
+      "key": "occupationSectorSalaryLatest",
+      "fileName": "occupation-sector-salary-latest.json",
+      "tableId": "11418",
+      "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
+      "updated": "2026-02-05T07:00:00Z",
+      "rowCount": 115236,
       "dimensions": [
         "MaaleMetode",
         "Yrke",
@@ -261,9 +278,9 @@
       "key": "inflationQuarterSeries",
       "fileName": "inflation-quarter-series.json",
       "tableId": "14700",
-      "title": "14700: Konsumprisindeks (KPI), etter vare- og tjenestegruppe (2025=100) 2000M01-2026M04",
-      "updated": "2026-05-11T06:00:00Z",
-      "rowCount": 316,
+      "title": "14700: Konsumprisindeks (KPI), etter vare- og tjenestegruppe (2025=100) 2000M01-2026M05",
+      "updated": "2026-06-10T06:00:00Z",
+      "rowCount": 317,
       "dimensions": [
         "VareTjenesteGrp",
         "ContentsCode",

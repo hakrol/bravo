@@ -14,6 +14,7 @@ type GeneratedSsbDatasetKey =
   | "occupationAverageTimeSeries"
   | "occupationMedianTimeSeries"
   | "occupationDistributionLatest"
+  | "occupationSectorSalaryLatest"
   | "occupationContractedDistributionLatest"
   | "occupationWorkforceTimeSeries"
   | "occupationAgeTimeSeries"
@@ -131,6 +132,10 @@ export async function syncOccupationDetailViewModels() {
             ageDataset: datasets.occupationAgeTimeSeries,
             occupationCode: entry.page.occupationCode,
           }),
+          sectorSalarySeries: buildSectorSalaryTimeSeries(
+            datasets.occupationSectorSalaryLatest,
+            entry.page.occupationCode,
+          ),
           medianBasicSalarySeries: buildSalaryTimeSeries(
             datasets.occupationMedianTimeSeries,
             entry.page.occupationCode,
@@ -188,6 +193,7 @@ async function readSourceDatasets(manifest: GeneratedManifest) {
     "occupationAverageTimeSeries",
     "occupationMedianTimeSeries",
     "occupationDistributionLatest",
+    "occupationSectorSalaryLatest",
     "occupationContractedDistributionLatest",
     "occupationWorkforceTimeSeries",
     "occupationAgeTimeSeries",
@@ -693,7 +699,7 @@ function buildLaborMarketStats(options: {
     updated: options.workforceDataset.updated ?? options.ageDataset.updated,
     employeeUnit: "personer",
     jobUnit: "arbeidsforhold",
-    workforcePoints: workforcePoints.map(({ occupationLabel: _occupationLabel, ...point }) => point),
+    workforcePoints: workforcePoints.map(removeOccupationLabel),
     latest: latestWorkforce
       ? {
           occupationCode: options.occupationCode,
@@ -752,7 +758,7 @@ function buildLaborMarketStats(options: {
           updated: options.ageDataset.updated,
         }
       : null,
-    ageSeries: ageSeries.map(({ occupationLabel: _occupationLabel, ...point }) => point),
+    ageSeries: ageSeries.map(removeOccupationLabel),
   };
 }
 
@@ -827,6 +833,117 @@ function buildAgeSeries(dataset: SsbDataset, occupationCode: string) {
   return Array.from(pointsByPeriod.values()).sort((left, right) =>
     left.periodCode.localeCompare(right.periodCode, "nb-NO"),
   );
+}
+
+function buildSectorSalaryTimeSeries(dataset: SsbDataset, occupationCode: string) {
+  const pointsByPeriod = new Map<string, {
+    occupationLabel: string;
+    periodCode: string;
+    periodLabel: string;
+    privateMedianAll?: number;
+    privateMedianWomen?: number;
+    privateMedianMen?: number;
+    municipalMedianAll?: number;
+    municipalMedianWomen?: number;
+    municipalMedianMen?: number;
+    stateMedianAll?: number;
+    stateMedianWomen?: number;
+    stateMedianMen?: number;
+    privateAverageAll?: number;
+    privateAverageWomen?: number;
+    privateAverageMen?: number;
+    municipalAverageAll?: number;
+    municipalAverageWomen?: number;
+    municipalAverageMen?: number;
+    stateAverageAll?: number;
+    stateAverageWomen?: number;
+    stateAverageMen?: number;
+  }>();
+
+  for (const row of dataset.rows) {
+    const occupation = row.dimensions.Yrke;
+    const sector = row.dimensions.Sektor;
+    const gender = row.dimensions.Kjonn;
+    const measure = row.dimensions.MaaleMetode;
+    const period = row.dimensions.Tid;
+
+    if (
+      !occupation ||
+      occupation.code !== occupationCode ||
+      !sector ||
+      !gender ||
+      !measure ||
+      !period ||
+      row.value === null
+    ) {
+      continue;
+    }
+
+    const sectorPrefix = getSectorSalaryPrefix(sector.code);
+    const measurePart = measure.code === "02" ? "Average" : measure.code === "01" ? "Median" : null;
+    const genderPart = getGenderFieldSuffix(gender.code);
+
+    if (!sectorPrefix || !measurePart || !genderPart) {
+      continue;
+    }
+
+    const existing = pointsByPeriod.get(period.code) ?? {
+      occupationLabel: occupation.label,
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+    const fieldName = `${sectorPrefix}${measurePart}${genderPart}`;
+
+    (existing as Record<string, number | string>)[fieldName] = row.value;
+    pointsByPeriod.set(period.code, existing);
+  }
+
+  const points = Array.from(pointsByPeriod.values())
+    .sort((left, right) => left.periodCode.localeCompare(right.periodCode, "nb-NO"))
+    .map(removeOccupationLabel);
+
+  if (points.length === 0) {
+    return null;
+  }
+
+  return {
+    occupationCode,
+    occupationLabel: pointsByPeriod.values().next().value?.occupationLabel ?? occupationCode,
+    updated: dataset.updated,
+    points,
+  };
+}
+
+function getSectorSalaryPrefix(sectorCode: string) {
+  switch (sectorCode) {
+    case "A+B+D+E":
+      return "private";
+    case "6500":
+      return "municipal";
+    case "6100":
+      return "state";
+    default:
+      return null;
+  }
+}
+
+function getGenderFieldSuffix(genderCode: string) {
+  switch (genderCode) {
+    case "0":
+      return "All";
+    case "2":
+      return "Women";
+    case "1":
+      return "Men";
+    default:
+      return null;
+  }
+}
+
+function removeOccupationLabel<T extends { occupationLabel: string }>(row: T): Omit<T, "occupationLabel"> {
+  const point = { ...row } as Omit<T, "occupationLabel"> & { occupationLabel?: string };
+  delete point.occupationLabel;
+  return point;
 }
 
 function buildRelatedRows(options: {

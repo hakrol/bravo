@@ -5,6 +5,7 @@ import { OccupationSalaryDistributionSection } from "@/components/occupation-sal
 import { OccupationSalaryEstimate } from "@/components/occupation-salary-estimate";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
+import { OccupationSectorSalaryTimeSeriesChart } from "@/components/occupation-sector-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
 import { PageShareButton } from "@/components/page-share-button";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
@@ -167,9 +168,19 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const apprenticeshipPage = await getApprenticeshipDetailPageByOccupationCode(
     detail.detailPage.occupationCode,
   );
+  const sectionNavItems = [
+    topSummary ? { href: "#kort-oppsummert", label: "Kort oppsummert" } : null,
+    distribution ? { href: "#lonnsfordeling", label: "Lønnsfordeling" } : null,
+    { href: "#lonnsutvikling", label: "Lønnsutvikling" },
+    { href: "#reallonn", label: "Reallønn" },
+    hasEstimate ? { href: "#lonnsestimat", label: "Lønnsestimat" } : null,
+    relatedRows.length > 0 ? { href: "#relaterte-jobber", label: "Relaterte jobber" } : null,
+    laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarked" } : null,
+  ].filter((item): item is { href: string; label: string } => Boolean(item));
+
   return (
     <main className="min-h-screen bg-[#f7fafc] text-slate-950">
-      <section className="px-4 pb-6 pt-3 text-white sm:px-6 lg:px-8">
+      <section className="px-4 pb-3 pt-3 text-white sm:px-6 lg:px-8">
         <div
           className="mx-auto w-full max-w-7xl rounded-[5px] bg-[radial-gradient(circle_at_20%_15%,rgba(12,116,77,0.56),transparent_32%),linear-gradient(135deg,#053428_0%,#072d25_52%,#0b3b2e_100%)] px-5 py-7 shadow-[0_24px_60px_rgba(15,47,34,0.16)] sm:px-8 sm:py-9 lg:px-12"
         >
@@ -225,12 +236,15 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
         </div>
       </section>
 
-      <section className="px-4 py-6 sm:px-6 lg:px-8">
+      <section className="px-4 pb-6 pt-2 sm:px-6 lg:px-8">
+        <SectionLinkNav items={sectionNavItems} />
+
         <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
             {topSummary ? (
               <section
                 className="rounded-[5px] border border-slate-200 bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
+                id="kort-oppsummert"
               >
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
                   Kort oppsummert
@@ -248,7 +262,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </section>
 
             {distribution ? (
-              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="lonnsfordeling"
+              >
                 <div className="space-y-3">
                   <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Lønnsfordeling for {occupationText.titleLabel}
@@ -292,7 +309,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </div>
             </section>
 
-            <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
+            <section
+              className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+              id="reallonn"
+            >
               <div className="space-y-3">
                 <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                   Reallønnsvekst for {occupationText.titleLabel}
@@ -309,7 +329,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </section>
 
             {hasEstimate ? (
-              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="lonnsestimat"
+              >
                 <div className="space-y-3">
                   <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Lønnsestimat for {occupationText.titleLabel}
@@ -354,7 +377,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             {relatedRows.length > 0 ? (
-              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="relaterte-jobber"
+              >
                 <div className="space-y-3">
                   <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Relaterte jobber for {occupationText.titleLabel}
@@ -401,7 +427,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             {laborMarket ? (
-              <section className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7">
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="arbeidsmarked"
+              >
                 <div className="space-y-3">
                   <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                     Arbeidsmarkedet for {occupationText.titleLabel}
@@ -419,6 +448,12 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     occupationLabel={occupationText.titleLabel}
                     points={laborMarket.ageSeries}
                   />
+                  {detail.data.sectorSalarySeries ? (
+                    <OccupationSectorSalaryTimeSeriesChart
+                      occupationLabel={occupationText.titleLabel}
+                      series={detail.data.sectorSalarySeries}
+                    />
+                  ) : null}
                 </div>
               </section>
             ) : null}
@@ -536,6 +571,35 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
         </div>
       </section>
     </main>
+  );
+}
+
+function SectionLinkNav({
+  items,
+}: {
+  items: Array<{ href: string; label: string }>;
+}) {
+  if (items.length === 0) {
+    return null;
+  }
+
+  return (
+    <nav
+      aria-label="Seksjoner på yrkessiden"
+      className="mx-auto mb-2 w-full max-w-7xl overflow-x-auto pb-1"
+    >
+      <div className="flex min-w-max gap-2">
+        {items.map((item) => (
+          <a
+            className="inline-flex h-8 items-center rounded-[5px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 shadow-sm transition hover:border-emerald-700/25 hover:text-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
+            href={item.href}
+            key={item.href}
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </nav>
   );
 }
 

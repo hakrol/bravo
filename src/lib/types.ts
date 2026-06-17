@@ -185,6 +185,7 @@ export type GeneratedSsbDatasetKey =
   | "occupationAverageTimeSeries"
   | "occupationMedianTimeSeries"
   | "occupationDistributionLatest"
+  | "occupationSectorSalaryLatest"
   | "occupationContractedDistributionLatest"
   | "occupationSupplementTimeSeries"
   | "occupationWorkforceTimeSeries"
@@ -228,6 +229,36 @@ export type OccupationSalaryTimeSeries = {
   measureLabel: string;
   updated?: string;
   points: OccupationSalaryTimeSeriesPoint[];
+};
+
+export type OccupationSectorSalaryTimeSeriesPoint = {
+  periodCode: string;
+  periodLabel: string;
+  privateMedianAll?: number;
+  privateMedianWomen?: number;
+  privateMedianMen?: number;
+  municipalMedianAll?: number;
+  municipalMedianWomen?: number;
+  municipalMedianMen?: number;
+  stateMedianAll?: number;
+  stateMedianWomen?: number;
+  stateMedianMen?: number;
+  privateAverageAll?: number;
+  privateAverageWomen?: number;
+  privateAverageMen?: number;
+  municipalAverageAll?: number;
+  municipalAverageWomen?: number;
+  municipalAverageMen?: number;
+  stateAverageAll?: number;
+  stateAverageWomen?: number;
+  stateAverageMen?: number;
+};
+
+export type OccupationSectorSalaryTimeSeries = {
+  occupationCode: string;
+  occupationLabel: string;
+  updated?: string;
+  points: OccupationSectorSalaryTimeSeriesPoint[];
 };
 
 export type OccupationSupplementTimeSeriesPoint = {
