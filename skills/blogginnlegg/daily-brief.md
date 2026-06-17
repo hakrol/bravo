@@ -51,6 +51,8 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Er feriepenger alltid 12%? - `src/content/blog/er-feriepenger-alltid-12-prosent.mdx` - 2026-06-16
+
 - [x] Skal man deles årslønn på 11 eller 12? - `src/content/blog/skal-man-dele-arslonn-pa-11-eller-12.mdx` - 2026-06-15
 
 - [x] Hvilke yrker tjener over 1 million? - `src/content/blog/hvilke-yrker-tjener-over-1-million.mdx` - 2026-06-14
