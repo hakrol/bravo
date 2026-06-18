@@ -1,0 +1,134 @@
+{
+  "id": "konduktor-lonn-2025",
+  "title": "Hvor mye tjener en konduktør?",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Lønnstallene gjelder STYRK-08 5112 Konduktører. Målemetode: median. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 4. kvartal 2025 fra SSB tabell 11658. Femårsserien i diagrammet gjelder privat sektor og offentlige eide foretak, fordi dette er den tilgjengelige årsserien i det lokale SSB-snapshotet.",
+  "occupationMapping": {
+    "styrk98Code": "5112102",
+    "styrk98Title": "KONDUKTØR",
+    "styrk08Code": "5112",
+    "styrk08Title": "Konduktører"
+  },
+  "rows": [
+    {
+      "code": "5112",
+      "label": "Konduktører",
+      "href": "/yrke/konduktorer-lonn",
+      "value": 66330,
+      "average": 64620,
+      "p25": 61580,
+      "p75": 69940,
+      "employees": 1390,
+      "jobs": 1411,
+      "averageAge": 43.8
+    },
+    {
+      "code": "5165",
+      "label": "Kjøreskolelærere",
+      "href": "/yrke/kjoreskolelaerere-lonn",
+      "value": 58310
+    },
+    {
+      "code": "5163",
+      "label": "Begravelsesbyrå- og krematoriearbeidere",
+      "href": "/yrke/begravelsesbyra-og-krematoriearbeidere-lonn",
+      "value": 52790
+    },
+    {
+      "code": "5153",
+      "label": "Vaktmestre",
+      "href": "/yrke/vaktmestre-lonn",
+      "value": 48190
+    },
+    {
+      "code": "5151",
+      "label": "Renholdsledere i bedrifter",
+      "href": "/yrke/renholdsledere-i-bedrifter-lonn",
+      "value": 47600
+    },
+    {
+      "code": "5113",
+      "label": "Reiseledere og guider",
+      "href": "/yrke/reiseledere-og-guider-lonn",
+      "value": 42220
+    },
+    {
+      "code": "5169",
+      "label": "Andre personlige tjenesteytere",
+      "href": "/yrke/andre-personlige-tjenesteytere-lonn",
+      "value": 41800
+    },
+    {
+      "code": "5120",
+      "label": "Kokker",
+      "href": "/yrke/kokker-lonn",
+      "value": 41610
+    },
+    {
+      "code": "5111",
+      "label": "Flyverter, båtverter mv.",
+      "href": "/yrke/flyverter-batverter-mv-lonn",
+      "value": 41510
+    },
+    {
+      "code": "5141",
+      "label": "Frisører",
+      "href": "/yrke/frisorer-lonn",
+      "value": 39670
+    },
+    {
+      "code": "5142",
+      "label": "Kosmetologer mv.",
+      "href": "/yrke/kosmetologer-mv-lonn",
+      "value": 39330
+    },
+    {
+      "code": "5132",
+      "label": "Bartendere",
+      "href": "/yrke/bartendere-lonn",
+      "value": 37480
+    },
+    {
+      "code": "5164",
+      "label": "Dyrepassere og - trenere mv.",
+      "href": "/yrke/dyrepassere-og-trenere-mv-lonn",
+      "value": 36670
+    }
+  ],
+  "genderMedian": {
+    "occupationLabel": "Konduktører",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 65620,
+    "menMonthlyMedian": 66900
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Konduktører",
+    "source": "SSB tabell 11418",
+    "note": "Årsserien gjelder privat sektor og offentlige eide foretak.",
+    "rows": [
+      { "label": "2021", "value": 54470 },
+      { "label": "2022", "value": 57700 },
+      { "label": "2023", "value": 59850 },
+      { "label": "2024", "value": 63950 },
+      { "label": "2025", "value": 66370 }
+    ]
+  },
+  "laborMarket": {
+    "period": "4. kvartal 2025",
+    "employees": 1390,
+    "jobs": 1411,
+    "womenEmployees": 598,
+    "menEmployees": 792,
+    "womenShare": 43.0,
+    "menShare": 57.0,
+    "averageAge": 43.8
+  },
+  "education": {
+    "source": "Utdanning.no",
+    "reviewed": "Gjennomgått i samarbeid med Vy 14. mai 2025",
+    "training": "Togselskapene gir lønnet opplæring, vanligvis over omtrent 4-6 måneder."
+  }
+}

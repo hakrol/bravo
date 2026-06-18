@@ -51,6 +51,10 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Hvor mye tjener en konduktør? - `src/content/blog/hvor-mye-tjener-en-konduktor.mdx` - 2026-06-17
+
+- [x] Hvilken måned betaler vi ikke skatt? - `src/content/blog/hvilken-maned-betaler-vi-ikke-skatt.mdx` - 2026-06-17
+
 - [x] Er feriepenger alltid 12%? - `src/content/blog/er-feriepenger-alltid-12-prosent.mdx` - 2026-06-16
 
 - [x] Skal man deles årslønn på 11 eller 12? - `src/content/blog/skal-man-dele-arslonn-pa-11-eller-12.mdx` - 2026-06-15
