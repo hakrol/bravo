@@ -4,6 +4,7 @@
   label: string;
   shortLabel: string;
   description: string;
+  icon: string;
 };
 
 const occupationGroups: OccupationGroup[] = [
@@ -13,6 +14,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Ledere",
     shortLabel: "Ledere",
     description: "Yrkesfeltet omfatter ledelsesroller på tvers av privat og offentlig sektor.",
+    icon: "👔",
   },
   {
     code: "2",
@@ -20,6 +22,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Akademiske yrker",
     shortLabel: "Akademiske yrker",
     description: "Yrkesfeltet omfatter stillinger som vanligvis krever lang høyere utdanning.",
+    icon: "🎓",
   },
   {
     code: "4",
@@ -27,6 +30,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Kontoryrker",
     shortLabel: "Kontoryrker",
     description: "Yrkesfeltet omfatter kontorarbeid, administrasjon og støttefunksjoner.",
+    icon: "🗂️",
   },
   {
     code: "5",
@@ -34,6 +38,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Salgs- og serviceyrker",
     shortLabel: "Salg og service",
     description: "Yrkesfeltet omfatter serviceyrker, kundearbeid og omsorgsrettede roller.",
+    icon: "🛍️",
   },
   {
     code: "6",
@@ -41,6 +46,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Bønder, fiskere mv.",
     shortLabel: "Jordbruk og fiske",
     description: "Yrkesfeltet omfatter jordbruk, skogbruk, fiske og nærliggende primærnæringer.",
+    icon: "🌾",
   },
   {
     code: "7",
@@ -48,6 +54,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Håndverkere",
     shortLabel: "Håndverkere",
     description: "Yrkesfeltet omfatter håndverksfag, byggfag og andre praktiske fagyrker.",
+    icon: "🛠️",
   },
   {
     code: "8",
@@ -55,6 +62,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Prosess- og maskinoperatører, transportarbeidere mv.",
     shortLabel: "Operatører og transport",
     description: "Yrkesfeltet omfatter prosessindustri, maskindrift og transportarbeid.",
+    icon: "🚆",
   },
   {
     code: "9",
@@ -62,6 +70,7 @@ const occupationGroups: OccupationGroup[] = [
     label: "Renholdere, hjelpearbeidere mv.",
     shortLabel: "Renhold og hjelpearbeid",
     description: "Yrkesfeltet omfatter renhold, hjelpearbeid og andre yrker uten formelle krav til utdanning.",
+    icon: "🧹",
   },
 ];
 

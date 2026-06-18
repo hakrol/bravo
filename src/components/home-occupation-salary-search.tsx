@@ -3,6 +3,7 @@
 import { useDeferredValue, useMemo, useState } from "react";
 import { AllOccupationsSalaryChart } from "@/components/all-occupations-salary-chart";
 import { HomeAboutInsightSection } from "@/components/home-about-insight-section";
+import { HomeExploreOccupationsSection } from "@/components/home-explore-occupations-section";
 import { HomeHeroSearch } from "@/components/home-hero-search";
 import { HomeOccupationCards } from "@/components/home-occupation-cards";
 import type { OccupationSalaryRow } from "@/components/occupation-salary-overview";
@@ -57,6 +58,7 @@ export function HomeOccupationSalarySearch({
         purchasingPowerSeries={allOccupationsPurchasingPowerSeries}
         series={allOccupationsSalarySeries}
       />
+      <HomeExploreOccupationsSection />
       <HomeAboutInsightSection />
     </>
   );

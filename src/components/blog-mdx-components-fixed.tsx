@@ -41,6 +41,10 @@ import {
 } from "@/components/blog-konduktor-salary-chart";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { MillionSalaryGrowthChart } from "@/components/blog-million-salary-chart";
+import {
+  NorwayCommonOccupationsChart,
+  NorwayCommonOccupationsSalaryGrowthChart,
+} from "@/components/blog-norway-common-occupations-chart";
 import { MalerGenderSalaryCards, MalerSalaryBubbleChart, MalerSalaryDevelopmentChart } from "@/components/blog-maler-salary-chart";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
@@ -222,6 +226,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     MalerSalaryBubbleChart,
     MalerSalaryDevelopmentChart,
     MillionSalaryGrowthChart,
+    NorwayCommonOccupationsChart,
+    NorwayCommonOccupationsSalaryGrowthChart,
     PoliceSalaryBubbleChart,
     PoliceSalaryEditorialChart,
     PilotSalaryDevelopmentChart,

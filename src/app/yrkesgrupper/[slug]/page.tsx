@@ -1,20 +1,23 @@
-﻿import { OccupationSalaryOverview } from "@/components/occupation-salary-overview";
-import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
-import { getOccupationGroupBySlug, listOccupationGroups } from "@/lib/occupation-groups";
-import { getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets } from "@/lib/ssb";
-import { siteConfig } from "@/lib/site-config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import {
+  OccupationDirectory,
+  type OccupationDirectoryItem,
+} from "@/components/occupation-directory";
+import {
+  formatOccupationDisplayLabel,
+} from "@/lib/occupation-detail-pages";
+import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
+import { getOccupationGroupBySlug, listOccupationGroups } from "@/lib/occupation-groups";
+import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
+import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
+import { siteConfig } from "@/lib/site-config";
 
 type OccupationGroupPageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
-
-const currencyFormatter = new Intl.NumberFormat("nb-NO", {
-  maximumFractionDigits: 0,
-});
 
 export async function generateStaticParams() {
   return listOccupationGroups().map((group) => ({
@@ -32,7 +35,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const description = `Se siste tilgjengelige lønnsdata for ${group.label.toLowerCase()} og sammenlign yrkene i feltet.`;
+  const description = getOccupationGroupSeoDescription(group.label);
   const canonicalPath = `/yrkesgrupper/${group.slug}`;
 
   return {
@@ -62,69 +65,73 @@ export default async function OccupationGroupPage({
     notFound();
   }
 
-  const { latestDataset, previousDataset } =
-    await getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets();
-  const overview = buildOccupationMedianGrowthOverview(latestDataset, previousDataset, {
+  const [latestDataset, occupationIndex] = await Promise.all([
+    getLatestOccupationMedianMonthlySalaryDataset(),
+    getOccupationDetailViewModelIndex(),
+  ]);
+  const overview = buildOccupationMedianGrowthOverview(latestDataset, undefined, {
     occupationCodes: listOccupationCodesForGroup(group.code),
   });
-  const groupMedianSalary = findGroupMedianSalary(latestDataset, group.code);
+  const occupationLabelsByCode = getOccupationLabelsByCode(latestDataset);
+  const firstSlugByOccupationCode = new Map<string, string>();
+
+  for (const page of occupationIndex.pages) {
+    if (!firstSlugByOccupationCode.has(page.occupationCode)) {
+      firstSlugByOccupationCode.set(page.occupationCode, page.slug);
+    }
+  }
+
+  const items: OccupationDirectoryItem[] = overview.rows
+    .filter((row) => row.medianAll !== undefined)
+    .sort((left, right) => left.occupationLabel.localeCompare(right.occupationLabel, "nb-NO"))
+    .map((row) => {
+      const title = formatOccupationDisplayLabel(row.occupationLabel);
+      const occupationSlug = firstSlugByOccupationCode.get(row.occupationCode);
+
+      return {
+        occupationCode: row.occupationCode,
+        title,
+        familyCode: row.occupationCode.slice(0, 3),
+        familyLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
+        monthlySalary: row.medianAll,
+        href: occupationSlug ? `/yrke/${occupationSlug}` : undefined,
+        searchText: [
+          title,
+          row.occupationLabel,
+          occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
+          row.occupationCode,
+        ]
+          .filter(Boolean)
+          .join(" "),
+      };
+    });
+  const description = getOccupationGroupSeoDescription(group.label);
 
   return (
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <div className="space-y-3">
-          <h1 className="text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
-            Lønn for {group.label.toLowerCase()}
+          <h1 className="flex items-center gap-4 text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
+            <span>Lønn for {group.label.toLowerCase()}</span>
+            <span aria-hidden="true" className="shrink-0 text-4xl sm:text-5xl">
+              {group.icon}
+            </span>
           </h1>
-          <p className="max-w-3xl text-base text-[var(--muted)] sm:text-lg">
-            {group.description}
+          <p className="max-w-4xl text-base leading-7 text-[var(--muted)] sm:text-lg sm:leading-8">
+            {description}
           </p>
         </div>
 
-        <section className="grid gap-4 sm:grid-cols-3">
-          <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              {group.label}
-            </p>
-          </article>
-          <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="text-sm font-medium text-[var(--muted)]">
-              Median samlet månedslønn i {group.label.toLowerCase()}
-            </p>
-            <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              {formatSalary(groupMedianSalary)}
-            </p>
-          </article>
-          <article className="rounded-md border bg-[var(--surface)] px-6 py-5 shadow-sm">
-            <p className="text-sm font-medium text-[var(--muted)]">Antall yrker</p>
-            <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-              {overview.rows.length}
-            </p>
-          </article>
-        </section>
-
-        <OccupationSalaryOverview
-          rows={overview.rows}
-          initialSortDirection="desc"
-          initialSortKey="medianMen"
-          lastUpdated={latestDataset.updated}
-          showLastUpdated={false}
-          periodLabel={overview.periodLabel}
-          title={`Detaljyrker i ${group.label.toLowerCase()}`}
-          description={`Tabellen viser siste tilgjengelige median samlet månedslønn for 4-siffer-yrker innen ${group.label.toLowerCase()}, fordelt på kvinner og menn.`}
-          emptyStateText={`Fant ingen detaljyrker for ${group.label.toLowerCase()} akkurat nå.`}
+        <OccupationDirectory
+          colorByOccupationGroup
+          filterByOccupationFamily
+          items={items}
+          showSearch={false}
+          valueLabel="Median månedslønn"
         />
       </div>
     </div>
   );
-}
-
-function formatSalary(value?: number) {
-  if (value === undefined) {
-    return ":";
-  }
-
-  return `${currencyFormatter.format(value)} kr`;
 }
 
 function listOccupationCodesForGroup(groupCode: string) {
@@ -141,62 +148,29 @@ function listOccupationCodesForGroup(groupCode: string) {
   return codes;
 }
 
-function findGroupMedianSalary(
-  dataset: {
-    dimensions: string[];
-    rows: Array<{
-      dimensions: Record<string, { code: string; label: string }>;
-      value: number | null;
-    }>;
-  },
-  groupCode: string,
-) {
-  const occupationDimensionCode = findDimensionCode(dataset.dimensions, dataset.rows, ["yrke"]);
-  const genderDimensionCode = findDimensionCode(dataset.dimensions, dataset.rows, ["kjonn"]);
+function getOccupationGroupSeoDescription(groupLabel: string) {
+  return `Utforsk lønn for ${groupLabel.toLowerCase()}, sammenlign median månedslønn og finn oppdaterte lønnstall for konkrete yrker basert på data fra SSB.`;
+}
 
-  if (!occupationDimensionCode || !genderDimensionCode) {
-    return undefined;
+function getOccupationLabelsByCode(
+  dataset: Awaited<ReturnType<typeof getLatestOccupationMedianMonthlySalaryDataset>>,
+) {
+  const occupationDimensionCode = dataset.dimensions.find((dimension) =>
+    dimension.toLocaleLowerCase("nb-NO").includes("yrke"),
+  );
+  const labelsByCode = new Map<string, string>();
+
+  if (!occupationDimensionCode) {
+    return labelsByCode;
   }
 
-  const match = dataset.rows.find((row) => {
+  for (const row of dataset.rows) {
     const occupation = row.dimensions[occupationDimensionCode];
-    const gender = row.dimensions[genderDimensionCode];
 
-    return occupation?.code === groupCode && gender?.code === "0" && row.value !== null;
-  });
-
-  return match?.value ?? undefined;
-}
-
-function findDimensionCode(
-  dimensions: string[],
-  rows: Array<{ dimensions: Record<string, { label: string }> }>,
-  candidates: string[],
-) {
-  const normalizedCandidates = candidates.map(normalizeText);
-
-  return dimensions.find((dimensionCode) => {
-    const normalizedDimensionCode = normalizeText(dimensionCode);
-
-    if (normalizedCandidates.some((candidate) => normalizedDimensionCode.includes(candidate))) {
-      return true;
+    if (occupation && /^\d{1,3}$/.test(occupation.code)) {
+      labelsByCode.set(occupation.code, occupation.label);
     }
+  }
 
-    const sampleLabel = rows[0]?.dimensions[dimensionCode]?.label;
-
-    if (!sampleLabel) {
-      return false;
-    }
-
-    const normalizedLabel = normalizeText(sampleLabel);
-    return normalizedCandidates.some((candidate) => normalizedLabel.includes(candidate));
-  });
-}
-
-function normalizeText(value: string) {
-  return value
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9]+/g, "")
-    .toLowerCase();
+  return labelsByCode;
 }
