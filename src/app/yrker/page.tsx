@@ -3,6 +3,7 @@ import {
   OccupationDirectory,
   type OccupationDirectoryItem,
 } from "@/components/occupation-directory";
+import { getOccupationGroupByCode } from "@/lib/occupation-groups";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
@@ -39,6 +40,7 @@ export default async function YrkerPage() {
     getOccupationDetailViewModelIndex(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(dataset);
+  const occupationLabelsByCode = getOccupationLabelsByCode(dataset);
   const firstSlugByOccupationCode = new Map<string, string>();
 
   for (const page of occupationIndex.pages) {
@@ -56,9 +58,24 @@ export default async function YrkerPage() {
     return {
       occupationCode: row.occupationCode,
       title: formatOccupationDisplayLabel(row.occupationLabel),
+      groupCode: row.occupationCode.slice(0, 1),
+      groupLabel: getOccupationGroupLabel(row.occupationCode),
+      areaCode: row.occupationCode.slice(0, 2),
+      areaLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 2)),
+      familyCode: row.occupationCode.slice(0, 3),
+      familyLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
       monthlySalary: row.medianAll,
       href: slug ? `/yrke/${slug}` : undefined,
-      searchText: `${row.occupationLabel} ${formatOccupationDisplayLabel(row.occupationLabel)} ${row.occupationCode}`,
+      searchText: [
+        row.occupationLabel,
+        formatOccupationDisplayLabel(row.occupationLabel),
+        getOccupationGroupLabel(row.occupationCode),
+        occupationLabelsByCode.get(row.occupationCode.slice(0, 2)),
+        occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
+        row.occupationCode,
+      ]
+        .filter(Boolean)
+        .join(" "),
     };
   });
 
@@ -74,8 +91,45 @@ export default async function YrkerPage() {
           </div>
         </section>
 
-        <OccupationDirectory items={items} />
+        <OccupationDirectory colorByOccupationGroup filterByOccupationHierarchy items={items} />
       </div>
     </div>
   );
+}
+
+function getOccupationLabelsByCode(
+  dataset: Awaited<ReturnType<typeof getLatestOccupationMedianMonthlySalaryDataset>>,
+) {
+  const occupationDimensionCode = dataset.dimensions.find((dimension) =>
+    dimension.toLocaleLowerCase("nb-NO").includes("yrke"),
+  );
+  const labelsByCode = new Map<string, string>();
+
+  if (!occupationDimensionCode) {
+    return labelsByCode;
+  }
+
+  for (const row of dataset.rows) {
+    const occupation = row.dimensions[occupationDimensionCode];
+
+    if (occupation && /^\d{1,3}$/.test(occupation.code)) {
+      labelsByCode.set(occupation.code, occupation.label);
+    }
+  }
+
+  return labelsByCode;
+}
+
+function getOccupationGroupLabel(occupationCode: string) {
+  const groupCode = occupationCode.charAt(0);
+
+  if (groupCode === "0") {
+    return "Militære yrker";
+  }
+
+  if (groupCode === "3") {
+    return "Høyskoleyrker";
+  }
+
+  return getOccupationGroupByCode(groupCode)?.label ?? "Andre yrker";
 }

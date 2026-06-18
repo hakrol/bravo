@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { DictionaryFilter, type DictionaryEntry } from "@/components/dictionary-filter";
+import { getAllForklarerPosts } from "@/lib/forklarer";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
   "Ordbok for lønn, lønnsstatistikk og vanlige begreper brukt på Lønnsinnsikt.";
 
-const dictionaryEntries: DictionaryEntry[] = [
+const baseDictionaryEntries: DictionaryEntry[] = [
   {
     term: "Avtalt månedslønn",
     definition:
@@ -227,7 +228,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function OrdbokPage() {
+export default async function OrdbokPage() {
+  const forklarerPosts = await getAllForklarerPosts();
+  const dictionaryEntriesByTerm = new Map(
+    baseDictionaryEntries.map((entry) => [entry.term.toLocaleLowerCase("nb-NO"), entry]),
+  );
+
+  forklarerPosts.forEach((post) => {
+    const key = post.term.toLocaleLowerCase("nb-NO");
+    const existingEntry = dictionaryEntriesByTerm.get(key);
+
+    dictionaryEntriesByTerm.set(key, {
+      term: post.term,
+      definition: existingEntry?.definition ?? post.description,
+      explanationHref: `/forklarer/${post.slug}`,
+    });
+  });
+
+  const dictionaryEntries = Array.from(dictionaryEntriesByTerm.values()).sort((left, right) =>
+    left.term.localeCompare(right.term, "nb-NO"),
+  );
+
   return (
     <main className="min-h-screen bg-[#fafafa]">
       <section className="bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
