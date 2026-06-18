@@ -34,6 +34,11 @@ import {
   IntensivsykepleierSalaryBubbleChart,
   IntensivsykepleierSalaryDevelopmentChart,
 } from "@/components/blog-intensivsykepleier-salary-chart";
+import {
+  KonduktorGenderSalaryCards,
+  KonduktorSalaryDevelopmentChart,
+  KonduktorSalaryEditorialChart,
+} from "@/components/blog-konduktor-salary-chart";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { MillionSalaryGrowthChart } from "@/components/blog-million-salary-chart";
 import { MalerGenderSalaryCards, MalerSalaryBubbleChart, MalerSalaryDevelopmentChart } from "@/components/blog-maler-salary-chart";
@@ -210,6 +215,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     IntensivsykepleierGenderSalaryCards,
     IntensivsykepleierSalaryBubbleChart,
     IntensivsykepleierSalaryDevelopmentChart,
+    KonduktorGenderSalaryCards,
+    KonduktorSalaryDevelopmentChart,
+    KonduktorSalaryEditorialChart,
     MalerGenderSalaryCards,
     MalerSalaryBubbleChart,
     MalerSalaryDevelopmentChart,
