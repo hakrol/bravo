@@ -25,6 +25,8 @@ type OccupationDirectoryProps = {
   salaryFilters?: SalaryFilterOption[];
   colorByOccupationGroup?: boolean;
   filterByOccupationHierarchy?: boolean;
+  filterByOccupationFamily?: boolean;
+  showSearch?: boolean;
 };
 
 type SalaryFilterOption = {
@@ -62,6 +64,8 @@ export function OccupationDirectory({
   salaryFilters = defaultSalaryFilters,
   colorByOccupationGroup = false,
   filterByOccupationHierarchy = false,
+  filterByOccupationFamily = false,
+  showSearch = true,
 }: OccupationDirectoryProps) {
   const [query, setQuery] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("all");
@@ -96,26 +100,30 @@ export function OccupationDirectory({
       ? (occupationGroupFilter === "all" || item.groupCode === occupationGroupFilter) &&
         (occupationAreaFilter === "all" || item.areaCode === occupationAreaFilter) &&
         (occupationFamilyFilter === "all" || item.familyCode === occupationFamilyFilter)
-      : matchesSalaryFilter(getSalaryValue(item), salaryFilter, salaryFilters);
+      : filterByOccupationFamily
+        ? occupationFamilyFilter === "all" || item.familyCode === occupationFamilyFilter
+        : matchesSalaryFilter(getSalaryValue(item), salaryFilter, salaryFilters);
 
     return matchesQuery && matchesSelectedFilter;
   });
 
   return (
     <section className="grid gap-5">
-      <div className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-        <label className="grid min-w-0 gap-2" htmlFor="occupation-search">
-          <span className="text-sm font-semibold text-slate-950">Søk etter yrke</span>
-          <input
-            id="occupation-search"
-            className="h-11 min-w-0 w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Skriv f.eks. flyger"
-            type="search"
-            value={query}
-          />
-        </label>
-      </div>
+      {showSearch ? (
+        <div className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+          <label className="grid min-w-0 gap-2" htmlFor="occupation-search">
+            <span className="text-sm font-semibold text-slate-950">Søk etter yrke</span>
+            <input
+              id="occupation-search"
+              className="h-11 min-w-0 w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Skriv f.eks. flyger"
+              type="search"
+              value={query}
+            />
+          </label>
+        </div>
+      ) : null}
 
       {filterByOccupationHierarchy ? (
         <div className="grid gap-4 rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] md:grid-cols-3">
@@ -167,6 +175,25 @@ export function OccupationDirectory({
               id="occupation-family-filter"
               className="h-11 min-w-0 w-full max-w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)] disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
               disabled={occupationAreaFilter === "all"}
+              onChange={(event) => setOccupationFamilyFilter(event.target.value)}
+              value={occupationFamilyFilter}
+            >
+              <option value="all">Alle yrkesfamilier</option>
+              {occupationFamilies.map((family) => (
+                <option key={family.value} value={family.value}>
+                  {family.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      ) : filterByOccupationFamily ? (
+        <div className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+          <label className="grid min-w-0 gap-2" htmlFor="occupation-family-filter">
+            <span className="text-sm font-semibold text-slate-950">Filtrer på yrkesfamilie</span>
+            <select
+              id="occupation-family-filter"
+              className="h-11 min-w-0 w-full max-w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
               onChange={(event) => setOccupationFamilyFilter(event.target.value)}
               value={occupationFamilyFilter}
             >
@@ -257,10 +284,12 @@ export function OccupationDirectory({
         </div>
       ) : (
         <div className="rounded-[5px] bg-white px-5 py-8 text-center shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-          <p className="text-base font-semibold text-slate-950">Ingen yrker matcher søket.</p>
+          <p className="text-base font-semibold text-slate-950">
+            Ingen yrker matcher {showSearch ? "søket" : "filteret"}.
+          </p>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            Prøv et annet søkeord eller velg en annen{" "}
-            {filterByOccupationHierarchy ? "yrkesinndeling" : "lønnsnivå"}.
+            {showSearch ? "Prøv et annet søkeord eller velg en annen " : "Velg en annen "}
+            {filterByOccupationHierarchy || filterByOccupationFamily ? "yrkesinndeling" : "lønnsnivå"}.
           </p>
         </div>
       )}

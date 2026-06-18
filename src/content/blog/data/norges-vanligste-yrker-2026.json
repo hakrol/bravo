@@ -1,0 +1,257 @@
+{
+  "id": "norges-vanligste-yrker-2026",
+  "title": "Dette er Norges vanligste yrker",
+  "source": "SSB tabell 11658",
+  "period": "1. kvartal 2026",
+  "measure": "Antall lønnstakere",
+  "note": "Tallene gjelder lønnstakere i begge kjønn og alle aldre i 1. kvartal 2026. Yrker er gruppert på fire-siffernivå i STYRK-08. Én person kan ha flere arbeidsforhold, men telles som én lønnstaker i denne oversikten.",
+  "rows": [
+    {
+      "code": "5223",
+      "label": "Butikkmedarbeidere",
+      "href": "/yrke/butikkmedarbeidere-lonn",
+      "value": 164388,
+      "employees": 164388,
+      "womenEmployees": 100748,
+      "menEmployees": 63640,
+      "womenShare": 61.3,
+      "menShare": 38.7,
+      "salaryGrowth": {
+        "salary2021": 32510,
+        "salary2026": 39740,
+        "growth": 22.2,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 32510 },
+          { "label": "2022", "periodCode": "2022K1", "value": 33400 },
+          { "label": "2023", "periodCode": "2023K1", "value": 34740 },
+          { "label": "2024", "periodCode": "2024K1", "value": 36450 },
+          { "label": "2025", "periodCode": "2025K1", "value": 38220 },
+          { "label": "2026", "periodCode": "2026K1", "value": 39740 }
+        ]
+      }
+    },
+    {
+      "code": "5321",
+      "label": "Helsefagarbeidere",
+      "href": "/yrke/helsefagarbeidere-lonn",
+      "value": 95617,
+      "employees": 95617,
+      "womenEmployees": 78502,
+      "menEmployees": 17115,
+      "womenShare": 82.1,
+      "menShare": 17.9,
+      "salaryGrowth": {
+        "salary2021": 35790,
+        "salary2026": 44620,
+        "growth": 24.7,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 35790 },
+          { "label": "2022", "periodCode": "2022K1", "value": 37160 },
+          { "label": "2023", "periodCode": "2023K1", "value": 38390 },
+          { "label": "2024", "periodCode": "2024K1", "value": 40670 },
+          { "label": "2025", "periodCode": "2025K1", "value": 43120 },
+          { "label": "2026", "periodCode": "2026K1", "value": 44620 }
+        ]
+      }
+    },
+    {
+      "code": "5311",
+      "label": "Barnehage- og skolefritidsassistenter mv.",
+      "href": "/yrke/barnehage-og-skolefritidsassistenter-mv-lonn",
+      "value": 95199,
+      "employees": 95199,
+      "womenEmployees": 77375,
+      "menEmployees": 17824,
+      "womenShare": 81.3,
+      "menShare": 18.7,
+      "salaryGrowth": {
+        "salary2021": 32590,
+        "salary2026": 40610,
+        "growth": 24.6,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 32590 },
+          { "label": "2022", "periodCode": "2022K1", "value": 33830 },
+          { "label": "2023", "periodCode": "2023K1", "value": 34960 },
+          { "label": "2024", "periodCode": "2024K1", "value": 37220 },
+          { "label": "2025", "periodCode": "2025K1", "value": 39280 },
+          { "label": "2026", "periodCode": "2026K1", "value": 40610 }
+        ]
+      }
+    },
+    {
+      "code": "2422",
+      "label": "Høyere saksbehandlere i offentlig og privat virksomhet",
+      "href": "/yrke/hoyere-saksbehandlere-i-offentlig-og-privat-virksomhet-lonn",
+      "value": 90859,
+      "employees": 90859,
+      "womenEmployees": 59383,
+      "menEmployees": 31476,
+      "womenShare": 65.4,
+      "menShare": 34.6,
+      "salaryGrowth": {
+        "salary2021": 51290,
+        "salary2026": 64050,
+        "growth": 24.9,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 51290 },
+          { "label": "2022", "periodCode": "2022K1", "value": 53130 },
+          { "label": "2023", "periodCode": "2023K1", "value": 55270 },
+          { "label": "2024", "periodCode": "2024K1", "value": 58800 },
+          { "label": "2025", "periodCode": "2025K1", "value": 61110 },
+          { "label": "2026", "periodCode": "2026K1", "value": 64050 }
+        ]
+      }
+    },
+    {
+      "code": "2341",
+      "label": "Grunnskolelærere",
+      "href": "/yrke/grunnskolelaerere-lonn",
+      "value": 81685,
+      "employees": 81685,
+      "womenEmployees": 59655,
+      "menEmployees": 22030,
+      "womenShare": 73,
+      "menShare": 27,
+      "salaryGrowth": {
+        "salary2021": 46390,
+        "salary2026": 58320,
+        "growth": 25.7,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 46390 },
+          { "label": "2022", "periodCode": "2022K1", "value": 48250 },
+          { "label": "2023", "periodCode": "2023K1", "value": 49090 },
+          { "label": "2024", "periodCode": "2024K1", "value": 53080 },
+          { "label": "2025", "periodCode": "2025K1", "value": 56280 },
+          { "label": "2026", "periodCode": "2026K1", "value": 58320 }
+        ]
+      }
+    },
+    {
+      "code": "5329",
+      "label": "Andre pleiemedarbeidere",
+      "href": "/yrke/andre-pleiemedarbeidere-lonn",
+      "value": 72032,
+      "employees": 72032,
+      "womenEmployees": 54688,
+      "menEmployees": 17344,
+      "womenShare": 75.9,
+      "menShare": 24.1,
+      "salaryGrowth": {
+        "salary2021": 31930,
+        "salary2026": 39620,
+        "growth": 24.1,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 31930 },
+          { "label": "2022", "periodCode": "2022K1", "value": 32900 },
+          { "label": "2023", "periodCode": "2023K1", "value": 34090 },
+          { "label": "2024", "periodCode": "2024K1", "value": 36190 },
+          { "label": "2025", "periodCode": "2025K1", "value": 38270 },
+          { "label": "2026", "periodCode": "2026K1", "value": 39620 }
+        ]
+      }
+    },
+    {
+      "code": "9112",
+      "label": "Renholdere i bedrifter",
+      "href": "/yrke/renholdere-i-bedrifter-lonn",
+      "value": 59944,
+      "employees": 59944,
+      "womenEmployees": 46917,
+      "menEmployees": 13027,
+      "womenShare": 78.3,
+      "menShare": 21.7,
+      "salaryGrowth": {
+        "salary2021": 33040,
+        "salary2026": 41050,
+        "growth": 24.2,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 33040 },
+          { "label": "2022", "periodCode": "2022K1", "value": 34100 },
+          { "label": "2023", "periodCode": "2023K1", "value": 35330 },
+          { "label": "2024", "periodCode": "2024K1", "value": 37470 },
+          { "label": "2025", "periodCode": "2025K1", "value": 39580 },
+          { "label": "2026", "periodCode": "2026K1", "value": 41050 }
+        ]
+      }
+    },
+    {
+      "code": "2223",
+      "label": "Sykepleiere",
+      "href": "/yrke/sykepleiere-lonn",
+      "value": 59888,
+      "employees": 59888,
+      "womenEmployees": 53503,
+      "menEmployees": 6385,
+      "womenShare": 89.3,
+      "menShare": 10.7,
+      "salaryGrowth": {
+        "salary2021": 42250,
+        "salary2026": 52110,
+        "growth": 23.3,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 42250 },
+          { "label": "2022", "periodCode": "2022K1", "value": 43970 },
+          { "label": "2023", "periodCode": "2023K1", "value": 45500 },
+          { "label": "2024", "periodCode": "2024K1", "value": 48010 },
+          { "label": "2025", "periodCode": "2025K1", "value": 50480 },
+          { "label": "2026", "periodCode": "2026K1", "value": 52110 }
+        ]
+      }
+    },
+    {
+      "code": "4110",
+      "label": "Kontormedarbeidere",
+      "href": "/yrke/kontormedarbeidere-lonn",
+      "value": 53525,
+      "employees": 53525,
+      "womenEmployees": 40399,
+      "menEmployees": 13126,
+      "womenShare": 75.5,
+      "menShare": 24.5,
+      "salaryGrowth": {
+        "salary2021": 40460,
+        "salary2026": 51470,
+        "growth": 27.2,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 40460 },
+          { "label": "2022", "periodCode": "2022K1", "value": 41980 },
+          { "label": "2023", "periodCode": "2023K1", "value": 43960 },
+          { "label": "2024", "periodCode": "2024K1", "value": 46650 },
+          { "label": "2025", "periodCode": "2025K1", "value": 49330 },
+          { "label": "2026", "periodCode": "2026K1", "value": 51470 }
+        ]
+      }
+    },
+    {
+      "code": "7115",
+      "label": "Tømrere og snekkere",
+      "href": "/yrke/tomrere-og-snekkere-lonn",
+      "value": 44436,
+      "employees": 44436,
+      "womenEmployees": 866,
+      "menEmployees": 43570,
+      "womenShare": 1.9,
+      "menShare": 98.1,
+      "salaryGrowth": {
+        "salary2021": 37280,
+        "salary2026": 46930,
+        "growth": 25.9,
+        "points": [
+          { "label": "2021", "periodCode": "2021K1", "value": 37280 },
+          { "label": "2022", "periodCode": "2022K1", "value": 38820 },
+          { "label": "2023", "periodCode": "2023K1", "value": 40620 },
+          { "label": "2024", "periodCode": "2024K1", "value": 42850 },
+          { "label": "2025", "periodCode": "2025K1", "value": 44930 },
+          { "label": "2026", "periodCode": "2026K1", "value": 46930 }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "tableId": "11658",
+    "workforcePeriod": "1. kvartal 2026",
+    "salaryStartPeriod": "1. kvartal 2021",
+    "salaryEndPeriod": "1. kvartal 2026",
+    "generatedFromLocalSsbDataAt": "2026-06-18"
+  }
+}

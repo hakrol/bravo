@@ -51,6 +51,8 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] Dette er Norges vanligste yrker - `src/content/blog/dette-er-norges-vanligste-yrker.mdx` - 2026-06-18
+
 - [x] Hvor mye tjener en konduktør? - `src/content/blog/hvor-mye-tjener-en-konduktor.mdx` - 2026-06-17
 
 - [x] Hvilken måned betaler vi ikke skatt? - `src/content/blog/hvilken-maned-betaler-vi-ikke-skatt.mdx` - 2026-06-17

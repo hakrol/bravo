@@ -13,7 +13,7 @@ type EditorialDivergingBarChartProps = {
   source: string;
   note?: string;
   brandText?: string | null;
-  format?: "currency" | "percent";
+  format?: "currency" | "number" | "percent";
   ticks?: number[];
   data: EditorialDivergingBarChartDatum[];
 };
@@ -25,7 +25,7 @@ type EditorialVerticalBarChartProps = {
   subtitleText: string;
   source: string;
   data: EditorialDivergingBarChartDatum[];
-  format?: "currency" | "percent";
+  format?: "currency" | "number" | "percent";
   axisMax?: number;
   ticks?: number[];
 };
@@ -452,8 +452,8 @@ function isReferenceRow(row: EditorialDivergingBarChartDatum) {
   return row.label.trim().toLowerCase() === "alle yrker";
 }
 
-function formatAxisTick(value: number, format: "currency" | "percent") {
-  if (format === "currency") {
+function formatAxisTick(value: number, format: "currency" | "number" | "percent") {
+  if (format === "currency" || format === "number") {
     return value >= 1000 ? `${Math.round(value / 1000).toLocaleString("nb-NO")}k` : value.toLocaleString("nb-NO");
   }
 
@@ -477,9 +477,13 @@ function hexToRgb(hex: string) {
   };
 }
 
-function formatValue(value: number, format: "currency" | "percent", digits: number) {
+function formatValue(value: number, format: "currency" | "number" | "percent", digits: number) {
   if (format === "currency") {
     return `${Math.round(value).toLocaleString("nb-NO")} kr`;
+  }
+
+  if (format === "number") {
+    return Math.round(value).toLocaleString("nb-NO");
   }
 
   return `${value.toFixed(digits)}%`;
