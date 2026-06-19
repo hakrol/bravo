@@ -19,6 +19,7 @@ const toolItems = [
   { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
   { href: "/lanekalkulator", label: "Lånekalkulator" },
   { href: "/rente-og-avdrag-kalkulator", label: "Rente og avdrag" },
+  { href: "/kilometergodtgjorelse-kalkulator", label: "Kilometergodtgjørelse" },
   { href: "/lonnsjekk", label: "Lønnssjekk" },
 ] as const;
 

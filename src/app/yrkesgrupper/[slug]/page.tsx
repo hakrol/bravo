@@ -36,10 +36,11 @@ export async function generateMetadata({
   }
 
   const description = getOccupationGroupSeoDescription(group.label);
+  const title = getOccupationGroupSeoTitle(group.label);
   const canonicalPath = `/yrkesgrupper/${group.slug}`;
 
   return {
-    title: `${group.label} | Yrkesgrupper`,
+    title,
     description,
     alternates: {
       canonical: canonicalPath,
@@ -49,7 +50,7 @@ export async function generateMetadata({
       locale: "nb_NO",
       url: canonicalPath,
       siteName: siteConfig.name,
-      title: `${group.label} | ${siteConfig.name}`,
+      title: `${title} | ${siteConfig.name}`,
       description,
     },
   };
@@ -110,17 +111,17 @@ export default async function OccupationGroupPage({
   return (
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <div className="space-y-3">
-          <h1 className="flex items-center gap-4 text-4xl font-semibold tracking-[-0.04em] text-balance sm:text-5xl">
-            <span>Lønn for {group.label.toLowerCase()}</span>
-            <span aria-hidden="true" className="shrink-0 text-4xl sm:text-5xl">
+        <header className="mx-auto max-w-3xl space-y-4 text-center">
+          <h1 className="flex items-center justify-center gap-4 text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+            <span>{getOccupationGroupSeoTitle(group.label)}</span>
+            <span aria-hidden="true" className="shrink-0 text-4xl sm:text-5xl lg:text-6xl">
               {group.icon}
             </span>
           </h1>
-          <p className="max-w-4xl text-base leading-7 text-[var(--muted)] sm:text-lg sm:leading-8">
+          <p className="text-base leading-7 text-slate-600 sm:text-lg">
             {description}
           </p>
-        </div>
+        </header>
 
         <OccupationDirectory
           colorByOccupationGroup
@@ -150,6 +151,10 @@ function listOccupationCodesForGroup(groupCode: string) {
 
 function getOccupationGroupSeoDescription(groupLabel: string) {
   return `Utforsk lønn for ${groupLabel.toLowerCase()}, sammenlign median månedslønn og finn oppdaterte lønnstall for konkrete yrker basert på data fra SSB.`;
+}
+
+function getOccupationGroupSeoTitle(groupLabel: string) {
+  return `Lønn ${groupLabel.toLowerCase()}`;
 }
 
 function getOccupationLabelsByCode(

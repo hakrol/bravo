@@ -11,7 +11,7 @@ import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Se alle yrker med median samlet månedslønn for begge kjønn, basert på oppdaterte lønnstall fra SSB.";
+  "Utforsk alle yrker i Norge og sammenlign median månedslønn basert på oppdaterte lønnstall fra SSB.";
 
 export const metadata: Metadata = {
   title: "Alle yrker",
@@ -82,14 +82,14 @@ export default async function YrkerPage() {
   return (
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <section className="relative overflow-hidden rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-8 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-10 lg:px-10">
-          <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
-          <div className="relative max-w-3xl space-y-3">
-            <h1 className="text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
-              Alle yrker
-            </h1>
-          </div>
-        </section>
+        <header className="mx-auto max-w-3xl space-y-4 text-center">
+          <h1 className="text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+            Alle yrker
+          </h1>
+          <p className="text-base leading-7 text-slate-600 sm:text-lg">
+            {description}
+          </p>
+        </header>
 
         <OccupationDirectory colorByOccupationGroup filterByOccupationHierarchy items={items} />
       </div>
