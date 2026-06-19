@@ -1,4 +1,4 @@
-type CalculatorPageVisualVariant = "salary" | "gross-net" | "loan" | "growth";
+type CalculatorPageVisualVariant = "salary" | "gross-net" | "loan" | "growth" | "mileage";
 
 type CalculatorPageVisualProps = {
   variant?: CalculatorPageVisualVariant;
@@ -40,6 +40,15 @@ const variantConfig = {
     soft: "bg-cyan-50",
     text: "text-cyan-950",
     bar: "bg-cyan-700",
+  },
+  mileage: {
+    eyebrow: "Kjøring",
+    value: "5,30",
+    unit: "kr/km",
+    accent: "bg-teal-700",
+    soft: "bg-teal-50",
+    text: "text-teal-950",
+    bar: "bg-teal-700",
   },
 } satisfies Record<CalculatorPageVisualVariant, {
   eyebrow: string;

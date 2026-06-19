@@ -6,6 +6,7 @@ const calculatorLinks = [
   { href: "/lonnsvekst", label: "Lønnsvekst" },
   { href: "/lanekalkulator", label: "Lånekalkulator" },
   { href: "/rente-og-avdrag-kalkulator", label: "Rente og avdrag" },
+  { href: "/kilometergodtgjorelse-kalkulator", label: "Kilometergodtgjørelse" },
 ] as const;
 
 type CalculatorCrossLinksProps = {

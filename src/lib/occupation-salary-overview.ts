@@ -29,6 +29,12 @@ export type OccupationMedianGrowthRow = {
   growthMen?: number;
 };
 
+export type OccupationGroupMedianSalaryRow = {
+  occupationGroupCode: string;
+  occupationGroupLabel: string;
+  medianAll: number;
+};
+
 type BuildOccupationSalaryOverviewOptions = {
   occupationCodes?: string[];
 };
@@ -254,6 +260,43 @@ export function buildOccupationMedianGrowthOverview(
   return {
     rows,
     periodLabel,
+    measureLabel: "Median månedslønn",
+  };
+}
+
+export function buildOccupationGroupMedianSalaryOverview(dataset: SsbNormalizedDataset) {
+  const occupationDimensionCode = findDimensionCode(dataset.dimensions, dataset.rows, ["yrke"]);
+  const genderDimensionCode = findDimensionCode(dataset.dimensions, dataset.rows, ["kjonn"]);
+
+  if (!occupationDimensionCode || !genderDimensionCode) {
+    throw new Error("Fant ikke forventede dimensjoner i SSB-datasettet for yrkesgrupper.");
+  }
+
+  const rows: OccupationGroupMedianSalaryRow[] = dataset.rows.flatMap((row) => {
+    const occupation = row.dimensions[occupationDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+
+    if (
+      !occupation ||
+      !gender ||
+      !/^[1-9]$/.test(occupation.code) ||
+      gender.code !== "0" ||
+      row.value === null
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        occupationGroupCode: occupation.code,
+        occupationGroupLabel: occupation.label,
+        medianAll: row.value,
+      },
+    ];
+  });
+
+  return {
+    rows,
     measureLabel: "Median månedslønn",
   };
 }

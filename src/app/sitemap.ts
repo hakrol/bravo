@@ -7,8 +7,10 @@ import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-deta
 import { getAllForklarerPosts } from "@/lib/forklarer";
 import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
+import { listOccupationFamilies } from "@/lib/occupation-families";
 import { listOccupationGroups } from "@/lib/occupation-groups";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
+import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
 import { getAbsoluteUrl } from "@/lib/site-config";
 
 const staticRoutes = [
@@ -40,6 +42,12 @@ const staticRoutes = [
   {
     path: "/rente-og-avdrag-kalkulator",
     filePath: "src/app/rente-og-avdrag-kalkulator/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/kilometergodtgjorelse-kalkulator",
+    filePath: "src/app/kilometergodtgjorelse-kalkulator/page.tsx",
     priority: 0.8,
     changeFrequency: "monthly" as const,
   },
@@ -88,6 +96,12 @@ const staticRoutes = [
   {
     path: "/yrkesgrupper",
     filePath: "src/app/yrkesgrupper/page.tsx",
+    priority: 0.7,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/yrkesfamilier",
+    filePath: "src/app/yrkesfamilier/page.tsx",
     priority: 0.7,
     changeFrequency: "weekly" as const,
   },
@@ -184,13 +198,22 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [blogPosts, forklarerPosts, occupationPages, hourlySalaryPages, occupationIndex, apprenticeshipIndex] = await Promise.all([
+  const [
+    blogPosts,
+    forklarerPosts,
+    occupationPages,
+    hourlySalaryPages,
+    occupationIndex,
+    apprenticeshipIndex,
+    occupationMedianDataset,
+  ] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getAllForklarerPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getHourlySalaryPages().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
     getApprenticeshipDetailViewModelIndex().catch(() => null),
+    getLatestOccupationMedianMonthlySalaryDataset().catch(() => null),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
@@ -220,6 +243,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly",
     priority: 0.6,
   }));
+
+  const familyRoutes: MetadataRoute.Sitemap = occupationMedianDataset
+    ? listOccupationFamilies(occupationMedianDataset).map((family) => ({
+        url: getAbsoluteUrl(`/yrkesfamilie/${family.slug}`),
+        lastModified: occupationContentLastModified,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      }))
+    : [];
 
   const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: getAbsoluteUrl(`/blogg/${post.slug}`),
@@ -271,6 +303,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...routes,
     ...groupRoutes,
+    ...familyRoutes,
     ...blogRoutes,
     ...blogCategoryRoutes,
     ...forklarerRoutes,

@@ -9,6 +9,7 @@ const footerGroups = [
       { href: "/lonnskalkulator", label: "Lønnskalkulator" },
       { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
       { href: "/lanekalkulator", label: "Lånekalkulator" },
+      { href: "/kilometergodtgjorelse-kalkulator", label: "Kilometergodtgjørelse" },
     ],
   },
   {
@@ -16,6 +17,7 @@ const footerGroups = [
     links: [
       { href: "/yrker", label: "Yrker" },
       { href: "/yrkesgrupper", label: "Yrkesgrupper" },
+      { href: "/yrkesfamilier", label: "Yrkesfamilier" },
       { href: "/laerling", label: "Lærlingfag" },
     ],
   },

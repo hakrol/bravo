@@ -43,6 +43,12 @@ const tools = [
       "Beregn renter, avdrag, terminbeløp og total lånekostnad for annuitetslån og serielån.",
   },
   {
+    href: "/kilometergodtgjorelse-kalkulator",
+    label: "Kilometergodtgjørelse kalkulator",
+    description:
+      "Beregn utbetaling, skattefri kilometergodtgjørelse og eventuell skattepliktig del ved yrkeskjøring.",
+  },
+  {
     href: "/sammenlign-lonn",
     label: "Sammenlign lønn",
     description:
