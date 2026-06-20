@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
+import { calculators } from "@/lib/tool-catalog";
 
 const navItems = [
   { href: "/yrker", label: "Yrker" },
@@ -13,14 +14,9 @@ const navItems = [
 ] as const;
 
 const toolItems = [
-  { href: "/lonnskalkulator", label: "Lønnskalkulator" },
-  { href: "/lonnsvekst", label: "Lønnsvekst" },
-  { href: "/bruttolonn-kalkulator", label: "Brutto/netto kalkulator" },
-  { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
-  { href: "/lanekalkulator", label: "Lånekalkulator" },
-  { href: "/rente-og-avdrag-kalkulator", label: "Rente og avdrag" },
-  { href: "/kilometergodtgjorelse-kalkulator", label: "Kilometergodtgjørelse" },
+  { href: "/kalkulatorer", label: "Alle kalkulatorer" },
   { href: "/lonnsjekk", label: "Lønnssjekk" },
+  { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
 ] as const;
 
 const desktopNavLinkBase =
@@ -125,7 +121,8 @@ export function MainNav() {
               desktopNavLinkBase,
               pathname &&
               (isActivePath(pathname, "/verktoy") ||
-                toolItems.some((item) => isActivePath(pathname, item.href)))
+                toolItems.some((item) => isActivePath(pathname, item.href)) ||
+                calculators.some((item) => isActivePath(pathname, item.href)))
                 ? "bg-[rgba(20,83,45,0.08)] text-[var(--primary-strong)] shadow-[inset_0_0_0_1px_rgba(20,83,45,0.08)]"
                 : "text-[var(--foreground)] hover:bg-[rgba(20,83,45,0.06)] hover:text-[var(--primary-strong)]",
             ].join(" ")}

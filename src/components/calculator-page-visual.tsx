@@ -1,4 +1,10 @@
-type CalculatorPageVisualVariant = "salary" | "gross-net" | "loan" | "growth" | "mileage";
+type CalculatorPageVisualVariant =
+  | "salary"
+  | "gross-net"
+  | "loan"
+  | "growth"
+  | "mileage"
+  | "work-year";
 
 type CalculatorPageVisualProps = {
   variant?: CalculatorPageVisualVariant;
@@ -45,6 +51,15 @@ const variantConfig = {
     eyebrow: "Kjøring",
     value: "5,30",
     unit: "kr/km",
+    accent: "bg-teal-700",
+    soft: "bg-teal-50",
+    text: "text-teal-950",
+    bar: "bg-teal-700",
+  },
+  "work-year": {
+    eyebrow: "Årsverk",
+    value: "1 703",
+    unit: "timer",
     accent: "bg-teal-700",
     soft: "bg-teal-50",
     text: "text-teal-950",

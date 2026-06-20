@@ -4,6 +4,7 @@ const calculatorLinks = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
   { href: "/bruttolonn-kalkulator", label: "Brutto/netto" },
   { href: "/lonnsvekst", label: "Lønnsvekst" },
+  { href: "/arsverk-kalkulator", label: "Årsverk" },
   { href: "/lanekalkulator", label: "Lånekalkulator" },
   { href: "/rente-og-avdrag-kalkulator", label: "Rente og avdrag" },
   { href: "/kilometergodtgjorelse-kalkulator", label: "Kilometergodtgjørelse" },
