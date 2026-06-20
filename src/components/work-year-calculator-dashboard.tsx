@@ -1,6 +1,7 @@
 "use client";
 
-import { ReactNode, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useMemo, useState } from "react";
+import Link from "next/link";
 import { CalculatorPageVisual } from "@/components/calculator-page-visual";
 import {
   calculateWorkYear,
@@ -20,6 +21,7 @@ export function WorkYearCalculatorDashboard() {
   const [vacationDays, setVacationDays] = useState("25");
   const [extraDaysOff, setExtraDaysOff] = useState("0");
   const [year, setYear] = useState("2026");
+  const [hasCalculated, setHasCalculated] = useState(false);
 
   const selectedProfile = getWorkYearProfile(profile);
   const weeklyHours = selectedProfile.weeklyHours ?? parseNumber(customWeeklyHours);
@@ -40,28 +42,39 @@ export function WorkYearCalculatorDashboard() {
   const usesCustomHours = profile === "custom";
   const usesFixedAnnualHours = calculation.calculationMode === "fixed-annual";
 
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setHasCalculated(true);
+  }
+
   return (
     <section className="fade-up grid gap-6 lg:gap-8">
       <div className="relative overflow-visible rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(13,148,136,0.26),transparent)]" />
-        <div className="relative space-y-6">
+        <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,26rem)] lg:items-start lg:gap-12">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <CalculatorPageVisual variant="work-year" />
-            <div className="max-w-4xl space-y-3">
+            <div className="max-w-3xl space-y-3">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">
                 Verktøy
               </p>
-              <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
-                Årsverkskalkulator
+              <h1 className="text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+                Årsverkkalkulator
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Beregn brutto årsverk, arbeidstid uten helligdager og disponibel arbeidstid etter
-                ferie.
+              <p className="max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                Bruk vår årsverkkalkulator for å beregne hvor mange arbeidstimer og arbeidsdager
+                ett årsverk inneholder. Kalkulatoren viser brutto årsverk, trekker fra offentlige
+                helligdager og beregner disponibel arbeidstid etter ferie og andre avtalte
+                fridager. Du kan tilpasse arbeidstid, stillingsprosent og år, eller velge en egen
+                årsramme for lærere.
               </p>
             </div>
           </div>
 
-          <div className="grid gap-4 border-t border-black/6 pt-5 md:grid-cols-2 xl:grid-cols-3">
+          <form
+            className="grid gap-4 rounded-[5px] bg-white/75 p-5 shadow-[0_14px_36px_rgba(15,23,42,0.05)] ring-1 ring-black/6 sm:p-6"
+            onSubmit={handleSubmit}
+          >
             <FieldRow
               htmlFor="work-year-profile"
               info={<WorkYearProfileInfo />}
@@ -152,35 +165,44 @@ export function WorkYearCalculatorDashboard() {
                 />
               </FieldRow>
             ) : null}
-          </div>
+
+            <button
+              className="mt-1 inline-flex h-12 w-full items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-5 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(20,83,45,0.18)] transition hover:-translate-y-0.5 hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+              type="submit"
+            >
+              Beregn årsverk
+            </button>
+          </form>
         </div>
       </div>
 
-      <section
-        aria-live="polite"
-        className="rounded-[5px] border border-teal-200 bg-teal-50/70 p-5 shadow-[0_16px_44px_rgba(15,23,42,0.04)] sm:p-6 lg:p-8"
-      >
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-800">
-              Ditt årsverk i {calculation.year}
+      {hasCalculated ? (
+        <section
+          aria-live="polite"
+          className="rounded-[5px] border border-teal-200 bg-teal-50/70 p-5 shadow-[0_16px_44px_rgba(15,23,42,0.04)] sm:p-6 lg:p-8"
+        >
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-800">
+                Ditt årsverk i {calculation.year}
+              </p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-950">
+                {formatNumber(calculation.availableAnnualHours, usesFixedAnnualHours ? 1 : 0)}{" "}
+                {usesFixedAnnualHours ? "timer i årsverket" : "tilgjengelige timer"}
+              </h2>
+            </div>
+            <p className="text-sm font-semibold text-teal-900">
+              {formatNumber(calculation.fullTimeEquivalent, 2)} årsverk
             </p>
-            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.05em] text-slate-950">
-              {formatNumber(calculation.availableAnnualHours, usesFixedAnnualHours ? 1 : 0)}{" "}
-              {usesFixedAnnualHours ? "timer i årsverket" : "tilgjengelige timer"}
-            </h2>
           </div>
-          <p className="text-sm font-semibold text-teal-900">
-            {formatNumber(calculation.fullTimeEquivalent, 2)} årsverk
-          </p>
-        </div>
 
-        {usesFixedAnnualHours ? (
-          <TeacherResults calculation={calculation} profile={profile} />
-        ) : (
-          <WeeklyResults calculation={calculation} />
-        )}
-      </section>
+          {usesFixedAnnualHours ? (
+            <TeacherResults calculation={calculation} profile={profile} />
+          ) : (
+            <WeeklyResults calculation={calculation} />
+          )}
+        </section>
+      ) : null}
     </section>
   );
 }
@@ -235,6 +257,18 @@ function WeeklyResults({
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         <ResultCard
           detail="Timer per uke × 52 uker"
+          info={
+            <ResultInfo>
+              Brutto årsverk er uketimer ganget med 52, før ferie og helligdager trekkes fra.{" "}
+              <Link
+                className="font-semibold text-white underline decoration-white/40 underline-offset-4 hover:decoration-white"
+                href="/forklarer/brutto-arsverk"
+              >
+                Les hva brutto årsverk betyr
+              </Link>
+              .
+            </ResultInfo>
+          }
           label="Brutto årsverk"
           value={`${formatNumber(calculation.grossAnnualHours, 0)} timer`}
         />
@@ -389,19 +423,40 @@ function ResultCard({
   label,
   value,
   detail,
+  info,
 }: {
   label: string;
   value: string;
   detail: string;
+  info?: ReactNode;
 }) {
   return (
     <article className="rounded-[5px] bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)]">
-      <p className="text-sm font-semibold text-slate-600">{label}</p>
+      <div className="flex items-center gap-2">
+        <p className="text-sm font-semibold text-slate-600">{label}</p>
+        {info}
+      </div>
       <p className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-teal-800 tabular-nums">
         {value}
       </p>
       <p className="mt-3 text-sm leading-6 text-slate-500">{detail}</p>
     </article>
+  );
+}
+
+function ResultInfo({ children }: { children: ReactNode }) {
+  return (
+    <details className="group relative">
+      <summary
+        aria-label="Vis forklaring"
+        className="flex h-5 w-5 cursor-pointer list-none items-center justify-center rounded-full border border-slate-300 bg-white text-[11px] font-semibold text-slate-600 transition hover:border-teal-600 hover:text-teal-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 [&::-webkit-details-marker]:hidden"
+      >
+        i
+      </summary>
+      <div className="absolute left-0 top-[calc(100%+0.5rem)] z-30 w-[min(20rem,calc(100vw-3rem))] rounded-[5px] bg-slate-950 px-4 py-3 text-xs leading-5 text-white shadow-[0_20px_50px_rgba(15,23,42,0.24)]">
+        {children}
+      </div>
+    </details>
   );
 }
 

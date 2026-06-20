@@ -19,7 +19,7 @@ export const calculators = [
   },
   {
     href: "/arsverk-kalkulator",
-    label: "Årsverkskalkulator",
+    label: "Årsverkkalkulator",
     description:
       "Beregn brutto årsverk, arbeidstid uten helligdager og disponibel arbeidstid etter ferie.",
   },

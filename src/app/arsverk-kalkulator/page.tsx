@@ -6,10 +6,10 @@ import { getPublicHolidaySummary, workYearProfiles } from "@/lib/arsverk";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Beregn brutto årsverk, arbeidstimer uten helligdager og disponibel arbeidstid etter ferie og andre fridager.";
+  "Bruk vår årsverkkalkulator til å beregne arbeidstimer og arbeidsdager i et årsverk, med fratrekk for helligdager, ferie og andre fridager.";
 
 export const metadata: Metadata = {
-  title: "Årsverkskalkulator",
+  title: "Årsverkkalkulator",
   description,
   alternates: {
     canonical: "/arsverk-kalkulator",
@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/arsverk-kalkulator",
     siteName: siteConfig.name,
-    title: `Årsverkskalkulator | ${siteConfig.name}`,
+    title: `Årsverkkalkulator | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Årsverkskalkulator | ${siteConfig.name}`,
+    title: `Årsverkkalkulator | ${siteConfig.name}`,
     description,
   },
 };
