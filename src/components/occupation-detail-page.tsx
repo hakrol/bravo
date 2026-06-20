@@ -26,31 +26,27 @@ const FEATURED_BLOG_POST = {
   title: "Hvordan be om mer lønn?",
 };
 
-const BLOG_LINKS = [
+const SIDEBAR_BLOG_LINKS = [
   {
-    href: "/blogg/hvor-mye-mer-kan-man-be-om-i-lonn",
-    title: "Hvor mye mer kan man be om i lønn?",
+    href: "/blogg/dette-er-norges-vanligste-yrker",
+    title: "Dette er Norges vanligste yrker",
   },
   {
-    href: "/blogg/nar-bor-man-be-om-hoyere-lonn",
-    title: "Når bør man be om høyere lønn?",
+    href: "/blogg/hva-er-gjennomsnittlig-lonnsvekst-i-norge",
+    title: "Hva er gjennomsnittlig lønnsvekst i Norge?",
   },
   {
-    href: "/blogg/hva-tjener-handverkere-disse-er-best-betalt",
-    title: "Hva tjener håndverkere?",
-  },
-  {
-    href: "/blogg/best-betalte-yrker-i-2025",
-    title: "Best betalte yrker i 2025",
+    href: "/blogg/hvilke-yrker-tjener-over-1-million",
+    title: "Hvilke yrker tjener over 1 million kroner?",
   },
 ];
 
 const TOOL_LINKS = [
   {
     colorClassName: "text-sky-700",
-    href: "/lonnskalkulator",
+    href: "/kalkulatorer",
     icon: "calculator",
-    title: "Lønnskalkulator",
+    title: "Kalkulatorer",
   },
   {
     colorClassName: "text-emerald-700",
@@ -64,12 +60,6 @@ const TOOL_LINKS = [
     icon: "compare",
     title: "Sammenlign lønn",
   },
-  {
-    colorClassName: "text-amber-700",
-    href: "/lanekalkulator",
-    icon: "briefcase",
-    title: "Lånekalkulator",
-  },
 ];
 
 const SPECIAL_LINKS = [
@@ -80,6 +70,33 @@ const SPECIAL_LINKS = [
   {
     href: "/spesial/topp-10-yrker",
     title: "Topp 10 yrker med høyest lønn",
+  },
+];
+
+const POPULAR_OCCUPATION_LINKS = [
+  {
+    href: "/yrke/politikere-lonn",
+    title: "Politikere",
+  },
+  {
+    href: "/yrke/elektrikere-lonn",
+    title: "Elektrikere",
+  },
+  {
+    href: "/yrke/flygere-lonn",
+    title: "Flygere",
+  },
+  {
+    href: "/yrke/legespesialister-lonn",
+    title: "Legespesialister",
+  },
+  {
+    href: "/yrke/sykepleiere-lonn",
+    title: "Sykepleiere",
+  },
+  {
+    href: "/yrke/dommere-lonn",
+    title: "Dommere",
   },
 ];
 
@@ -103,11 +120,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const medianGrowthMetrics = buildMedianGrowthMetrics(detail.data.medianBasicSalarySeries);
   const fiveYearGrowthComparison = await getOccupationFiveYearGrowthComparison(
     detail.detailPage.occupationCode,
-  );
-  const updatedLabel = formatDate(
-    distribution?.updated ??
-      detail.data.medianBasicSalarySeries.updated ??
-      laborMarket?.updated,
   );
   const latestSalaryPoint =
     detail.data.medianBasicSalarySeries.points[
@@ -461,9 +473,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
           </div>
 
           <aside
-            className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6 sm:py-6 lg:sticky lg:top-6"
+            className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-4 shadow-[0_16px_44px_rgba(15,23,42,0.05)] lg:sticky lg:top-6"
           >
-            <section className="border-b border-slate-200 pb-5">
+            <section className="pb-3">
               <p className="text-sm leading-6 text-slate-600">
                 Data fra{" "}
                 <a
@@ -476,14 +488,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 </a>
                 .
               </p>
-              <p className="mt-1 text-sm leading-6 text-slate-500">
-                Sist oppdatert {updatedLabel ?? "i siste tilgjengelige publisering"}.
-              </p>
             </section>
 
             {apprenticeshipPage ? (
               <Link
-                className="flex items-center gap-3 border-b border-slate-200 py-5 text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                className="flex items-center gap-2.5 py-3 text-sm font-medium text-slate-700 transition hover:text-slate-950"
                 href={apprenticeshipPage.href}
               >
                 <span
@@ -496,11 +505,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </Link>
             ) : null}
 
-            <section className="border-b border-slate-200 py-5">
+            <section className="py-3">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Spesial
               </p>
-              <div className="mt-4 grid gap-3">
+              <div className="mt-2.5 grid gap-2">
                 {SPECIAL_LINKS.map((link) => (
                   <Link
                     className="text-sm font-medium leading-5 text-slate-700 transition hover:text-slate-950 hover:underline hover:decoration-slate-300 hover:underline-offset-4"
@@ -513,31 +522,59 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </div>
             </section>
 
-            <section className="border-b border-slate-200 py-5">
+            <section className="py-3">
+              <Link
+                className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                href="/yrker"
+              >
+                <SidebarLinkIcon className="text-slate-500" icon="list" />
+                <span>Alle yrker</span>
+              </Link>
+            </section>
+
+            <section className="py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                Populære yrker
+              </p>
+              <nav aria-label="Populære yrker" className="mt-2.5 grid gap-2">
+                {POPULAR_OCCUPATION_LINKS.map((occupation) => (
+                  <Link
+                    className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                    href={occupation.href}
+                    key={occupation.href}
+                  >
+                    <SidebarLinkIcon className="text-orange-600" icon="flame" />
+                    <span>{occupation.title}</span>
+                  </Link>
+                ))}
+              </nav>
+            </section>
+
+            <section className="py-3">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Verktøy
               </p>
-              <nav aria-label="Verktøy" className="mt-4 grid gap-3">
+              <nav aria-label="Verktøy" className="mt-2.5 grid gap-2">
                 {TOOL_LINKS.map((tool) => (
                   <Link
-                    className="flex items-center gap-3 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                    className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
                     href={tool.href}
                     key={tool.href}
                   >
-                    <SidebarToolIcon className={tool.colorClassName} icon={tool.icon} />
+                    <SidebarLinkIcon className={tool.colorClassName} icon={tool.icon} />
                     <span>{tool.title}</span>
                   </Link>
                 ))}
               </nav>
             </section>
 
-            {BLOG_LINKS.length > 0 ? (
-              <section className="pt-5">
+            {SIDEBAR_BLOG_LINKS.length > 0 ? (
+              <section className="pt-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Fra bloggen
                 </p>
-                <div className="mt-4 grid gap-3">
-                  {[FEATURED_BLOG_POST, ...BLOG_LINKS].map((post) => (
+                <div className="mt-2.5 grid gap-2">
+                  {SIDEBAR_BLOG_LINKS.map((post) => (
                     <Link
                       className="text-sm font-medium leading-5 text-slate-700 transition hover:text-slate-950 hover:underline hover:decoration-slate-300 hover:underline-offset-4"
                       href={post.href}
@@ -837,7 +874,7 @@ function ApprenticeshipIcon() {
   );
 }
 
-function SidebarToolIcon({
+function SidebarLinkIcon({
   className: colorClassName,
   icon,
 }: {
@@ -888,6 +925,26 @@ function SidebarToolIcon({
         <circle cx="18" cy="14" r="2" />
         <path d="m7.7 14.8 2.7-5" />
         <path d="m13.8 9.2 2.5 3.6" />
+      </svg>
+    );
+  }
+
+  if (icon === "list") {
+    return (
+      <svg {...commonProps}>
+        <rect height="16" rx="2" width="16" x="4" y="4" />
+        <path d="M8 9h8" />
+        <path d="M8 12h8" />
+        <path d="M8 15h5" />
+      </svg>
+    );
+  }
+
+  if (icon === "flame") {
+    return (
+      <svg {...commonProps}>
+        <path d="M12.5 3.5c.7 3.1-1.8 4.4-1 6.7.4 1.1 1.4 1.7 2.4 1.2 1.3-.7 1.4-2.3 1.1-3.7 2.4 2 3.8 4.4 3.3 7.1-.6 3.4-3.3 5.7-6.6 5.7-3.7 0-6.5-2.6-6.5-6.2 0-3.9 2.6-7.2 7.3-10.8Z" />
+        <path d="M12 13c1.5 1.3 2.1 2.4 1.8 3.6-.2 1.1-1 1.9-2.1 1.9-1.3 0-2.2-.9-2.2-2.2 0-1.2.8-2.4 2.5-3.3Z" />
       </svg>
     );
   }
@@ -996,24 +1053,6 @@ function formatNumber(value?: number) {
   }
 
   return value.toLocaleString("nb-NO", { maximumFractionDigits: 0 });
-}
-
-function formatDate(value?: string) {
-  if (!value) {
-    return null;
-  }
-
-  const parsed = new Date(value);
-
-  if (Number.isNaN(parsed.getTime())) {
-    return value;
-  }
-
-  return parsed.toLocaleDateString("nb-NO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
 }
 
 function buildMedianGrowthMetrics(series: {
