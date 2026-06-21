@@ -58,6 +58,18 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/feriedager-norge",
+    filePath: "src/app/feriedager-norge/page.tsx",
+    priority: 0.7,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/feriekalkulator",
+    filePath: "src/app/feriekalkulator/page.tsx",
+    priority: 0.7,
+    changeFrequency: "yearly" as const,
+  },
+  {
     path: "/ressurser",
     filePath: "src/app/ressurser/page.tsx",
     priority: 0.6,
