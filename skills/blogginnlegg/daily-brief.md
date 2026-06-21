@@ -49,7 +49,45 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
+[ ] Dette er årslønnen til bygningsarbeidere
+Tittel: Dette er årslønnen til bygningsarbeidere
+
+
+Beskrivelse:
+Innlegget skal gi svar på hva årslønnen er til bygningsarbeidere, og annen relevant informasjon. Innlegget skal se på både yrkesfamilien Bygningsarbeidere og Bygningstekniske arbeidere, da begge er å anses som bygningsarbeidere.
+
+Overskrifter:
+
+- Årslønnen til bygningsarbeidere
+	- Vis alle yrkene i en søkbar yrkesliste
+- Lønnen til Bygningsarbeidere versus Bygningstekniske arbeidere
+	- Her skal du diskutere snittet i disse yrkesfamiliene
+- Lønnsutviklingen til Bygningsarbeidere
+- Lønnsutviklingen til Bygningstekniske arbeidere
+- Hvor mange jobber som bygningsarbeidere
+
+Diagrammer:
+
+- Søkbar yrkesliste
+- Redaksjonelt stolpediagram
+- Femårs lønnsutvikling
+
+FAQ:
+
+- Hva er snittalderen til Bygningsarbeidere?
+- Hva er snittalderen til Bygningstekniske arbeidere?
+
+Interne lenker:
+
+Linker til relevante yrkessider som blir nevnt i innlegget (du skal ikke tvinge det inn i innlegget, det må passe naturlig)
+Linker til relevante forklaringsinnlegg hvis du bruker ord (du skal ikke tvinge det inn i innlegget, det må passe naturlig)
+
+Eksterne lenker:
+...
+
 ### Ferdig
+
+- [x] Disse 10 yrkene tjener minst i Norge - `src/content/blog/disse-10-yrkene-tjener-minst-i-norge.mdx` - 2026-06-21
 
 - [x] Dette er Norges vanligste yrker - `src/content/blog/dette-er-norges-vanligste-yrker.mdx` - 2026-06-18
 

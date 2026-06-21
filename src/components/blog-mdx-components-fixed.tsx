@@ -40,6 +40,7 @@ import {
   KonduktorSalaryEditorialChart,
 } from "@/components/blog-konduktor-salary-chart";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
+import { LowestPaidOccupationsBubbleChart } from "@/components/blog-lowest-paid-occupations-chart";
 import { MillionSalaryGrowthChart } from "@/components/blog-million-salary-chart";
 import {
   NorwayCommonOccupationsChart,
@@ -226,6 +227,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     MalerSalaryBubbleChart,
     MalerSalaryDevelopmentChart,
     MillionSalaryGrowthChart,
+    LowestPaidOccupationsBubbleChart,
     NorwayCommonOccupationsChart,
     NorwayCommonOccupationsSalaryGrowthChart,
     PoliceSalaryBubbleChart,

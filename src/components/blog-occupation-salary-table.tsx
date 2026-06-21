@@ -15,6 +15,7 @@ import konduktorLonn2025Snapshot from "@/content/blog/data/konduktor-lonn-2025.j
 import laerereLonn2025Snapshot from "@/content/blog/data/laerere-lonn-2025.json";
 import legeLonn2025Snapshot from "@/content/blog/data/lege-lonn-2025.json";
 import malerLonn2025Snapshot from "@/content/blog/data/maler-lonn-2025.json";
+import lavestLonnedeYrker2025Snapshot from "@/content/blog/data/lavest-lonnede-yrker-2025.json";
 import norgesVanligsteYrker2026Snapshot from "@/content/blog/data/norges-vanligste-yrker-2026.json";
 import piloterLonn2025Snapshot from "@/content/blog/data/piloter-lonn-2025.json";
 import politiLonn2025Snapshot from "@/content/blog/data/politi-lonn-2025.json";
@@ -22,6 +23,7 @@ import psykologLonn2025Snapshot from "@/content/blog/data/psykolog-lonn-2025.jso
 import rorleggerLonn2025Snapshot from "@/content/blog/data/rorlegger-lonn-2025.json";
 import snekkerLonn2025Snapshot from "@/content/blog/data/snekker-lonn-2025.json";
 import servitorLonn2025Snapshot from "@/content/blog/data/servitor-lonn-2025.json";
+import snittalderLavestLonnedeYrker2026Snapshot from "@/content/blog/data/snittalder-lavest-lonnede-yrker-2026.json";
 import sykepleiereHelsearbeidereLonn2025Snapshot from "@/content/blog/data/sykepleiere-helsearbeidere-lonn-2025.json";
 import vernepleierLonn2025Snapshot from "@/content/blog/data/vernepleier-lonn-2025.json";
 import yrkerOverEnMillion2025Snapshot from "@/content/blog/data/yrker-over-en-million-2025.json";
@@ -39,6 +41,9 @@ type OccupationSalarySnapshot = {
   source: string;
   period: string;
   measure: string;
+  valueLabel?: string;
+  valueFormat?: "currency" | "decimal" | "number";
+  valueSuffix?: string;
   note: string;
   rows: OccupationSalaryRow[];
 };
@@ -57,6 +62,7 @@ const snapshots = {
   "kirurg-lonn-2025": kirurgLonn2025Snapshot as OccupationSalarySnapshot,
   "konduktor-lonn-2025": konduktorLonn2025Snapshot as OccupationSalarySnapshot,
   "laerere-lonn-2025": laerereLonn2025Snapshot as OccupationSalarySnapshot,
+  "lavest-lonnede-yrker-2025": lavestLonnedeYrker2025Snapshot as OccupationSalarySnapshot,
   "lege-lonn-2025": legeLonn2025Snapshot as OccupationSalarySnapshot,
   "maler-lonn-2025": malerLonn2025Snapshot as OccupationSalarySnapshot,
   "norges-vanligste-yrker-2026": norgesVanligsteYrker2026Snapshot as OccupationSalarySnapshot,
@@ -66,6 +72,7 @@ const snapshots = {
   "rorlegger-lonn-2025": rorleggerLonn2025Snapshot as OccupationSalarySnapshot,
   "snekker-lonn-2025": snekkerLonn2025Snapshot as OccupationSalarySnapshot,
   "servitor-lonn-2025": servitorLonn2025Snapshot as OccupationSalarySnapshot,
+  "snittalder-lavest-lonnede-yrker-2026": snittalderLavestLonnedeYrker2026Snapshot as OccupationSalarySnapshot,
   "sykepleiere-helsearbeidere-lonn-2025": sykepleiereHelsearbeidereLonn2025Snapshot as OccupationSalarySnapshot,
   "vernepleier-lonn-2025": vernepleierLonn2025Snapshot as OccupationSalarySnapshot,
   "yrker-over-en-million-2025": yrkerOverEnMillion2025Snapshot as OccupationSalarySnapshot,
@@ -79,11 +86,13 @@ type BlogOccupationSalaryTableProps = {
 export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-2025", title }: BlogOccupationSalaryTableProps) {
   const snapshot = snapshots[snapshotId] ?? snapshots["best-betalte-yrker-2025"];
   const isEmployeeCount = snapshot.measure.toLowerCase().includes("lønnstakere");
-  const valueLabel = isEmployeeCount
-    ? "Lønnstakere"
-    : snapshot.measure.toLowerCase().includes("årslønn")
-      ? "Årslønn"
-      : "Månedslønn";
+  const valueLabel =
+    snapshot.valueLabel ??
+    (isEmployeeCount
+      ? "Lønnstakere"
+      : snapshot.measure.toLowerCase().includes("årslønn")
+        ? "Årslønn"
+        : "Månedslønn");
   const occupationRows = useMemo(
     () => snapshot.rows.filter((row): row is OccupationSalaryRow & { value: number } => typeof row.value === "number"),
     [snapshot],
@@ -174,7 +183,7 @@ export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-202
                 </td>
                 <td>
                   <span className="blog-occupation-salary-cell" style={{ background: getSalaryColor(row.value, minSalary, maxSalary) }}>
-                    {isEmployeeCount ? row.value.toLocaleString("nb-NO") : formatSalary(row.value)}
+                    {formatValue(row.value, snapshot, isEmployeeCount)}
                   </span>
                 </td>
               </tr>
@@ -196,6 +205,23 @@ export function BlogOccupationSalaryTable({ snapshotId = "best-betalte-yrker-202
 
 function formatSalary(value: number) {
   return `${value.toLocaleString("nb-NO")} kr`;
+}
+
+function formatValue(value: number, snapshot: OccupationSalarySnapshot, isEmployeeCount: boolean) {
+  if (snapshot.valueFormat === "decimal") {
+    const formattedValue = value.toLocaleString("nb-NO", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 1,
+    });
+    return snapshot.valueSuffix ? `${formattedValue} ${snapshot.valueSuffix}` : formattedValue;
+  }
+
+  if (snapshot.valueFormat === "number" || isEmployeeCount) {
+    const formattedValue = value.toLocaleString("nb-NO");
+    return snapshot.valueSuffix ? `${formattedValue} ${snapshot.valueSuffix}` : formattedValue;
+  }
+
+  return formatSalary(value);
 }
 
 function getSalaryColor(value: number, minSalary: number, maxSalary: number) {

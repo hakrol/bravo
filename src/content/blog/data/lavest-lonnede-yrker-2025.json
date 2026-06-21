@@ -1,0 +1,89 @@
+{
+  "id": "lavest-lonnede-yrker-2025",
+  "title": "Yrker med lavest lønn i Norge",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Lønnstallene viser median samlet månedslønn for begge kjønn, alle sektorer og arbeidstid i alt i 2025. Antall lønnstakere gjelder begge kjønn og alle aldre i 1. kvartal 2026.",
+  "rows": [
+    {
+      "code": "9211",
+      "label": "Hjelpearbeidere i nyttevekstproduksjon",
+      "href": "/yrke/hjelpearbeidere-i-nyttevekstproduksjon-lonn",
+      "value": 31390,
+      "employees": 89
+    },
+    {
+      "code": "9212",
+      "label": "Hjelpearbeidere i husdyrproduksjon",
+      "href": "/yrke/hjelpearbeidere-i-husdyrproduksjon-lonn",
+      "value": 32470,
+      "employees": 824
+    },
+    {
+      "code": "4227",
+      "label": "Intervjuere",
+      "href": "/yrke/intervjuere-lonn",
+      "value": 32540,
+      "employees": 508
+    },
+    {
+      "code": "9215",
+      "label": "Hjelpearbeidere i skogbruk",
+      "href": "/yrke/hjelpearbeidere-i-skogbruk-lonn",
+      "value": 34910,
+      "employees": 82
+    },
+    {
+      "code": "5241",
+      "label": "Mannekenger og modeller",
+      "href": "/yrke/mannekenger-og-modeller-lonn",
+      "value": 35600,
+      "employees": 55
+    },
+    {
+      "code": "7234",
+      "label": "Sykkelreparatører mv.",
+      "href": "/yrke/sykkelreparatorer-mv-lonn",
+      "value": 35640,
+      "employees": 330
+    },
+    {
+      "code": "5246",
+      "label": "Gatekjøkken- og kafémedarbeidere mv.",
+      "href": "/yrke/gatekjokken-og-kafemedarbeidere-mv-lonn",
+      "value": 36360,
+      "employees": 16491
+    },
+    {
+      "code": "9213",
+      "label": "Hjelpearbeidere i kombinasjonsbruk",
+      "href": "/yrke/hjelpearbeidere-i-kombinasjonsbruk-lonn",
+      "value": 36530,
+      "employees": 551
+    },
+    {
+      "code": "5164",
+      "label": "Dyrepassere og -trenere mv.",
+      "href": "/yrke/dyrepassere-og-trenere-mv-lonn",
+      "value": 36670,
+      "employees": 1158
+    },
+    {
+      "code": "4212",
+      "label": "Bingoverter, bookmakere mv.",
+      "href": "/yrke/bingoverter-bookmakere-mv-lonn",
+      "value": 37020,
+      "employees": 422
+    }
+  ],
+  "metadata": {
+    "salaryTableId": "11418",
+    "workforceTableId": "11658",
+    "salaryPeriod": "2025",
+    "workforcePeriod": "1. kvartal 2026",
+    "allOccupationsMedianMonthlySalary": 55800,
+    "lowPayThresholdMonthly": 37200,
+    "generatedFromLocalSsbDataAt": "2026-06-21"
+  }
+}
