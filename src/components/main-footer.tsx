@@ -8,6 +8,8 @@ const footerGroups = [
       { href: "/lonnsjekk", label: "Lønnssjekk" },
       { href: "/lonnskalkulator", label: "Lønnskalkulator" },
       { href: "/sammenlign-lonn", label: "Sammenlign lønn" },
+      { href: "/feriekalkulator", label: "Feriekalkulator" },
+      { href: "/feriedager-norge", label: "Feriedager i Norge" },
       { href: "/lanekalkulator", label: "Lånekalkulator" },
       { href: "/kilometergodtgjorelse-kalkulator", label: "Kilometergodtgjørelse" },
     ],

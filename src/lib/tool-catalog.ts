@@ -24,6 +24,12 @@ export const calculators = [
       "Beregn brutto årsverk, arbeidstid uten helligdager og disponibel arbeidstid etter ferie.",
   },
   {
+    href: "/feriekalkulator",
+    label: "Feriekalkulator",
+    description:
+      "Finn inneklemte dager og fordel feriedagene for å få mest mulig sammenhengende fri.",
+  },
+  {
     href: "/lanekalkulator",
     label: "Lånekalkulator",
     description:
@@ -44,6 +50,12 @@ export const calculators = [
 ] as const;
 
 export const otherTools = [
+  {
+    href: "/feriedager-norge",
+    label: "Feriedager i Norge",
+    description:
+      "Se røde dager, helligdager og offisielle fridager i en komplett norsk årskalender.",
+  },
   {
     href: "/lonnsjekk",
     label: "Lønnssjekk",
