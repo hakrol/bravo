@@ -68,6 +68,16 @@ I tillegg oppdateres:
 - `src/lib/generated/apprenticeship-detail-view-models/index.json`
 - alle JSON-filer i `src/lib/generated/apprenticeship-detail-view-models/`
 
+## Yrkeskort på `/yrker`
+
+Yrkeskortene på `/yrker` bruker også de genererte snapshot-filene. Medianlønn,
+lønnsvekst, arbeidstakervekst, snittalder og lønnsforskjell mellom kvinner og
+menn beregnes fra lokale filer i `src/lib/generated`.
+
+Dette betyr at kortene ikke oppdateres direkte når SSB publiserer nye tall. Nye
+tall blir først synlige etter at `npm run ssb:sync` er kjørt, de oppdaterte
+JSON-filene er committet, og en ny versjon er deployet.
+
 ## Hva du må gjøre når SSB publiserer nye tall
 
 ### Hvis du jobber lokalt

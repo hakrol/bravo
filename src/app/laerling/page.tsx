@@ -60,6 +60,13 @@ export default async function ApprenticeshipOverviewPage() {
           detail.data.distribution?.total?.median ??
           detail.data.medianOverview.rows.find((row) => row.occupationCode === occupationCode)
             ?.medianAll,
+        cardStats: {
+          salaryGrowthPercent: calculateLatestGrowth(detail.data.timeSeries.points),
+          genderPayGapPercent: calculateGenderPayGap(
+            detail.data.distribution?.women?.median,
+            detail.data.distribution?.men?.median,
+          ),
+        },
         href: detail.detailPage.href,
         searchText: [
           detail.detailPage.label,
@@ -84,6 +91,7 @@ export default async function ApprenticeshipOverviewPage() {
         </header>
 
         <OccupationDirectory
+          cardStatMetrics={["salaryGrowth", "genderPayGap"]}
           colorByOccupationGroup
           filterLabel="Filtrer på lærlinglønn"
           items={items}
@@ -111,4 +119,28 @@ function getOccupationGroupLabel(occupationCode: string) {
   }
 
   return getOccupationGroupByCode(groupCode)?.label ?? "Andre yrker";
+}
+
+function calculateLatestGrowth(points: Array<{ valueAll?: number }>) {
+  const comparablePoints = points.filter((point) => point.valueAll !== undefined);
+  const latestPoint = comparablePoints.at(-1);
+  const previousPoint = comparablePoints.at(-2);
+
+  if (
+    latestPoint?.valueAll === undefined ||
+    previousPoint?.valueAll === undefined ||
+    previousPoint.valueAll === 0
+  ) {
+    return undefined;
+  }
+
+  return ((latestPoint.valueAll - previousPoint.valueAll) / previousPoint.valueAll) * 100;
+}
+
+function calculateGenderPayGap(women?: number, men?: number) {
+  if (women === undefined || men === undefined || men === 0) {
+    return undefined;
+  }
+
+  return (Math.abs(men - women) / men) * 100;
 }

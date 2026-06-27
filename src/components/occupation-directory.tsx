@@ -15,9 +15,17 @@ export type OccupationDirectoryItem = {
   familyLabel?: string;
   monthlySalary?: number;
   salaryValue?: number;
+  cardStats?: {
+    salaryGrowthPercent?: number;
+    employeeGrowthPercent?: number;
+    averageAge?: number;
+    genderPayGapPercent?: number;
+  };
   href?: string;
   searchText?: string;
 };
+
+type CardStatMetric = "salaryGrowth" | "employeeGrowth" | "averageAge" | "genderPayGap";
 
 type OccupationDirectoryProps = {
   items: OccupationDirectoryItem[];
@@ -32,6 +40,7 @@ type OccupationDirectoryProps = {
   filterByOccupationHierarchy?: boolean;
   filterByOccupationFamily?: boolean;
   showSearch?: boolean;
+  cardStatMetrics?: CardStatMetric[];
 };
 
 type SalaryFilterOption = {
@@ -51,7 +60,7 @@ const defaultSalaryFilters: SalaryFilterOption[] = [
 
 export function OccupationDirectory({
   items,
-  valueLabel = "Samlet månedslønn",
+  valueLabel = "Median månedslønn",
   filterLabel = "Filtrer på lønn",
   searchLabel = "Søk etter yrke",
   searchPlaceholder = "Skriv f.eks. flyger",
@@ -62,6 +71,7 @@ export function OccupationDirectory({
   filterByOccupationHierarchy = false,
   filterByOccupationFamily = false,
   showSearch = true,
+  cardStatMetrics = ["salaryGrowth", "employeeGrowth", "averageAge", "genderPayGap"],
 }: OccupationDirectoryProps) {
   const [query, setQuery] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("all");
@@ -240,20 +250,23 @@ export function OccupationDirectory({
               : undefined;
             const content = (
               <>
-                <div>
-                  <h2 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">
+                <div className="min-w-0">
+                  <h2 className="text-balance text-xl font-semibold leading-tight tracking-normal text-slate-950">
                     {item.title}
                   </h2>
                   {item.groupLabel ? (
-                    <p className="mt-1 text-xs font-medium text-slate-700">{item.groupLabel}</p>
+                    <p className="mt-1 text-sm font-medium leading-5 text-slate-700">
+                      {item.groupLabel}
+                    </p>
                   ) : null}
                 </div>
-                <p className="mt-3 text-sm font-medium text-slate-600">
-                  {valueLabel}:{" "}
-                  <span className="font-semibold text-[var(--primary-strong)]">
+                <div className="mt-6">
+                  <p className="text-sm font-medium leading-5 text-slate-600">{valueLabel}</p>
+                  <p className="mt-1 text-3xl font-semibold leading-none tracking-normal text-[var(--primary-strong)]">
                     {formatCurrency(getSalaryValue(item))}
-                  </span>
-                </p>
+                  </p>
+                </div>
+                <OccupationCardStatsGrid metrics={cardStatMetrics} stats={item.cardStats} />
               </>
             );
 
@@ -296,6 +309,58 @@ export function OccupationDirectory({
         </div>
       )}
     </section>
+  );
+}
+
+function OccupationCardStatsGrid({
+  metrics: visibleMetrics,
+  stats,
+}: {
+  metrics: CardStatMetric[];
+  stats?: OccupationDirectoryItem["cardStats"];
+}) {
+  const metrics = [
+    {
+      label: "Lønnsvekst",
+      value: formatSignedPercent(stats?.salaryGrowthPercent),
+      valueClassName: getGrowthValueClassName(stats?.salaryGrowthPercent),
+    },
+    {
+      label: "Arbeidstakervekst",
+      value: formatSignedPercent(stats?.employeeGrowthPercent),
+      valueClassName: getGrowthValueClassName(stats?.employeeGrowthPercent),
+    },
+    {
+      label: "Snittalder",
+      value: formatAge(stats?.averageAge),
+      valueClassName: "text-slate-950",
+    },
+    {
+      label: "Lønnsforskjell",
+      value: formatPercent(stats?.genderPayGapPercent),
+      valueClassName: "text-slate-950",
+    },
+  ];
+  const visibleMetricIndexes = new Set(
+    visibleMetrics.map((metric) =>
+      ["salaryGrowth", "employeeGrowth", "averageAge", "genderPayGap"].indexOf(metric),
+    ),
+  );
+  const selectedMetrics = metrics.filter((_, index) => visibleMetricIndexes.has(index));
+
+  return (
+    <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-slate-200 pt-4 xl:grid-cols-4">
+      {selectedMetrics.map((metric) => (
+        <div key={metric.label} className="min-w-0">
+          <dt className="truncate text-[0.7rem] font-medium leading-5 text-slate-500">
+            {metric.label}
+          </dt>
+          <dd className={`text-base font-semibold leading-6 ${metric.valueClassName}`}>
+            {metric.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 
@@ -360,6 +425,48 @@ function formatCurrency(value?: number) {
   return `${value.toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
   })} kr`;
+}
+
+function formatSignedPercent(value?: number) {
+  if (value === undefined) {
+    return "–";
+  }
+
+  const prefix = value > 0 ? "+" : "";
+  return `${prefix}${formatPercentValue(value)} %`;
+}
+
+function formatPercent(value?: number) {
+  if (value === undefined) {
+    return "–";
+  }
+
+  return `${formatPercentValue(value)} %`;
+}
+
+function formatPercentValue(value: number) {
+  return value.toLocaleString("nb-NO", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+}
+
+function formatAge(value?: number) {
+  if (value === undefined) {
+    return "–";
+  }
+
+  return `${value.toLocaleString("nb-NO", {
+    maximumFractionDigits: 0,
+  })} år`;
+}
+
+function getGrowthValueClassName(value?: number) {
+  if (value === undefined || value === 0) {
+    return "text-slate-950";
+  }
+
+  return value > 0 ? "text-emerald-700" : "text-red-700";
 }
 
 function normalizeText(value: string) {
