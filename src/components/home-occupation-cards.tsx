@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import type { OccupationSalaryRow } from "@/components/occupation-salary-overview";
+import type { OccupationCardStats } from "@/lib/occupation-card-stats";
 import { getOccupationDetailHref } from "@/lib/occupation-detail-pages";
 
 type HomeOccupationCardsProps = {
+  occupationCardStatsByCode: Record<string, OccupationCardStats>;
   query: string;
   rows: OccupationSalaryRow[];
   sourceRows: OccupationSalaryRow[];
@@ -23,7 +25,12 @@ const currencyFormatter = new Intl.NumberFormat("nb-NO", {
   maximumFractionDigits: 0,
 });
 
-export function HomeOccupationCards({ query, rows, sourceRows }: HomeOccupationCardsProps) {
+export function HomeOccupationCards({
+  occupationCardStatsByCode,
+  query,
+  rows,
+  sourceRows,
+}: HomeOccupationCardsProps) {
   const trimmedQuery = query.trim();
   const normalizedQuery = normalizeText(trimmedQuery);
   const highlightedRows = normalizedQuery
@@ -35,7 +42,11 @@ export function HomeOccupationCards({ query, rows, sourceRows }: HomeOccupationC
       {highlightedRows.length > 0 ? (
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2 xl:grid-cols-3">
           {highlightedRows.map((row) => (
-            <OccupationHighlightCard key={row.rowKey} row={row} />
+            <OccupationHighlightCard
+              key={row.rowKey}
+              row={row}
+              stats={occupationCardStatsByCode[row.occupationCode]}
+            />
           ))}
         </div>
       ) : (
@@ -59,30 +70,33 @@ export function HomeOccupationCards({ query, rows, sourceRows }: HomeOccupationC
   );
 }
 
-function OccupationHighlightCard({ row }: { row: OccupationSalaryRow }) {
+function OccupationHighlightCard({
+  row,
+  stats,
+}: {
+  row: OccupationSalaryRow;
+  stats?: OccupationCardStats;
+}) {
   const detailHref = getOccupationDetailHref(row.occupationCode, row.occupationLabel);
   const content = (
-    <article className="group min-h-32 w-full min-w-0 max-w-full rounded-md border border-black/8 bg-white/90 p-5 shadow-[0_16px_36px_rgba(27,36,48,0.07)] transition hover:-translate-y-0.5 hover:border-[#d98b2b]/35 hover:shadow-[0_20px_44px_rgba(217,139,43,0.12)]">
+    <article className="group flex h-full min-h-56 w-full min-w-0 max-w-full flex-col justify-between rounded-md border border-black/8 bg-white/90 p-5 shadow-[0_16px_36px_rgba(27,36,48,0.07)] transition hover:-translate-y-0.5 hover:border-[#d98b2b]/35 hover:shadow-[0_20px_44px_rgba(217,139,43,0.12)]">
       <div className="min-w-0">
-        <h3 className="flex min-w-0 items-center gap-2 text-base font-semibold leading-snug text-slate-950 transition-colors group-hover:text-[#d98b2b]">
-          <span className="truncate">{row.occupationLabel}</span>
+        <h3 className="flex min-w-0 items-center gap-2 text-balance text-xl font-semibold leading-tight tracking-normal text-slate-950 transition-colors group-hover:text-[#d98b2b]">
+          <span className="min-w-0">{row.occupationLabel}</span>
           {detailHref ? (
             <span aria-hidden="true" className="shrink-0 text-[var(--primary-strong)] transition-colors group-hover:text-[#d98b2b]">
               &gt;
             </span>
           ) : null}
         </h3>
-        <dl className="mt-4 grid gap-2 text-sm">
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3">
-            <dt className="text-[var(--muted)]">Kvinner</dt>
-            <dd className="font-semibold tabular-nums text-slate-950">{formatSalary(row.medianWomen)}</dd>
-          </div>
-          <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3">
-            <dt className="text-[var(--muted)]">Menn</dt>
-            <dd className="font-semibold tabular-nums text-slate-950">{formatSalary(row.medianMen)}</dd>
-          </div>
-        </dl>
       </div>
+      <div className="mt-6">
+        <p className="text-sm font-medium leading-5 text-slate-600">Median månedslønn</p>
+        <p className="mt-1 text-3xl font-semibold leading-none tracking-normal text-[var(--primary-strong)]">
+          {formatSalary(row.medianAll)}
+        </p>
+      </div>
+      <HomeOccupationStatsGrid stats={stats} />
     </article>
   );
 
@@ -97,6 +111,46 @@ function OccupationHighlightCard({ row }: { row: OccupationSalaryRow }) {
     >
       {content}
     </Link>
+  );
+}
+
+function HomeOccupationStatsGrid({ stats }: { stats?: OccupationCardStats }) {
+  const metrics = [
+    {
+      label: "Lønnsvekst",
+      value: formatSignedPercent(stats?.salaryGrowthPercent),
+      valueClassName: getGrowthValueClassName(stats?.salaryGrowthPercent),
+    },
+    {
+      label: "Arbeidstakervekst",
+      value: formatSignedPercent(stats?.employeeGrowthPercent),
+      valueClassName: getGrowthValueClassName(stats?.employeeGrowthPercent),
+    },
+    {
+      label: "Snittalder",
+      value: formatAge(stats?.averageAge),
+      valueClassName: "text-slate-950",
+    },
+    {
+      label: "Lønnsforskjell",
+      value: formatPercent(stats?.genderPayGapPercent),
+      valueClassName: "text-slate-950",
+    },
+  ];
+
+  return (
+    <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-slate-200 pt-4">
+      {metrics.map((metric) => (
+        <div key={metric.label} className="min-w-0">
+          <dt className="truncate text-[0.7rem] font-medium leading-5 text-slate-500">
+            {metric.label}
+          </dt>
+          <dd className={`text-base font-semibold leading-6 ${metric.valueClassName}`}>
+            {metric.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 
@@ -157,8 +211,50 @@ function normalizeText(value: string) {
 
 function formatSalary(value?: number) {
   if (value === undefined) {
-    return ":";
+    return "Mangler data";
   }
 
   return `${currencyFormatter.format(value)} kr`;
+}
+
+function formatSignedPercent(value?: number) {
+  if (value === undefined) {
+    return "–";
+  }
+
+  const prefix = value > 0 ? "+" : "";
+  return `${prefix}${formatPercentValue(value)} %`;
+}
+
+function formatPercent(value?: number) {
+  if (value === undefined) {
+    return "–";
+  }
+
+  return `${formatPercentValue(value)} %`;
+}
+
+function formatPercentValue(value: number) {
+  return value.toLocaleString("nb-NO", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+}
+
+function formatAge(value?: number) {
+  if (value === undefined) {
+    return "–";
+  }
+
+  return `${value.toLocaleString("nb-NO", {
+    maximumFractionDigits: 0,
+  })} år`;
+}
+
+function getGrowthValueClassName(value?: number) {
+  if (value === undefined || value === 0) {
+    return "text-slate-950";
+  }
+
+  return value > 0 ? "text-emerald-700" : "text-red-700";
 }

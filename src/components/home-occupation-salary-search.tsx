@@ -7,17 +7,20 @@ import { HomeExploreOccupationsSection } from "@/components/home-explore-occupat
 import { HomeHeroSearch } from "@/components/home-hero-search";
 import { HomeOccupationCards } from "@/components/home-occupation-cards";
 import type { OccupationSalaryRow } from "@/components/occupation-salary-overview";
+import type { OccupationCardStats } from "@/lib/occupation-card-stats";
 import type { OccupationPurchasingPowerTimeSeries, OccupationSalaryTimeSeries } from "@/lib/types";
 
 type HomeOccupationSalarySearchProps = {
   allOccupationsPurchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
   allOccupationsSalarySeries: OccupationSalaryTimeSeries;
+  occupationCardStatsByCode: Record<string, OccupationCardStats>;
   rows: OccupationSalaryRow[];
 };
 
 export function HomeOccupationSalarySearch({
   allOccupationsPurchasingPowerSeries,
   allOccupationsSalarySeries,
+  occupationCardStatsByCode,
   rows,
 }: HomeOccupationSalarySearchProps) {
   const [query, setQuery] = useState("");
@@ -51,7 +54,12 @@ export function HomeOccupationSalarySearch({
         </div>
 
         <HomeHeroSearch query={query} onQueryChange={setQuery} />
-        <HomeOccupationCards query={query} rows={filteredRows} sourceRows={rows} />
+        <HomeOccupationCards
+          occupationCardStatsByCode={occupationCardStatsByCode}
+          query={query}
+          rows={filteredRows}
+          sourceRows={rows}
+        />
       </section>
 
       <AllOccupationsSalaryChart

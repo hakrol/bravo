@@ -3,6 +3,7 @@ import {
   OccupationDirectory,
   type OccupationDirectoryItem,
 } from "@/components/occupation-directory";
+import { getOccupationCardStatsByCode } from "@/lib/occupation-card-stats";
 import { getOccupationGroupByCode } from "@/lib/occupation-groups";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
@@ -35,9 +36,10 @@ export const metadata: Metadata = {
 };
 
 export default async function YrkerPage() {
-  const [dataset, occupationIndex] = await Promise.all([
+  const [dataset, occupationIndex, occupationCardStatsByCode] = await Promise.all([
     getLatestOccupationMedianMonthlySalaryDataset(),
     getOccupationDetailViewModelIndex(),
+    getOccupationCardStatsByCode(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(dataset);
   const occupationLabelsByCode = getOccupationLabelsByCode(dataset);
@@ -65,6 +67,7 @@ export default async function YrkerPage() {
       familyCode: row.occupationCode.slice(0, 3),
       familyLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
       monthlySalary: row.medianAll,
+      cardStats: occupationCardStatsByCode.get(row.occupationCode),
       href: slug ? `/yrke/${slug}` : undefined,
       searchText: [
         row.occupationLabel,

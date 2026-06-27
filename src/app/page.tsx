@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
 import { HomeOccupationSalarySearch } from "@/components/home-occupation-salary-search";
+import {
+  getOccupationCardStatsByCode,
+  type OccupationCardStats,
+} from "@/lib/occupation-card-stats";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { getAllBlogPosts } from "@/lib/blog";
 import {
@@ -39,14 +43,19 @@ export default async function HomePage() {
     { latestDataset, previousDataset },
     allOccupationsSalarySeries,
     allOccupationsPurchasingPowerSeries,
+    occupationCardStatsByCode,
     blogPosts,
   ] = await Promise.all([
     getLatestAndPreviousYearOccupationMedianMonthlySalaryDatasets(),
     getOccupationSalaryTimeSeries("0-9"),
     getOccupationPurchasingPowerTimeSeries("0-9"),
+    getOccupationCardStatsByCode(),
     getAllBlogPosts(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(latestDataset, previousDataset);
+  const occupationCardStatsRecord = Object.fromEntries(
+    Array.from(occupationCardStatsByCode.entries()),
+  ) as Record<string, OccupationCardStats>;
   const latestBlogPosts = blogPosts.slice(0, 3);
 
   return (
@@ -55,6 +64,7 @@ export default async function HomePage() {
         <HomeOccupationSalarySearch
           allOccupationsPurchasingPowerSeries={allOccupationsPurchasingPowerSeries}
           allOccupationsSalarySeries={allOccupationsSalarySeries}
+          occupationCardStatsByCode={occupationCardStatsRecord}
           rows={overview.rows}
         />
         <HomeLatestBlogSection posts={latestBlogPosts} />
