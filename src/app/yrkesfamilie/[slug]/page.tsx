@@ -6,6 +6,7 @@ import {
 } from "@/components/occupation-directory";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
+import { getOccupationCardStatsByCode } from "@/lib/occupation-card-stats";
 import {
   getOccupationFamilyBySlug,
   listOccupationFamilies,
@@ -65,9 +66,10 @@ export default async function OccupationFamilyPage({
   params,
 }: OccupationFamilyPageProps) {
   const { slug } = await params;
-  const [dataset, occupationIndex] = await Promise.all([
+  const [dataset, occupationIndex, occupationCardStatsByCode] = await Promise.all([
     getLatestOccupationMedianMonthlySalaryDataset(),
     getOccupationDetailViewModelIndex(),
+    getOccupationCardStatsByCode(),
   ]);
   const family = getOccupationFamilyBySlug(dataset, slug);
 
@@ -100,6 +102,7 @@ export default async function OccupationFamilyPage({
         familyCode: family.code,
         familyLabel: family.label,
         monthlySalary: row.medianAll,
+        cardStats: occupationCardStatsByCode.get(row.occupationCode),
         href: occupationSlug ? `/yrke/${occupationSlug}` : undefined,
       };
     });

@@ -8,6 +8,7 @@ import {
   formatOccupationDisplayLabel,
 } from "@/lib/occupation-detail-pages";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
+import { getOccupationCardStatsByCode } from "@/lib/occupation-card-stats";
 import { getOccupationGroupBySlug, listOccupationGroups } from "@/lib/occupation-groups";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
@@ -66,9 +67,10 @@ export default async function OccupationGroupPage({
     notFound();
   }
 
-  const [latestDataset, occupationIndex] = await Promise.all([
+  const [latestDataset, occupationIndex, occupationCardStatsByCode] = await Promise.all([
     getLatestOccupationMedianMonthlySalaryDataset(),
     getOccupationDetailViewModelIndex(),
+    getOccupationCardStatsByCode(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(latestDataset, undefined, {
     occupationCodes: listOccupationCodesForGroup(group.code),
@@ -95,6 +97,7 @@ export default async function OccupationGroupPage({
         familyCode: row.occupationCode.slice(0, 3),
         familyLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
         monthlySalary: row.medianAll,
+        cardStats: occupationCardStatsByCode.get(row.occupationCode),
         href: occupationSlug ? `/yrke/${occupationSlug}` : undefined,
         searchText: [
           title,

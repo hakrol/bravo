@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type KeyboardEvent, useState } from "react";
 import type { OccupationPurchasingPowerTimeSeries, OccupationSalaryTimeSeries } from "@/lib/types";
 
 type AllOccupationsSalaryChartProps = {
@@ -19,6 +19,8 @@ export function AllOccupationsSalaryChart({
   series,
 }: AllOccupationsSalaryChartProps) {
   const [chartMode, setChartMode] = useState<ChartMode>("nominal");
+  const [hoveredPeriodCode, setHoveredPeriodCode] = useState<string | null>(null);
+  const [selectedPeriodCode, setSelectedPeriodCode] = useState<string | null>(null);
   const inflationIndexByPeriod = new Map(
     purchasingPowerSeries.points
       .filter((point) => point.inflationIndex !== undefined)
@@ -70,19 +72,32 @@ export function AllOccupationsSalaryChart({
   const chartPadding = { top: 56, right: 190, bottom: 86, left: 76 };
   const innerWidth = chartWidth - chartPadding.left - chartPadding.right;
   const innerHeight = chartHeight - chartPadding.top - chartPadding.bottom;
-  const polylinePoints = chartPoints
-    .map((point, index) => {
-      const x =
-        chartPadding.left + (chartPoints.length <= 1 ? 0 : (index / (chartPoints.length - 1)) * innerWidth);
-      const y =
-        chartPadding.top +
-        innerHeight -
-        ((point.chartValue - yMin) / yRange) * innerHeight;
+  const chartPointViews = chartPoints.map((point, index) => {
+    const x =
+      chartPadding.left +
+      (chartPoints.length <= 1 ? 0 : (index / (chartPoints.length - 1)) * innerWidth);
+    const y =
+      chartPadding.top + innerHeight - ((point.chartValue - yMin) / yRange) * innerHeight;
 
-      return `${x},${y}`;
-    })
-    .join(" ");
+    return { ...point, x, y };
+  });
+  const polylinePoints = chartPointViews.map((point) => `${point.x},${point.y}`).join(" ");
   const latestSalary = latestPoint?.chartValue;
+  const activePeriodCode = hoveredPeriodCode ?? selectedPeriodCode;
+  const activePoint = chartPointViews.find((point) => point.periodCode === activePeriodCode);
+  const activePeriodLabel = activePoint ? formatPeriodLabel(activePoint.periodLabel) : "";
+  const activeTooltipX =
+    activePoint && activePoint.x > chartWidth - chartPadding.right - 220
+      ? activePoint.x - 204
+      : activePoint
+        ? activePoint.x + 18
+        : 0;
+  const activeTooltipY =
+    activePoint && activePoint.y < chartPadding.top + 72
+      ? activePoint.y + 18
+      : activePoint
+        ? activePoint.y - 78
+        : 0;
   const yAxisTicks = buildSalaryTicks(yMin, yMax).map((value) => {
     const y = chartPadding.top + innerHeight - ((value - yMin) / yRange) * innerHeight;
 
@@ -114,15 +129,6 @@ export function AllOccupationsSalaryChart({
                 onClick={() => setChartMode("adjusted")}
               />
             </div>
-
-            {chartMode === "adjusted" ? (
-              <p className="mt-4 max-w-2xl rounded-md border border-[rgba(20,83,45,0.14)] bg-white/55 px-4 py-3 text-sm leading-6 text-[var(--muted)]">
-                Inflasjonsjustert lønn viser hva tidligere lønnsnivå tilsvarer i dagens
-                kroneverdi. Når linjen stiger, har lønnen økt mer enn prisveksten. Når
-                linjen faller, har kjøpekraften blitt svakere selv om lønnen i kroner kan
-                ha gått opp.
-              </p>
-            ) : null}
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -192,21 +198,73 @@ export function AllOccupationsSalaryChart({
               strokeWidth="4"
             />
 
-            {chartPoints.map((point, index) => {
-              const x =
-                chartPadding.left +
-                (chartPoints.length <= 1 ? 0 : (index / (chartPoints.length - 1)) * innerWidth);
-              const y =
-                chartPadding.top +
-                innerHeight -
-                ((point.chartValue - yMin) / yRange) * innerHeight;
-
+            {chartPointViews.map((point) => {
               return (
-                <g key={point.periodCode}>
-                  <circle cx={x} cy={y} fill="#eef6ef" r="4.5" stroke="var(--primary-strong)" strokeWidth="2.5" />
+                <g
+                  key={point.periodCode}
+                  aria-label={`${formatPeriodLabel(point.periodLabel)}: ${formatSalary(point.chartValue)}`}
+                  className="cursor-pointer outline-none"
+                  onBlur={() => setHoveredPeriodCode(null)}
+                  onClick={() => setSelectedPeriodCode(point.periodCode)}
+                  onFocus={() => setHoveredPeriodCode(point.periodCode)}
+                  onKeyDown={(event) => handlePointKeyDown(event, point.periodCode, setSelectedPeriodCode)}
+                  onMouseEnter={() => setHoveredPeriodCode(point.periodCode)}
+                  onMouseLeave={() => setHoveredPeriodCode(null)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <circle cx={point.x} cy={point.y} fill="transparent" r="15" />
+                  <circle
+                    cx={point.x}
+                    cy={point.y}
+                    fill="#eef6ef"
+                    r={activePeriodCode === point.periodCode ? "6" : "4.5"}
+                    stroke="var(--primary-strong)"
+                    strokeWidth={activePeriodCode === point.periodCode ? "3" : "2.5"}
+                  />
                 </g>
               );
             })}
+
+            {activePoint ? (
+              <g pointerEvents="none">
+                <line
+                  stroke="rgba(20,83,45,0.28)"
+                  strokeDasharray="4 5"
+                  x1={activePoint.x}
+                  x2={activePoint.x}
+                  y1={activePoint.y}
+                  y2={chartPadding.top + innerHeight}
+                />
+                <rect
+                  fill="#ffffff"
+                  height="64"
+                  rx="6"
+                  stroke="rgba(20,83,45,0.16)"
+                  width="186"
+                  x={activeTooltipX}
+                  y={activeTooltipY}
+                />
+                <text
+                  fill="var(--muted)"
+                  fontSize="12"
+                  fontWeight="700"
+                  x={activeTooltipX + 12}
+                  y={activeTooltipY + 22}
+                >
+                  {activePeriodLabel}
+                </text>
+                <text
+                  fill="var(--primary-strong)"
+                  fontSize="16"
+                  fontWeight="800"
+                  x={activeTooltipX + 12}
+                  y={activeTooltipY + 46}
+                >
+                  {formatSalary(activePoint.chartValue)}
+                </text>
+              </g>
+            ) : null}
 
             {latestPoint ? (
               <g>
@@ -243,9 +301,30 @@ export function AllOccupationsSalaryChart({
             ) : null}
           </svg>
         </div>
+        {chartMode === "adjusted" ? (
+          <p className="mt-4 max-w-2xl rounded-md border border-[rgba(20,83,45,0.14)] bg-white/55 px-4 py-3 text-sm leading-6 text-[var(--muted)]">
+            Inflasjonsjustert lønn viser hva tidligere lønnsnivå tilsvarer i dagens
+            kroneverdi. Når linjen stiger, har lønnen økt mer enn prisveksten. Når
+            linjen faller, har kjøpekraften blitt svakere selv om lønnen i kroner kan
+            ha gått opp.
+          </p>
+        ) : null}
       </div>
     </section>
   );
+}
+
+function handlePointKeyDown(
+  event: KeyboardEvent<SVGGElement>,
+  periodCode: string,
+  setSelectedPeriodCode: (periodCode: string) => void,
+) {
+  if (event.key !== "Enter" && event.key !== " ") {
+    return;
+  }
+
+  event.preventDefault();
+  setSelectedPeriodCode(periodCode);
 }
 
 function ChartModeButton({
@@ -283,6 +362,18 @@ function formatSalary(value?: number) {
 
 function formatAxisSalary(value: number) {
   return `${value.toLocaleString("nb-NO")} kr`;
+}
+
+function formatPeriodLabel(label: string) {
+  const quarterMatch = label.match(/^(\d{4})K([1-4])$/i);
+
+  if (!quarterMatch) {
+    return label;
+  }
+
+  const [, year, quarter] = quarterMatch;
+
+  return `${quarter}. kvartal ${year}`;
 }
 
 function buildSalaryTicks(min: number, max: number) {
