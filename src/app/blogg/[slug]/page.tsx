@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
-import { getBlogPostBySlug, getBlogPostSlugs, getBlogPostUrl } from "@/lib/blog";
+import { HomeExploreOccupationsSection } from "@/components/home-explore-occupations-section";
+import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
+import { getAllBlogPosts, getBlogPostBySlug, getBlogPostSlugs, getBlogPostUrl } from "@/lib/blog";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type BlogPostPageProps = {
@@ -66,11 +68,13 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = await getBlogPostBySlug(slug);
+  const [post, blogPosts] = await Promise.all([getBlogPostBySlug(slug), getAllBlogPosts()]);
 
   if (!post) {
     notFound();
   }
+
+  const latestBlogPosts = blogPosts.slice(0, 3);
 
   return (
     <div className="blog-post-page min-h-screen">
@@ -85,6 +89,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <BlogProse>{post.content}</BlogProse>
           </div>
         </article>
+
+        <HomeExploreOccupationsSection />
+        <HomeLatestBlogSection posts={latestBlogPosts} />
       </div>
     </div>
   );
