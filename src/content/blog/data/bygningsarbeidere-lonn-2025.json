@@ -1,0 +1,130 @@
+{
+  "id": "bygningsarbeidere-lonn-2025",
+  "title": "Årslønnen til bygningsarbeidere i 2025",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Beregnet årslønn",
+  "note": "Årslønn er beregnet som median månedslønn ganger 12. Lønnstallene gjelder alle sektorer, begge kjønn og heltid og deltid samlet i 2025. Gips- og sparklingsarbeidere mangler publisert lønnstall.",
+  "rows": [
+    {
+      "code": "7127",
+      "label": "Kuldemontører mv.",
+      "href": "/yrke/kuldemontorer-mv-lonn",
+      "value": 681960
+    },
+    {
+      "code": "7126",
+      "label": "Rørleggere og VVS-montører",
+      "href": "/yrke/rorleggere-og-vvs-montorer-lonn",
+      "value": 645000
+    },
+    {
+      "code": "7114",
+      "label": "Betongarbeidere",
+      "href": "/yrke/betongarbeidere-lonn",
+      "value": 641040
+    },
+    {
+      "code": "7113",
+      "label": "Steinhoggere mv.",
+      "href": "/yrke/steinhoggere-mv-lonn",
+      "value": 600000
+    },
+    {
+      "code": "7121",
+      "label": "Taktekkere",
+      "href": "/yrke/taktekkere-lonn",
+      "value": 594720
+    },
+    {
+      "code": "7112",
+      "label": "Murere",
+      "href": "/yrke/murere-lonn",
+      "value": 584520
+    },
+    {
+      "code": "7122",
+      "label": "Gulv- og flisleggere",
+      "href": "/yrke/gulv-og-flisleggere-lonn",
+      "value": 584520
+    },
+    {
+      "code": "7115",
+      "label": "Tømrere og snekkere",
+      "href": "/yrke/tomrere-og-snekkere-lonn",
+      "value": 574800
+    },
+    {
+      "code": "7124",
+      "label": "Isolatører mv.",
+      "href": "/yrke/isolatorer-mv-lonn",
+      "value": 572880
+    },
+    {
+      "code": "7125",
+      "label": "Glassarbeidere",
+      "href": "/yrke/glassarbeidere-lonn",
+      "value": 565440
+    },
+    {
+      "code": "7119",
+      "label": "Andre bygningsarbeidere",
+      "href": "/yrke/andre-bygningsarbeidere-lonn",
+      "value": 557640
+    },
+    {
+      "code": "7123",
+      "label": "Gips- og sparklingsarbeidere",
+      "href": "/yrke/gips-og-sparklingsarbeidere-lonn",
+      "value": null
+    }
+  ],
+  "families": [
+    {
+      "code": "711",
+      "label": "Bygningsarbeidere",
+      "medianMonthlySalary": 48670,
+      "medianAnnualSalary": 584040,
+      "averageMonthlySalary": 47200,
+      "averageAnnualSalary": 566400,
+      "employees": 66702,
+      "jobs": 67609,
+      "averageAge": 40.3,
+      "salaryDevelopment": [
+        { "label": "2021", "value": 39780 },
+        { "label": "2022", "value": 41500 },
+        { "label": "2023", "value": 43840 },
+        { "label": "2024", "value": 46310 },
+        { "label": "2025", "value": 48670 }
+      ]
+    },
+    {
+      "code": "712",
+      "label": "Bygningstekniske arbeidere",
+      "medianMonthlySalary": 52260,
+      "medianAnnualSalary": 627120,
+      "averageMonthlySalary": 49750,
+      "averageAnnualSalary": 597000,
+      "employees": 29283,
+      "jobs": 29628,
+      "averageAge": 40,
+      "salaryDevelopment": [
+        { "label": "2021", "value": 43000 },
+        { "label": "2022", "value": 45030 },
+        { "label": "2023", "value": 47500 },
+        { "label": "2024", "value": 50110 },
+        { "label": "2025", "value": 52260 }
+      ]
+    }
+  ],
+  "metadata": {
+    "salaryTableId": "11418",
+    "workforceTableId": "11658",
+    "salaryPeriod": "2025",
+    "workforcePeriod": "1. kvartal 2026",
+    "salaryMeasure": "Median månedslønn",
+    "averageSalaryMeasure": "Gjennomsnittlig avtalt månedslønn",
+    "workforceMeasure": "Antall lønnstakere og arbeidsforhold",
+    "generatedFromLocalSsbDataAt": "2026-06-21"
+  }
+}

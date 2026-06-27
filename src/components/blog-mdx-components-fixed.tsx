@@ -3,6 +3,10 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  BuildingWorkerFamiliesSalaryChart,
+  BuildingWorkerFamiliesSalaryDevelopmentChart,
+} from "@/components/blog-building-workers-salary-chart";
+import {
   BussjaforerTrikkeforereGenderSalaryCards,
   BussjaforerTrikkeforereSalaryBubbleChart,
   BussjaforerTrikkeforereSalaryDevelopmentChart,
@@ -201,6 +205,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       </td>
     ),
     BlogChart,
+    BuildingWorkerFamiliesSalaryChart,
+    BuildingWorkerFamiliesSalaryDevelopmentChart,
     BlogElectricianSalaryChart,
     BussjaforerTrikkeforereGenderSalaryCards,
     BussjaforerTrikkeforereSalaryBubbleChart,

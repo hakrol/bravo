@@ -7,6 +7,7 @@ import bestBetalteYrker2025Snapshot from "@/content/blog/data/best-betalte-yrker
 import brannmannLonn2025Snapshot from "@/content/blog/data/brannmann-lonn-2025.json";
 import bussjaforerTrikkeforereLonn2025Snapshot from "@/content/blog/data/bussjaforer-trikkeforere-lonn-2025.json";
 import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025.json";
+import bygningsarbeidereLonn2025Snapshot from "@/content/blog/data/bygningsarbeidere-lonn-2025.json";
 import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025.json";
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 import intensivsykepleierLonn2025Snapshot from "@/content/blog/data/intensivsykepleier-lonn-2025.json";
@@ -56,6 +57,7 @@ const snapshots = {
   "brannmann-lonn-2025": brannmannLonn2025Snapshot as OccupationSalarySnapshot,
   "bussjaforer-trikkeforere-lonn-2025": bussjaforerTrikkeforereLonn2025Snapshot as OccupationSalarySnapshot,
   "butikksjef-lonn-2025": butikksjefLonn2025Snapshot as OccupationSalarySnapshot,
+  "bygningsarbeidere-lonn-2025": bygningsarbeidereLonn2025Snapshot as OccupationSalarySnapshot,
   "elektriker-lonn-2025": elektrikerLonn2025Snapshot as OccupationSalarySnapshot,
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
   "intensivsykepleier-lonn-2025": intensivsykepleierLonn2025Snapshot as OccupationSalarySnapshot,

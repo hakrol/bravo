@@ -60,7 +60,7 @@ export function EditorialDivergingBarChart({
   const axisMax = Math.max(...ticks);
   const xForValue = (value: number) => plot.left + ((value - axisMin) / (axisMax - axisMin)) * plotWidth;
   const zeroX = xForValue(0);
-  const chartHeight = Math.max(560, plot.top + data.length * rowStep + 104);
+  const chartHeight = plot.top + Math.max(data.length, 1) * rowStep + plot.bottom + 16;
   const plotHeight = chartHeight - plot.top - plot.bottom;
   const ariaTitle = `${title}. ${subtitleLabel}: ${subtitleText}`;
   const axisLabel = format === "currency" ? `${subtitleLabel} (kroner)` : subtitleLabel;
