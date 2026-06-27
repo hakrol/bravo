@@ -23,6 +23,10 @@ type OccupationDirectoryProps = {
   items: OccupationDirectoryItem[];
   valueLabel?: string;
   filterLabel?: string;
+  searchLabel?: string;
+  searchPlaceholder?: string;
+  resultNoun?: string;
+  resultsAriaLabel?: string;
   salaryFilters?: SalaryFilterOption[];
   colorByOccupationGroup?: boolean;
   filterByOccupationHierarchy?: boolean;
@@ -49,6 +53,10 @@ export function OccupationDirectory({
   items,
   valueLabel = "Samlet månedslønn",
   filterLabel = "Filtrer på lønn",
+  searchLabel = "Søk etter yrke",
+  searchPlaceholder = "Skriv f.eks. flyger",
+  resultNoun = "yrker",
+  resultsAriaLabel,
   salaryFilters = defaultSalaryFilters,
   colorByOccupationGroup = false,
   filterByOccupationHierarchy = false,
@@ -94,18 +102,20 @@ export function OccupationDirectory({
 
     return matchesQuery && matchesSelectedFilter;
   });
+  const resultListLabel =
+    resultsAriaLabel ?? `Alle ${resultNoun} med ${valueLabel.toLocaleLowerCase("nb-NO")}`;
 
   return (
     <section className="grid gap-5">
       {showSearch ? (
         <div className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
           <label className="grid min-w-0 gap-2" htmlFor="occupation-search">
-            <span className="text-sm font-semibold text-slate-950">Søk etter yrke</span>
+            <span className="text-sm font-semibold text-slate-950">{searchLabel}</span>
             <input
               id="occupation-search"
               className="h-11 min-w-0 w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Skriv f.eks. flyger"
+              placeholder={searchPlaceholder}
               type="search"
               value={query}
             />
@@ -215,12 +225,13 @@ export function OccupationDirectory({
       )}
 
       <p className="text-sm leading-6 text-slate-500">
-        Viser {filteredItems.length.toLocaleString("nb-NO")} av {items.length.toLocaleString("nb-NO")} yrker.
+        Viser {filteredItems.length.toLocaleString("nb-NO")} av{" "}
+        {items.length.toLocaleString("nb-NO")} {resultNoun}.
       </p>
 
       {filteredItems.length > 0 ? (
         <div
-          aria-label="Alle yrker med median samlet månedslønn"
+          aria-label={resultListLabel}
           className="grid auto-rows-fr gap-4 md:grid-cols-2 lg:grid-cols-3"
         >
           {filteredItems.map((item) => {
@@ -273,11 +284,14 @@ export function OccupationDirectory({
       ) : (
         <div className="rounded-[5px] bg-white px-5 py-8 text-center shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
           <p className="text-base font-semibold text-slate-950">
-            Ingen yrker matcher {showSearch ? "søket" : "filteret"}.
+            Ingen {resultNoun} matcher {showSearch ? "søket" : "filteret"}.
           </p>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            {showSearch ? "Prøv et annet søkeord eller velg en annen " : "Velg en annen "}
-            {filterByOccupationHierarchy || filterByOccupationFamily ? "yrkesinndeling" : "lønnsnivå"}.
+            {showSearch ? "Prøv et annet søkeord eller velg " : "Velg "}
+            {filterByOccupationHierarchy || filterByOccupationFamily
+              ? "en annen yrkesinndeling"
+              : "et annet lønnsnivå"}
+            .
           </p>
         </div>
       )}

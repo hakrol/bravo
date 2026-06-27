@@ -4,6 +4,7 @@ import {
 } from "@/components/blog-salary-development-chart";
 import { EditorialDivergingBarChart } from "@/components/editorial-diverging-bar-chart";
 import buildingWorkersSnapshot from "@/content/blog/data/bygningsarbeidere-lonn-2025.json";
+import { slugifyOccupationFamily } from "@/lib/occupation-families";
 
 type BuildingWorkerFamily = {
   label: string;
@@ -27,6 +28,7 @@ export function BuildingWorkerFamiliesSalaryChart() {
         label: family.label,
         value: family.medianAnnualSalary,
         highlight: family.label === "Bygningstekniske arbeidere",
+        href: `/yrkesfamilie/${slugifyOccupationFamily(family.label)}`,
       }))}
       format="currency"
       kicker="Årslønn i byggfag"
