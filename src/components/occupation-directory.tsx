@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
+import {
+  OccupationCardStatsRow,
+  type OccupationCardStatKey,
+} from "@/components/occupation-card-stats-row";
 import { getOccupationGroupGradient } from "@/lib/occupation-group-colors";
 
 export type OccupationDirectoryItem = {
@@ -25,7 +29,7 @@ export type OccupationDirectoryItem = {
   searchText?: string;
 };
 
-type CardStatMetric = "salaryGrowth" | "employeeGrowth" | "averageAge" | "genderPayGap";
+type CardStatMetric = OccupationCardStatKey;
 
 type OccupationDirectoryProps = {
   items: OccupationDirectoryItem[];
@@ -266,7 +270,11 @@ export function OccupationDirectory({
                     {formatCurrency(getSalaryValue(item))}
                   </p>
                 </div>
-                <OccupationCardStatsGrid metrics={cardStatMetrics} stats={item.cardStats} />
+                <OccupationCardStatsRow
+                  gridClassName="grid-cols-2"
+                  metrics={cardStatMetrics}
+                  stats={item.cardStats}
+                />
               </>
             );
 
@@ -309,58 +317,6 @@ export function OccupationDirectory({
         </div>
       )}
     </section>
-  );
-}
-
-function OccupationCardStatsGrid({
-  metrics: visibleMetrics,
-  stats,
-}: {
-  metrics: CardStatMetric[];
-  stats?: OccupationDirectoryItem["cardStats"];
-}) {
-  const metrics = [
-    {
-      label: "Lønnsvekst",
-      value: formatSignedPercent(stats?.salaryGrowthPercent),
-      valueClassName: getGrowthValueClassName(stats?.salaryGrowthPercent),
-    },
-    {
-      label: "Arbeidstakervekst",
-      value: formatSignedPercent(stats?.employeeGrowthPercent),
-      valueClassName: getGrowthValueClassName(stats?.employeeGrowthPercent),
-    },
-    {
-      label: "Snittalder",
-      value: formatAge(stats?.averageAge),
-      valueClassName: "text-slate-950",
-    },
-    {
-      label: "Lønnsforskjell",
-      value: formatPercent(stats?.genderPayGapPercent),
-      valueClassName: "text-slate-950",
-    },
-  ];
-  const visibleMetricIndexes = new Set(
-    visibleMetrics.map((metric) =>
-      ["salaryGrowth", "employeeGrowth", "averageAge", "genderPayGap"].indexOf(metric),
-    ),
-  );
-  const selectedMetrics = metrics.filter((_, index) => visibleMetricIndexes.has(index));
-
-  return (
-    <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-slate-200 pt-4 xl:grid-cols-4">
-      {selectedMetrics.map((metric) => (
-        <div key={metric.label} className="min-w-0">
-          <dt className="truncate text-[0.7rem] font-medium leading-5 text-slate-500">
-            {metric.label}
-          </dt>
-          <dd className={`text-base font-semibold leading-6 ${metric.valueClassName}`}>
-            {metric.value}
-          </dd>
-        </div>
-      ))}
-    </dl>
   );
 }
 
@@ -427,47 +383,6 @@ function formatCurrency(value?: number) {
   })} kr`;
 }
 
-function formatSignedPercent(value?: number) {
-  if (value === undefined) {
-    return "–";
-  }
-
-  const prefix = value > 0 ? "+" : "";
-  return `${prefix}${formatPercentValue(value)} %`;
-}
-
-function formatPercent(value?: number) {
-  if (value === undefined) {
-    return "–";
-  }
-
-  return `${formatPercentValue(value)} %`;
-}
-
-function formatPercentValue(value: number) {
-  return value.toLocaleString("nb-NO", {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  });
-}
-
-function formatAge(value?: number) {
-  if (value === undefined) {
-    return "–";
-  }
-
-  return `${value.toLocaleString("nb-NO", {
-    maximumFractionDigits: 0,
-  })} år`;
-}
-
-function getGrowthValueClassName(value?: number) {
-  if (value === undefined || value === 0) {
-    return "text-slate-950";
-  }
-
-  return value > 0 ? "text-emerald-700" : "text-red-700";
-}
 
 function normalizeText(value: string) {
   return value

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { OccupationStatGrid } from "@/components/occupation-card-stats-row";
 import { getOccupationGroupGradient } from "@/lib/occupation-group-colors";
 
 type OccupationLinkGridItem = {
@@ -143,12 +144,19 @@ export function OccupationLinkGrid({
                     <p className="text-sm leading-6 text-slate-600">{item.description}</p>
                   ) : null}
                   {item.salaryValue !== undefined ? (
-                    <p className="mt-auto pt-3 text-sm font-medium text-slate-600">
-                      Median månedslønn:{" "}
-                      <span className="font-semibold text-[var(--primary-strong)]">
-                        {formatCurrency(item.salaryValue)}
-                      </span>
-                    </p>
+                    <OccupationStatGrid
+                      className="mt-auto pt-3"
+                      gridClassName="grid-cols-1"
+                      metrics={[
+                        {
+                          icon: "salary",
+                          label: "Median månedslønn",
+                          value: formatCurrency(item.salaryValue),
+                          valueClassName: "text-[var(--primary-strong)]",
+                        },
+                      ]}
+                      withTopBorder={false}
+                    />
                   ) : null}
                 </div>
               </Link>

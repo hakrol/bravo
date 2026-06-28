@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OccupationCardStatsRow } from "@/components/occupation-card-stats-row";
 import { OccupationAgeTimeSeriesChart } from "@/components/occupation-age-time-series";
 import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
@@ -159,6 +160,13 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     menEmployees: laborMarket?.genderBreakdown?.men,
     employmentPeriodLabel: laborMarket?.genderBreakdown?.periodLabel,
   });
+  const topSummaryStats = buildTopSummaryStats({
+    salaryGrowthPercent: medianGrowthMetrics?.salaryGrowth,
+    employeeGrowthPercent: laborMarket?.growth?.yearOverYearChange,
+    averageAge: laborMarket?.age?.averageAll,
+    womenMedian: distribution?.women?.median,
+    menMedian: distribution?.men?.median,
+  });
   const distributionSummary = buildDistributionSummary({
     totalP25: distribution?.total?.p25,
     totalP75: distribution?.total?.p75,
@@ -264,6 +272,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 <p className="mt-3 max-w-4xl text-base leading-7 text-slate-950 sm:text-lg sm:leading-8">
                   {topSummary}
                 </p>
+                <OccupationCardStatsRow
+                  className="mt-4"
+                  gridClassName="grid-cols-2 sm:grid-cols-4"
+                  stats={topSummaryStats}
+                />
               </section>
             ) : null}
 
@@ -850,6 +863,27 @@ function buildSalaryCompositionCards({
   return cards;
 }
 
+function buildTopSummaryStats({
+  salaryGrowthPercent,
+  employeeGrowthPercent,
+  averageAge,
+  womenMedian,
+  menMedian,
+}: {
+  salaryGrowthPercent?: number;
+  employeeGrowthPercent?: number;
+  averageAge?: number;
+  womenMedian?: number;
+  menMedian?: number;
+}) {
+  return {
+    salaryGrowthPercent,
+    employeeGrowthPercent,
+    averageAge,
+    genderPayGapPercent: calculateGenderPayGapPercent(womenMedian, menMedian),
+  };
+}
+
 function buildApprenticeshipSidebarLabel(occupationLabel: string) {
   return `Se lærlinglønn for ${occupationLabel.toLowerCase()}`;
 }
@@ -1045,6 +1079,14 @@ function formatPercent(value?: number) {
     maximumFractionDigits: 1,
     minimumFractionDigits: 1,
   })} %`;
+}
+
+function calculateGenderPayGapPercent(women?: number, men?: number) {
+  if (women === undefined || men === undefined || men === 0) {
+    return undefined;
+  }
+
+  return (Math.abs(men - women) / men) * 100;
 }
 
 function formatNumber(value?: number) {
