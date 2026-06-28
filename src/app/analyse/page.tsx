@@ -28,6 +28,11 @@ export const metadata: Metadata = {
 
 const analysisLinks = [
   {
+    href: "/lønnsforskjell-mellom-kvinner-og-menn",
+    title: "Lønnsforskjell mellom kvinner og menn i Norge",
+    description: "Se lønnsforskjell menn og kvinner i norske yrker.",
+  },
+  {
     href: "/kvinner-vs-menn",
     title: "Kvinner vs menn",
     description: "Sammenlign lønnsforskjeller mellom kvinner og menn på tvers av yrker.",
@@ -56,7 +61,7 @@ export default function AnalysePage() {
           </p>
         </section>
 
-        <section className="fade-up-delay grid gap-4 sm:grid-cols-2">
+        <section className="fade-up-delay grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {analysisLinks.map((item) => (
             <Link
               key={item.href}
