@@ -94,6 +94,12 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/lønnsforskjell-mellom-kvinner-og-menn",
+    filePath: "src/app/lønnsforskjell-mellom-kvinner-og-menn/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/kvinner-vs-menn",
     filePath: "src/app/kvinner-vs-menn/page.tsx",
     priority: 0.6,

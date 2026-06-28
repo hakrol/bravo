@@ -1,10 +1,12 @@
 ﻿'use client'
 
 import { useState } from "react";
+import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 type MetricInfoButtonProps = {
   label: string;
-  description: string;
+  description: ReactNode;
   variant?: "default" | "muted";
 };
 
@@ -26,14 +28,14 @@ export function MetricInfoButton({ label, description, variant = "default" }: Me
         i
       </button>
 
-      {isOpen ? (
+      {isOpen ? createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4"
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/35 px-4 py-6 sm:py-10"
           onClick={() => setIsOpen(false)}
         >
           <div
             aria-modal="true"
-            className="w-full max-w-md rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
+            className="w-full max-w-2xl rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
           >
@@ -56,10 +58,14 @@ export function MetricInfoButton({ label, description, variant = "default" }: Me
               </button>
             </div>
 
-            <p className="mt-5 text-sm leading-7 text-slate-700">{description}</p>
+            {typeof description === "string" ? (
+              <p className="mt-5 text-sm leading-7 text-slate-700">{description}</p>
+            ) : (
+              <div className="mt-5 text-sm leading-7 text-slate-700">{description}</div>
+            )}
           </div>
         </div>
-      ) : null}
+      , document.body) : null}
     </>
   );
 }

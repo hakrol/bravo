@@ -21,6 +21,7 @@ const footerGroups = [
       { href: "/yrkesgrupper", label: "Yrkesgrupper" },
       { href: "/yrkesfamilier", label: "Yrkesfamilier" },
       { href: "/laerling", label: "Lærlingfag" },
+      { href: "/lønnsforskjell-mellom-kvinner-og-menn", label: "Lønnsforskjell mellom kvinner og menn" },
     ],
   },
   {
