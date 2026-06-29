@@ -1,14 +1,32 @@
 "use client";
 
 import { useState } from "react";
+import { track } from "@vercel/analytics";
+
+type AnalyticsValue = string | number | boolean | null;
 
 type PageShareButtonProps = {
+  analytics?: {
+    data?: Record<string, AnalyticsValue>;
+    eventName: string;
+  };
   title: string;
   text?: string;
 };
 
-export function PageShareButton({ title, text }: PageShareButtonProps) {
+export function PageShareButton({ analytics, title, text }: PageShareButtonProps) {
   const [status, setStatus] = useState<string | null>(null);
+
+  function trackShare(method: "clipboard" | "native") {
+    if (!analytics) {
+      return;
+    }
+
+    track(analytics.eventName, {
+      ...analytics.data,
+      method,
+    });
+  }
 
   async function handleShare() {
     const url = window.location.href;
@@ -24,11 +42,13 @@ export function PageShareButton({ title, text }: PageShareButtonProps) {
     try {
       if (navigator.share) {
         await navigator.share(shareData);
+        trackShare("native");
         setStatus(null);
         return;
       }
 
       await navigator.clipboard.writeText(url);
+      trackShare("clipboard");
       setStatus("Lenken er kopiert");
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") {
