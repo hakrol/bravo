@@ -215,6 +215,15 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 tall fra Statistisk sentralbyrå.
               </p>
               <PageShareButton
+                analytics={{
+                  data: {
+                    occupation_code: detail.detailPage.occupationCode,
+                    occupation_label: occupationText.titleLabel,
+                    occupation_slug: detail.detailPage.slug,
+                    page_type: "occupation_detail",
+                  },
+                  eventName: "Occupation detail shared",
+                }}
                 text={`Se lønn, lønnsutvikling og arbeidsmarkedstall for ${occupationText.seoLabel}.`}
                 title={`Lønn for ${occupationText.titleLabel}`}
               />
