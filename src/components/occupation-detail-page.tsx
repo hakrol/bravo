@@ -8,6 +8,7 @@ import { MetricInfoButton } from "@/components/metric-info-button";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
 import { OccupationSectorSalaryTimeSeriesChart } from "@/components/occupation-sector-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
+import { OccupationSectionLinkNav } from "@/components/occupation-section-link-nav";
 import { PageShareButton } from "@/components/page-share-button";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
 import {
@@ -266,7 +267,14 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
       </section>
 
       <section className="px-4 pb-6 pt-2 sm:px-6 lg:px-8">
-        <SectionLinkNav items={sectionNavItems} />
+        <OccupationSectionLinkNav
+          analytics={{
+            occupationCode: detail.detailPage.occupationCode,
+            occupationLabel: occupationText.titleLabel,
+            occupationSlug: detail.detailPage.slug,
+          }}
+          items={sectionNavItems}
+        />
 
         <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
@@ -630,35 +638,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
         </div>
       </section>
     </main>
-  );
-}
-
-function SectionLinkNav({
-  items,
-}: {
-  items: Array<{ href: string; label: string }>;
-}) {
-  if (items.length === 0) {
-    return null;
-  }
-
-  return (
-    <nav
-      aria-label="Seksjoner på yrkessiden"
-      className="mx-auto mb-2 w-full max-w-7xl overflow-x-auto pb-1"
-    >
-      <div className="flex min-w-max gap-2">
-        {items.map((item) => (
-          <a
-            className="inline-flex h-8 items-center rounded-[5px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 shadow-sm transition hover:border-emerald-700/25 hover:text-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700"
-            href={item.href}
-            key={item.href}
-          >
-            {item.label}
-          </a>
-        ))}
-      </div>
-    </nav>
   );
 }
 
