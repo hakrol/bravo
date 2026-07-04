@@ -121,6 +121,7 @@ export function OccupationLinkGrid({
                     : "px-6 py-5 hover:-translate-y-0.5 hover:shadow-[0_22px_56px_rgba(15,23,42,0.08)]",
                 ].join(" ")}
                 href={item.href}
+                prefetch={false}
                 style={cardStyle}
               >
                 <div className={`flex h-full flex-col ${compact ? "gap-2" : "gap-3"}`}>

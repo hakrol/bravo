@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
+import { BlogLonnsjekkCallout } from "@/components/blog-lonnsjekk-callout";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import type { BlogTableOfContentsItem } from "@/lib/blog";
@@ -78,21 +79,14 @@ export function buildBlogMdxComponents(tableOfContents: BlogTableOfContentsItem[
       <div className="blog-example-body">{children}</div>
     </div>
   ),
-  ToolCallout: ({ title, description, href = "/lonnsjekk", cta = "Prøv Lønnsjekk", ...props }) => (
-    <div className="blog-tool-callout" {...props}>
-      <div className="blog-tool-callout-content">
-        <p className="blog-tool-callout-kicker">Verktøy</p>
-        <h3 className="blog-tool-callout-title">{title ?? "Sjekk lønnsnivået ditt med Lønnsjekk"}</h3>
-        <p className="blog-tool-callout-description">
-          {description ??
-            "Bruk Lønnsjekk for å sammenligne lønnen din med relevante tall og få et bedre utgangspunkt før du går inn i lønnssamtalen."}
-        </p>
-      </div>
-      <Link className="blog-tool-callout-link" href={typeof href === "string" ? href : "/lonnsjekk"}>
-        {typeof cta === "string" ? cta : "Prøv Lønnsjekk"}
-      </Link>
-    </div>
-  ),
+  ToolCallout: ({ title, description, href, cta, ...props }) => {
+    void title;
+    void description;
+    void href;
+    void cta;
+
+    return <BlogLonnsjekkCallout {...props} />;
+  },
   FAQ: BlogFAQ,
   FAQItem: BlogFAQItem,
   Table: ({ children, ...props }) => (

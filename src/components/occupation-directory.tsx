@@ -295,6 +295,7 @@ export function OccupationDirectory({
                 key={item.occupationCode}
                 className="flex h-full min-h-36 flex-col justify-between rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_56px_rgba(15,23,42,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
                 href={item.href}
+                prefetch={false}
                 style={cardStyle}
               >
                 {content}

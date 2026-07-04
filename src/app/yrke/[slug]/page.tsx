@@ -9,7 +9,7 @@ import {
   getOccupationDetailViewModelStaticParams,
 } from "@/lib/occupation-detail-view-models";
 
-export const revalidate = 86400;
+export const revalidate = 2592000;
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
