@@ -51,6 +51,8 @@ Bruk første ukryssede tema i listen under.
 
 ### Ferdig
 
+- [x] De 10 yrkene med størst lønnsforskjell mellom kvinner og menn - `src/content/blog/de-10-yrkene-med-storst-lonnsforskjell-mellom-kvinner-og-menn.mdx` - 2026-07-04
+
 - [x] Dette er årslønnen til bygningsarbeidere - `src/content/blog/dette-er-arslonnen-til-bygningsarbeidere.mdx` - 2026-06-21
 
 - [x] Disse 10 yrkene tjener minst i Norge - `src/content/blog/disse-10-yrkene-tjener-minst-i-norge.mdx` - 2026-06-21

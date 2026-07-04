@@ -33,6 +33,11 @@ const analysisLinks = [
     description: "Se lønnsforskjell menn og kvinner i norske yrker.",
   },
   {
+    href: "/lønnsforskjeller-mellom-offentlige-og-private-yrker",
+    title: "Lønnsforskjeller mellom offentlige og private yrker",
+    description: "Sammenlign privat sektor med kommune og stat i norske yrker.",
+  },
+  {
     href: "/kvinner-vs-menn",
     title: "Kvinner vs menn",
     description: "Sammenlign lønnsforskjeller mellom kvinner og menn på tvers av yrker.",

@@ -22,6 +22,10 @@ const footerGroups = [
       { href: "/yrkesfamilier", label: "Yrkesfamilier" },
       { href: "/laerling", label: "Lærlingfag" },
       { href: "/lønnsforskjell-mellom-kvinner-og-menn", label: "Lønnsforskjell mellom kvinner og menn" },
+      {
+        href: "/lonnsforskjeller-mellom-offentlige-og-private-yrker",
+        label: "Lønnsforskjeller offentlig og privat",
+      },
     ],
   },
   {

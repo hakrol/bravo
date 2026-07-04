@@ -100,6 +100,12 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/lønnsforskjeller-mellom-offentlige-og-private-yrker",
+    filePath: "src/app/lønnsforskjeller-mellom-offentlige-og-private-yrker/page.tsx",
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/kvinner-vs-menn",
     filePath: "src/app/kvinner-vs-menn/page.tsx",
     priority: 0.6,
