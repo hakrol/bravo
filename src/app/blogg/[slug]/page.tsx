@@ -90,7 +90,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </article>
 
-        <HomeExploreOccupationsSection />
+        <div className="mt-12 sm:mt-16 lg:mt-20">
+          <HomeExploreOccupationsSection />
+        </div>
         <HomeLatestBlogSection posts={latestBlogPosts} />
       </div>
     </div>

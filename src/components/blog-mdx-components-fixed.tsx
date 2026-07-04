@@ -27,6 +27,7 @@ import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
+import { BlogLonnsjekkCallout } from "@/components/blog-lonnsjekk-callout";
 import {
   NorwayAverageSalaryDevelopmentChart,
   NorwayRealSalaryGrowthChart,
@@ -156,20 +157,14 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
         <div className="blog-example-body">{children}</div>
       </div>
     ),
-    ToolCallout: ({ title, description, href = "/lonnsjekk", cta = "Prøv Lønnsjekk", ...props }) => (
-      <div className="blog-tool-callout" {...props}>
-        <div className="blog-tool-callout-content">
-          <h3 className="blog-tool-callout-title">{title ?? "Sjekk lønnen din gratis"}</h3>
-          <div className="blog-tool-callout-description">
-            {description ??
-              "Bruk Lønnsjekk for å sammenligne lønnen din med relevante tall og få et bedre utgangspunkt før du går inn i lønnssamtalen."}
-          </div>
-        </div>
-        <Link className="blog-tool-callout-link" href={typeof href === "string" ? href : "/lonnsjekk"}>
-          {typeof cta === "string" ? cta : "Prøv Lønnsjekk"}
-        </Link>
-      </div>
-    ),
+    ToolCallout: ({ title, description, href, cta, ...props }) => {
+      void title;
+      void description;
+      void href;
+      void cta;
+
+      return <BlogLonnsjekkCallout {...props} />;
+    },
     FAQ: BlogFAQ,
     FAQItem: BlogFAQItem,
     Table: ({ children, ...props }) => (

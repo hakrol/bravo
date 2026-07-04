@@ -115,37 +115,37 @@ const staticRoutes = [
     path: "/yrkesgrupper",
     filePath: "src/app/yrkesgrupper/page.tsx",
     priority: 0.7,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "monthly" as const,
   },
   {
     path: "/yrkesfamilier",
     filePath: "src/app/yrkesfamilier/page.tsx",
     priority: 0.7,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "monthly" as const,
   },
   {
     path: "/yrker",
     filePath: "src/app/yrker/page.tsx",
     priority: 0.7,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "monthly" as const,
   },
   {
     path: "/timelonn",
     filePath: "src/app/timelonn/page.tsx",
     priority: 0.7,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "monthly" as const,
   },
   {
     path: "/laerling",
     filePath: "src/app/laerling/page.tsx",
     priority: 0.7,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "monthly" as const,
   },
   {
     path: "/yrkesgrupper/yrker",
     filePath: "src/app/yrkesgrupper/yrker/page.tsx",
     priority: 0.5,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "monthly" as const,
   },
   {
     path: "/blogg",
@@ -258,7 +258,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const groupRoutes: MetadataRoute.Sitemap = listOccupationGroups().map((group) => ({
     url: getAbsoluteUrl(`/yrkesgrupper/${group.slug}`),
     lastModified: occupationContentLastModified,
-    changeFrequency: "weekly",
+    changeFrequency: "monthly",
     priority: 0.6,
   }));
 
@@ -266,7 +266,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ? listOccupationFamilies(occupationMedianDataset).map((family) => ({
         url: getAbsoluteUrl(`/yrkesfamilie/${family.slug}`),
         lastModified: occupationContentLastModified,
-        changeFrequency: "weekly",
+        changeFrequency: "monthly",
         priority: 0.6,
       }))
     : [];
@@ -300,21 +300,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const occupationRoutes: MetadataRoute.Sitemap = occupationPages.map((entry) => ({
     url: getAbsoluteUrl(entry.page.href),
     lastModified: occupationContentLastModified,
-    changeFrequency: "weekly",
+    changeFrequency: "monthly",
     priority: 0.7,
   }));
 
   const hourlySalaryRoutes: MetadataRoute.Sitemap = hourlySalaryPages.map((page) => ({
     url: getAbsoluteUrl(page.href),
     lastModified: occupationContentLastModified,
-    changeFrequency: "weekly",
+    changeFrequency: "monthly",
     priority: 0.7,
   }));
 
   const apprenticeshipRoutes: MetadataRoute.Sitemap = (apprenticeshipIndex?.pages ?? []).map((page) => ({
     url: getAbsoluteUrl(`/laerling/${page.slug}`),
     lastModified: apprenticeshipContentLastModified,
-    changeFrequency: "weekly",
+    changeFrequency: "monthly",
     priority: 0.7,
   }));
 

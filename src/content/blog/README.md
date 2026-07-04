@@ -179,7 +179,7 @@ Bruk felles bloggkomponenter i MDX når mønsteret skal kunne gjenbrukes i flere
   Brukes til tabeller i innlegg i stedet for rå HTML eller inline-styling.
 
 - `ToolCallout`
-  Brukes når et innlegg naturlig bør peke videre til et verktøy, for eksempel Lønnsjekk.
+  Brukes når et innlegg naturlig bør peke videre til Lønnsjekk. Tekst og CTA er standardisert i komponenten, så bruk den uten egne `title`-, `description`-, `href`- eller `cta`-props.
 
 - `FAQ` og `FAQItem`
   Brukes når briefen ber om en FAQ-seksjon eller når innlegget bør svare kort på konkrete tilleggsspørsmål. Bruk spørsmålene fra `daily-brief.md` når de er oppgitt. FAQ skal alltid stå helt nederst i innlegget, uten egen Markdown-overskrift over komponenten. Komponenten viser selv overskriften `Ofte stilte spørsmål`.
@@ -193,10 +193,7 @@ Bruk felles bloggkomponenter i MDX når mønsteret skal kunne gjenbrukes i flere
 Eksempel:
 
 ```mdx
-<ToolCallout
-  title="Vil du sjekke om lønnen din ligger høyt, lavt eller midt på?"
-  description="Bruk Lønnsjekk for å sammenligne lønnen din med relevante tall og få et mer konkret grunnlag før du bestemmer hva du skal be om."
-/>
+<ToolCallout />
 ```
 
 Eksempel på FAQ:
