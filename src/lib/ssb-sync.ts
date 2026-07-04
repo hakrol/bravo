@@ -160,6 +160,20 @@ async function main() {
         }),
     },
     {
+      key: "occupationSectorWorkRelationsLatest",
+      fileName: "occupation-sector-work-relations-latest.json",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
+      buildQuery: (metadata) =>
+        queries.buildLatestQueryFromMetadata(metadata, {
+          MaaleMetode: "10",
+          Yrke: "*",
+          Sektor: ["A+B+D+E", "6500", "6100"],
+          Kjonn: "0",
+          AvtaltVanlig: "0",
+          ContentsCode: "Manedslonn",
+        }),
+    },
+    {
       key: "occupationContractedDistributionLatest",
       fileName: "occupation-contracted-distribution-latest.json",
       tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,

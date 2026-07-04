@@ -7,15 +7,24 @@ import { createPortal } from "react-dom";
 type MetricInfoButtonProps = {
   label: string;
   description: ReactNode;
+  children?: ReactNode;
   variant?: "default" | "muted";
 };
 
-export function MetricInfoButton({ label, description, variant = "default" }: MetricInfoButtonProps) {
+export function MetricInfoButton({
+  label,
+  description,
+  children,
+  variant = "default",
+}: MetricInfoButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const buttonClassName =
+  const iconClassName =
     variant === "muted"
       ? "inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-[10px] font-semibold text-slate-500 shadow-sm transition hover:bg-slate-50"
       : "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#d6e2d7] bg-white text-[11px] font-semibold text-[var(--primary-strong)] shadow-sm transition hover:bg-[#f5f8f5]";
+  const buttonClassName = children
+    ? "inline-flex items-center justify-center gap-2 text-sm font-semibold text-[var(--primary-strong)] transition hover:text-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary-strong)]"
+    : iconClassName;
 
   return (
     <>
@@ -25,7 +34,16 @@ export function MetricInfoButton({ label, description, variant = "default" }: Me
         onClick={() => setIsOpen(true)}
         type="button"
       >
-        i
+        {children ? (
+          <>
+            <span className={iconClassName} aria-hidden>
+              i
+            </span>
+            <span>{children}</span>
+          </>
+        ) : (
+          "i"
+        )}
       </button>
 
       {isOpen ? createPortal(

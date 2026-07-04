@@ -25,6 +25,7 @@ import rorleggerLonn2025Snapshot from "@/content/blog/data/rorlegger-lonn-2025.j
 import snekkerLonn2025Snapshot from "@/content/blog/data/snekker-lonn-2025.json";
 import servitorLonn2025Snapshot from "@/content/blog/data/servitor-lonn-2025.json";
 import snittalderLavestLonnedeYrker2026Snapshot from "@/content/blog/data/snittalder-lavest-lonnede-yrker-2026.json";
+import storstLonnsforskjellKvinnerMenn2025Snapshot from "@/content/blog/data/storst-lonnsforskjell-kvinner-menn-2025.json";
 import sykepleiereHelsearbeidereLonn2025Snapshot from "@/content/blog/data/sykepleiere-helsearbeidere-lonn-2025.json";
 import vernepleierLonn2025Snapshot from "@/content/blog/data/vernepleier-lonn-2025.json";
 import yrkerOverEnMillion2025Snapshot from "@/content/blog/data/yrker-over-en-million-2025.json";
@@ -75,6 +76,7 @@ const snapshots = {
   "snekker-lonn-2025": snekkerLonn2025Snapshot as OccupationSalarySnapshot,
   "servitor-lonn-2025": servitorLonn2025Snapshot as OccupationSalarySnapshot,
   "snittalder-lavest-lonnede-yrker-2026": snittalderLavestLonnedeYrker2026Snapshot as OccupationSalarySnapshot,
+  "storst-lonnsforskjell-kvinner-menn-2025": storstLonnsforskjellKvinnerMenn2025Snapshot as OccupationSalarySnapshot,
   "sykepleiere-helsearbeidere-lonn-2025": sykepleiereHelsearbeidereLonn2025Snapshot as OccupationSalarySnapshot,
   "vernepleier-lonn-2025": vernepleierLonn2025Snapshot as OccupationSalarySnapshot,
   "yrker-over-en-million-2025": yrkerOverEnMillion2025Snapshot as OccupationSalarySnapshot,
