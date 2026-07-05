@@ -49,7 +49,192 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
+- [ ] Automatikere: lønn, arbeidsmarked og relaterte yrker
+
+Tittel:
+Automatikere: lønn, arbeidsmarked og relaterte yrker
+
+Beskrivelse:
+Innlegget skal forklare hvorfor automatikere skiller seg ut blant tekniske fag: relativt høy lønn, tydelig kjønnsforskjell i lønnstallene og et arbeidsmarked som kan sammenlignes med flere elektro- og industrifag. Ta med yrkesbeskrivelsen tidlig, og bruk deretter lønn, lønnsfordeling, antall lønnstakere, alder og relaterte yrker til å bygge en helhetlig artikkel. Siden automatikere allerede er et høyere lønnet håndverksyrke, bør artikkelen vise både nivå, spredning og sammenligning.
+
+Overskrifter:
+
+* Hva tjener automatikere?
+* Hva gjør en automatiker?
+* Lønn for kvinner og menn
+* Hvor høy er lønnen sammenlignet med andre tekniske fag?
+* Lønnsfordeling: hvor stort er spennet?
+* Arbeidsmarked, alder og antall ansatte
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Redaksjonelt stolpediagram
+* Boblediagram
+* Femårs lønnsutvikling
+
+FAQ:
+
+* Hva er timelønnen til en automatiker?
+* Hva er årslønnen til en automatiker?
+* Tjener automatikere mer enn elektrikere?
+* Hvor stor er lønnsforskjellen mellom kvinner og menn blant automatikere?
+* Hvor mange jobber som automatikere?
+* Hvilke yrker er mest relevante å sammenligne med automatikere?
+
+Interne lenker:
+
+* /yrke/automatikere-lonn
+* /yrke/energimontorer-lonn
+* /yrke/elektrikere-lonn
+* /yrke/serviceelektronikere-lonn
+* /yrke/anleggsmaskin-og-industrimekanikere-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/automatiker
+
+- [ ] Hvor mye tjener glassarbeidere sammenlignet med lignende yrker?
+
+Tittel:
+Hvor mye tjener glassarbeidere sammenlignet med lignende yrker?
+
+Beskrivelse:
+Innlegget skal bruke sammenligning som hovedgrep. Start med yrkesbeskrivelsen og lønnen for glassarbeidere, men la artikkelen forklare hvordan lønnen ser ut ved siden av gulv- og flisleggere, isolatører, taktekkere, rørleggere og andre nærliggende byggfag. Kjønnsdelt lønnskort skal være med, men teksten må være presis på at egne kvinnetall kan mangle eller være skjermet dersom datagrunnlaget er for lite. Bruk lønnsfordeling og antall lønnstakere for å gjøre sammenligningen mer konkret.
+
+Overskrifter:
+
+* Hva tjener glassarbeidere?
+* Hva gjør en glassarbeider?
+* Slik er lønnsnivået sammenlignet med lignende byggyrker
+* Lønnsfordeling blant glassarbeidere
+* Hvor mange jobber som glassarbeidere?
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Boblediagram
+* Redaksjonelt stolpediagram
+* Søkbar yrkesliste
+
+FAQ:
+
+* Hva er månedslønnen til glassarbeidere?
+* Hva er årslønnen til en glassarbeider?
+* Hva er timelønnen til en glassarbeider?
+* Finnes det egne lønnstall for kvinnelige glassarbeidere?
+* Tjener glassarbeidere mer enn gulv- og flisleggere?
+* Hvilke yrker bør glassarbeidere sammenlignes med?
+
+Interne lenker:
+
+* /yrke/glassarbeidere-lonn
+* /yrke/gulv-og-flisleggere-lonn
+* /yrke/isolatorer-mv-lonn
+* /yrke/taktekkere-lonn
+* /yrke/rorleggere-og-vvs-montorer-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/glassfagarbeider
+
+- [ ] Førtrykkere: lønn og lønnsutvikling
+
+Tittel:
+Lønn og lønnsutvikling blant førtrykkere
+
+Beskrivelse:
+Innlegget skal handle om et mindre og mer spesialisert grafisk yrke. Vinklingen bør være at førtrykkere ikke bare skal vurderes på lønnsnivå, men også på utviklingen i antall lønnstakere, alder og relaterte grafiske yrker. Ta med yrkesbeskrivelsen, lønn for kvinner og menn, lønnsfordeling og femårs utvikling. Artikkelen bør forklare tallene nøkternt og unngå å gjøre brede bransjepåstander hvis datagrunnlaget ikke støtter det.
+
+Overskrifter:
+
+* Hva tjener førtrykkere?
+* Hva gjør en førtrykker?
+* Lønn for kvinner og menn
+* Lønnsutvikling og reallønn
+* Antall lønnstakere og gjennomsnittsalder
+* Førtrykkere sammenlignet med andre grafiske yrker
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Femårs lønnsutvikling
+* Redaksjonelt stolpediagram
+* Søkbar yrkesliste
+
+FAQ:
+
+* Hva er månedslønnen til førtrykkere?
+* Hva blir årslønnen til en førtrykker?
+* Hva er timelønnen til en førtrykker?
+* Er det lønnsforskjell mellom kvinner og menn blant førtrykkere?
+* Hvor mange jobber som førtrykkere?
+* Hvilke yrker ligner på førtrykkere?
+
+Interne lenker:
+
+* /yrke/fortrykkere-lonn
+* /yrke/trykkere-lonn
+* /yrke/innbindere-mv-lonn
+* /yrke/andre-kunsthandverkere-lonn
+* /yrke/presisjonsinstrumentmakere-og-reparatorer-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/mediegrafiker
+
+- [ ] Gulv- og flisleggere: lønnstallene du bør kjenne til
+
+Tittel:
+Gulv- og flisleggere: lønnstallene du bør kjenne til
+
+Beskrivelse:
+Innlegget skal være en praktisk oversikt over de viktigste lønnstallene for gulv- og flisleggere: månedslønn, årslønn, timelønn, lønnsfordeling, antall lønnstakere og alder. Yrkesbeskrivelsen skal forklare arbeidet med gulv, fliser, underlag og finish. Siden egne kvinnetall i lønnsfordelingen kan mangle, skal artikkelen ikke overtolke kjønnsforskjeller i lønn, men heller bruke arbeidsmarkedstallene til å vise at yrket er svært mannsdominert. Sammenligningen bør gå mot glassarbeidere, isolatører, taktekkere, rørleggere og kuldemontører.
+
+Overskrifter:
+
+* Hva tjener gulv- og flisleggere?
+* Hva gjør en gulv- og flislegger?
+* Månedslønn, årslønn og timelønn
+* Lønnsfordeling: hva viser spennet?
+* Antall ansatte, alder og kvinneandel
+* Lønn sammenlignet med nærliggende byggfag
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Redaksjonelt stolpediagram
+* Boblediagram
+* Søkbar yrkesliste
+
+FAQ:
+
+* Hva er månedslønnen til gulv- og flisleggere?
+* Hva er årslønnen til en gulv- og flislegger?
+* Hva er timelønnen til en gulv- og flislegger?
+* Finnes det egne lønnstall for kvinnelige gulv- og flisleggere?
+* Hvor mange jobber som gulv- og flisleggere?
+* Tjener gulv- og flisleggere mer enn glassarbeidere?
+
+Interne lenker:
+
+* /yrke/gulv-og-flisleggere-lonn
+* /yrke/glassarbeidere-lonn
+* /yrke/isolatorer-mv-lonn
+* /yrke/taktekkere-lonn
+* /yrke/kuldemontorer-mv-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/mur-og_flislegger
+
 ### Ferdig
+
+- [x] Slik har lønnen utviklet seg for energimontører - `src/content/blog/slik-har-lonnen-utviklet-seg-for-energimontorer.mdx` - 2026-07-05
+
+- [x] Lønn, alder og kjønnsforskjeller blant bilmekanikere - `src/content/blog/lonn-alder-og-kjonnsforskjeller-blant-bilmekanikere.mdx` - 2026-07-05
+
+- [x] Hva tjener en betongarbeider? - `src/content/blog/hva-tjener-en-betongarbeider.mdx` - 2026-07-05
 
 - [x] De 10 yrkene med størst lønnsforskjell mellom kvinner og menn - `src/content/blog/de-10-yrkene-med-storst-lonnsforskjell-mellom-kvinner-og-menn.mdx` - 2026-07-04
 

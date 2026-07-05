@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import advokaterJuristerLonn2025Snapshot from "@/content/blog/data/advokater-jurister-lonn-2025.json";
 import bestBetalteYrker2025Snapshot from "@/content/blog/data/best-betalte-yrker-2025.json";
+import betongarbeiderLonn2025Snapshot from "@/content/blog/data/betongarbeider-lonn-2025.json";
+import bilmekanikerLonn2025Snapshot from "@/content/blog/data/bilmekaniker-lonn-2025.json";
 import brannmannLonn2025Snapshot from "@/content/blog/data/brannmann-lonn-2025.json";
 import bussjaforerTrikkeforereLonn2025Snapshot from "@/content/blog/data/bussjaforer-trikkeforere-lonn-2025.json";
 import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025.json";
 import bygningsarbeidereLonn2025Snapshot from "@/content/blog/data/bygningsarbeidere-lonn-2025.json";
+import energimontorLonn2025Snapshot from "@/content/blog/data/energimontor-lonn-2025.json";
 import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025.json";
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 import intensivsykepleierLonn2025Snapshot from "@/content/blog/data/intensivsykepleier-lonn-2025.json";
@@ -55,10 +58,13 @@ const rowsPerPage = 25;
 const snapshots = {
   "advokater-jurister-lonn-2025": advokaterJuristerLonn2025Snapshot as OccupationSalarySnapshot,
   "best-betalte-yrker-2025": bestBetalteYrker2025Snapshot as OccupationSalarySnapshot,
+  "betongarbeider-lonn-2025": betongarbeiderLonn2025Snapshot as OccupationSalarySnapshot,
+  "bilmekaniker-lonn-2025": bilmekanikerLonn2025Snapshot as OccupationSalarySnapshot,
   "brannmann-lonn-2025": brannmannLonn2025Snapshot as OccupationSalarySnapshot,
   "bussjaforer-trikkeforere-lonn-2025": bussjaforerTrikkeforereLonn2025Snapshot as OccupationSalarySnapshot,
   "butikksjef-lonn-2025": butikksjefLonn2025Snapshot as OccupationSalarySnapshot,
   "bygningsarbeidere-lonn-2025": bygningsarbeidereLonn2025Snapshot as OccupationSalarySnapshot,
+  "energimontor-lonn-2025": energimontorLonn2025Snapshot as OccupationSalarySnapshot,
   "elektriker-lonn-2025": elektrikerLonn2025Snapshot as OccupationSalarySnapshot,
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
   "intensivsykepleier-lonn-2025": intensivsykepleierLonn2025Snapshot as OccupationSalarySnapshot,

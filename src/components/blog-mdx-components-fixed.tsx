@@ -3,6 +3,16 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  CarMechanicGenderSalaryCards,
+  CarMechanicSalaryBubbleChart,
+  CarMechanicSalaryEditorialChart,
+} from "@/components/blog-car-mechanic-salary-chart";
+import {
+  ConcreteWorkerGenderSalaryCards,
+  ConcreteWorkerSalaryBubbleChart,
+  ConcreteWorkerSalaryEditorialChart,
+} from "@/components/blog-concrete-worker-salary-chart";
+import {
   BuildingWorkerFamiliesSalaryChart,
   BuildingWorkerFamiliesSalaryDevelopmentChart,
 } from "@/components/blog-building-workers-salary-chart";
@@ -23,6 +33,12 @@ import {
 } from "@/components/blog-chart-examples";
 import { DoctorSalaryEditorialChart } from "@/components/blog-doctor-salary-chart";
 import { ElectricianSalaryBubbleChart, ElectricianSalaryEditorialChart } from "@/components/blog-electrician-salary-chart";
+import {
+  EnergyInstallerGenderSalaryCards,
+  EnergyInstallerSalaryBubbleChart,
+  EnergyInstallerSalaryDevelopmentChart,
+  EnergyInstallerSalaryEditorialChart,
+} from "@/components/blog-energy-installer-salary-chart";
 import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@/components/blog-firefighter-salary-chart";
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
@@ -202,12 +218,22 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogChart,
     BuildingWorkerFamiliesSalaryChart,
     BuildingWorkerFamiliesSalaryDevelopmentChart,
+    CarMechanicGenderSalaryCards,
+    CarMechanicSalaryBubbleChart,
+    CarMechanicSalaryEditorialChart,
+    ConcreteWorkerGenderSalaryCards,
+    ConcreteWorkerSalaryBubbleChart,
+    ConcreteWorkerSalaryEditorialChart,
     BlogElectricianSalaryChart,
     BussjaforerTrikkeforereGenderSalaryCards,
     BussjaforerTrikkeforereSalaryBubbleChart,
     BussjaforerTrikkeforereSalaryDevelopmentChart,
     ElectricianSalaryBubbleChart,
     ElectricianSalaryEditorialChart,
+    EnergyInstallerGenderSalaryCards,
+    EnergyInstallerSalaryBubbleChart,
+    EnergyInstallerSalaryDevelopmentChart,
+    EnergyInstallerSalaryEditorialChart,
     FirefighterSalaryBubbleChart,
     FirefighterSalaryEditorialChart,
     BlogGenderSalaryCards,
