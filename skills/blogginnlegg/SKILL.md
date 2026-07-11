@@ -53,7 +53,7 @@ Bruk den mest spesifikke regelen som passer oppgaven.
   Selve blogginnholdet.
 
 - `public/blogg/<slug>/<yrke-lonn>.png`
-  Artikkelspesifikk coversti for automatiserte yrke/lønn-innlegg. Filen skal ikke opprettes eller genereres av automasjonen.
+  Artikkelspesifikk coversti for automatiserte yrke/lønn-innlegg. Mappen `public/blogg/<slug>/` skal opprettes når `coverImage` peker dit, men selve bildefilen skal ikke opprettes eller genereres av automasjonen.
 
 - `src/lib/blog.ts`
   Laster blogginnhold, frontmatter og innholdsfortegnelse.
@@ -119,6 +119,7 @@ Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen i
 - Hold frontmatter ryddig og komplett.
 - Legg nye innlegg i `src/content/blog/`.
 - For automatiserte yrke/lønn-innlegg skal det ikke lages eller genereres et nytt hero-bilde. Sett likevel `coverImage` til en full artikkelspesifikk sti, for eksempel `"/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"`, slik at brukeren kan legge inn bildet selv.
+- Opprett alltid tilhørende mappe under `public/blogg/<slug>/` når `coverImage` settes til en sti under `/blogg/<slug>/`, også når bildefilen skal legges inn manuelt senere.
 
 ### Innledning
 
@@ -251,6 +252,7 @@ Følg reglene i [src/content/blog/README.md](src/content/blog/README.md):
 - Sett likevel `coverImage` til en full artikkelspesifikk sti under `/blogg/<slug>/`, for eksempel `coverImage: "/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"`.
 - Bruk et beskrivende filnavn basert på yrket, for eksempel `lege-lonn.png`, `psykolog-lonn.png` eller `vernepleier-lonn.png`.
 - Bruk en konkret `coverImageAlt` som beskriver det planlagte hero-bildet.
+- Opprett mappen `public/blogg/<slug>/` som tilsvarer `coverImage`-stien.
 - Ikke opprett bildefilen eller generer bilde. Brukeren legger inn bildet selv.
 - Hvis brukeren eksplisitt ber om egne bilder, gjelder navngivningen under:
 - hero-bilde: `yrke-lonn.*` - yrke er det sentrale temaet i innlegget, og lønn er det sentrale temaet i innlegget. Eksempel: `psykolog-lonn.*`
@@ -271,6 +273,7 @@ Et blogginnlegg regnes bare som ferdig når:
 - MDX-filen finnes i `src/content/blog/`
 - frontmatter følger eksisterende format
 - `title`, `description`, `seoTitle`, `seoDescription`, `slug` og `coverImage` er satt
+- mappen under `public/blogg/<slug>/` finnes for `coverImage`-stien
 - `description` fungerer som en presis og engasjerende hook
 - innlegget har tydelige `##`-overskrifter
 - innlegget svarer tydelig og tidlig på hovedspørsmålet i tittelen

@@ -49,6 +49,175 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
+[ ] Lønnsforskjeller mellom kvinnelige og mannlige butikksjefer
+
+Tittel:
+Lønnsforskjeller mellom kvinnelige og mannlige butikksjefer
+
+Beskrivelse:
+Innlegget skal ha en tydelig vinkel på kjønnsforskjeller. Det skal vise lønn for kvinner og menn, lønnsfordeling, antall lønnstakere fordelt på kjønn og gjennomsnittsalder. Artikkelen bør forklare forskjellene nøkternt uten å spekulere i årsaker som ikke støttes av data. Yrkesbeskrivelsen skal være med, men brukes først og fremst til å forklare hva rollen innebærer før lønnsforskjellene presenteres.
+
+Overskrifter:
+
+* Hva gjør en butikksjef?
+* Tjener kvinnelige og mannlige butikksjefer forskjellig?
+* Lønn fordelt på kvinner og menn
+* Lønnsfordeling blant butikksjefer
+* Hvor mange kvinnelige og mannlige butikksjefer finnes det?
+* Alder og lønn: er det forskjeller mellom kjønnene?
+* Hva viser tallene – og hva viser de ikke?
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Redaksjonelt stolpediagram
+* Femårs lønnsutvikling
+
+FAQ:
+
+* Tjener mannlige butikksjefer mer enn kvinnelige butikksjefer?
+* Hvor stor er lønnsforskjellen mellom kvinner og menn?
+* Hvor mange kvinnelige butikksjefer finnes det?
+* Hvor mange mannlige butikksjefer finnes det?
+* Er gjennomsnittsalderen ulik for kvinner og menn?
+* Har lønnsforskjellen endret seg over tid?
+
+Interne lenker:
+
+* /yrke/butikkavdelingssjefer-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/butikksjef
+
+[ ] Hvor mye tjener en butikksjef sammenlignet med butikkmedarbeidere?
+
+Tittel:
+Hvor mye tjener en butikksjef sammenlignet med butikkmedarbeidere?
+
+Beskrivelse:
+Innlegget skal sammenligne butikksjefer med nærliggende yrker, særlig butikkmedarbeidere og andre salgs- og lederroller. Vinklingen bør være praktisk: hvor mye mer kan man tjene ved å gå fra butikkmedarbeider til butikksjef, og hvordan skiller yrkene seg i ansvar og lønnsnivå? Yrkesbeskrivelsen skal forklare forskjellen mellom rollen som butikksjef og ansatte i butikk.
+
+Overskrifter:
+
+* Hva gjør en butikksjef?
+* Butikksjef og butikkmedarbeider: hva er forskjellen?
+* Lønn som butikksjef sammenlignet med butikkmedarbeider
+* Hvilke relaterte yrker ligger høyere eller lavere i lønn?
+* Lederansvar og lønn i varehandel
+* Hvilke yrker bør sammenlignes med butikksjef?
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Boblediagram
+* Søkbar yrkesliste
+* Redaksjonelt stolpediagram
+
+FAQ:
+
+* Tjener butikksjefer mer enn butikkmedarbeidere?
+* Hvor stor er lønnsforskjellen mellom butikksjef og butikkmedarbeider?
+* Hvilke yrker ligner på butikksjef?
+* Hvilke salgsyrker har høyest lønn?
+* Hva er forskjellen på butikksjef og salgsleder?
+* Er butikksjef et naturlig steg videre fra butikkmedarbeider?
+
+Interne lenker:
+
+* /yrke/butikkavdelingssjefer-lonn
+* /yrke/butikkmedarbeidere-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/butikksjef
+* https://utdanning.no/yrker/beskrivelse/butikkmedarbeider
+
+[ ] Hvor gamle er butikksjefer – og hva sier det om yrket?
+
+Tittel:
+Hvor gamle er butikksjefer – og hva sier det om yrket?
+
+Beskrivelse:
+Innlegget skal bruke gjennomsnittsalder og utvikling i alder som hovedvinkel. Det skal forklare hva butikksjefer gjør, hvor mange som jobber i yrket, og hvordan alderen varierer mellom kvinner og menn. Dette kan gi en mer original artikkel enn de rene lønnsartiklene, samtidig som den fortsatt kan lenke tydelig til lønnsinnholdet.
+
+Overskrifter:
+
+* Hva gjør en butikksjef?
+* Hva er gjennomsnittsalderen for butikksjefer?
+* Alder blant kvinnelige og mannlige butikksjefer
+* Har butikksjefer blitt eldre eller yngre over tid?
+* Hvor mange jobber som butikksjef?
+* Lønn, alder og erfaring
+* Hva forteller tallene om arbeidsmarkedet?
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Femårs lønnsutvikling
+* Redaksjonelt stolpediagram
+
+FAQ:
+
+* Hva er gjennomsnittsalderen for butikksjefer?
+* Er kvinnelige og mannlige butikksjefer like gamle i snitt?
+* Har gjennomsnittsalderen for butikksjefer endret seg?
+* Hvor mange butikksjefer finnes det?
+* Henger alder og lønn sammen for butikksjefer?
+* Er butikksjef et yrke mange går inn i tidlig eller senere i karrieren?
+
+Interne lenker:
+
+* /yrke/butikkavdelingssjefer-lonn
+* /yrke/butikkmedarbeidere-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/butikksjef
+
+[ ] Butikksjef eller salgsleder: hvilket yrke lønner seg mest?
+
+Tittel:
+Butikksjef eller salgsleder: hvilket yrke lønner seg mest?
+
+Beskrivelse:
+Innlegget skal sammenligne butikksjefer med salgsledere og andre nærliggende lederyrker. Vinklingen er karriereorientert: leseren skal forstå hvordan butikksjefrollen plasserer seg lønnsmessig blant andre leder- og salgsyrker. Artikkelen bør ikke bare handle om høyest lønn, men også om rolleforskjeller, ansvar og mulige karriereveier.
+
+Overskrifter:
+
+* Hva gjør en butikksjef?
+* Hva gjør en salgsleder?
+* Lønn: butikksjef sammenlignet med salgsleder
+* Andre relaterte yrker å sammenligne med
+* Kjønnsforskjeller i lønn
+* Hvilket yrke passer best som neste steg?
+
+Diagrammer:
+
+* Kjønnsdelt lønnskort
+* Boblediagram
+* Søkbar yrkesliste
+* Redaksjonelt stolpediagram
+
+FAQ:
+
+* Tjener butikksjefer eller salgsledere mest?
+* Hva er forskjellen på butikksjef og salgsleder?
+* Hvilke yrker ligner på butikksjef?
+* Hvilke lederyrker innen salg har høyest lønn?
+* Hvor mye tjener en butikksjef i året?
+* Er butikksjef en god vei videre innen salg og varehandel?
+
+Interne lenker:
+
+* /yrke/butikkavdelingssjefer-lonn
+
+Eksterne lenker:
+
+* https://utdanning.no/yrker/beskrivelse/butikksjef
+* https://utdanning.no/yrker/beskrivelse/salgssjef
+
+
 - [ ] Automatikere: lønn, arbeidsmarked og relaterte yrker
 
 Tittel:
@@ -229,6 +398,8 @@ Eksterne lenker:
 * https://utdanning.no/yrker/beskrivelse/mur-og_flislegger
 
 ### Ferdig
+
+- [x] Slik har lønnen utviklet seg for butikksjefer - `src/content/blog/slik-har-lonnen-utviklet-seg-for-butikksjefer.mdx` - 2026-07-05
 
 - [x] Slik har lønnen utviklet seg for energimontører - `src/content/blog/slik-har-lonnen-utviklet-seg-for-energimontorer.mdx` - 2026-07-05
 

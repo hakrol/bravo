@@ -1,45 +1,126 @@
 {
   "id": "butikksjef-lonn-2025",
-  "title": "Butikksjef lønn sammenlignet med andre sjefsyrker i 2025",
+  "title": "Lønn og lønnsutvikling for butikksjefer",
   "source": "SSB tabell 11418",
   "period": "2025",
   "measure": "Median månedslønn",
   "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025.",
   "rows": [
     {
+      "code": "1212",
       "label": "Personalsjefer",
       "href": "/yrke/personalsjefer-lonn",
-      "value": 96670
+      "value": 96670,
+      "employees": 2350
     },
     {
+      "code": "1221",
       "label": "Salgs- og markedssjefer",
       "href": "/yrke/salgs-og-markedssjefer-lonn",
-      "value": 89170
+      "value": 89170,
+      "employees": 16040
     },
     {
+      "code": "1420",
       "label": "Varehandelssjefer",
       "href": "/yrke/varehandelssjefer-lonn",
-      "value": 55390
+      "value": 55390,
+      "employees": 34153
     },
     {
+      "code": "1411",
       "label": "Hotellsjefer",
       "href": "/yrke/hotellsjefer-lonn",
-      "value": 52610
+      "value": 52610,
+      "employees": 786
     },
     {
+      "code": "1412",
       "label": "Restaurantsjefer",
       "href": "/yrke/restaurantsjefer-lonn",
-      "value": 50770
+      "value": 50770,
+      "employees": 3823
     },
     {
+      "code": "5222",
       "label": "Butikkavdelingssjefer",
       "href": "/yrke/butikkavdelingssjefer-lonn",
-      "value": 47680
+      "value": 47680,
+      "employees": 5426
     },
     {
+      "code": "5223",
       "label": "Butikkmedarbeidere",
       "href": "/yrke/butikkmedarbeidere-lonn",
-      "value": 42020
+      "value": 42020,
+      "employees": 164388
     }
-  ]
+  ],
+  "genderMedian": {
+    "occupationLabel": "butikksjefer",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 46640,
+    "menMonthlyMedian": 50090
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Butikkavdelingssjefer",
+    "source": "SSB tabell 11418",
+    "rows": [
+      {
+        "label": "2021",
+        "value": 39950,
+        "women": 38990,
+        "men": 41870
+      },
+      {
+        "label": "2022",
+        "value": 41150,
+        "women": 40240,
+        "men": 43700
+      },
+      {
+        "label": "2023",
+        "value": 43400,
+        "women": 42420,
+        "men": 45440
+      },
+      {
+        "label": "2024",
+        "value": 45730,
+        "women": 44730,
+        "men": 48000
+      },
+      {
+        "label": "2025",
+        "value": 47680,
+        "women": 46640,
+        "men": 50090
+      }
+    ]
+  },
+  "purchasingPower": {
+    "latestPeriodLabel": "1. kvartal 2026",
+    "previousPeriodLabel": "1. kvartal 2025",
+    "salaryTableId": "11658",
+    "inflationTableId": "14700",
+    "latestSalary": 49080,
+    "previousSalary": 47080,
+    "salaryGrowth": 4.248088360237893,
+    "inflationGrowth": 3.306342780027004,
+    "realGrowth": 0.9116048007005606,
+    "womenRealGrowth": 1.0725688622650331,
+    "menRealGrowth": 0.6909137457371761
+  },
+  "laborMarket": {
+    "period": "1. kvartal 2026",
+    "employees": 5426,
+    "jobs": 5481,
+    "women": 3162,
+    "men": 2264,
+    "womenShare": 58.274972355326206,
+    "averageAge": 42.9,
+    "averageAgeWomen": 43.3,
+    "averageAgeMen": 42.4
+  }
 }

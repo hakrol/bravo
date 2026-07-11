@@ -93,6 +93,8 @@ coverImage: "/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"
 coverImageAlt: "To leger i hvite frakker med stetoskop og skrivebrett"
 ```
 
+Når `coverImage` settes til en sti under `/blogg/<slug>/`, skal den tilsvarende mappen `public/blogg/<slug>/` opprettes samtidig. Selve bildefilen skal fortsatt ikke opprettes eller genereres hvis brukeren skal legge inn bildet selv.
+
 Bruk et beskrivende filnavn basert på yrket, for eksempel `lege-lonn.png`, `psykolog-lonn.png` eller `vernepleier-lonn.png`. Ikke opprett bildefilen eller generer bilde hvis brukeren skal legge inn bildet selv.
 
 ## Fast navngivningsregel for egne bilder

@@ -85,6 +85,12 @@ import {
   RorleggerSalaryEditorialChart,
 } from "@/components/blog-rorlegger-salary-chart";
 import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/components/blog-snekker-salary-chart";
+import {
+  StoreManagerGenderSalaryCards,
+  StoreManagerSalaryBubbleChart,
+  StoreManagerSalaryDevelopmentChart,
+  StoreManagerSalaryEditorialChart,
+} from "@/components/blog-store-manager-salary-chart";
 import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
 import {
@@ -270,6 +276,10 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ServitorSalaryDevelopmentChart,
     SnekkerSalaryBubbleChart,
     SnekkerSalaryEditorialChart,
+    StoreManagerGenderSalaryCards,
+    StoreManagerSalaryBubbleChart,
+    StoreManagerSalaryDevelopmentChart,
+    StoreManagerSalaryEditorialChart,
     BlogOccupationSalaryTable,
     SurgeonSalaryBubbleChart,
     SurgeonSalaryEditorialChart,
