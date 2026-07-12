@@ -1728,31 +1728,26 @@ a.blog-meta-chip:focus-visible {
 }
 
 .blog-salary-development-controls {
-  display: grid;
-  grid-template-columns: repeat(var(--series-count, 4), minmax(0, 1fr));
-  width: 100%;
+  display: flex;
+  width: fit-content;
   max-width: 100%;
-  gap: 0.35rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: clamp(1.35rem, 3vw, 2rem);
-  border: 1px solid rgba(20, 83, 45, 0.14);
-  border-radius: 8px;
-  background: rgba(247, 251, 244, 0.78);
-  padding: 0.35rem;
 }
 
 .blog-salary-development-toggle {
   min-width: 0;
-  min-height: 2.55rem;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.55);
-  padding: 0.55rem 0.65rem;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 0.375rem 0.75rem;
   color: #14532d;
   font: inherit;
-  font-size: 0.86rem;
-  font-weight: 780;
+  font-size: 0.875rem;
+  font-weight: 600;
   letter-spacing: 0;
-  line-height: 1.18;
+  line-height: 1.25;
   overflow: hidden;
   text-align: center;
   text-overflow: ellipsis;
@@ -1767,7 +1762,7 @@ a.blog-meta-chip:focus-visible {
 
 .blog-salary-development-toggle:hover,
 .blog-salary-development-toggle:focus-visible {
-  border-color: rgba(20, 83, 45, 0.18);
+  border-color: rgba(15, 23, 42, 0.3);
   background: #ffffff;
 }
 
@@ -1778,9 +1773,9 @@ a.blog-meta-chip:focus-visible {
 
 .blog-salary-development-toggle[data-active="true"] {
   background: #14532d;
-  border-color: #14532d;
+  border-color: #064e3b;
   color: #ffffff;
-  box-shadow: 0 0.45rem 1rem rgba(20, 83, 45, 0.16);
+  box-shadow: 0 0.55rem 1.4rem rgba(6, 78, 59, 0.18);
 }
 
 .blog-salary-development-wrap {
@@ -2466,14 +2461,13 @@ a.blog-meta-chip:focus-visible {
   }
 
   .blog-salary-development-controls {
-    width: 100%;
-    grid-template-columns: minmax(0, 1fr);
+    width: fit-content;
     margin-top: 1.25rem;
   }
 
   .blog-salary-development-toggle {
-    padding-inline: 0.65rem;
-    font-size: 0.82rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
     white-space: normal;
   }
 

@@ -266,22 +266,27 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
     <div className="grid gap-8">
       <section className="fade-up relative overflow-visible rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
-        <div className="relative space-y-5">
-          <div className="max-w-4xl space-y-3">
-            <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+        <div className="relative grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(420px,1.15fr)] lg:gap-12">
+          <div className="flex flex-col">
+            <div className="space-y-3">
+              <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
               Lønnsjekk
-            </h1>
-            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              </h1>
+              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
               Sammenlign lønnen din med oppdaterte lønnstall fra SSB for yrket ditt.
-            </p>
-            <p className="text-sm leading-6 text-slate-500">
+              </p>
+              <p className="text-sm leading-6 text-slate-500">
               Siste data: {formatPeriodLabel(data.periodLabel)}
-            </p>
+              </p>
+            </div>
+
+            <div className="mt-8 flex items-center justify-center text-[var(--primary-strong)] lg:mt-auto lg:justify-start lg:pt-10">
+              <SalaryCheckIcon />
+            </div>
           </div>
 
-          <form className="grid gap-3" onSubmit={handleSubmit}>
-            <div className="grid gap-3 lg:grid-cols-[minmax(180px,260px)_minmax(0,1fr)]">
-              <label className="grid gap-2" htmlFor="salary">
+          <form className="grid content-start gap-4" onSubmit={handleSubmit}>
+            <label className="grid gap-2" htmlFor="salary">
                 <span className="text-sm font-semibold text-slate-950">Brutto månedslønn</span>
                 <input
                   id="salary"
@@ -297,11 +302,11 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   type="text"
                   value={form.salary}
                 />
-              </label>
+            </label>
 
-              <fieldset className="grid gap-2">
+            <fieldset className="grid gap-2">
                 <legend className="text-sm font-semibold text-slate-950">Kjønn</legend>
-                <div className="grid gap-2 sm:grid-cols-2">
+                <div className="grid gap-2">
                   <GenderButton
                     active={form.gender === "kvinne"}
                     icon={<FemaleIcon />}
@@ -327,9 +332,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                     type="button"
                   />
                 </div>
-              </fieldset>
-            </div>
-
+            </fieldset>
             <div className="grid gap-2">
               <span className="text-sm font-semibold text-slate-950">Yrke</span>
               <div className="relative">
@@ -381,7 +384,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               ) : null}
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end">
+            <div className="grid gap-4">
               <label className="grid gap-2" htmlFor="workStartYear">
                 <span className="text-sm font-semibold text-slate-950">
                   Arbeidsstart
@@ -425,7 +428,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               </label>
 
               <button
-                className="inline-flex h-11 items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-6 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(20,83,45,0.16)] transition hover:bg-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-11 w-full items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-6 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(20,83,45,0.16)] transition hover:bg-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-60"
                 type="submit"
               >
                 Sjekk lønn
@@ -1334,6 +1337,42 @@ function MaleIcon() {
     <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
       <circle cx="6" cy="10" r="3" stroke="currentColor" strokeWidth="1.5" />
       <path d="M8.5 7.5 13 3M10 3h3v3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function SalaryCheckIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-36 w-36 sm:h-44 sm:w-44 lg:h-52 lg:w-52"
+      fill="none"
+      viewBox="0 0 200 200"
+    >
+      <circle cx="100" cy="100" r="78" fill="currentColor" opacity="0.06" />
+      <rect
+        x="48"
+        y="55"
+        width="104"
+        height="78"
+        rx="12"
+        stroke="currentColor"
+        strokeWidth="7"
+      />
+      <path
+        d="M48 78h104M72 113h26"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="7"
+      />
+      <circle cx="123" cy="105" r="27" fill="white" stroke="currentColor" strokeWidth="7" />
+      <path
+        d="m112 105 8 8 15-18"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="7"
+      />
     </svg>
   );
 }
