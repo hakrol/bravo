@@ -30,6 +30,44 @@ type StoreManagerSalarySnapshot = {
       men: number;
     }[];
   };
+  salaryDistribution: {
+    period: string;
+    source: string;
+    note: string;
+    women: {
+      median: number;
+      average: number;
+      p25: number;
+      p75: number;
+    };
+    men: {
+      median: number;
+      average: number;
+      p25: number;
+      p75: number;
+    };
+  };
+  laborMarket: {
+    period: string;
+    employees: number;
+    jobs: number;
+    women: number;
+    men: number;
+    womenShare: number;
+    menShare: number;
+    averageAge: number;
+    averageAgeWomen: number;
+    averageAgeMen: number;
+  };
+  ageDevelopment: {
+    source: string;
+    rows: {
+      period: string;
+      all: number;
+      women: number;
+      men: number;
+    }[];
+  };
 };
 
 const comparisonLabels = [
@@ -188,6 +226,66 @@ export function StoreManagerSalaryEditorialChart() {
       subtitleText="i kroner for butikksjefer og nærliggende leder- og salgsyrker, SSB 2025"
       ticks={[0, 25000, 50000, 75000, 100000]}
       title="Butikksjefer ligger over butikkmedarbeidere, men under flere lederyrker"
+    />
+  );
+}
+
+export function StoreManagerGenderGapEditorialChart() {
+  const distribution = getSnapshot().salaryDistribution;
+
+  return (
+    <EditorialDivergingBarChart
+      data={[
+        {
+          label: "Menn",
+          value: distribution.men.median,
+          highlight: true,
+        },
+        {
+          label: "Kvinner",
+          value: distribution.women.median,
+        },
+      ]}
+      format="currency"
+      kicker="Kjønnsforskjell"
+      note="Tallene gjelder median månedslønn for alle sektorer og arbeidstid i alt."
+      source={distribution.source}
+      subtitleLabel="Median månedslønn"
+      subtitleText="for kvinnelige og mannlige butikkavdelingssjefer, SSB 2025"
+      ticks={[0, 25000, 50000, 75000]}
+      title="Menn hadde høyere medianlønn enn kvinner blant butikksjefer"
+    />
+  );
+}
+
+export function StoreManagerAgeEditorialChart() {
+  const laborMarket = getSnapshot().laborMarket;
+
+  return (
+    <EditorialDivergingBarChart
+      data={[
+        {
+          label: "Kvinner",
+          value: laborMarket.averageAgeWomen,
+          highlight: true,
+        },
+        {
+          label: "Alle",
+          value: laborMarket.averageAge,
+        },
+        {
+          label: "Menn",
+          value: laborMarket.averageAgeMen,
+        },
+      ]}
+      format="number"
+      kicker="Alder"
+      note="Tallene viser gjennomsnittsalder for lønnstakere i SSB-gruppen Butikkavdelingssjefer."
+      source="SSB tabell 11658"
+      subtitleLabel="Gjennomsnittsalder"
+      subtitleText={`i år for butikkavdelingssjefer, ${laborMarket.period}`}
+      ticks={[0, 20, 40, 60]}
+      title="Kvinnelige butikksjefer var litt eldre enn mannlige i snitt"
     />
   );
 }

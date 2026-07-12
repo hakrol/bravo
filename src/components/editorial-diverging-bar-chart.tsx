@@ -483,7 +483,10 @@ function formatValue(value: number, format: "currency" | "number" | "percent", d
   }
 
   if (format === "number") {
-    return Math.round(value).toLocaleString("nb-NO");
+    return value.toLocaleString("nb-NO", {
+      maximumFractionDigits: digits,
+      minimumFractionDigits: digits > 0 ? 1 : 0,
+    });
   }
 
   return `${value.toFixed(digits)}%`;

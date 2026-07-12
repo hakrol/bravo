@@ -86,6 +86,8 @@ import {
 } from "@/components/blog-rorlegger-salary-chart";
 import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/components/blog-snekker-salary-chart";
 import {
+  StoreManagerAgeEditorialChart,
+  StoreManagerGenderGapEditorialChart,
   StoreManagerGenderSalaryCards,
   StoreManagerSalaryBubbleChart,
   StoreManagerSalaryDevelopmentChart,
@@ -276,6 +278,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ServitorSalaryDevelopmentChart,
     SnekkerSalaryBubbleChart,
     SnekkerSalaryEditorialChart,
+    StoreManagerAgeEditorialChart,
+    StoreManagerGenderGapEditorialChart,
     StoreManagerGenderSalaryCards,
     StoreManagerSalaryBubbleChart,
     StoreManagerSalaryDevelopmentChart,

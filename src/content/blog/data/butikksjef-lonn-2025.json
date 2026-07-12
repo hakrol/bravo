@@ -63,6 +63,29 @@
     "womenMonthlyMedian": 46640,
     "menMonthlyMedian": 50090
   },
+  "salaryDistribution": {
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "note": "Målemetode: median, gjennomsnitt, nedre kvartil og øvre kvartil. Sektor: alle sektorer. Arbeidstid: i alt. Tid: 2025.",
+    "total": {
+      "median": 47680,
+      "average": 50860,
+      "p25": 44510,
+      "p75": 54490
+    },
+    "women": {
+      "median": 46640,
+      "average": 48530,
+      "p25": 44030,
+      "p75": 50740
+    },
+    "men": {
+      "median": 50090,
+      "average": 53970,
+      "p25": 45060,
+      "p75": 60320
+    }
+  },
   "salaryDevelopment": {
     "occupationLabel": "Butikkavdelingssjefer",
     "source": "SSB tabell 11418",
@@ -119,8 +142,50 @@
     "women": 3162,
     "men": 2264,
     "womenShare": 58.274972355326206,
+    "menShare": 41.725027644673794,
     "averageAge": 42.9,
     "averageAgeWomen": 43.3,
     "averageAgeMen": 42.4
+  },
+  "ageDevelopment": {
+    "source": "SSB tabell 11658",
+    "rows": [
+      {
+        "period": "1. kvartal 2021",
+        "all": 41.4,
+        "women": 41.8,
+        "men": 40.8
+      },
+      {
+        "period": "1. kvartal 2022",
+        "all": 42,
+        "women": 42.5,
+        "men": 41.4
+      },
+      {
+        "period": "1. kvartal 2023",
+        "all": 42.2,
+        "women": 42.5,
+        "men": 41.7
+      },
+      {
+        "period": "1. kvartal 2024",
+        "all": 42.7,
+        "women": 43,
+        "men": 42.2
+      },
+      {
+        "period": "1. kvartal 2025",
+        "all": 42.5,
+        "women": 42.8,
+        "men": 42.2
+      },
+      {
+        "period": "1. kvartal 2026",
+        "all": 42.9,
+        "women": 43.3,
+        "men": 42.4
+      }
+    ]
   }
 }
