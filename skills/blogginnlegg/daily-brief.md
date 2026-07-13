@@ -49,137 +49,55 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
-[ ] Butikksjef eller salgsleder: hvilket yrke lønner seg mest?
+Hva tjener en bartender?
+
+[ ] Hva tjener en bartender?
 
 Tittel:
-Butikksjef eller salgsleder: hvilket yrke lønner seg mest?
+
+Hva tjener en bartender i måneden og året?
 
 Beskrivelse:
-Innlegget skal sammenligne butikksjefer med salgsledere og andre nærliggende lederyrker. Vinklingen er karriereorientert: leseren skal forstå hvordan butikksjefrollen plasserer seg lønnsmessig blant andre leder- og salgsyrker. Artikkelen bør ikke bare handle om høyest lønn, men også om rolleforskjeller, ansvar og mulige karriereveier.
+
+Innlegget skal gi leseren en helhetlig oversikt over lønnsnivået blant bartendere. Det skal vise gjennomsnittlig timelønn, månedslønn og årslønn, samt hvordan lønnen fordeler seg mellom kvinnelige og mannlige bartendere.
+
+Artikkelen skal også forklare hva en bartender arbeider med, hvor mange som har bartender som registrert yrke, og hvordan lønnen har utviklet seg de siste fem årene. Reallønnsutviklingen bør brukes for å vise om kjøpekraften faktisk har økt.
 
 Overskrifter:
 
-* Hva gjør en butikksjef?
-* Hva gjør en salgsleder?
-* Lønn: butikksjef sammenlignet med salgsleder
-* Andre relaterte yrker å sammenligne med
-* Kjønnsforskjeller i lønn
-* Hvilket yrke passer best som neste steg?
+Hva gjør en bartender?
+Hva er gjennomsnittslønnen til en bartender?
+Hva er timelønnen til en bartender?
+Hva er årslønnen til en bartender?
+Hvordan fordeler lønnen seg blant bartendere?
+Tjener mannlige og kvinnelige bartendere forskjellig?
+Hvordan har bartenderlønnen utviklet seg?
+Har bartendere hatt reallønnsvekst?
+Hvor mange jobber som bartendere?
 
 Diagrammer:
 
-* Kjønnsdelt lønnskort
-* Boblediagram
-* Søkbar yrkesliste
-* Redaksjonelt stolpediagram
+Kjønnsdelt lønnskort
+Femårs lønnsutvikling
+Redaksjonelt stolpediagram som viser lønnsfordelingen
+Boblediagram med lønn, alder og antall lønnstakere
 
 FAQ:
 
-* Tjener butikksjefer eller salgsledere mest?
-* Hva er forskjellen på butikksjef og salgsleder?
-* Hvilke yrker ligner på butikksjef?
-* Hvilke lederyrker innen salg har høyest lønn?
-* Hvor mye tjener en butikksjef i året?
-* Er butikksjef en god vei videre innen salg og varehandel?
+Hva er vanlig timelønn for en bartender?
+Hvor mye tjener en bartender i måneden?
+Hvor mye tjener en bartender i året?
+Får bartendere tillegg for kveld og helg?
+Hvor mange arbeider som bartendere i Norge?
+Hva er gjennomsnittsalderen blant bartendere?
 
 Interne lenker:
 
-* /yrke/butikkavdelingssjefer-lonn
+/yrke/bartendere-lonn
+Lenker til relaterte yrker innen servering, restaurant og reiseliv
+Lenke til oversikten over yrker med tilsvarende lønnsnivå
 
 Eksterne lenker:
-
-* https://utdanning.no/yrker/beskrivelse/butikksjef
-* https://utdanning.no/yrker/beskrivelse/salgssjef
-
-
-- [ ] Automatikere: lønn, arbeidsmarked og relaterte yrker
-
-Tittel:
-Automatikere: lønn, arbeidsmarked og relaterte yrker
-
-Beskrivelse:
-Innlegget skal forklare hvorfor automatikere skiller seg ut blant tekniske fag: relativt høy lønn, tydelig kjønnsforskjell i lønnstallene og et arbeidsmarked som kan sammenlignes med flere elektro- og industrifag. Ta med yrkesbeskrivelsen tidlig, og bruk deretter lønn, lønnsfordeling, antall lønnstakere, alder og relaterte yrker til å bygge en helhetlig artikkel. Siden automatikere allerede er et høyere lønnet håndverksyrke, bør artikkelen vise både nivå, spredning og sammenligning.
-
-Overskrifter:
-
-* Hva tjener automatikere?
-* Hva gjør en automatiker?
-* Lønn for kvinner og menn
-* Hvor høy er lønnen sammenlignet med andre tekniske fag?
-* Lønnsfordeling: hvor stort er spennet?
-* Arbeidsmarked, alder og antall ansatte
-
-Diagrammer:
-
-* Kjønnsdelt lønnskort
-* Redaksjonelt stolpediagram
-* Boblediagram
-* Femårs lønnsutvikling
-
-FAQ:
-
-* Hva er timelønnen til en automatiker?
-* Hva er årslønnen til en automatiker?
-* Tjener automatikere mer enn elektrikere?
-* Hvor stor er lønnsforskjellen mellom kvinner og menn blant automatikere?
-* Hvor mange jobber som automatikere?
-* Hvilke yrker er mest relevante å sammenligne med automatikere?
-
-Interne lenker:
-
-* /yrke/automatikere-lonn
-* /yrke/energimontorer-lonn
-* /yrke/elektrikere-lonn
-* /yrke/serviceelektronikere-lonn
-* /yrke/anleggsmaskin-og-industrimekanikere-lonn
-
-Eksterne lenker:
-
-* https://utdanning.no/yrker/beskrivelse/automatiker
-
-- [ ] Hvor mye tjener glassarbeidere sammenlignet med lignende yrker?
-
-Tittel:
-Hvor mye tjener glassarbeidere sammenlignet med lignende yrker?
-
-Beskrivelse:
-Innlegget skal bruke sammenligning som hovedgrep. Start med yrkesbeskrivelsen og lønnen for glassarbeidere, men la artikkelen forklare hvordan lønnen ser ut ved siden av gulv- og flisleggere, isolatører, taktekkere, rørleggere og andre nærliggende byggfag. Kjønnsdelt lønnskort skal være med, men teksten må være presis på at egne kvinnetall kan mangle eller være skjermet dersom datagrunnlaget er for lite. Bruk lønnsfordeling og antall lønnstakere for å gjøre sammenligningen mer konkret.
-
-Overskrifter:
-
-* Hva tjener glassarbeidere?
-* Hva gjør en glassarbeider?
-* Slik er lønnsnivået sammenlignet med lignende byggyrker
-* Lønnsfordeling blant glassarbeidere
-* Hvor mange jobber som glassarbeidere?
-
-Diagrammer:
-
-* Kjønnsdelt lønnskort
-* Boblediagram
-* Redaksjonelt stolpediagram
-* Søkbar yrkesliste
-
-FAQ:
-
-* Hva er månedslønnen til glassarbeidere?
-* Hva er årslønnen til en glassarbeider?
-* Hva er timelønnen til en glassarbeider?
-* Finnes det egne lønnstall for kvinnelige glassarbeidere?
-* Tjener glassarbeidere mer enn gulv- og flisleggere?
-* Hvilke yrker bør glassarbeidere sammenlignes med?
-
-Interne lenker:
-
-* /yrke/glassarbeidere-lonn
-* /yrke/gulv-og-flisleggere-lonn
-* /yrke/isolatorer-mv-lonn
-* /yrke/taktekkere-lonn
-* /yrke/rorleggere-og-vvs-montorer-lonn
-
-Eksterne lenker:
-
-* https://utdanning.no/yrker/beskrivelse/glassfagarbeider
 
 - [ ] Førtrykkere: lønn og lønnsutvikling
 
@@ -225,6 +143,7 @@ Interne lenker:
 Eksterne lenker:
 
 * https://utdanning.no/yrker/beskrivelse/mediegrafiker
+
 
 - [ ] Gulv- og flisleggere: lønnstallene du bør kjenne til
 
@@ -272,6 +191,17 @@ Eksterne lenker:
 * https://utdanning.no/yrker/beskrivelse/mur-og_flislegger
 
 ### Ferdig
+
+- [x] De 5 best betalte håndverkeryrkene - `src/content/blog/de-5-best-betalte-handverkeryrkene.mdx` - 2026-07-13
+
+- [x] Ergoterapeut eller fysioterapeut: Hvilket yrke har høyest lønn? - `src/content/blog/ergoterapeut-eller-fysioterapeut.mdx` - 2026-07-13
+
+- [x] Hvor mye tjener glassarbeidere sammenlignet med lignende yrker? - `src/content/blog/hvor-mye-tjener-glassarbeidere-sammenlignet-med-lignende-yrker.mdx` - 2026-07-13
+
+
+- [x] Automatikere: lønn, arbeidsmarked og relaterte yrker - `src/content/blog/automatikere-lonn-arbeidsmarked-relaterte-yrker.mdx` - 2026-07-13
+
+- [x] Butikksjef eller salgsleder: hvilket yrke lønner seg mest? - `src/content/blog/butikksjef-eller-salgsleder.mdx` - 2026-07-13
 
 - [x] Hvor gamle er butikksjefer – og hva sier det om yrket? - `src/content/blog/hvor-gamle-er-butikksjefer.mdx` - 2026-07-12
 

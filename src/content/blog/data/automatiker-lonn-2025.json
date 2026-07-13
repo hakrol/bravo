@@ -1,0 +1,172 @@
+{
+  "id": "automatiker-lonn-2025",
+  "title": "Lønn, arbeidsmarked og relaterte yrker for automatikere",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Lønnstallene gjelder median månedslønn for alle sektorer, begge kjønn og heltid og deltid samlet i 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 1. kvartal 2026 fra SSB tabell 11658.",
+  "rows": [
+    {
+      "code": "7412",
+      "label": "Automatikere",
+      "href": "/yrke/automatikere-lonn",
+      "value": 60080,
+      "average": 61120,
+      "p25": 48860,
+      "p75": 75830,
+      "employees": 6329,
+      "jobs": 6416,
+      "averageAge": 36.1,
+      "womenEmployees": 413,
+      "menEmployees": 5916,
+      "womenShare": 6.5
+    },
+    {
+      "code": "7413",
+      "label": "Energimontører",
+      "href": "/yrke/energimontorer-lonn",
+      "value": 58140,
+      "employees": 4155,
+      "jobs": 4199,
+      "averageAge": 34.7,
+      "womenEmployees": 210,
+      "menEmployees": 3945,
+      "womenShare": 5.1
+    },
+    {
+      "code": "7411",
+      "label": "Elektrikere",
+      "href": "/yrke/elektrikere-lonn",
+      "value": 54930,
+      "employees": 34262,
+      "jobs": 34899,
+      "averageAge": 35.8,
+      "womenEmployees": 1316,
+      "menEmployees": 32946,
+      "womenShare": 3.8
+    },
+    {
+      "code": "7126",
+      "label": "Rørleggere og VVS-montører",
+      "href": "/yrke/rorleggere-og-vvs-montorer-lonn",
+      "value": 53750,
+      "employees": 20444,
+      "jobs": 20663,
+      "averageAge": 39.3,
+      "womenEmployees": 537,
+      "menEmployees": 19907,
+      "womenShare": 2.6
+    },
+    {
+      "code": "7421",
+      "label": "Serviceelektronikere",
+      "href": "/yrke/serviceelektronikere-lonn",
+      "value": 53570,
+      "employees": 1323,
+      "jobs": 1332,
+      "averageAge": 44.2,
+      "womenEmployees": 160,
+      "menEmployees": 1163,
+      "womenShare": 12.1
+    },
+    {
+      "code": "7233",
+      "label": "Anleggsmaskin- og industrimekanikere",
+      "href": "/yrke/anleggsmaskin-og-industrimekanikere-lonn",
+      "value": 53540,
+      "employees": 22554,
+      "jobs": 22899,
+      "averageAge": 38.5,
+      "womenEmployees": 1184,
+      "menEmployees": 21370,
+      "womenShare": 5.2
+    },
+    {
+      "code": "7114",
+      "label": "Betongarbeidere",
+      "href": "/yrke/betongarbeidere-lonn",
+      "value": 53420
+    },
+    {
+      "code": "7222",
+      "label": "Verktøymaker, låsesmeder mv.",
+      "href": "/yrke/verktoymaker-lasesmeder-mv-lonn",
+      "value": 52460
+    },
+    {
+      "code": "7212",
+      "label": "Sveisere",
+      "href": "/yrke/sveisere-lonn",
+      "value": 50500
+    },
+    {
+      "code": "7223",
+      "label": "Metalldreiere mv.",
+      "href": "/yrke/metalldreiere-mv-lonn",
+      "value": 50140
+    },
+    {
+      "code": "7422",
+      "label": "Tele- og IKT-installatører",
+      "href": "/yrke/tele-og-ikt-installatorer-lonn",
+      "value": 48590
+    },
+    {
+      "code": "7313",
+      "label": "Gull- og sølvsmeder, gravører mv.",
+      "href": "/yrke/gull-og-solvsmeder-gravorer-mv-lonn",
+      "value": 48000
+    },
+    {
+      "code": "7321",
+      "label": "Førtrykkere",
+      "href": "/yrke/fortrykkere-lonn",
+      "value": 47350
+    }
+  ],
+  "occupation": {
+    "code": "7412",
+    "label": "Automatikere",
+    "href": "/yrke/automatikere-lonn",
+    "medianMonthlySalary": 60080,
+    "medianAnnualSalary": 720960,
+    "estimatedHourlySalary": 370,
+    "averageMonthlySalary": 61120,
+    "p25": 48860,
+    "p75": 75830,
+    "employees": 6329,
+    "jobs": 6416,
+    "averageAge": 36.1,
+    "womenEmployees": 413,
+    "menEmployees": 5916,
+    "womenShare": 6.5,
+    "menShare": 93.5
+  },
+  "genderMedian": {
+    "occupationLabel": "automatikere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 47720,
+    "menMonthlyMedian": 60980,
+    "differenceMonthly": 13260,
+    "differencePercentOfMen": 21.7
+  },
+  "salaryDevelopment": [
+    { "period": "2021", "medianMonthlySalary": 48920, "womenMonthlyMedian": 40970, "menMonthlyMedian": 49490 },
+    { "period": "2022", "medianMonthlySalary": 51370, "womenMonthlyMedian": 42130, "menMonthlyMedian": 51960 },
+    { "period": "2023", "medianMonthlySalary": 53420, "womenMonthlyMedian": 43280, "menMonthlyMedian": 54130 },
+    { "period": "2024", "medianMonthlySalary": 57010, "womenMonthlyMedian": 45190, "menMonthlyMedian": 57740 },
+    { "period": "2025", "medianMonthlySalary": 60080, "womenMonthlyMedian": 47720, "menMonthlyMedian": 60980 }
+  ],
+  "metadata": {
+    "salaryTableId": "11418",
+    "workforceTableId": "11658",
+    "salaryPeriod": "2025",
+    "workforcePeriod": "1. kvartal 2026",
+    "salaryMeasure": "Median månedslønn",
+    "distributionMeasure": "Median, gjennomsnitt, nedre kvartil og øvre kvartil",
+    "workforceMeasure": "Antall lønnstakere, arbeidsforhold og gjennomsnittsalder",
+    "occupationCode": "7412",
+    "generatedFromLocalSsbDataAt": "2026-07-13"
+  }
+}
