@@ -3,6 +3,12 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  AutomatikerGenderSalaryCards,
+  AutomatikerSalaryBubbleChart,
+  AutomatikerSalaryDevelopmentChart,
+  AutomatikerSalaryEditorialChart,
+} from "@/components/blog-automatiker-salary-chart";
+import {
   CarMechanicGenderSalaryCards,
   CarMechanicSalaryBubbleChart,
   CarMechanicSalaryEditorialChart,
@@ -39,9 +45,21 @@ import {
   EnergyInstallerSalaryDevelopmentChart,
   EnergyInstallerSalaryEditorialChart,
 } from "@/components/blog-energy-installer-salary-chart";
+import {
+  ErgoterapeutFysioterapeutSalaryBubbleChart,
+  ErgoterapeutFysioterapeutSalaryDevelopmentChart,
+  ErgoterapeutFysioterapeutSalaryEditorialChart,
+  ErgoterapeutGenderSalaryCards,
+  FysioterapeutGenderSalaryCards,
+} from "@/components/blog-ergoterapeut-fysioterapeut-salary-chart";
 import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@/components/blog-firefighter-salary-chart";
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
+import {
+  GlassWorkerGenderSalaryCards,
+  GlassWorkerSalaryBubbleChart,
+  GlassWorkerSalaryEditorialChart,
+} from "@/components/blog-glass-worker-salary-chart";
 import { BlogHandverkerSalaryChart } from "@/components/blog-handverker-salary-chart";
 import { BlogLonnsjekkCallout } from "@/components/blog-lonnsjekk-callout";
 import {
@@ -95,6 +113,10 @@ import {
 } from "@/components/blog-store-manager-salary-chart";
 import { SurgeonSalaryBubbleChart, SurgeonSalaryEditorialChart } from "@/components/blog-surgeon-salary-chart";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
+import {
+  TopHandverkerGenderSalaryCards,
+  TopHandverkerSalaryEditorialChart,
+} from "@/components/blog-top-handverker-salary-chart";
 import {
   BlogTeacherHourlySalaryChart,
   BlogTeacherSalaryChart,
@@ -224,6 +246,10 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       </td>
     ),
     BlogChart,
+    AutomatikerGenderSalaryCards,
+    AutomatikerSalaryBubbleChart,
+    AutomatikerSalaryDevelopmentChart,
+    AutomatikerSalaryEditorialChart,
     BuildingWorkerFamiliesSalaryChart,
     BuildingWorkerFamiliesSalaryDevelopmentChart,
     CarMechanicGenderSalaryCards,
@@ -242,8 +268,16 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     EnergyInstallerSalaryBubbleChart,
     EnergyInstallerSalaryDevelopmentChart,
     EnergyInstallerSalaryEditorialChart,
+    ErgoterapeutFysioterapeutSalaryBubbleChart,
+    ErgoterapeutFysioterapeutSalaryDevelopmentChart,
+    ErgoterapeutFysioterapeutSalaryEditorialChart,
+    ErgoterapeutGenderSalaryCards,
+    FysioterapeutGenderSalaryCards,
     FirefighterSalaryBubbleChart,
     FirefighterSalaryEditorialChart,
+    GlassWorkerGenderSalaryCards,
+    GlassWorkerSalaryBubbleChart,
+    GlassWorkerSalaryEditorialChart,
     BlogGenderSalaryCards,
     BlogPsychologistSalaryChart,
     DoctorSalaryBubbleChart,
@@ -287,6 +321,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogOccupationSalaryTable,
     SurgeonSalaryBubbleChart,
     SurgeonSalaryEditorialChart,
+    TopHandverkerGenderSalaryCards,
+    TopHandverkerSalaryEditorialChart,
     NorwayAverageSalaryDevelopmentChart,
     NorwayRealSalaryGrowthChart,
     NorwayTopOccupationSalaryGrowthChart,
