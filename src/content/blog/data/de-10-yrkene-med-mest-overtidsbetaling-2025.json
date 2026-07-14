@@ -1,0 +1,3278 @@
+{
+  "id": "de-10-yrkene-med-mest-overtidsbetaling-2025",
+  "title": "De 10 yrkene med mest overtidsbetaling i 2025",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Gjennomsnittlig overtidsbetaling per måned",
+  "valueLabel": "Overtid per måned",
+  "valueFormat": "currency",
+  "note": "Rangeringen bruker gjennomsnittlig overtidsbetaling per måned for firesifrede STYRK-08-yrker i 2025. Begge kjønn, alle sektorer og arbeidstid i alt er inkludert. Samlegrupper og manglende verdier er utelatt.",
+  "method": {
+    "salaryTableId": "11418",
+    "contentsCode": "Overtid",
+    "measure": "Gjennomsnitt",
+    "occupationLevel": "Firesifret STYRK-08",
+    "sector": "Alle sektorer",
+    "gender": "Begge kjønn",
+    "workTime": "Arbeidstid i alt",
+    "period": "2025",
+    "includedOccupationCount": 361,
+    "sourceUpdated": "2026-02-05T07:00:00Z"
+  },
+  "allOccupations": {
+    "label": "Alle yrker",
+    "monthlyOvertimePay": 1240,
+    "annualizedOvertimePay": 14880
+  },
+  "rows": [
+    {
+      "rank": 1,
+      "code": "3121",
+      "label": "Arbeidsleder, bergfag",
+      "href": "/yrke/arbeidsleder-bergfag-lonn",
+      "value": 14820,
+      "monthlyOvertimePay": 14820,
+      "annualizedOvertimePay": 177840
+    },
+    {
+      "rank": 2,
+      "code": "3134",
+      "label": "Kontrolloperatører ved olje- og naturgassraffineringsanlegg",
+      "href": "/yrke/kontrolloperatorer-ved-olje-og-naturgassraffineringsanlegg-lonn",
+      "value": 12550,
+      "monthlyOvertimePay": 12550,
+      "annualizedOvertimePay": 150600
+    },
+    {
+      "rank": 3,
+      "code": "8113",
+      "label": "Operatører innen boring mv.",
+      "href": "/yrke/operatorer-innen-boring-mv-lonn",
+      "value": 12420,
+      "monthlyOvertimePay": 12420,
+      "annualizedOvertimePay": 149040
+    },
+    {
+      "rank": 4,
+      "code": "3155",
+      "label": "Teknikere innen luftfartssikkerhet",
+      "href": "/yrke/teknikere-innen-luftfartssikkerhet-lonn",
+      "value": 9750,
+      "monthlyOvertimePay": 9750,
+      "annualizedOvertimePay": 117000
+    },
+    {
+      "rank": 5,
+      "code": "3131",
+      "label": "Energikontrolloperatører",
+      "href": "/yrke/energikontrolloperatorer-lonn",
+      "value": 9070,
+      "monthlyOvertimePay": 9070,
+      "annualizedOvertimePay": 108840
+    },
+    {
+      "rank": 6,
+      "code": "3154",
+      "label": "Flygeledere",
+      "href": "/yrke/flygeledere-lonn",
+      "value": 8590,
+      "monthlyOvertimePay": 8590,
+      "annualizedOvertimePay": 103080
+    },
+    {
+      "rank": 7,
+      "code": "8343",
+      "label": "Kran- og heisførere mv.",
+      "href": "/yrke/kran-og-heisforere-mv-lonn",
+      "value": 7340,
+      "monthlyOvertimePay": 7340,
+      "annualizedOvertimePay": 88080
+    },
+    {
+      "rank": 8,
+      "code": "3153",
+      "label": "Flygere",
+      "href": "/yrke/flygere-lonn",
+      "value": 6800,
+      "monthlyOvertimePay": 6800,
+      "annualizedOvertimePay": 81600
+    },
+    {
+      "rank": 9,
+      "code": "8311",
+      "label": "Lokomotiv og T-baneførere",
+      "href": "/yrke/lokomotiv-og-t-baneforere-lonn",
+      "value": 6200,
+      "monthlyOvertimePay": 6200,
+      "annualizedOvertimePay": 74400
+    },
+    {
+      "rank": 10,
+      "code": "3133",
+      "label": "Kontrolloperatører innen kjemisk prosessindustri",
+      "href": "/yrke/kontrolloperatorer-innen-kjemisk-prosessindustri-lonn",
+      "value": 6160,
+      "monthlyOvertimePay": 6160,
+      "annualizedOvertimePay": 73920
+    },
+    {
+      "rank": 11,
+      "code": "3117",
+      "label": "Ingeniører innen petroleum, bergverk og metallurgi",
+      "href": "/yrke/ingeniorer-innen-petroleum-bergverk-og-metallurgi-lonn",
+      "value": 6040,
+      "monthlyOvertimePay": 6040,
+      "annualizedOvertimePay": 72480
+    },
+    {
+      "rank": 12,
+      "code": "7232",
+      "label": "Mekanikere innen flytekniske fag",
+      "href": "/yrke/mekanikere-innen-flytekniske-fag-lonn",
+      "value": 6040,
+      "monthlyOvertimePay": 6040,
+      "annualizedOvertimePay": 72480
+    },
+    {
+      "rank": 13,
+      "code": "7413",
+      "label": "Energimontører",
+      "href": "/yrke/energimontorer-lonn",
+      "value": 5800,
+      "monthlyOvertimePay": 5800,
+      "annualizedOvertimePay": 69600
+    },
+    {
+      "rank": 14,
+      "code": "7311",
+      "label": "Presisjonsinstrumentmakere og -reparatører",
+      "href": "/yrke/presisjonsinstrumentmakere-og-reparatorer-lonn",
+      "value": 5540,
+      "monthlyOvertimePay": 5540,
+      "annualizedOvertimePay": 66480
+    },
+    {
+      "rank": 15,
+      "code": "5112",
+      "label": "Konduktører",
+      "href": "/yrke/konduktorer-lonn",
+      "value": 5470,
+      "monthlyOvertimePay": 5470,
+      "annualizedOvertimePay": 65640
+    },
+    {
+      "rank": 16,
+      "code": "8344",
+      "label": "Truckførere",
+      "href": "/yrke/truckforere-lonn",
+      "value": 5440,
+      "monthlyOvertimePay": 5440,
+      "annualizedOvertimePay": 65280
+    },
+    {
+      "rank": 17,
+      "code": "3122",
+      "label": "Arbeidsleder, industri",
+      "href": "/yrke/arbeidsleder-industri-lonn",
+      "value": 4780,
+      "monthlyOvertimePay": 4780,
+      "annualizedOvertimePay": 57360
+    },
+    {
+      "rank": 18,
+      "code": "2212",
+      "label": "Legespesialister",
+      "href": "/yrke/legespesialister-lonn",
+      "value": 4750,
+      "monthlyOvertimePay": 4750,
+      "annualizedOvertimePay": 57000
+    },
+    {
+      "rank": 19,
+      "code": "7412",
+      "label": "Automatikere",
+      "href": "/yrke/automatikere-lonn",
+      "value": 4690,
+      "monthlyOvertimePay": 4690,
+      "annualizedOvertimePay": 56280
+    },
+    {
+      "rank": 20,
+      "code": "7233",
+      "label": "Anleggsmaskin- og industrimekanikere",
+      "href": "/yrke/anleggsmaskin-og-industrimekanikere-lonn",
+      "value": 4660,
+      "monthlyOvertimePay": 4660,
+      "annualizedOvertimePay": 55920
+    },
+    {
+      "rank": 21,
+      "code": "6221",
+      "label": "Havbruksarbeidere",
+      "href": "/yrke/havbruksarbeidere-lonn",
+      "value": 4650,
+      "monthlyOvertimePay": 4650,
+      "annualizedOvertimePay": 55800
+    },
+    {
+      "rank": 22,
+      "code": "8114",
+      "label": "Operatører innen produksjon av betong mv.",
+      "href": "/yrke/operatorer-innen-produksjon-av-betong-mv-lonn",
+      "value": 4640,
+      "monthlyOvertimePay": 4640,
+      "annualizedOvertimePay": 55680
+    },
+    {
+      "rank": 23,
+      "code": "7215",
+      "label": "Riggere og spleisere",
+      "href": "/yrke/riggere-og-spleisere-lonn",
+      "value": 4620,
+      "monthlyOvertimePay": 4620,
+      "annualizedOvertimePay": 55440
+    },
+    {
+      "rank": 24,
+      "code": "7212",
+      "label": "Sveisere",
+      "href": "/yrke/sveisere-lonn",
+      "value": 4530,
+      "monthlyOvertimePay": 4530,
+      "annualizedOvertimePay": 54360
+    },
+    {
+      "rank": 25,
+      "code": "7127",
+      "label": "Kuldemontører mv.",
+      "href": "/yrke/kuldemontorer-mv-lonn",
+      "value": 4340,
+      "monthlyOvertimePay": 4340,
+      "annualizedOvertimePay": 52080
+    },
+    {
+      "rank": 26,
+      "code": "3115",
+      "label": "Maskiningeniører",
+      "href": "/yrke/maskiningeniorer-lonn",
+      "value": 4330,
+      "monthlyOvertimePay": 4330,
+      "annualizedOvertimePay": 51960
+    },
+    {
+      "rank": 27,
+      "code": "8112",
+      "label": "Prosessoperatører (oppredning)",
+      "href": "/yrke/prosessoperatorer-oppredning-lonn",
+      "value": 4080,
+      "monthlyOvertimePay": 4080,
+      "annualizedOvertimePay": 48960
+    },
+    {
+      "rank": 28,
+      "code": "7222",
+      "label": "Verktøymaker, låsesmeder mv.",
+      "href": "/yrke/verktoymaker-lasesmeder-mv-lonn",
+      "value": 4060,
+      "monthlyOvertimePay": 4060,
+      "annualizedOvertimePay": 48720
+    },
+    {
+      "rank": 29,
+      "code": "8211",
+      "label": "Montører av mekaniske produkter",
+      "href": "/yrke/montorer-av-mekaniske-produkter-lonn",
+      "value": 4030,
+      "monthlyOvertimePay": 4030,
+      "annualizedOvertimePay": 48360
+    },
+    {
+      "rank": 30,
+      "code": "8131",
+      "label": "Operatører innen kjemisk industri",
+      "href": "/yrke/operatorer-innen-kjemisk-industri-lonn",
+      "value": 3950,
+      "monthlyOvertimePay": 3950,
+      "annualizedOvertimePay": 47400
+    },
+    {
+      "rank": 31,
+      "code": "8111",
+      "label": "Bergfagarbeidere",
+      "href": "/yrke/bergfagarbeidere-lonn",
+      "value": 3900,
+      "monthlyOvertimePay": 3900,
+      "annualizedOvertimePay": 46800
+    },
+    {
+      "rank": 32,
+      "code": "3113",
+      "label": "Elkraftingeniører",
+      "href": "/yrke/elkraftingeniorer-lonn",
+      "value": 3900,
+      "monthlyOvertimePay": 3900,
+      "annualizedOvertimePay": 46800
+    },
+    {
+      "rank": 33,
+      "code": "8182",
+      "label": "Fyrkjele- og turbinoperatører",
+      "href": "/yrke/fyrkjele-og-turbinoperatorer-lonn",
+      "value": 3900,
+      "monthlyOvertimePay": 3900,
+      "annualizedOvertimePay": 46800
+    },
+    {
+      "rank": 34,
+      "code": "7541",
+      "label": "Yrkesdykkere",
+      "href": "/yrke/yrkesdykkere-lonn",
+      "value": 3860,
+      "monthlyOvertimePay": 3860,
+      "annualizedOvertimePay": 46320
+    },
+    {
+      "rank": 35,
+      "code": "7214",
+      "label": "Platearbeidere",
+      "href": "/yrke/platearbeidere-lonn",
+      "value": 3850,
+      "monthlyOvertimePay": 3850,
+      "annualizedOvertimePay": 46200
+    },
+    {
+      "rank": 36,
+      "code": "3152",
+      "label": "Dekksoffiserer og loser",
+      "href": "/yrke/dekksoffiserer-og-loser-lonn",
+      "value": 3770,
+      "monthlyOvertimePay": 3770,
+      "annualizedOvertimePay": 45240
+    },
+    {
+      "rank": 37,
+      "code": "8141",
+      "label": "Operatører innen produksjon av gummiprodukter",
+      "href": "/yrke/operatorer-innen-produksjon-av-gummiprodukter-lonn",
+      "value": 3580,
+      "monthlyOvertimePay": 3580,
+      "annualizedOvertimePay": 42960
+    },
+    {
+      "rank": 38,
+      "code": "3355",
+      "label": "Politibetjenter mv.",
+      "href": "/yrke/politibetjenter-mv-lonn",
+      "value": 3580,
+      "monthlyOvertimePay": 3580,
+      "annualizedOvertimePay": 42960
+    },
+    {
+      "rank": 39,
+      "code": "7223",
+      "label": "Metalldreiere mv.",
+      "href": "/yrke/metalldreiere-mv-lonn",
+      "value": 3540,
+      "monthlyOvertimePay": 3540,
+      "annualizedOvertimePay": 42480
+    },
+    {
+      "rank": 40,
+      "code": "3119",
+      "label": "Andre ingeniører",
+      "href": "/yrke/andre-ingeniorer-lonn",
+      "value": 3480,
+      "monthlyOvertimePay": 3480,
+      "annualizedOvertimePay": 41760
+    },
+    {
+      "rank": 41,
+      "code": "8143",
+      "label": "Operatører innen papirprodukter",
+      "href": "/yrke/operatorer-innen-papirprodukter-lonn",
+      "value": 3420,
+      "monthlyOvertimePay": 3420,
+      "annualizedOvertimePay": 41040
+    },
+    {
+      "rank": 42,
+      "code": "8160",
+      "label": "Operatører innen næringsmiddelproduksjon",
+      "href": "/yrke/operatorer-innen-naeringsmiddelproduksjon-lonn",
+      "value": 3390,
+      "monthlyOvertimePay": 3390,
+      "annualizedOvertimePay": 40680
+    },
+    {
+      "rank": 43,
+      "code": "3114",
+      "label": "Elektronikkingeniører",
+      "href": "/yrke/elektronikkingeniorer-lonn",
+      "value": 3370,
+      "monthlyOvertimePay": 3370,
+      "annualizedOvertimePay": 40440
+    },
+    {
+      "rank": 44,
+      "code": "4322",
+      "label": "Logistikkmedarbeidere",
+      "href": "/yrke/logistikkmedarbeidere-lonn",
+      "value": 3350,
+      "monthlyOvertimePay": 3350,
+      "annualizedOvertimePay": 40200
+    },
+    {
+      "rank": 45,
+      "code": "8332",
+      "label": "Lastebil- og trailersjåfører",
+      "href": "/yrke/lastebil-og-trailersjaforer-lonn",
+      "value": 3340,
+      "monthlyOvertimePay": 3340,
+      "annualizedOvertimePay": 40080
+    },
+    {
+      "rank": 46,
+      "code": "4323",
+      "label": "Transportfunksjonærer",
+      "href": "/yrke/transportfunksjonaerer-lonn",
+      "value": 3340,
+      "monthlyOvertimePay": 3340,
+      "annualizedOvertimePay": 40080
+    },
+    {
+      "rank": 47,
+      "code": "3135",
+      "label": "Kontrolloperatører innen metallproduksjon",
+      "href": "/yrke/kontrolloperatorer-innen-metallproduksjon-lonn",
+      "value": 3310,
+      "monthlyOvertimePay": 3310,
+      "annualizedOvertimePay": 39720
+    },
+    {
+      "rank": 48,
+      "code": "9611",
+      "label": "Renovasjonsarbeidere",
+      "href": "/yrke/renovasjonsarbeidere-lonn",
+      "value": 3310,
+      "monthlyOvertimePay": 3310,
+      "annualizedOvertimePay": 39720
+    },
+    {
+      "rank": 49,
+      "code": "7211",
+      "label": "Støpere",
+      "href": "/yrke/stopere-lonn",
+      "value": 3280,
+      "monthlyOvertimePay": 3280,
+      "annualizedOvertimePay": 39360
+    },
+    {
+      "rank": 50,
+      "code": "9216",
+      "label": "Hjelpearbeidere innen havbruk",
+      "href": "/yrke/hjelpearbeidere-innen-havbruk-lonn",
+      "value": 3270,
+      "monthlyOvertimePay": 3270,
+      "annualizedOvertimePay": 39240
+    },
+    {
+      "rank": 51,
+      "code": "1322",
+      "label": "Ledere av olje- og gassutvinning mv.",
+      "href": "/yrke/ledere-av-olje-og-gassutvinning-mv-lonn",
+      "value": 3260,
+      "monthlyOvertimePay": 3260,
+      "annualizedOvertimePay": 39120
+    },
+    {
+      "rank": 52,
+      "code": "2146",
+      "label": "Sivilingeniører (geofag, petro-leumsteknologi, metallurgi mv.)",
+      "href": "/yrke/sivilingeniorer-geofag-petro-leumsteknologi-metallurgi-mv-lonn",
+      "value": 3220,
+      "monthlyOvertimePay": 3220,
+      "annualizedOvertimePay": 38640
+    },
+    {
+      "rank": 53,
+      "code": "7511",
+      "label": "Slaktere, fiskehandlere mv.",
+      "href": "/yrke/slaktere-fiskehandlere-mv-lonn",
+      "value": 3100,
+      "monthlyOvertimePay": 3100,
+      "annualizedOvertimePay": 37200
+    },
+    {
+      "rank": 54,
+      "code": "8212",
+      "label": "Montører av elektriske og elektroniske produkter",
+      "href": "/yrke/montorer-av-elektriske-og-elektroniske-produkter-lonn",
+      "value": 3050,
+      "monthlyOvertimePay": 3050,
+      "annualizedOvertimePay": 36600
+    },
+    {
+      "rank": 55,
+      "code": "2144",
+      "label": "Sivilingeniører (maskin- og marin-teknikk)",
+      "href": "/yrke/sivilingeniorer-maskin-og-marin-teknikk-lonn",
+      "value": 2990,
+      "monthlyOvertimePay": 2990,
+      "annualizedOvertimePay": 35880
+    },
+    {
+      "rank": 56,
+      "code": "8342",
+      "label": "Anleggsmaskinførere",
+      "href": "/yrke/anleggsmaskinforere-lonn",
+      "value": 2970,
+      "monthlyOvertimePay": 2970,
+      "annualizedOvertimePay": 35640
+    },
+    {
+      "rank": 57,
+      "code": "3151",
+      "label": "Skipsmaskinister",
+      "href": "/yrke/skipsmaskinister-lonn",
+      "value": 2910,
+      "monthlyOvertimePay": 2910,
+      "annualizedOvertimePay": 34920
+    },
+    {
+      "rank": 58,
+      "code": "8121",
+      "label": "Operatører innen metallurgiske prosessfag",
+      "href": "/yrke/operatorer-innen-metallurgiske-prosessfag-lonn",
+      "value": 2810,
+      "monthlyOvertimePay": 2810,
+      "annualizedOvertimePay": 33720
+    },
+    {
+      "rank": 59,
+      "code": "3123",
+      "label": "Arbeidsleder, bygg og anlegg",
+      "href": "/yrke/arbeidsleder-bygg-og-anlegg-lonn",
+      "value": 2800,
+      "monthlyOvertimePay": 2800,
+      "annualizedOvertimePay": 33600
+    },
+    {
+      "rank": 60,
+      "code": "3258",
+      "label": "Ambulansepersonell",
+      "href": "/yrke/ambulansepersonell-lonn",
+      "value": 2790,
+      "monthlyOvertimePay": 2790,
+      "annualizedOvertimePay": 33480
+    },
+    {
+      "rank": 61,
+      "code": "2222",
+      "label": "Jordmødre",
+      "href": "/yrke/jordmodre-lonn",
+      "value": 2730,
+      "monthlyOvertimePay": 2730,
+      "annualizedOvertimePay": 32760
+    },
+    {
+      "rank": 62,
+      "code": "5411",
+      "label": "Brannkonstabler",
+      "href": "/yrke/brannkonstabler-lonn",
+      "value": 2720,
+      "monthlyOvertimePay": 2720,
+      "annualizedOvertimePay": 32640
+    },
+    {
+      "rank": 63,
+      "code": "9329",
+      "label": "Andre hjelpearbeidere i industri",
+      "href": "/yrke/andre-hjelpearbeidere-i-industri-lonn",
+      "value": 2680,
+      "monthlyOvertimePay": 2680,
+      "annualizedOvertimePay": 32160
+    },
+    {
+      "rank": 64,
+      "code": "8183",
+      "label": "Pakke-, tappe- og etikettmaskinoperatører",
+      "href": "/yrke/pakke-tappe-og-etikettmaskinoperatorer-lonn",
+      "value": 2670,
+      "monthlyOvertimePay": 2670,
+      "annualizedOvertimePay": 32040
+    },
+    {
+      "rank": 65,
+      "code": "7119",
+      "label": "Andre bygningsarbeidere",
+      "href": "/yrke/andre-bygningsarbeidere-lonn",
+      "value": 2630,
+      "monthlyOvertimePay": 2630,
+      "annualizedOvertimePay": 31560
+    },
+    {
+      "rank": 66,
+      "code": "7323",
+      "label": "Innbindere mv.",
+      "href": "/yrke/innbindere-mv-lonn",
+      "value": 2630,
+      "monthlyOvertimePay": 2630,
+      "annualizedOvertimePay": 31560
+    },
+    {
+      "rank": 67,
+      "code": "8171",
+      "label": "Operatører innen treforedling",
+      "href": "/yrke/operatorer-innen-treforedling-lonn",
+      "value": 2630,
+      "monthlyOvertimePay": 2630,
+      "annualizedOvertimePay": 31560
+    },
+    {
+      "rank": 68,
+      "code": "7132",
+      "label": "Overflatebehandlere og lakkerere",
+      "href": "/yrke/overflatebehandlere-og-lakkerere-lonn",
+      "value": 2630,
+      "monthlyOvertimePay": 2630,
+      "annualizedOvertimePay": 31560
+    },
+    {
+      "rank": 69,
+      "code": "7122",
+      "label": "Gulv- og flisleggere",
+      "href": "/yrke/gulv-og-flisleggere-lonn",
+      "value": 2570,
+      "monthlyOvertimePay": 2570,
+      "annualizedOvertimePay": 30840
+    },
+    {
+      "rank": 70,
+      "code": "8152",
+      "label": "Operatører innen tekstilproduksjon mv.",
+      "href": "/yrke/operatorer-innen-tekstilproduksjon-mv-lonn",
+      "value": 2570,
+      "monthlyOvertimePay": 2570,
+      "annualizedOvertimePay": 30840
+    },
+    {
+      "rank": 71,
+      "code": "8151",
+      "label": "Spinne- og nøstemaskinoperatører",
+      "href": "/yrke/spinne-og-nostemaskinoperatorer-lonn",
+      "value": 2570,
+      "monthlyOvertimePay": 2570,
+      "annualizedOvertimePay": 30840
+    },
+    {
+      "rank": 72,
+      "code": "7113",
+      "label": "Steinhoggere mv.",
+      "href": "/yrke/steinhoggere-mv-lonn",
+      "value": 2530,
+      "monthlyOvertimePay": 2530,
+      "annualizedOvertimePay": 30360
+    },
+    {
+      "rank": 73,
+      "code": "9312",
+      "label": "Hjelpearbeidere i anlegg",
+      "href": "/yrke/hjelpearbeidere-i-anlegg-lonn",
+      "value": 2500,
+      "monthlyOvertimePay": 2500,
+      "annualizedOvertimePay": 30000
+    },
+    {
+      "rank": 74,
+      "code": "7411",
+      "label": "Elektrikere",
+      "href": "/yrke/elektrikere-lonn",
+      "value": 2470,
+      "monthlyOvertimePay": 2470,
+      "annualizedOvertimePay": 29640
+    },
+    {
+      "rank": 75,
+      "code": "7319",
+      "label": "Andre kunsthåndverkere",
+      "href": "/yrke/andre-kunsthandverkere-lonn",
+      "value": 2460,
+      "monthlyOvertimePay": 2460,
+      "annualizedOvertimePay": 29520
+    },
+    {
+      "rank": 76,
+      "code": "7121",
+      "label": "Taktekkere",
+      "href": "/yrke/taktekkere-lonn",
+      "value": 2440,
+      "monthlyOvertimePay": 2440,
+      "annualizedOvertimePay": 29280
+    },
+    {
+      "rank": 77,
+      "code": "7422",
+      "label": "Tele- og IKT-installatører",
+      "href": "/yrke/tele-og-ikt-installatorer-lonn",
+      "value": 2440,
+      "monthlyOvertimePay": 2440,
+      "annualizedOvertimePay": 29280
+    },
+    {
+      "rank": 78,
+      "code": "8142",
+      "label": "Operatører innen plastprodukter",
+      "href": "/yrke/operatorer-innen-plastprodukter-lonn",
+      "value": 2380,
+      "monthlyOvertimePay": 2380,
+      "annualizedOvertimePay": 28560
+    },
+    {
+      "rank": 79,
+      "code": "2151",
+      "label": "Sivilingeniører (elkraftteknikk)",
+      "href": "/yrke/sivilingeniorer-elkraftteknikk-lonn",
+      "value": 2300,
+      "monthlyOvertimePay": 2300,
+      "annualizedOvertimePay": 27600
+    },
+    {
+      "rank": 80,
+      "code": "8350",
+      "label": "Dekks- og maskinmannskap (skip)",
+      "href": "/yrke/dekks-og-maskinmannskap-skip-lonn",
+      "value": 2220,
+      "monthlyOvertimePay": 2220,
+      "annualizedOvertimePay": 26640
+    },
+    {
+      "rank": 81,
+      "code": "2152",
+      "label": "Sivilingeniører (elektronikk)",
+      "href": "/yrke/sivilingeniorer-elektronikk-lonn",
+      "value": 2210,
+      "monthlyOvertimePay": 2210,
+      "annualizedOvertimePay": 26520
+    },
+    {
+      "rank": 82,
+      "code": "7124",
+      "label": "Isolatører mv.",
+      "href": "/yrke/isolatorer-mv-lonn",
+      "value": 2130,
+      "monthlyOvertimePay": 2130,
+      "annualizedOvertimePay": 25560
+    },
+    {
+      "rank": 83,
+      "code": "3116",
+      "label": "Kjemiingeniører",
+      "href": "/yrke/kjemiingeniorer-lonn",
+      "value": 2130,
+      "monthlyOvertimePay": 2130,
+      "annualizedOvertimePay": 25560
+    },
+    {
+      "rank": 84,
+      "code": "0110",
+      "label": "Offiserer fra fenrik og høyere grad",
+      "href": "/yrke/offiserer-fra-fenrik-og-hoyere-grad-lonn",
+      "value": 2130,
+      "monthlyOvertimePay": 2130,
+      "annualizedOvertimePay": 25560
+    },
+    {
+      "rank": 85,
+      "code": "2153",
+      "label": "Sivilingeniører (telekommunikasjon)",
+      "href": "/yrke/sivilingeniorer-telekommunikasjon-lonn",
+      "value": 2120,
+      "monthlyOvertimePay": 2120,
+      "annualizedOvertimePay": 25440
+    },
+    {
+      "rank": 86,
+      "code": "7231",
+      "label": "Bilmekanikere",
+      "href": "/yrke/bilmekanikere-lonn",
+      "value": 2100,
+      "monthlyOvertimePay": 2100,
+      "annualizedOvertimePay": 25200
+    },
+    {
+      "rank": 87,
+      "code": "4321",
+      "label": "Lagermedarbeidere og material-forvaltere",
+      "href": "/yrke/lagermedarbeidere-og-material-forvaltere-lonn",
+      "value": 2080,
+      "monthlyOvertimePay": 2080,
+      "annualizedOvertimePay": 24960
+    },
+    {
+      "rank": 88,
+      "code": "5413",
+      "label": "Fengselsbetjenter",
+      "href": "/yrke/fengselsbetjenter-lonn",
+      "value": 2030,
+      "monthlyOvertimePay": 2030,
+      "annualizedOvertimePay": 24360
+    },
+    {
+      "rank": 89,
+      "code": "5111",
+      "label": "Flyverter, båtverter mv.",
+      "href": "/yrke/flyverter-batverter-mv-lonn",
+      "value": 2000,
+      "monthlyOvertimePay": 2000,
+      "annualizedOvertimePay": 24000
+    },
+    {
+      "rank": 90,
+      "code": "7421",
+      "label": "Serviceelektronikere",
+      "href": "/yrke/serviceelektronikere-lonn",
+      "value": 1990,
+      "monthlyOvertimePay": 1990,
+      "annualizedOvertimePay": 23880
+    },
+    {
+      "rank": 91,
+      "code": "7114",
+      "label": "Betongarbeidere",
+      "href": "/yrke/betongarbeidere-lonn",
+      "value": 1930,
+      "monthlyOvertimePay": 1930,
+      "annualizedOvertimePay": 23160
+    },
+    {
+      "rank": 92,
+      "code": "8172",
+      "label": "Operatører innen trelastproduksjon",
+      "href": "/yrke/operatorer-innen-trelastproduksjon-lonn",
+      "value": 1920,
+      "monthlyOvertimePay": 1920,
+      "annualizedOvertimePay": 23040
+    },
+    {
+      "rank": 93,
+      "code": "3211",
+      "label": "Radiografer mv.",
+      "href": "/yrke/radiografer-mv-lonn",
+      "value": 1910,
+      "monthlyOvertimePay": 1910,
+      "annualizedOvertimePay": 22920
+    },
+    {
+      "rank": 94,
+      "code": "8181",
+      "label": "Operatører innen glass- og keramisk produksjon",
+      "href": "/yrke/operatorer-innen-glass-og-keramisk-produksjon-lonn",
+      "value": 1890,
+      "monthlyOvertimePay": 1890,
+      "annualizedOvertimePay": 22680
+    },
+    {
+      "rank": 95,
+      "code": "7126",
+      "label": "Rørleggere og VVS-montører",
+      "href": "/yrke/rorleggere-og-vvs-montorer-lonn",
+      "value": 1880,
+      "monthlyOvertimePay": 1880,
+      "annualizedOvertimePay": 22560
+    },
+    {
+      "rank": 96,
+      "code": "2221",
+      "label": "Spesialsykepleiere",
+      "href": "/yrke/spesialsykepleiere-lonn",
+      "value": 1880,
+      "monthlyOvertimePay": 1880,
+      "annualizedOvertimePay": 22560
+    },
+    {
+      "rank": 97,
+      "code": "8331",
+      "label": "Bussjåfører og trikkeførere",
+      "href": "/yrke/bussjaforer-og-trikkeforere-lonn",
+      "value": 1860,
+      "monthlyOvertimePay": 1860,
+      "annualizedOvertimePay": 22320
+    },
+    {
+      "rank": 98,
+      "code": "9333",
+      "label": "Laste- og lossearbeidere",
+      "href": "/yrke/laste-og-lossearbeidere-lonn",
+      "value": 1810,
+      "monthlyOvertimePay": 1810,
+      "annualizedOvertimePay": 21720
+    },
+    {
+      "rank": 99,
+      "code": "2143",
+      "label": "Sivilingeniører (miljøteknikk)",
+      "href": "/yrke/sivilingeniorer-miljoteknikk-lonn",
+      "value": 1810,
+      "monthlyOvertimePay": 1810,
+      "annualizedOvertimePay": 21720
+    },
+    {
+      "rank": 100,
+      "code": "7542",
+      "label": "Skytebaser og sprengningsarbeidere",
+      "href": "/yrke/skytebaser-og-sprengningsarbeidere-lonn",
+      "value": 1810,
+      "monthlyOvertimePay": 1810,
+      "annualizedOvertimePay": 21720
+    },
+    {
+      "rank": 101,
+      "code": "7125",
+      "label": "Glassarbeidere",
+      "href": "/yrke/glassarbeidere-lonn",
+      "value": 1800,
+      "monthlyOvertimePay": 1800,
+      "annualizedOvertimePay": 21600
+    },
+    {
+      "rank": 102,
+      "code": "7133",
+      "label": "Feiere, fasaderenholdere mv.",
+      "href": "/yrke/feiere-fasaderenholdere-mv-lonn",
+      "value": 1740,
+      "monthlyOvertimePay": 1740,
+      "annualizedOvertimePay": 20880
+    },
+    {
+      "rank": 103,
+      "code": "3513",
+      "label": "Nettverks- og systemteknikere, IKT",
+      "href": "/yrke/nettverks-og-systemteknikere-ikt-lonn",
+      "value": 1730,
+      "monthlyOvertimePay": 1730,
+      "annualizedOvertimePay": 20760
+    },
+    {
+      "rank": 104,
+      "code": "3112",
+      "label": "Bygningsingeniører",
+      "href": "/yrke/bygningsingeniorer-lonn",
+      "value": 1710,
+      "monthlyOvertimePay": 1710,
+      "annualizedOvertimePay": 20520
+    },
+    {
+      "rank": 105,
+      "code": "3331",
+      "label": "Speditører og befraktere",
+      "href": "/yrke/speditorer-og-befraktere-lonn",
+      "value": 1710,
+      "monthlyOvertimePay": 1710,
+      "annualizedOvertimePay": 20520
+    },
+    {
+      "rank": 106,
+      "code": "9612",
+      "label": "Gjenvinningsarbeidere",
+      "href": "/yrke/gjenvinningsarbeidere-lonn",
+      "value": 1690,
+      "monthlyOvertimePay": 1690,
+      "annualizedOvertimePay": 20280
+    },
+    {
+      "rank": 107,
+      "code": "3522",
+      "label": "Teknikere innen telekom",
+      "href": "/yrke/teknikere-innen-telekom-lonn",
+      "value": 1690,
+      "monthlyOvertimePay": 1690,
+      "annualizedOvertimePay": 20280
+    },
+    {
+      "rank": 108,
+      "code": "3521",
+      "label": "Teknikere innen radio og tv",
+      "href": "/yrke/teknikere-innen-radio-og-tv-lonn",
+      "value": 1660,
+      "monthlyOvertimePay": 1660,
+      "annualizedOvertimePay": 19920
+    },
+    {
+      "rank": 109,
+      "code": "5163",
+      "label": "Begravelsesbyrå- og krematoriearbeidere",
+      "href": "/yrke/begravelsesbyra-og-krematoriearbeidere-lonn",
+      "value": 1630,
+      "monthlyOvertimePay": 1630,
+      "annualizedOvertimePay": 19560
+    },
+    {
+      "rank": 110,
+      "code": "2522",
+      "label": "Systemadministratorer",
+      "href": "/yrke/systemadministratorer-lonn",
+      "value": 1610,
+      "monthlyOvertimePay": 1610,
+      "annualizedOvertimePay": 19320
+    },
+    {
+      "rank": 111,
+      "code": "1321",
+      "label": "Ledere av industriproduksjon mv.",
+      "href": "/yrke/ledere-av-industriproduksjon-mv-lonn",
+      "value": 1590,
+      "monthlyOvertimePay": 1590,
+      "annualizedOvertimePay": 19080
+    },
+    {
+      "rank": 112,
+      "code": "9321",
+      "label": "Håndpakkere mv.",
+      "href": "/yrke/handpakkere-mv-lonn",
+      "value": 1580,
+      "monthlyOvertimePay": 1580,
+      "annualizedOvertimePay": 18960
+    },
+    {
+      "rank": 113,
+      "code": "4225",
+      "label": "Informasjonsskrankemedarbeidere",
+      "href": "/yrke/informasjonsskrankemedarbeidere-lonn",
+      "value": 1580,
+      "monthlyOvertimePay": 1580,
+      "annualizedOvertimePay": 18960
+    },
+    {
+      "rank": 114,
+      "code": "2112",
+      "label": "Meteorologer",
+      "href": "/yrke/meteorologer-lonn",
+      "value": 1580,
+      "monthlyOvertimePay": 1580,
+      "annualizedOvertimePay": 18960
+    },
+    {
+      "rank": 115,
+      "code": "2142",
+      "label": "Sivilingeniører (bygg og anlegg)",
+      "href": "/yrke/sivilingeniorer-bygg-og-anlegg-lonn",
+      "value": 1550,
+      "monthlyOvertimePay": 1550,
+      "annualizedOvertimePay": 18600
+    },
+    {
+      "rank": 116,
+      "code": "5414",
+      "label": "Vektere",
+      "href": "/yrke/vektere-lonn",
+      "value": 1540,
+      "monthlyOvertimePay": 1540,
+      "annualizedOvertimePay": 18480
+    },
+    {
+      "rank": 117,
+      "code": "2411",
+      "label": "Revisorer, regnskapsrådgivere",
+      "href": "/yrke/revisorer-regnskapsradgivere-lonn",
+      "value": 1520,
+      "monthlyOvertimePay": 1520,
+      "annualizedOvertimePay": 18240
+    },
+    {
+      "rank": 118,
+      "code": "2114",
+      "label": "Geologer og geofysikere",
+      "href": "/yrke/geologer-og-geofysikere-lonn",
+      "value": 1500,
+      "monthlyOvertimePay": 1500,
+      "annualizedOvertimePay": 18000
+    },
+    {
+      "rank": 119,
+      "code": "7322",
+      "label": "Trykkere",
+      "href": "/yrke/trykkere-lonn",
+      "value": 1500,
+      "monthlyOvertimePay": 1500,
+      "annualizedOvertimePay": 18000
+    },
+    {
+      "rank": 120,
+      "code": "2141",
+      "label": "Sivilingeniører (industri og produksjon)",
+      "href": "/yrke/sivilingeniorer-industri-og-produksjon-lonn",
+      "value": 1490,
+      "monthlyOvertimePay": 1490,
+      "annualizedOvertimePay": 17880
+    },
+    {
+      "rank": 121,
+      "code": "2211",
+      "label": "Allmennpraktiserende leger",
+      "href": "/yrke/allmennpraktiserende-leger-lonn",
+      "value": 1480,
+      "monthlyOvertimePay": 1480,
+      "annualizedOvertimePay": 17760
+    },
+    {
+      "rank": 122,
+      "code": "1312",
+      "label": "Ledere innen akvakultur mv.",
+      "href": "/yrke/ledere-innen-akvakultur-mv-lonn",
+      "value": 1480,
+      "monthlyOvertimePay": 1480,
+      "annualizedOvertimePay": 17760
+    },
+    {
+      "rank": 123,
+      "code": "5245",
+      "label": "Servicemedarbeidere (bensinstasjon)",
+      "href": "/yrke/servicemedarbeidere-bensinstasjon-lonn",
+      "value": 1460,
+      "monthlyOvertimePay": 1460,
+      "annualizedOvertimePay": 17520
+    },
+    {
+      "rank": 124,
+      "code": "7522",
+      "label": "Møbelsnekkere",
+      "href": "/yrke/mobelsnekkere-lonn",
+      "value": 1450,
+      "monthlyOvertimePay": 1450,
+      "annualizedOvertimePay": 17400
+    },
+    {
+      "rank": 125,
+      "code": "2223",
+      "label": "Sykepleiere",
+      "href": "/yrke/sykepleiere-lonn",
+      "value": 1450,
+      "monthlyOvertimePay": 1450,
+      "annualizedOvertimePay": 17400
+    },
+    {
+      "rank": 126,
+      "code": "0210",
+      "label": "Befal med sersjant grad",
+      "href": "/yrke/befal-med-sersjant-grad-lonn",
+      "value": 1430,
+      "monthlyOvertimePay": 1430,
+      "annualizedOvertimePay": 17160
+    },
+    {
+      "rank": 127,
+      "code": "1213",
+      "label": "Strategi- og planleggingssjefer",
+      "href": "/yrke/strategi-og-planleggingssjefer-lonn",
+      "value": 1410,
+      "monthlyOvertimePay": 1410,
+      "annualizedOvertimePay": 16920
+    },
+    {
+      "rank": 128,
+      "code": "8157",
+      "label": "Renseri- og vaskerimaskinoperatører",
+      "href": "/yrke/renseri-og-vaskerimaskinoperatorer-lonn",
+      "value": 1370,
+      "monthlyOvertimePay": 1370,
+      "annualizedOvertimePay": 16440
+    },
+    {
+      "rank": 129,
+      "code": "1342",
+      "label": "Ledere av helsetjenester",
+      "href": "/yrke/ledere-av-helsetjenester-lonn",
+      "value": 1360,
+      "monthlyOvertimePay": 1360,
+      "annualizedOvertimePay": 16320
+    },
+    {
+      "rank": 130,
+      "code": "9510",
+      "label": "Reklamedistributører mv.",
+      "href": "/yrke/reklamedistributorer-mv-lonn",
+      "value": 1340,
+      "monthlyOvertimePay": 1340,
+      "annualizedOvertimePay": 16080
+    },
+    {
+      "rank": 131,
+      "code": "3434",
+      "label": "Sjefskokker",
+      "href": "/yrke/sjefskokker-lonn",
+      "value": 1340,
+      "monthlyOvertimePay": 1340,
+      "annualizedOvertimePay": 16080
+    },
+    {
+      "rank": 132,
+      "code": "4311",
+      "label": "Regnskapsmedarbeidere",
+      "href": "/yrke/regnskapsmedarbeidere-lonn",
+      "value": 1330,
+      "monthlyOvertimePay": 1330,
+      "annualizedOvertimePay": 15960
+    },
+    {
+      "rank": 133,
+      "code": "9214",
+      "label": "Hjelpearbeidere i gartneri mv.",
+      "href": "/yrke/hjelpearbeidere-i-gartneri-mv-lonn",
+      "value": 1320,
+      "monthlyOvertimePay": 1320,
+      "annualizedOvertimePay": 15840
+    },
+    {
+      "rank": 134,
+      "code": "3259",
+      "label": "Andre helseyrker",
+      "href": "/yrke/andre-helseyrker-lonn",
+      "value": 1310,
+      "monthlyOvertimePay": 1310,
+      "annualizedOvertimePay": 15720
+    },
+    {
+      "rank": 135,
+      "code": "9122",
+      "label": "Bilvaskere",
+      "href": "/yrke/bilvaskere-lonn",
+      "value": 1310,
+      "monthlyOvertimePay": 1310,
+      "annualizedOvertimePay": 15720
+    },
+    {
+      "rank": 136,
+      "code": "3212",
+      "label": "Bioingeniører",
+      "href": "/yrke/bioingeniorer-lonn",
+      "value": 1310,
+      "monthlyOvertimePay": 1310,
+      "annualizedOvertimePay": 15720
+    },
+    {
+      "rank": 137,
+      "code": "3311",
+      "label": "Finansmeglere",
+      "href": "/yrke/finansmeglere-lonn",
+      "value": 1310,
+      "monthlyOvertimePay": 1310,
+      "annualizedOvertimePay": 15720
+    },
+    {
+      "rank": 138,
+      "code": "3511",
+      "label": "Driftsteknikere, IKT",
+      "href": "/yrke/driftsteknikere-ikt-lonn",
+      "value": 1290,
+      "monthlyOvertimePay": 1290,
+      "annualizedOvertimePay": 15480
+    },
+    {
+      "rank": 139,
+      "code": "6113",
+      "label": "Gartnere",
+      "href": "/yrke/gartnere-lonn",
+      "value": 1280,
+      "monthlyOvertimePay": 1280,
+      "annualizedOvertimePay": 15360
+    },
+    {
+      "rank": 140,
+      "code": "7112",
+      "label": "Murere",
+      "href": "/yrke/murere-lonn",
+      "value": 1270,
+      "monthlyOvertimePay": 1270,
+      "annualizedOvertimePay": 15240
+    },
+    {
+      "rank": 141,
+      "code": "8153",
+      "label": "Industrisyere",
+      "href": "/yrke/industrisyere-lonn",
+      "value": 1250,
+      "monthlyOvertimePay": 1250,
+      "annualizedOvertimePay": 15000
+    },
+    {
+      "rank": 142,
+      "code": "2642",
+      "label": "Journalister",
+      "href": "/yrke/journalister-lonn",
+      "value": 1250,
+      "monthlyOvertimePay": 1250,
+      "annualizedOvertimePay": 15000
+    },
+    {
+      "rank": 143,
+      "code": "7221",
+      "label": "Smeder",
+      "href": "/yrke/smeder-lonn",
+      "value": 1250,
+      "monthlyOvertimePay": 1250,
+      "annualizedOvertimePay": 15000
+    },
+    {
+      "rank": 144,
+      "code": "3351",
+      "label": "Tollere",
+      "href": "/yrke/tollere-lonn",
+      "value": 1250,
+      "monthlyOvertimePay": 1250,
+      "annualizedOvertimePay": 15000
+    },
+    {
+      "rank": 145,
+      "code": "7213",
+      "label": "Kopper- og blikkenslagere",
+      "href": "/yrke/kopper-og-blikkenslagere-lonn",
+      "value": 1230,
+      "monthlyOvertimePay": 1230,
+      "annualizedOvertimePay": 14760
+    },
+    {
+      "rank": 146,
+      "code": "3257",
+      "label": "Helse- og miljøkontrollører",
+      "href": "/yrke/helse-og-miljokontrollorer-lonn",
+      "value": 1220,
+      "monthlyOvertimePay": 1220,
+      "annualizedOvertimePay": 14640
+    },
+    {
+      "rank": 147,
+      "code": "4313",
+      "label": "Lønningsmedarbeidere",
+      "href": "/yrke/lonningsmedarbeidere-lonn",
+      "value": 1200,
+      "monthlyOvertimePay": 1200,
+      "annualizedOvertimePay": 14400
+    },
+    {
+      "rank": 148,
+      "code": "2521",
+      "label": "Databasedesignere og -administratorer",
+      "href": "/yrke/databasedesignere-og-administratorer-lonn",
+      "value": 1170,
+      "monthlyOvertimePay": 1170,
+      "annualizedOvertimePay": 14040
+    },
+    {
+      "rank": 149,
+      "code": "1343",
+      "label": "Ledere av eldreomsorg",
+      "href": "/yrke/ledere-av-eldreomsorg-lonn",
+      "value": 1150,
+      "monthlyOvertimePay": 1150,
+      "annualizedOvertimePay": 13800
+    },
+    {
+      "rank": 150,
+      "code": "7131",
+      "label": "Malere og byggtapetserere",
+      "href": "/yrke/malere-og-byggtapetserere-lonn",
+      "value": 1140,
+      "monthlyOvertimePay": 1140,
+      "annualizedOvertimePay": 13680
+    },
+    {
+      "rank": 151,
+      "code": "5153",
+      "label": "Vaktmestre",
+      "href": "/yrke/vaktmestre-lonn",
+      "value": 1140,
+      "monthlyOvertimePay": 1140,
+      "annualizedOvertimePay": 13680
+    },
+    {
+      "rank": 152,
+      "code": "3141",
+      "label": "Bioteknikere (ikke-medisinske laboratorier)",
+      "href": "/yrke/bioteknikere-ikke-medisinske-laboratorier-lonn",
+      "value": 1130,
+      "monthlyOvertimePay": 1130,
+      "annualizedOvertimePay": 13560
+    },
+    {
+      "rank": 153,
+      "code": "3313",
+      "label": "Regnskapsførere",
+      "href": "/yrke/regnskapsforere-lonn",
+      "value": 1100,
+      "monthlyOvertimePay": 1100,
+      "annualizedOvertimePay": 13200
+    },
+    {
+      "rank": 154,
+      "code": "3118",
+      "label": "Tekniske tegnere",
+      "href": "/yrke/tekniske-tegnere-lonn",
+      "value": 1100,
+      "monthlyOvertimePay": 1100,
+      "annualizedOvertimePay": 13200
+    },
+    {
+      "rank": 155,
+      "code": "4412",
+      "label": "Postbud og postsorterere",
+      "href": "/yrke/postbud-og-postsorterere-lonn",
+      "value": 1090,
+      "monthlyOvertimePay": 1090,
+      "annualizedOvertimePay": 13080
+    },
+    {
+      "rank": 156,
+      "code": "2519",
+      "label": "Andre programvare- og applikasjonsutviklere",
+      "href": "/yrke/andre-programvare-og-applikasjonsutviklere-lonn",
+      "value": 1070,
+      "monthlyOvertimePay": 1070,
+      "annualizedOvertimePay": 12840
+    },
+    {
+      "rank": 157,
+      "code": "3312",
+      "label": "Kundebehandlere lån og kreditt",
+      "href": "/yrke/kundebehandlere-lan-og-kreditt-lonn",
+      "value": 1070,
+      "monthlyOvertimePay": 1070,
+      "annualizedOvertimePay": 12840
+    },
+    {
+      "rank": 158,
+      "code": "2424",
+      "label": "Rådgivere innen kompetanseutvikling",
+      "href": "/yrke/radgivere-innen-kompetanseutvikling-lonn",
+      "value": 1070,
+      "monthlyOvertimePay": 1070,
+      "annualizedOvertimePay": 12840
+    },
+    {
+      "rank": 159,
+      "code": "2511",
+      "label": "Systemanalytikere/-arkitekter",
+      "href": "/yrke/systemanalytikere-arkitekter-lonn",
+      "value": 1060,
+      "monthlyOvertimePay": 1060,
+      "annualizedOvertimePay": 12720
+    },
+    {
+      "rank": 160,
+      "code": "3439",
+      "label": "Andre yrker innen estetiske fag",
+      "href": "/yrke/andre-yrker-innen-estetiske-fag-lonn",
+      "value": 1050,
+      "monthlyOvertimePay": 1050,
+      "annualizedOvertimePay": 12600
+    },
+    {
+      "rank": 161,
+      "code": "2164",
+      "label": "Arealplanleggere",
+      "href": "/yrke/arealplanleggere-lonn",
+      "value": 1050,
+      "monthlyOvertimePay": 1050,
+      "annualizedOvertimePay": 12600
+    },
+    {
+      "rank": 162,
+      "code": "1324",
+      "label": "Ledere av logistikk og transport mv.",
+      "href": "/yrke/ledere-av-logistikk-og-transport-mv-lonn",
+      "value": 1040,
+      "monthlyOvertimePay": 1040,
+      "annualizedOvertimePay": 12480
+    },
+    {
+      "rank": 163,
+      "code": "3342",
+      "label": "Advokatsekretær",
+      "href": "/yrke/advokatsekretaer-lonn",
+      "value": 1030,
+      "monthlyOvertimePay": 1030,
+      "annualizedOvertimePay": 12360
+    },
+    {
+      "rank": 164,
+      "code": "1212",
+      "label": "Personalsjefer",
+      "href": "/yrke/personalsjefer-lonn",
+      "value": 1020,
+      "monthlyOvertimePay": 1020,
+      "annualizedOvertimePay": 12240
+    },
+    {
+      "rank": 165,
+      "code": "3315",
+      "label": "Takstmenn",
+      "href": "/yrke/takstmenn-lonn",
+      "value": 1020,
+      "monthlyOvertimePay": 1020,
+      "annualizedOvertimePay": 12240
+    },
+    {
+      "rank": 166,
+      "code": "2611",
+      "label": "Jurister og advokater",
+      "href": "/yrke/jurister-og-advokater-lonn",
+      "value": 980,
+      "monthlyOvertimePay": 980,
+      "annualizedOvertimePay": 11760
+    },
+    {
+      "rank": 167,
+      "code": "2529",
+      "label": "Sikkerhetsanalytikere mv.",
+      "href": "/yrke/sikkerhetsanalytikere-mv-lonn",
+      "value": 980,
+      "monthlyOvertimePay": 980,
+      "annualizedOvertimePay": 11760
+    },
+    {
+      "rank": 168,
+      "code": "9622",
+      "label": "Altmuligmann",
+      "href": "/yrke/altmuligmann-lonn",
+      "value": 970,
+      "monthlyOvertimePay": 970,
+      "annualizedOvertimePay": 11640
+    },
+    {
+      "rank": 169,
+      "code": "3142",
+      "label": "Agroteknikere",
+      "href": "/yrke/agroteknikere-lonn",
+      "value": 960,
+      "monthlyOvertimePay": 960,
+      "annualizedOvertimePay": 11520
+    },
+    {
+      "rank": 170,
+      "code": "2421",
+      "label": "Organisasjonsrådgivere mv.",
+      "href": "/yrke/organisasjonsradgivere-mv-lonn",
+      "value": 960,
+      "monthlyOvertimePay": 960,
+      "annualizedOvertimePay": 11520
+    },
+    {
+      "rank": 171,
+      "code": "3323",
+      "label": "Innkjøpere",
+      "href": "/yrke/innkjopere-lonn",
+      "value": 950,
+      "monthlyOvertimePay": 950,
+      "annualizedOvertimePay": 11400
+    },
+    {
+      "rank": 172,
+      "code": "4226",
+      "label": "Resepsjonister (ekskl. hotell)",
+      "href": "/yrke/resepsjonister-ekskl-hotell-lonn",
+      "value": 950,
+      "monthlyOvertimePay": 950,
+      "annualizedOvertimePay": 11400
+    },
+    {
+      "rank": 173,
+      "code": "2145",
+      "label": "Sivilingeniører (kjemi)",
+      "href": "/yrke/sivilingeniorer-kjemi-lonn",
+      "value": 950,
+      "monthlyOvertimePay": 950,
+      "annualizedOvertimePay": 11400
+    },
+    {
+      "rank": 174,
+      "code": "7544",
+      "label": "Desinfeksjonsarbeidere og skadedyrbekjempere",
+      "href": "/yrke/desinfeksjonsarbeidere-og-skadedyrbekjempere-lonn",
+      "value": 930,
+      "monthlyOvertimePay": 930,
+      "annualizedOvertimePay": 11160
+    },
+    {
+      "rank": 175,
+      "code": "7512",
+      "label": "Bakere, konditorer mv.",
+      "href": "/yrke/bakere-konditorer-mv-lonn",
+      "value": 920,
+      "monthlyOvertimePay": 920,
+      "annualizedOvertimePay": 11040
+    },
+    {
+      "rank": 176,
+      "code": "2111",
+      "label": "Fysikere og astronomer",
+      "href": "/yrke/fysikere-og-astronomer-lonn",
+      "value": 920,
+      "monthlyOvertimePay": 920,
+      "annualizedOvertimePay": 11040
+    },
+    {
+      "rank": 177,
+      "code": "4221",
+      "label": "Reisebyråmedarbeidere mv.",
+      "href": "/yrke/reisebyramedarbeidere-mv-lonn",
+      "value": 920,
+      "monthlyOvertimePay": 920,
+      "annualizedOvertimePay": 11040
+    },
+    {
+      "rank": 178,
+      "code": "0310",
+      "label": "Menige",
+      "href": "/yrke/menige-lonn",
+      "value": 900,
+      "monthlyOvertimePay": 900,
+      "annualizedOvertimePay": 10800
+    },
+    {
+      "rank": 179,
+      "code": "2631",
+      "label": "Rådgivere/forskere, samfunnsøkonomi",
+      "href": "/yrke/radgivere-forskere-samfunnsokonomi-lonn",
+      "value": 900,
+      "monthlyOvertimePay": 900,
+      "annualizedOvertimePay": 10800
+    },
+    {
+      "rank": 180,
+      "code": "5165",
+      "label": "Kjøreskolelærere",
+      "href": "/yrke/kjoreskolelaerere-lonn",
+      "value": 890,
+      "monthlyOvertimePay": 890,
+      "annualizedOvertimePay": 10680
+    },
+    {
+      "rank": 181,
+      "code": "2330",
+      "label": "Lektorer mv. (videregående skole)",
+      "href": "/yrke/lektorer-mv-videregaende-skole-lonn",
+      "value": 890,
+      "monthlyOvertimePay": 890,
+      "annualizedOvertimePay": 10680
+    },
+    {
+      "rank": 182,
+      "code": "3512",
+      "label": "Brukerstøtte, IKT",
+      "href": "/yrke/brukerstotte-ikt-lonn",
+      "value": 880,
+      "monthlyOvertimePay": 880,
+      "annualizedOvertimePay": 10560
+    },
+    {
+      "rank": 183,
+      "code": "4312",
+      "label": "Forsikrings- og finansmedarbeidere",
+      "href": "/yrke/forsikrings-og-finansmedarbeidere-lonn",
+      "value": 880,
+      "monthlyOvertimePay": 880,
+      "annualizedOvertimePay": 10560
+    },
+    {
+      "rank": 184,
+      "code": "3214",
+      "label": "Protese- og tannteknikere",
+      "href": "/yrke/protese-og-tannteknikere-lonn",
+      "value": 860,
+      "monthlyOvertimePay": 860,
+      "annualizedOvertimePay": 10320
+    },
+    {
+      "rank": 185,
+      "code": "2412",
+      "label": "Finans- og investeringsrådgivere",
+      "href": "/yrke/finans-og-investeringsradgivere-lonn",
+      "value": 850,
+      "monthlyOvertimePay": 850,
+      "annualizedOvertimePay": 10200
+    },
+    {
+      "rank": 186,
+      "code": "7321",
+      "label": "Førtrykkere",
+      "href": "/yrke/fortrykkere-lonn",
+      "value": 850,
+      "monthlyOvertimePay": 850,
+      "annualizedOvertimePay": 10200
+    },
+    {
+      "rank": 187,
+      "code": "3213",
+      "label": "Reseptarer",
+      "href": "/yrke/reseptarer-lonn",
+      "value": 850,
+      "monthlyOvertimePay": 850,
+      "annualizedOvertimePay": 10200
+    },
+    {
+      "rank": 188,
+      "code": "4223",
+      "label": "Sentralbordoperatører",
+      "href": "/yrke/sentralbordoperatorer-lonn",
+      "value": 850,
+      "monthlyOvertimePay": 850,
+      "annualizedOvertimePay": 10200
+    },
+    {
+      "rank": 189,
+      "code": "1349",
+      "label": "Andre ledere av produksjon og tjenesteyting",
+      "href": "/yrke/andre-ledere-av-produksjon-og-tjenesteyting-lonn",
+      "value": 830,
+      "monthlyOvertimePay": 830,
+      "annualizedOvertimePay": 9960
+    },
+    {
+      "rank": 190,
+      "code": "6222",
+      "label": "Fiskere",
+      "href": "/yrke/fiskere-lonn",
+      "value": 820,
+      "monthlyOvertimePay": 820,
+      "annualizedOvertimePay": 9840
+    },
+    {
+      "rank": 191,
+      "code": "2224",
+      "label": "Vernepleiere",
+      "href": "/yrke/vernepleiere-lonn",
+      "value": 820,
+      "monthlyOvertimePay": 820,
+      "annualizedOvertimePay": 9840
+    },
+    {
+      "rank": 192,
+      "code": "5321",
+      "label": "Helsefagarbeidere",
+      "href": "/yrke/helsefagarbeidere-lonn",
+      "value": 810,
+      "monthlyOvertimePay": 810,
+      "annualizedOvertimePay": 9720
+    },
+    {
+      "rank": 193,
+      "code": "7534",
+      "label": "Møbeltapetserere mv.",
+      "href": "/yrke/mobeltapetserere-mv-lonn",
+      "value": 810,
+      "monthlyOvertimePay": 810,
+      "annualizedOvertimePay": 9720
+    },
+    {
+      "rank": 194,
+      "code": "2165",
+      "label": "Landmålere, kartografer mv.",
+      "href": "/yrke/landmalere-kartografer-mv-lonn",
+      "value": 790,
+      "monthlyOvertimePay": 790,
+      "annualizedOvertimePay": 9480
+    },
+    {
+      "rank": 195,
+      "code": "2149",
+      "label": "Andre sivilingeniører (unntatt elektroteknologi)",
+      "href": "/yrke/andre-sivilingeniorer-unntatt-elektroteknologi-lonn",
+      "value": 780,
+      "monthlyOvertimePay": 780,
+      "annualizedOvertimePay": 9360
+    },
+    {
+      "rank": 196,
+      "code": "8322",
+      "label": "Bil-, drosje- og varebilførere",
+      "href": "/yrke/bil-drosje-og-varebilforere-lonn",
+      "value": 780,
+      "monthlyOvertimePay": 780,
+      "annualizedOvertimePay": 9360
+    },
+    {
+      "rank": 197,
+      "code": "7531",
+      "label": "Skreddere, buntmakere mv.",
+      "href": "/yrke/skreddere-buntmakere-mv-lonn",
+      "value": 780,
+      "monthlyOvertimePay": 780,
+      "annualizedOvertimePay": 9360
+    },
+    {
+      "rank": 198,
+      "code": "9313",
+      "label": "Hjelpearbeidere i bygg",
+      "href": "/yrke/hjelpearbeidere-i-bygg-lonn",
+      "value": 770,
+      "monthlyOvertimePay": 770,
+      "annualizedOvertimePay": 9240
+    },
+    {
+      "rank": 199,
+      "code": "2422",
+      "label": "Høyere saksbehandlere i offentlig og privat virksomhet",
+      "href": "/yrke/hoyere-saksbehandlere-i-offentlig-og-privat-virksomhet-lonn",
+      "value": 750,
+      "monthlyOvertimePay": 750,
+      "annualizedOvertimePay": 9000
+    },
+    {
+      "rank": 200,
+      "code": "3353",
+      "label": "Saksbehandlere innen sosiale ytelser",
+      "href": "/yrke/saksbehandlere-innen-sosiale-ytelser-lonn",
+      "value": 750,
+      "monthlyOvertimePay": 750,
+      "annualizedOvertimePay": 9000
+    },
+    {
+      "rank": 201,
+      "code": "1412",
+      "label": "Restaurantsjefer",
+      "href": "/yrke/restaurantsjefer-lonn",
+      "value": 740,
+      "monthlyOvertimePay": 740,
+      "annualizedOvertimePay": 8880
+    },
+    {
+      "rank": 202,
+      "code": "3343",
+      "label": "Sjefssekretærer",
+      "href": "/yrke/sjefssekretaerer-lonn",
+      "value": 740,
+      "monthlyOvertimePay": 740,
+      "annualizedOvertimePay": 8880
+    },
+    {
+      "rank": 203,
+      "code": "1344",
+      "label": "Ledere av sosialomsorg",
+      "href": "/yrke/ledere-av-sosialomsorg-lonn",
+      "value": 720,
+      "monthlyOvertimePay": 720,
+      "annualizedOvertimePay": 8640
+    },
+    {
+      "rank": 204,
+      "code": "1219",
+      "label": "Andre administrative ledere",
+      "href": "/yrke/andre-administrative-ledere-lonn",
+      "value": 700,
+      "monthlyOvertimePay": 700,
+      "annualizedOvertimePay": 8400
+    },
+    {
+      "rank": 205,
+      "code": "2320",
+      "label": "Yrkesfaglærere",
+      "href": "/yrke/yrkesfaglaerere-lonn",
+      "value": 700,
+      "monthlyOvertimePay": 700,
+      "annualizedOvertimePay": 8400
+    },
+    {
+      "rank": 206,
+      "code": "2262",
+      "label": "Farmasøyter",
+      "href": "/yrke/farmasoyter-lonn",
+      "value": 690,
+      "monthlyOvertimePay": 690,
+      "annualizedOvertimePay": 8280
+    },
+    {
+      "rank": 207,
+      "code": "3321",
+      "label": "Forsikringsagenter",
+      "href": "/yrke/forsikringsagenter-lonn",
+      "value": 690,
+      "monthlyOvertimePay": 690,
+      "annualizedOvertimePay": 8280
+    },
+    {
+      "rank": 208,
+      "code": "5329",
+      "label": "Andre pleiemedarbeidere",
+      "href": "/yrke/andre-pleiemedarbeidere-lonn",
+      "value": 680,
+      "monthlyOvertimePay": 680,
+      "annualizedOvertimePay": 8160
+    },
+    {
+      "rank": 209,
+      "code": "5120",
+      "label": "Kokker",
+      "href": "/yrke/kokker-lonn",
+      "value": 670,
+      "monthlyOvertimePay": 670,
+      "annualizedOvertimePay": 8040
+    },
+    {
+      "rank": 210,
+      "code": "5151",
+      "label": "Renholdsledere i bedrifter",
+      "href": "/yrke/renholdsledere-i-bedrifter-lonn",
+      "value": 670,
+      "monthlyOvertimePay": 670,
+      "annualizedOvertimePay": 8040
+    },
+    {
+      "rank": 211,
+      "code": "7115",
+      "label": "Tømrere og snekkere",
+      "href": "/yrke/tomrere-og-snekkere-lonn",
+      "value": 670,
+      "monthlyOvertimePay": 670,
+      "annualizedOvertimePay": 8040
+    },
+    {
+      "rank": 212,
+      "code": "1323",
+      "label": "Ledere av bygge- og anleggsvirksomhet",
+      "href": "/yrke/ledere-av-bygge-og-anleggsvirksomhet-lonn",
+      "value": 660,
+      "monthlyOvertimePay": 660,
+      "annualizedOvertimePay": 7920
+    },
+    {
+      "rank": 213,
+      "code": "3433",
+      "label": "Tekniske konservatorer",
+      "href": "/yrke/tekniske-konservatorer-lonn",
+      "value": 660,
+      "monthlyOvertimePay": 660,
+      "annualizedOvertimePay": 7920
+    },
+    {
+      "rank": 214,
+      "code": "9334",
+      "label": "Varepåfyllere",
+      "href": "/yrke/varepafyllere-lonn",
+      "value": 660,
+      "monthlyOvertimePay": 660,
+      "annualizedOvertimePay": 7920
+    },
+    {
+      "rank": 215,
+      "code": "2250",
+      "label": "Veterinærer",
+      "href": "/yrke/veterinaerer-lonn",
+      "value": 660,
+      "monthlyOvertimePay": 660,
+      "annualizedOvertimePay": 7920
+    },
+    {
+      "rank": 216,
+      "code": "2266",
+      "label": "Audiografer og logopeder",
+      "href": "/yrke/audiografer-og-logopeder-lonn",
+      "value": 650,
+      "monthlyOvertimePay": 650,
+      "annualizedOvertimePay": 7800
+    },
+    {
+      "rank": 217,
+      "code": "5222",
+      "label": "Butikkavdelingssjefer",
+      "href": "/yrke/butikkavdelingssjefer-lonn",
+      "value": 650,
+      "monthlyOvertimePay": 650,
+      "annualizedOvertimePay": 7800
+    },
+    {
+      "rank": 218,
+      "code": "3431",
+      "label": "Fotografer og filmfotografer",
+      "href": "/yrke/fotografer-og-filmfotografer-lonn",
+      "value": 640,
+      "monthlyOvertimePay": 640,
+      "annualizedOvertimePay": 7680
+    },
+    {
+      "rank": 219,
+      "code": "4214",
+      "label": "Inkassomedarbeidere mv.",
+      "href": "/yrke/inkassomedarbeidere-mv-lonn",
+      "value": 640,
+      "monthlyOvertimePay": 640,
+      "annualizedOvertimePay": 7680
+    },
+    {
+      "rank": 220,
+      "code": "4222",
+      "label": "Kundesentermedarbeidere",
+      "href": "/yrke/kundesentermedarbeidere-lonn",
+      "value": 640,
+      "monthlyOvertimePay": 640,
+      "annualizedOvertimePay": 7680
+    },
+    {
+      "rank": 221,
+      "code": "2162",
+      "label": "Landskapsarkitekter",
+      "href": "/yrke/landskapsarkitekter-lonn",
+      "value": 640,
+      "monthlyOvertimePay": 640,
+      "annualizedOvertimePay": 7680
+    },
+    {
+      "rank": 222,
+      "code": "2131",
+      "label": "Biologer, botanikere, zoologer mv.",
+      "href": "/yrke/biologer-botanikere-zoologer-mv-lonn",
+      "value": 630,
+      "monthlyOvertimePay": 630,
+      "annualizedOvertimePay": 7560
+    },
+    {
+      "rank": 223,
+      "code": "4132",
+      "label": "Dataregistrere",
+      "href": "/yrke/dataregistrere-lonn",
+      "value": 630,
+      "monthlyOvertimePay": 630,
+      "annualizedOvertimePay": 7560
+    },
+    {
+      "rank": 224,
+      "code": "2635",
+      "label": "Rådgivere innen sosiale fagfelt",
+      "href": "/yrke/radgivere-innen-sosiale-fagfelt-lonn",
+      "value": 620,
+      "monthlyOvertimePay": 620,
+      "annualizedOvertimePay": 7440
+    },
+    {
+      "rank": 225,
+      "code": "5249",
+      "label": "Andre salgsmedarbeidere",
+      "href": "/yrke/andre-salgsmedarbeidere-lonn",
+      "value": 600,
+      "monthlyOvertimePay": 600,
+      "annualizedOvertimePay": 7200
+    },
+    {
+      "rank": 226,
+      "code": "2133",
+      "label": "Miljøvernrådgivere",
+      "href": "/yrke/miljovernradgivere-lonn",
+      "value": 590,
+      "monthlyOvertimePay": 590,
+      "annualizedOvertimePay": 7080
+    },
+    {
+      "rank": 227,
+      "code": "2423",
+      "label": "Personal- og karriererådgivere",
+      "href": "/yrke/personal-og-karriereradgivere-lonn",
+      "value": 590,
+      "monthlyOvertimePay": 590,
+      "annualizedOvertimePay": 7080
+    },
+    {
+      "rank": 228,
+      "code": "2433",
+      "label": "Salgskonsulenter innen tekniske og medisinske produkter",
+      "href": "/yrke/salgskonsulenter-innen-tekniske-og-medisinske-produkter-lonn",
+      "value": 580,
+      "monthlyOvertimePay": 580,
+      "annualizedOvertimePay": 6960
+    },
+    {
+      "rank": 229,
+      "code": "3352",
+      "label": "Skattefunksjonærer",
+      "href": "/yrke/skattefunksjonaerer-lonn",
+      "value": 580,
+      "monthlyOvertimePay": 580,
+      "annualizedOvertimePay": 6960
+    },
+    {
+      "rank": 230,
+      "code": "2514",
+      "label": "Applikasjonsprogrammerere",
+      "href": "/yrke/applikasjonsprogrammerere-lonn",
+      "value": 570,
+      "monthlyOvertimePay": 570,
+      "annualizedOvertimePay": 6840
+    },
+    {
+      "rank": 231,
+      "code": "7234",
+      "label": "Sykkelreparatører mv.",
+      "href": "/yrke/sykkelreparatorer-mv-lonn",
+      "value": 570,
+      "monthlyOvertimePay": 570,
+      "annualizedOvertimePay": 6840
+    },
+    {
+      "rank": 232,
+      "code": "9211",
+      "label": "Hjelpearbeidere i nyttevekstproduksjon",
+      "href": "/yrke/hjelpearbeidere-i-nyttevekstproduksjon-lonn",
+      "value": 560,
+      "monthlyOvertimePay": 560,
+      "annualizedOvertimePay": 6720
+    },
+    {
+      "rank": 233,
+      "code": "8341",
+      "label": "Jordbruks- og skogbruksmaskinførere",
+      "href": "/yrke/jordbruks-og-skogbruksmaskinforere-lonn",
+      "value": 560,
+      "monthlyOvertimePay": 560,
+      "annualizedOvertimePay": 6720
+    },
+    {
+      "rank": 234,
+      "code": "2619",
+      "label": "Andre juridiske yrker",
+      "href": "/yrke/andre-juridiske-yrker-lonn",
+      "value": 550,
+      "monthlyOvertimePay": 550,
+      "annualizedOvertimePay": 6600
+    },
+    {
+      "rank": 235,
+      "code": "2512",
+      "label": "Programvareutviklere",
+      "href": "/yrke/programvareutviklere-lonn",
+      "value": 520,
+      "monthlyOvertimePay": 520,
+      "annualizedOvertimePay": 6240
+    },
+    {
+      "rank": 236,
+      "code": "2351",
+      "label": "Spesialister i pedagogikk",
+      "href": "/yrke/spesialister-i-pedagogikk-lonn",
+      "value": 520,
+      "monthlyOvertimePay": 520,
+      "annualizedOvertimePay": 6240
+    },
+    {
+      "rank": 237,
+      "code": "3341",
+      "label": "Arbeidsledere for kontorpersonell",
+      "href": "/yrke/arbeidsledere-for-kontorpersonell-lonn",
+      "value": 510,
+      "monthlyOvertimePay": 510,
+      "annualizedOvertimePay": 6120
+    },
+    {
+      "rank": 238,
+      "code": "2413",
+      "label": "Finansanalytikere",
+      "href": "/yrke/finansanalytikere-lonn",
+      "value": 510,
+      "monthlyOvertimePay": 510,
+      "annualizedOvertimePay": 6120
+    },
+    {
+      "rank": 239,
+      "code": "2432",
+      "label": "Informasjonsrådgivere",
+      "href": "/yrke/informasjonsradgivere-lonn",
+      "value": 510,
+      "monthlyOvertimePay": 510,
+      "annualizedOvertimePay": 6120
+    },
+    {
+      "rank": 240,
+      "code": "7549",
+      "label": "Andre håndverkere",
+      "href": "/yrke/andre-handverkere-lonn",
+      "value": 500,
+      "monthlyOvertimePay": 500,
+      "annualizedOvertimePay": 6000
+    },
+    {
+      "rank": 241,
+      "code": "2655",
+      "label": "Skuespillere",
+      "href": "/yrke/skuespillere-lonn",
+      "value": 500,
+      "monthlyOvertimePay": 500,
+      "annualizedOvertimePay": 6000
+    },
+    {
+      "rank": 242,
+      "code": "9629",
+      "label": "Andre hjelpearbeidere",
+      "href": "/yrke/andre-hjelpearbeidere-lonn",
+      "value": 490,
+      "monthlyOvertimePay": 490,
+      "annualizedOvertimePay": 5880
+    },
+    {
+      "rank": 243,
+      "code": "3240",
+      "label": "Dyrepleiere",
+      "href": "/yrke/dyrepleiere-lonn",
+      "value": 490,
+      "monthlyOvertimePay": 490,
+      "annualizedOvertimePay": 5880
+    },
+    {
+      "rank": 244,
+      "code": "3432",
+      "label": "Interiørdesignere og dekoratører",
+      "href": "/yrke/interiordesignere-og-dekoratorer-lonn",
+      "value": 480,
+      "monthlyOvertimePay": 480,
+      "annualizedOvertimePay": 5760
+    },
+    {
+      "rank": 245,
+      "code": "1330",
+      "label": "Ledere av IKT-enheter",
+      "href": "/yrke/ledere-av-ikt-enheter-lonn",
+      "value": 470,
+      "monthlyOvertimePay": 470,
+      "annualizedOvertimePay": 5640
+    },
+    {
+      "rank": 246,
+      "code": "4416",
+      "label": "Personalkontormedarbeidere",
+      "href": "/yrke/personalkontormedarbeidere-lonn",
+      "value": 470,
+      "monthlyOvertimePay": 470,
+      "annualizedOvertimePay": 5640
+    },
+    {
+      "rank": 247,
+      "code": "9112",
+      "label": "Renholdere i bedrifter",
+      "href": "/yrke/renholdere-i-bedrifter-lonn",
+      "value": 470,
+      "monthlyOvertimePay": 470,
+      "annualizedOvertimePay": 5640
+    },
+    {
+      "rank": 248,
+      "code": "1311",
+      "label": "Ledere i skogbruk, gartnerier mv.",
+      "href": "/yrke/ledere-i-skogbruk-gartnerier-mv-lonn",
+      "value": 460,
+      "monthlyOvertimePay": 460,
+      "annualizedOvertimePay": 5520
+    },
+    {
+      "rank": 249,
+      "code": "3412",
+      "label": "Miljøarbeidere innen sosiale fagfelt",
+      "href": "/yrke/miljoarbeidere-innen-sosiale-fagfelt-lonn",
+      "value": 460,
+      "monthlyOvertimePay": 460,
+      "annualizedOvertimePay": 5520
+    },
+    {
+      "rank": 250,
+      "code": "5152",
+      "label": "Husholdere",
+      "href": "/yrke/husholdere-lonn",
+      "value": 430,
+      "monthlyOvertimePay": 430,
+      "annualizedOvertimePay": 5160
+    },
+    {
+      "rank": 251,
+      "code": "4211",
+      "label": "Kundebehandlere, bank og postkontor",
+      "href": "/yrke/kundebehandlere-bank-og-postkontor-lonn",
+      "value": 430,
+      "monthlyOvertimePay": 430,
+      "annualizedOvertimePay": 5160
+    },
+    {
+      "rank": 252,
+      "code": "4415",
+      "label": "Arkivassistenter",
+      "href": "/yrke/arkivassistenter-lonn",
+      "value": 420,
+      "monthlyOvertimePay": 420,
+      "annualizedOvertimePay": 5040
+    },
+    {
+      "rank": 253,
+      "code": "1346",
+      "label": "Ledere av forsikring og finansvirksomhet",
+      "href": "/yrke/ledere-av-forsikring-og-finansvirksomhet-lonn",
+      "value": 420,
+      "monthlyOvertimePay": 420,
+      "annualizedOvertimePay": 5040
+    },
+    {
+      "rank": 254,
+      "code": "2132",
+      "label": "Sivilagronomer mv.",
+      "href": "/yrke/sivilagronomer-mv-lonn",
+      "value": 420,
+      "monthlyOvertimePay": 420,
+      "annualizedOvertimePay": 5040
+    },
+    {
+      "rank": 255,
+      "code": "2359",
+      "label": "Andre lærere",
+      "href": "/yrke/andre-laerere-lonn",
+      "value": 410,
+      "monthlyOvertimePay": 410,
+      "annualizedOvertimePay": 4920
+    },
+    {
+      "rank": 256,
+      "code": "6121",
+      "label": "Melke- og husdyrprodusenter",
+      "href": "/yrke/melke-og-husdyrprodusenter-lonn",
+      "value": 410,
+      "monthlyOvertimePay": 410,
+      "annualizedOvertimePay": 4920
+    },
+    {
+      "rank": 257,
+      "code": "5230",
+      "label": "Billettselgere",
+      "href": "/yrke/billettselgere-lonn",
+      "value": 400,
+      "monthlyOvertimePay": 400,
+      "annualizedOvertimePay": 4800
+    },
+    {
+      "rank": 258,
+      "code": "9212",
+      "label": "Hjelpearbeidere i husdyrproduksjon",
+      "href": "/yrke/hjelpearbeidere-i-husdyrproduksjon-lonn",
+      "value": 400,
+      "monthlyOvertimePay": 400,
+      "annualizedOvertimePay": 4800
+    },
+    {
+      "rank": 259,
+      "code": "4110",
+      "label": "Kontormedarbeidere",
+      "href": "/yrke/kontormedarbeidere-lonn",
+      "value": 400,
+      "monthlyOvertimePay": 400,
+      "annualizedOvertimePay": 4800
+    },
+    {
+      "rank": 260,
+      "code": "6111",
+      "label": "Korn- og grønnsaksprodusenter",
+      "href": "/yrke/korn-og-gronnsaksprodusenter-lonn",
+      "value": 400,
+      "monthlyOvertimePay": 400,
+      "annualizedOvertimePay": 4800
+    },
+    {
+      "rank": 261,
+      "code": "3359",
+      "label": "Andre yrker innen offentlig forvaltning",
+      "href": "/yrke/andre-yrker-innen-offentlig-forvaltning-lonn",
+      "value": 390,
+      "monthlyOvertimePay": 390,
+      "annualizedOvertimePay": 4680
+    },
+    {
+      "rank": 262,
+      "code": "6122",
+      "label": "Egg- og fjærfeprodusenter",
+      "href": "/yrke/egg-og-fjaerfeprodusenter-lonn",
+      "value": 390,
+      "monthlyOvertimePay": 390,
+      "annualizedOvertimePay": 4680
+    },
+    {
+      "rank": 263,
+      "code": "3332",
+      "label": "Konferanse- og arrangementsplanleggere mv.",
+      "href": "/yrke/konferanse-og-arrangementsplanleggere-mv-lonn",
+      "value": 390,
+      "monthlyOvertimePay": 390,
+      "annualizedOvertimePay": 4680
+    },
+    {
+      "rank": 264,
+      "code": "1211",
+      "label": "Finans- og økonomisjefer",
+      "href": "/yrke/finans-og-okonomisjefer-lonn",
+      "value": 380,
+      "monthlyOvertimePay": 380,
+      "annualizedOvertimePay": 4560
+    },
+    {
+      "rank": 265,
+      "code": "5419",
+      "label": "Andre sikkerhetsarbeidere",
+      "href": "/yrke/andre-sikkerhetsarbeidere-lonn",
+      "value": 370,
+      "monthlyOvertimePay": 370,
+      "annualizedOvertimePay": 4440
+    },
+    {
+      "rank": 266,
+      "code": "3256",
+      "label": "Helsesekretærer",
+      "href": "/yrke/helsesekretaerer-lonn",
+      "value": 370,
+      "monthlyOvertimePay": 370,
+      "annualizedOvertimePay": 4440
+    },
+    {
+      "rank": 267,
+      "code": "2113",
+      "label": "Kjemikere",
+      "href": "/yrke/kjemikere-lonn",
+      "value": 370,
+      "monthlyOvertimePay": 370,
+      "annualizedOvertimePay": 4440
+    },
+    {
+      "rank": 268,
+      "code": "3322",
+      "label": "Selgere (engros)",
+      "href": "/yrke/selgere-engros-lonn",
+      "value": 370,
+      "monthlyOvertimePay": 370,
+      "annualizedOvertimePay": 4440
+    },
+    {
+      "rank": 269,
+      "code": "1411",
+      "label": "Hotellsjefer",
+      "href": "/yrke/hotellsjefer-lonn",
+      "value": 360,
+      "monthlyOvertimePay": 360,
+      "annualizedOvertimePay": 4320
+    },
+    {
+      "rank": 270,
+      "code": "2163",
+      "label": "Produkt- og klesdesignere",
+      "href": "/yrke/produkt-og-klesdesignere-lonn",
+      "value": 360,
+      "monthlyOvertimePay": 360,
+      "annualizedOvertimePay": 4320
+    },
+    {
+      "rank": 271,
+      "code": "4229",
+      "label": "Andre opplysningsmedarbeidere",
+      "href": "/yrke/andre-opplysningsmedarbeidere-lonn",
+      "value": 350,
+      "monthlyOvertimePay": 350,
+      "annualizedOvertimePay": 4200
+    },
+    {
+      "rank": 272,
+      "code": "3334",
+      "label": "Eiendomsmeglere og - forvaltere",
+      "href": "/yrke/eiendomsmeglere-og-forvaltere-lonn",
+      "value": 350,
+      "monthlyOvertimePay": 350,
+      "annualizedOvertimePay": 4200
+    },
+    {
+      "rank": 273,
+      "code": "3333",
+      "label": "Arbeidsformidlere",
+      "href": "/yrke/arbeidsformidlere-lonn",
+      "value": 340,
+      "monthlyOvertimePay": 340,
+      "annualizedOvertimePay": 4080
+    },
+    {
+      "rank": 274,
+      "code": "7313",
+      "label": "Gull- og sølvsmeder, gravører mv.",
+      "href": "/yrke/gull-og-solvsmeder-gravorer-mv-lonn",
+      "value": 340,
+      "monthlyOvertimePay": 340,
+      "annualizedOvertimePay": 4080
+    },
+    {
+      "rank": 275,
+      "code": "2634",
+      "label": "Psykologer",
+      "href": "/yrke/psykologer-lonn",
+      "value": 340,
+      "monthlyOvertimePay": 340,
+      "annualizedOvertimePay": 4080
+    },
+    {
+      "rank": 276,
+      "code": "2161",
+      "label": "Sivilarkitekter",
+      "href": "/yrke/sivilarkitekter-lonn",
+      "value": 340,
+      "monthlyOvertimePay": 340,
+      "annualizedOvertimePay": 4080
+    },
+    {
+      "rank": 277,
+      "code": "4212",
+      "label": "Bingoverter, bookmakere mv.",
+      "href": "/yrke/bingoverter-bookmakere-mv-lonn",
+      "value": 330,
+      "monthlyOvertimePay": 330,
+      "annualizedOvertimePay": 3960
+    },
+    {
+      "rank": 278,
+      "code": "2120",
+      "label": "Matematikere, statistikere mv.",
+      "href": "/yrke/matematikere-statistikere-mv-lonn",
+      "value": 330,
+      "monthlyOvertimePay": 330,
+      "annualizedOvertimePay": 3960
+    },
+    {
+      "rank": 279,
+      "code": "2656",
+      "label": "Programledere i TV og radio",
+      "href": "/yrke/programledere-i-tv-og-radio-lonn",
+      "value": 310,
+      "monthlyOvertimePay": 310,
+      "annualizedOvertimePay": 3720
+    },
+    {
+      "rank": 280,
+      "code": "5169",
+      "label": "Andre personlige tjenesteytere",
+      "href": "/yrke/andre-personlige-tjenesteytere-lonn",
+      "value": 300,
+      "monthlyOvertimePay": 300,
+      "annualizedOvertimePay": 3600
+    },
+    {
+      "rank": 281,
+      "code": "2513",
+      "label": "Nett- og multimediautviklere",
+      "href": "/yrke/nett-og-multimediautviklere-lonn",
+      "value": 300,
+      "monthlyOvertimePay": 300,
+      "annualizedOvertimePay": 3600
+    },
+    {
+      "rank": 282,
+      "code": "6210",
+      "label": "Skogbrukere",
+      "href": "/yrke/skogbrukere-lonn",
+      "value": 300,
+      "monthlyOvertimePay": 300,
+      "annualizedOvertimePay": 3600
+    },
+    {
+      "rank": 283,
+      "code": "2166",
+      "label": "Grafiske- og multimediadesignere",
+      "href": "/yrke/grafiske-og-multimediadesignere-lonn",
+      "value": 290,
+      "monthlyOvertimePay": 290,
+      "annualizedOvertimePay": 3480
+    },
+    {
+      "rank": 284,
+      "code": "3324",
+      "label": "Handels- og skipsmeglere",
+      "href": "/yrke/handels-og-skipsmeglere-lonn",
+      "value": 290,
+      "monthlyOvertimePay": 290,
+      "annualizedOvertimePay": 3480
+    },
+    {
+      "rank": 285,
+      "code": "9213",
+      "label": "Hjelpearbeidere i kombinasjonsbruk",
+      "href": "/yrke/hjelpearbeidere-i-kombinasjonsbruk-lonn",
+      "value": 290,
+      "monthlyOvertimePay": 290,
+      "annualizedOvertimePay": 3480
+    },
+    {
+      "rank": 286,
+      "code": "4224",
+      "label": "Hotellresepsjonister",
+      "href": "/yrke/hotellresepsjonister-lonn",
+      "value": 290,
+      "monthlyOvertimePay": 290,
+      "annualizedOvertimePay": 3480
+    },
+    {
+      "rank": 287,
+      "code": "9623",
+      "label": "Måleravlesere mv.",
+      "href": "/yrke/maleravlesere-mv-lonn",
+      "value": 290,
+      "monthlyOvertimePay": 290,
+      "annualizedOvertimePay": 3480
+    },
+    {
+      "rank": 288,
+      "code": "1420",
+      "label": "Varehandelssjefer",
+      "href": "/yrke/varehandelssjefer-lonn",
+      "value": 290,
+      "monthlyOvertimePay": 290,
+      "annualizedOvertimePay": 3480
+    },
+    {
+      "rank": 289,
+      "code": "9412",
+      "label": "Kjøkkenassistenter",
+      "href": "/yrke/kjokkenassistenter-lonn",
+      "value": 280,
+      "monthlyOvertimePay": 280,
+      "annualizedOvertimePay": 3360
+    },
+    {
+      "rank": 290,
+      "code": "2621",
+      "label": "Arkivarer og kuratorer",
+      "href": "/yrke/arkivarer-og-kuratorer-lonn",
+      "value": 270,
+      "monthlyOvertimePay": 270,
+      "annualizedOvertimePay": 3240
+    },
+    {
+      "rank": 291,
+      "code": "5164",
+      "label": "Dyrepassere og - trenere mv.",
+      "href": "/yrke/dyrepassere-og-trenere-mv-lonn",
+      "value": 270,
+      "monthlyOvertimePay": 270,
+      "annualizedOvertimePay": 3240
+    },
+    {
+      "rank": 292,
+      "code": "2342",
+      "label": "Førskole-/barnehagelærere",
+      "href": "/yrke/forskole-barnehagelaerere-lonn",
+      "value": 270,
+      "monthlyOvertimePay": 270,
+      "annualizedOvertimePay": 3240
+    },
+    {
+      "rank": 293,
+      "code": "2341",
+      "label": "Grunnskolelærere",
+      "href": "/yrke/grunnskolelaerere-lonn",
+      "value": 270,
+      "monthlyOvertimePay": 270,
+      "annualizedOvertimePay": 3240
+    },
+    {
+      "rank": 294,
+      "code": "2651",
+      "label": "Skulptører, kunstmalere og andre billedkunstnere",
+      "href": "/yrke/skulptorer-kunstmalere-og-andre-billedkunstnere-lonn",
+      "value": 270,
+      "monthlyOvertimePay": 270,
+      "annualizedOvertimePay": 3240
+    },
+    {
+      "rank": 295,
+      "code": "2632",
+      "label": "Rådgivere/forskere, samfunnsvitenskap",
+      "href": "/yrke/radgivere-forskere-samfunnsvitenskap-lonn",
+      "value": 260,
+      "monthlyOvertimePay": 260,
+      "annualizedOvertimePay": 3120
+    },
+    {
+      "rank": 296,
+      "code": "3514",
+      "label": "Internett-teknikere",
+      "href": "/yrke/internett-teknikere-lonn",
+      "value": 250,
+      "monthlyOvertimePay": 250,
+      "annualizedOvertimePay": 3000
+    },
+    {
+      "rank": 297,
+      "code": "2633",
+      "label": "Rådgivere/forskere, humanistiske fag",
+      "href": "/yrke/radgivere-forskere-humanistiske-fag-lonn",
+      "value": 250,
+      "monthlyOvertimePay": 250,
+      "annualizedOvertimePay": 3000
+    },
+    {
+      "rank": 298,
+      "code": "5244",
+      "label": "Telefon- og nettselgere",
+      "href": "/yrke/telefon-og-nettselgere-lonn",
+      "value": 250,
+      "monthlyOvertimePay": 250,
+      "annualizedOvertimePay": 3000
+    },
+    {
+      "rank": 299,
+      "code": "1345",
+      "label": "Ledere av utdanning og undervisning",
+      "href": "/yrke/ledere-av-utdanning-og-undervisning-lonn",
+      "value": 240,
+      "monthlyOvertimePay": 240,
+      "annualizedOvertimePay": 2880
+    },
+    {
+      "rank": 300,
+      "code": "2431",
+      "label": "Reklame- og markedsføringsrådgivere",
+      "href": "/yrke/reklame-og-markedsforingsradgivere-lonn",
+      "value": 240,
+      "monthlyOvertimePay": 240,
+      "annualizedOvertimePay": 2880
+    },
+    {
+      "rank": 301,
+      "code": "2261",
+      "label": "Tannleger",
+      "href": "/yrke/tannleger-lonn",
+      "value": 240,
+      "monthlyOvertimePay": 240,
+      "annualizedOvertimePay": 2880
+    },
+    {
+      "rank": 302,
+      "code": "2654",
+      "label": "Regissører",
+      "href": "/yrke/regissorer-lonn",
+      "value": 230,
+      "monthlyOvertimePay": 230,
+      "annualizedOvertimePay": 2760
+    },
+    {
+      "rank": 303,
+      "code": "5223",
+      "label": "Butikkmedarbeidere",
+      "href": "/yrke/butikkmedarbeidere-lonn",
+      "value": 220,
+      "monthlyOvertimePay": 220,
+      "annualizedOvertimePay": 2640
+    },
+    {
+      "rank": 304,
+      "code": "2263",
+      "label": "Helse- og miljørådgivere",
+      "href": "/yrke/helse-og-miljoradgivere-lonn",
+      "value": 220,
+      "monthlyOvertimePay": 220,
+      "annualizedOvertimePay": 2640
+    },
+    {
+      "rank": 305,
+      "code": "1341",
+      "label": "Ledere av omsorgstjenester for barn",
+      "href": "/yrke/ledere-av-omsorgstjenester-for-barn-lonn",
+      "value": 220,
+      "monthlyOvertimePay": 220,
+      "annualizedOvertimePay": 2640
+    },
+    {
+      "rank": 306,
+      "code": "1120",
+      "label": "Administrerende direktører",
+      "href": "/yrke/administrerende-direktorer-lonn",
+      "value": 210,
+      "monthlyOvertimePay": 210,
+      "annualizedOvertimePay": 2520
+    },
+    {
+      "rank": 307,
+      "code": "2265",
+      "label": "Ernæringsfysiologer",
+      "href": "/yrke/ernaeringsfysiologer-lonn",
+      "value": 200,
+      "monthlyOvertimePay": 200,
+      "annualizedOvertimePay": 2400
+    },
+    {
+      "rank": 308,
+      "code": "5131",
+      "label": "Servitører",
+      "href": "/yrke/servitorer-lonn",
+      "value": 200,
+      "monthlyOvertimePay": 200,
+      "annualizedOvertimePay": 2400
+    },
+    {
+      "rank": 309,
+      "code": "5113",
+      "label": "Reiseledere og guider",
+      "href": "/yrke/reiseledere-og-guider-lonn",
+      "value": 190,
+      "monthlyOvertimePay": 190,
+      "annualizedOvertimePay": 2280
+    },
+    {
+      "rank": 310,
+      "code": "1223",
+      "label": "Forsknings- og utviklingsledere",
+      "href": "/yrke/forsknings-og-utviklingsledere-lonn",
+      "value": 180,
+      "monthlyOvertimePay": 180,
+      "annualizedOvertimePay": 2160
+    },
+    {
+      "rank": 311,
+      "code": "2653",
+      "label": "Koreografer og dansere",
+      "href": "/yrke/koreografer-og-dansere-lonn",
+      "value": 180,
+      "monthlyOvertimePay": 180,
+      "annualizedOvertimePay": 2160
+    },
+    {
+      "rank": 312,
+      "code": "2267",
+      "label": "Ergoterapeuter",
+      "href": "/yrke/ergoterapeuter-lonn",
+      "value": 170,
+      "monthlyOvertimePay": 170,
+      "annualizedOvertimePay": 2040
+    },
+    {
+      "rank": 313,
+      "code": "1222",
+      "label": "PR- og informasjonssjefer",
+      "href": "/yrke/pr-og-informasjonssjefer-lonn",
+      "value": 170,
+      "monthlyOvertimePay": 170,
+      "annualizedOvertimePay": 2040
+    },
+    {
+      "rank": 314,
+      "code": "2310",
+      "label": "Universitets- og høyskolelektorer/-lærere",
+      "href": "/yrke/universitets-og-hoyskolelektorer-laerere-lonn",
+      "value": 170,
+      "monthlyOvertimePay": 170,
+      "annualizedOvertimePay": 2040
+    },
+    {
+      "rank": 315,
+      "code": "5132",
+      "label": "Bartendere",
+      "href": "/yrke/bartendere-lonn",
+      "value": 160,
+      "monthlyOvertimePay": 160,
+      "annualizedOvertimePay": 1920
+    },
+    {
+      "rank": 316,
+      "code": "5246",
+      "label": "Gatekjøkken- og kafémedarbeidere mv.",
+      "href": "/yrke/gatekjokken-og-kafemedarbeidere-mv-lonn",
+      "value": 160,
+      "monthlyOvertimePay": 160,
+      "annualizedOvertimePay": 1920
+    },
+    {
+      "rank": 317,
+      "code": "2636",
+      "label": "Geistlige yrker",
+      "href": "/yrke/geistlige-yrker-lonn",
+      "value": 160,
+      "monthlyOvertimePay": 160,
+      "annualizedOvertimePay": 1920
+    },
+    {
+      "rank": 318,
+      "code": "5322",
+      "label": "Hjemmehjelper",
+      "href": "/yrke/hjemmehjelper-lonn",
+      "value": 160,
+      "monthlyOvertimePay": 160,
+      "annualizedOvertimePay": 1920
+    },
+    {
+      "rank": 319,
+      "code": "1114",
+      "label": "Toppledere i interesseorganisasjoner",
+      "href": "/yrke/toppledere-i-interesseorganisasjoner-lonn",
+      "value": 160,
+      "monthlyOvertimePay": 160,
+      "annualizedOvertimePay": 1920
+    },
+    {
+      "rank": 320,
+      "code": "1439",
+      "label": "Andre daglige ledere i tjenesteytende virksomheter",
+      "href": "/yrke/andre-daglige-ledere-i-tjenesteytende-virksomheter-lonn",
+      "value": 150,
+      "monthlyOvertimePay": 150,
+      "annualizedOvertimePay": 1800
+    },
+    {
+      "rank": 321,
+      "code": "1221",
+      "label": "Salgs- og markedssjefer",
+      "href": "/yrke/salgs-og-markedssjefer-lonn",
+      "value": 150,
+      "monthlyOvertimePay": 150,
+      "annualizedOvertimePay": 1800
+    },
+    {
+      "rank": 322,
+      "code": "3143",
+      "label": "Skogteknikere",
+      "href": "/yrke/skogteknikere-lonn",
+      "value": 150,
+      "monthlyOvertimePay": 150,
+      "annualizedOvertimePay": 1800
+    },
+    {
+      "rank": 323,
+      "code": "2352",
+      "label": "Spesiallærere / spesialpedagoger",
+      "href": "/yrke/spesiallaerere-spesialpedagoger-lonn",
+      "value": 140,
+      "monthlyOvertimePay": 140,
+      "annualizedOvertimePay": 1680
+    },
+    {
+      "rank": 324,
+      "code": "1112",
+      "label": "Toppledere i offentlig administrasjon",
+      "href": "/yrke/toppledere-i-offentlig-administrasjon-lonn",
+      "value": 140,
+      "monthlyOvertimePay": 140,
+      "annualizedOvertimePay": 1680
+    },
+    {
+      "rank": 325,
+      "code": "7318",
+      "label": "Vevere, strikkere mv. (innen husflidsproduksjon)",
+      "href": "/yrke/vevere-strikkere-mv-innen-husflidsproduksjon-lonn",
+      "value": 140,
+      "monthlyOvertimePay": 140,
+      "annualizedOvertimePay": 1680
+    },
+    {
+      "rank": 326,
+      "code": "5311",
+      "label": "Barnehage- og skolefritidsassistenter mv.",
+      "href": "/yrke/barnehage-og-skolefritidsassistenter-mv-lonn",
+      "value": 130,
+      "monthlyOvertimePay": 130,
+      "annualizedOvertimePay": 1560
+    },
+    {
+      "rank": 327,
+      "code": "2264",
+      "label": "Fysioterapeuter",
+      "href": "/yrke/fysioterapeuter-lonn",
+      "value": 130,
+      "monthlyOvertimePay": 130,
+      "annualizedOvertimePay": 1560
+    },
+    {
+      "rank": 328,
+      "code": "3251",
+      "label": "Tannpleiere",
+      "href": "/yrke/tannpleiere-lonn",
+      "value": 130,
+      "monthlyOvertimePay": 130,
+      "annualizedOvertimePay": 1560
+    },
+    {
+      "rank": 329,
+      "code": "9621",
+      "label": "Bud mv.",
+      "href": "/yrke/bud-mv-lonn",
+      "value": 120,
+      "monthlyOvertimePay": 120,
+      "annualizedOvertimePay": 1440
+    },
+    {
+      "rank": 330,
+      "code": "2641",
+      "label": "Forfattere mv.",
+      "href": "/yrke/forfattere-mv-lonn",
+      "value": 120,
+      "monthlyOvertimePay": 120,
+      "annualizedOvertimePay": 1440
+    },
+    {
+      "rank": 331,
+      "code": "1111",
+      "label": "Politikere",
+      "href": "/yrke/politikere-lonn",
+      "value": 120,
+      "monthlyOvertimePay": 120,
+      "annualizedOvertimePay": 1440
+    },
+    {
+      "rank": 332,
+      "code": "2434",
+      "label": "Salgskonsulenter innen IKT-produkter",
+      "href": "/yrke/salgskonsulenter-innen-ikt-produkter-lonn",
+      "value": 120,
+      "monthlyOvertimePay": 120,
+      "annualizedOvertimePay": 1440
+    },
+    {
+      "rank": 333,
+      "code": "1431",
+      "label": "Sports-, rekreasjons- og kultursenterledere",
+      "href": "/yrke/sports-rekreasjons-og-kultursenterledere-lonn",
+      "value": 120,
+      "monthlyOvertimePay": 120,
+      "annualizedOvertimePay": 1440
+    },
+    {
+      "rank": 334,
+      "code": "5142",
+      "label": "Kosmetologer mv.",
+      "href": "/yrke/kosmetologer-mv-lonn",
+      "value": 110,
+      "monthlyOvertimePay": 110,
+      "annualizedOvertimePay": 1320
+    },
+    {
+      "rank": 335,
+      "code": "6130",
+      "label": "Plante- og husdyrprodusenter (kombinasjonsbruk)",
+      "href": "/yrke/plante-og-husdyrprodusenter-kombinasjonsbruk-lonn",
+      "value": 110,
+      "monthlyOvertimePay": 110,
+      "annualizedOvertimePay": 1320
+    },
+    {
+      "rank": 336,
+      "code": "3254",
+      "label": "Optikere",
+      "href": "/yrke/optikere-lonn",
+      "value": 100,
+      "monthlyOvertimePay": 100,
+      "annualizedOvertimePay": 1200
+    },
+    {
+      "rank": 337,
+      "code": "2652",
+      "label": "Dirigenter, komponister, musikere og sangere",
+      "href": "/yrke/dirigenter-komponister-musikere-og-sangere-lonn",
+      "value": 90,
+      "monthlyOvertimePay": 90,
+      "annualizedOvertimePay": 1080
+    },
+    {
+      "rank": 338,
+      "code": "2643",
+      "label": "Oversettere, tolker mv.",
+      "href": "/yrke/oversettere-tolker-mv-lonn",
+      "value": 90,
+      "monthlyOvertimePay": 90,
+      "annualizedOvertimePay": 1080
+    },
+    {
+      "rank": 339,
+      "code": "9111",
+      "label": "Renholdere i private hjem",
+      "href": "/yrke/renholdere-i-private-hjem-lonn",
+      "value": 90,
+      "monthlyOvertimePay": 90,
+      "annualizedOvertimePay": 1080
+    },
+    {
+      "rank": 340,
+      "code": "3339",
+      "label": "Andre yrker innen forretningstjenester",
+      "href": "/yrke/andre-yrker-innen-forretningstjenester-lonn",
+      "value": 80,
+      "monthlyOvertimePay": 80,
+      "annualizedOvertimePay": 960
+    },
+    {
+      "rank": 341,
+      "code": "2622",
+      "label": "Bibliotekarer og andre informasjonsarbeidere",
+      "href": "/yrke/bibliotekarer-og-andre-informasjonsarbeidere-lonn",
+      "value": 80,
+      "monthlyOvertimePay": 80,
+      "annualizedOvertimePay": 960
+    },
+    {
+      "rank": 342,
+      "code": "9215",
+      "label": "Hjelpearbeidere i skogbruk",
+      "href": "/yrke/hjelpearbeidere-i-skogbruk-lonn",
+      "value": 80,
+      "monthlyOvertimePay": 80,
+      "annualizedOvertimePay": 960
+    },
+    {
+      "rank": 343,
+      "code": "5211",
+      "label": "Torghandlere",
+      "href": "/yrke/torghandlere-lonn",
+      "value": 80,
+      "monthlyOvertimePay": 80,
+      "annualizedOvertimePay": 960
+    },
+    {
+      "rank": 344,
+      "code": "2659",
+      "label": "Andre utøvende kunstneriske yrker",
+      "href": "/yrke/andre-utovende-kunstneriske-yrker-lonn",
+      "value": 70,
+      "monthlyOvertimePay": 70,
+      "annualizedOvertimePay": 840
+    },
+    {
+      "rank": 345,
+      "code": "2612",
+      "label": "Dommere",
+      "href": "/yrke/dommere-lonn",
+      "value": 60,
+      "monthlyOvertimePay": 60,
+      "annualizedOvertimePay": 720
+    },
+    {
+      "rank": 346,
+      "code": "5243",
+      "label": "Dørselgere",
+      "href": "/yrke/dorselgere-lonn",
+      "value": 60,
+      "monthlyOvertimePay": 60,
+      "annualizedOvertimePay": 720
+    },
+    {
+      "rank": 347,
+      "code": "5141",
+      "label": "Frisører",
+      "href": "/yrke/frisorer-lonn",
+      "value": 50,
+      "monthlyOvertimePay": 50,
+      "annualizedOvertimePay": 600
+    },
+    {
+      "rank": 348,
+      "code": "5312",
+      "label": "Skoleassistenter",
+      "href": "/yrke/skoleassistenter-lonn",
+      "value": 50,
+      "monthlyOvertimePay": 50,
+      "annualizedOvertimePay": 600
+    },
+    {
+      "rank": 349,
+      "code": "2355",
+      "label": "Andre lærere i estetiske fag",
+      "href": "/yrke/andre-laerere-i-estetiske-fag-lonn",
+      "value": 40,
+      "monthlyOvertimePay": 40,
+      "annualizedOvertimePay": 480
+    },
+    {
+      "rank": 350,
+      "code": "4411",
+      "label": "Bibliotekassistenter",
+      "href": "/yrke/bibliotekassistenter-lonn",
+      "value": 40,
+      "monthlyOvertimePay": 40,
+      "annualizedOvertimePay": 480
+    },
+    {
+      "rank": 351,
+      "code": "2269",
+      "label": "Kiropraktorer mv.",
+      "href": "/yrke/kiropraktorer-mv-lonn",
+      "value": 40,
+      "monthlyOvertimePay": 40,
+      "annualizedOvertimePay": 480
+    },
+    {
+      "rank": 352,
+      "code": "2353",
+      "label": "Andre språklærere",
+      "href": "/yrke/andre-spraklaerere-lonn",
+      "value": 30,
+      "monthlyOvertimePay": 30,
+      "annualizedOvertimePay": 360
+    },
+    {
+      "rank": 353,
+      "code": "2354",
+      "label": "Andre musikklærere",
+      "href": "/yrke/andre-musikklaerere-lonn",
+      "value": 20,
+      "monthlyOvertimePay": 20,
+      "annualizedOvertimePay": 240
+    },
+    {
+      "rank": 354,
+      "code": "5241",
+      "label": "Mannekenger og modeller",
+      "href": "/yrke/mannekenger-og-modeller-lonn",
+      "value": 20,
+      "monthlyOvertimePay": 20,
+      "annualizedOvertimePay": 240
+    },
+    {
+      "rank": 355,
+      "code": "3413",
+      "label": "Religiøse yrker",
+      "href": "/yrke/religiose-yrker-lonn",
+      "value": 20,
+      "monthlyOvertimePay": 20,
+      "annualizedOvertimePay": 240
+    },
+    {
+      "rank": 356,
+      "code": "3422",
+      "label": "Trenere og idrettsdommere",
+      "href": "/yrke/trenere-og-idrettsdommere-lonn",
+      "value": 20,
+      "monthlyOvertimePay": 20,
+      "annualizedOvertimePay": 240
+    },
+    {
+      "rank": 357,
+      "code": "5221",
+      "label": "Innehavere av kiosk/liten butikk",
+      "href": "/yrke/innehavere-av-kiosk-liten-butikk-lonn",
+      "value": 10,
+      "monthlyOvertimePay": 10,
+      "annualizedOvertimePay": 120
+    },
+    {
+      "rank": 358,
+      "code": "4227",
+      "label": "Intervjuere",
+      "href": "/yrke/intervjuere-lonn",
+      "value": 10,
+      "monthlyOvertimePay": 10,
+      "annualizedOvertimePay": 120
+    },
+    {
+      "rank": 359,
+      "code": "3423",
+      "label": "Sports- og aktivitetsinstruktører",
+      "href": "/yrke/sports-og-aktivitetsinstruktorer-lonn",
+      "value": 10,
+      "monthlyOvertimePay": 10,
+      "annualizedOvertimePay": 120
+    },
+    {
+      "rank": 360,
+      "code": "3421",
+      "label": "Idrettsutøvere",
+      "href": "/yrke/idrettsutovere-lonn",
+      "value": 0,
+      "monthlyOvertimePay": 0,
+      "annualizedOvertimePay": 0
+    },
+    {
+      "rank": 361,
+      "code": "3230",
+      "label": "Yrker innen alternativ medisin",
+      "href": "/yrke/yrker-innen-alternativ-medisin-lonn",
+      "value": 0,
+      "monthlyOvertimePay": 0,
+      "annualizedOvertimePay": 0
+    }
+  ]
+}

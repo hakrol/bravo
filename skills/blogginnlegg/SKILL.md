@@ -82,6 +82,40 @@ Hvis briefen oppgir `FAQ`, er hvert punkt et påkrevd spørsmål. Codex skal ink
 
 Codex skal ikke be brukeren fylle inn komponentnavn, formål, plassering eller datafil i tema-køen. Hvis et oppgitt diagram ikke kan lages med tilgjengelig datagrunnlag, skal Codex forklare hvorfor før temaet regnes som ferdig.
 
+## Rangeringsinnlegg
+
+Når det neste ukryssede temaet i `daily-brief.md` er merket som et `Rangeringsinnlegg`, skal disse instruksjonene brukes i tillegg til de generelle instruksjonene for blogginnlegg.
+
+Et rangeringsinnlegg er fortsatt et vanlig blogginnlegg. Det skal følge bloggens vanlige filstruktur, frontmatter, URL-struktur, komponentbruk og publiseringsflyt.
+
+- Les hele briefen for det aktuelle innlegget før arbeidet starter.
+- `daily-brief.md` er styrende for det konkrete rangeringsinnlegget. Bruk tittelen, søkeintensjonen, overskriftene, avgrensningene, datagrunnlaget, tabellene, diagrammene og komponentene som er angitt i briefen.
+- Behold overskriftene fra briefen som hovedstruktur og i samme rekkefølge. Ikke erstatt dem med en generell standardstruktur for rangeringsinnlegg.
+- Bruk diagramtypen og diagramkomponenten som er angitt i briefen. Ikke velg en annen diagramtype bare fordi den vanligvis brukes i rangeringsinnlegg.
+- Dersom briefen angir hvilke verdier, yrker, kategorier eller år som skal vises i diagrammet, skal denne avgrensningen følges.
+- Dersom briefen krever både tabell og diagram, skal begge brukes. De skal bygge på det samme datagrunnlaget og vise konsistente verdier og plasseringer.
+- Ikke legg til ekstra diagrammer, tabeller eller hovedseksjoner med mindre det er nødvendig for å oppfylle briefen eller forklare vesentlige forbehold.
+- Hvis briefen ikke angir en bestemt overskrift, diagramtype eller presentasjonsform, brukes de generelle instruksjonene for rangeringsinnlegg og bloggens eksisterende mønstre.
+- Ved motstrid gjelder de artikkelspesifikke instruksjonene i `daily-brief.md` foran de generelle instruksjonene for rangeringsinnlegg. Repoets sikkerhetsregler og tekniske krav gjelder alltid.
+- Legg innlegget i `src/content/blog/` som `.mdx`.
+- Bruk den vanlige frontmatter-strukturen for blogginnlegg.
+- Lag blogg-coverbilde og bruk `coverImage` og `coverImageAlt` når dette kreves av den vanlige bloggstrukturen.
+- Ikke publiser eksternt eller automatisk.
+- Rangeringen skal bygge på et tydelig definert og dokumenterbart datagrunnlag. Oppgi hvilket år, hvilken måleenhet, hvilken populasjon og hvilke avgrensninger rangeringen gjelder.
+- Bruk den samme måleenheten for alle plasseringene. Ikke bland for eksempel gjennomsnittslønn og medianlønn i én rangering.
+- Forklar kort hvordan rangeringen er beregnet før eller rett etter at resultatene presenteres.
+- Presenter hovedresultatet tidlig. Leseren skal raskt forstå hvem eller hva som ligger øverst, og hva som skiller toppen fra resten.
+- Vis plasseringene i tydelig nummerert rekkefølge. Antallet plasseringer i innlegget skal samsvare med antallet som oppgis i tittelen.
+- Ikke fyll rangeringen med irrelevante yrker eller kategorier bare for å nå et bestemt antall. Avgrens sammenligningsgrunnlaget til det innlegget faktisk handler om.
+- Kontroller at navn, verdier og rekkefølge er konsistente mellom tekst, tabeller, diagrammer og eventuelle lokale datasnapshots.
+- Forklar hvorfor de øverste plasseringene skiller seg ut, men ikke presenter antakelser som dokumenterte årsaker.
+- Omtal vesentlige forbehold, datamangler, like plasseringer og usikre sammenligninger der de påvirker resultatet.
+- Bruk konkrete mellomtitler som beskriver funnene. Unngå generiske overskrifter som «Oppsummering av rangeringen» eller «Dette må du vite».
+- Bruk interne lenker til relevante yrkessider, sammenligningsverktøy, kalkulatorer, forklaringsinnlegg og andre blogginnlegg når det hjelper leseren videre.
+- Eksterne kilder skal inkorporeres naturlig i teksten der opplysningen brukes. Ikke avslutt rangeringsinnlegg med et eget `Kilder:`-avsnitt.
+- Skriv på Norsk Bokmål med konkret, nøkternt og forklarende språk.
+- Unngå generiske SEO-avsnitt. Hvert rangeringsinnlegg skal ha én tydelig søkeintensjon.
+
 ## Forklareringsinnlegg
 
 Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen innholdstype, ikke som et vanlig blogginnlegg.

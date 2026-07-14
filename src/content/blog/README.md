@@ -12,6 +12,7 @@ slug: "min-slug"
 publishedAt: "2026-04-03"
 coverImage: "/blogg/min-slug/yrke-lonn.png"
 coverImageAlt: "Kort beskrivelse av hva hero-bildet viser"
+coverImageAiGenerated: false
 author: "Kristian"
 category: "lonn"
 tags:
@@ -45,6 +46,9 @@ Bruk disse feltene bevisst i frontmatter:
 
 - `coverImageAlt`
   Skal beskrive selve hero-bildet kort og konkret, for eksempel `To piloter som sitter i cockpit`. Brukes både som alt-tekst og som første setning i den lille grå bildeteksten under hero-bildet.
+
+- `coverImageAiGenerated`
+  Valgfritt boolsk felt som settes til `true` når hero-bildet er KI-generert. Da vises teksten `Illustrasjonen er AI-generert og brukes for visualisering av temaet.` etter bildebeskrivelsen. Hvis feltet mangler eller er `false`, vises ikke denne teksten.
 
 - `category`
   Skal være én av de godkjente bloggkategoriene. Bruk `lonn` for lønns-, yrkes- og lønnsutviklingsartikler. Bruk `lonnsforhandling` for guider om lønnssamtale, lønnskrav og forhandling.
@@ -91,6 +95,7 @@ Automatiserte yrke/lønn-innlegg skal ikke lage eller generere egne hero-bilder.
 ```md
 coverImage: "/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"
 coverImageAlt: "To leger i hvite frakker med stetoskop og skrivebrett"
+coverImageAiGenerated: false
 ```
 
 Når `coverImage` settes til en sti under `/blogg/<slug>/`, skal den tilsvarende mappen `public/blogg/<slug>/` opprettes samtidig. Selve bildefilen skal fortsatt ikke opprettes eller genereres hvis brukeren skal legge inn bildet selv.
@@ -135,7 +140,7 @@ Beste praksis for bilder i blogginnlegg:
 - Unngå mellomrom, parenteser, `IMG_1234`, `final-final` og kopinavn som `(1)`.
 - Bruk relevant `alt`-tekst på bilder som tilfører informasjon.
 - La `alt`-teksten beskrive hva bildet viser i konteksten av innlegget.
-- Bloggbilder får automatisk en liten grå bildetekst under bildet. For MDX-bilder bygger første setning på `alt`-teksten, og for hero-bilder bygger den på `coverImageAlt`. Andre setning er: `Illustrasjonen er AI-generert og brukes for visualisering av temaet.`
+- Bloggbilder får automatisk en liten grå bildetekst under bildet. For MDX-bilder bygger første setning på `alt`-teksten, og for hero-bilder bygger den på `coverImageAlt`. For hero-bilder vises setningen `Illustrasjonen er AI-generert og brukes for visualisering av temaet.` bare når `coverImageAiGenerated` er satt til `true`.
 - Ikke fyll `alt`-teksten med søkeord.
 - Hvis bildet er dekorativt og ikke tilfører informasjon, bruk tom `alt`.
 - Bruk hero-bilder som faktisk passer til temaet i innlegget, siden de også brukes i deling og metadata.

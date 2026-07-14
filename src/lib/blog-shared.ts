@@ -7,6 +7,7 @@ export type BlogFrontmatter = {
   publishedAt: string;
   coverImage: string;
   coverImageAlt?: string;
+  coverImageAiGenerated?: boolean;
   author: string;
   category: BlogCategorySlug;
   tags?: string[];
