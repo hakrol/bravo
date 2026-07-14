@@ -88,8 +88,10 @@ import {
 import { MalerGenderSalaryCards, MalerSalaryBubbleChart, MalerSalaryDevelopmentChart } from "@/components/blog-maler-salary-chart";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
+import { TopOvertimePay2025Chart } from "@/components/blog-overtime-ranking-chart";
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
 import { BlogSalaryDevelopmentChart } from "@/components/blog-salary-development-chart";
+import { TopSalaryGrowth2024To2025Chart } from "@/components/blog-salary-growth-ranking-chart";
 import {
   ServitorGenderSalaryCards,
   ServitorSalaryBubbleChart,
@@ -285,6 +287,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogHandverkerSalaryChart,
     LegalSalaryDevelopmentChart,
     BlogSalaryDevelopmentChart,
+    TopSalaryGrowth2024To2025Chart,
     HealthSalaryBubbleChart,
     IntensivsykepleierGenderSalaryCards,
     IntensivsykepleierSalaryBubbleChart,
@@ -319,6 +322,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     StoreManagerSalaryDevelopmentChart,
     StoreManagerSalaryEditorialChart,
     BlogOccupationSalaryTable,
+    TopOvertimePay2025Chart,
     SurgeonSalaryBubbleChart,
     SurgeonSalaryEditorialChart,
     TopHandverkerGenderSalaryCards,

@@ -51,7 +51,7 @@ Bruk første ukryssede tema i listen under.
 
 Hva tjener en bartender?
 
-[ ] Hva tjener en bartender?
+- [ ] Hva tjener en bartender?
 
 Tittel:
 
@@ -191,6 +191,10 @@ Eksterne lenker:
 * https://utdanning.no/yrker/beskrivelse/mur-og_flislegger
 
 ### Ferdig
+
+- [x] De 10 yrkene med mest overtidsbetaling - `src/content/blog/de-10-yrkene-med-mest-overtidsbetaling.mdx` - 2026-07-14
+
+- [x] De 10 yrkene med størst lønnsvekst fra 2024 til 2025 - `src/content/blog/de-10-yrkene-med-storst-lonnsvekst-fra-2024-til-2025.mdx` - 2026-07-14
 
 - [x] De 5 best betalte håndverkeryrkene - `src/content/blog/de-5-best-betalte-handverkeryrkene.mdx` - 2026-07-13
 

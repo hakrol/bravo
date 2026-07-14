@@ -54,6 +54,7 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
     coverImageAlt: trimOptionalString(data.coverImageAlt),
+    coverImageAiGenerated: data.coverImageAiGenerated === true,
     author: assertRequiredString(data.author, "author"),
     category,
     tags,

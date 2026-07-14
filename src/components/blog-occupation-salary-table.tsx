@@ -11,6 +11,8 @@ import brannmannLonn2025Snapshot from "@/content/blog/data/brannmann-lonn-2025.j
 import bussjaforerTrikkeforereLonn2025Snapshot from "@/content/blog/data/bussjaforer-trikkeforere-lonn-2025.json";
 import butikksjefLonn2025Snapshot from "@/content/blog/data/butikksjef-lonn-2025.json";
 import bygningsarbeidereLonn2025Snapshot from "@/content/blog/data/bygningsarbeidere-lonn-2025.json";
+import de10YrkeneMedStorstLonnsvekst2024To2025Snapshot from "@/content/blog/data/de-10-yrkene-med-storst-lonnsvekst-2024-2025.json";
+import de10YrkeneMedMestOvertidsbetaling2025Snapshot from "@/content/blog/data/de-10-yrkene-med-mest-overtidsbetaling-2025.json";
 import energimontorLonn2025Snapshot from "@/content/blog/data/energimontor-lonn-2025.json";
 import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025.json";
 import ergoterapeutFysioterapeutLonn2025Snapshot from "@/content/blog/data/ergoterapeut-fysioterapeut-lonn-2025.json";
@@ -68,6 +70,8 @@ const snapshots = {
   "bussjaforer-trikkeforere-lonn-2025": bussjaforerTrikkeforereLonn2025Snapshot as OccupationSalarySnapshot,
   "butikksjef-lonn-2025": butikksjefLonn2025Snapshot as OccupationSalarySnapshot,
   "bygningsarbeidere-lonn-2025": bygningsarbeidereLonn2025Snapshot as OccupationSalarySnapshot,
+  "de-10-yrkene-med-storst-lonnsvekst-2024-2025": de10YrkeneMedStorstLonnsvekst2024To2025Snapshot as OccupationSalarySnapshot,
+  "de-10-yrkene-med-mest-overtidsbetaling-2025": de10YrkeneMedMestOvertidsbetaling2025Snapshot as OccupationSalarySnapshot,
   "energimontor-lonn-2025": energimontorLonn2025Snapshot as OccupationSalarySnapshot,
   "elektriker-lonn-2025": elektrikerLonn2025Snapshot as OccupationSalarySnapshot,
   "ergoterapeut-fysioterapeut-lonn-2025": ergoterapeutFysioterapeutLonn2025Snapshot as OccupationSalarySnapshot,

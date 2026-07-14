@@ -39,7 +39,7 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
             />
           </div>
           <figcaption className="blog-post-hero-caption">
-            {sentence(coverImageDescription)} {aiCaptionText}
+            {sentence(coverImageDescription)} {post.coverImageAiGenerated ? aiCaptionText : null}
           </figcaption>
         </figure>
 
