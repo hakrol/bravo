@@ -238,6 +238,7 @@ async function collectBlogItems(): Promise<AdminContentItem[]> {
       const issues: AdminIssue[] = [];
       const slug = typeof frontmatter.slug === "string" ? frontmatter.slug.trim() : "";
       const publishedAt = typeof frontmatter.publishedAt === "string" ? frontmatter.publishedAt.trim() : "";
+      const updatedAt = typeof frontmatter.updatedAt === "string" ? frontmatter.updatedAt.trim() : "";
       const coverImage = typeof frontmatter.coverImage === "string" ? frontmatter.coverImage.trim() : "";
 
       for (const field of ["title", "description", "slug", "publishedAt", "coverImage", "author"] as const) {
@@ -266,6 +267,12 @@ async function collectBlogItems(): Promise<AdminContentItem[]> {
 
       if (publishedAt && Number.isNaN(new Date(publishedAt).getTime())) {
         addIssue(issues, "error", "Ugyldig publiseringsdato", publishedAt);
+      }
+
+      if (updatedAt && Number.isNaN(new Date(updatedAt).getTime())) {
+        addIssue(issues, "error", "Ugyldig oppdateringsdato", updatedAt);
+      } else if (updatedAt && publishedAt && new Date(updatedAt).getTime() <= new Date(publishedAt).getTime()) {
+        addIssue(issues, "warning", "Oppdateringsdato er ikke senere enn publiseringsdato", updatedAt);
       }
 
       if (!slug) {

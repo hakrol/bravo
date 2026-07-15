@@ -11,7 +11,7 @@ Bruk denne skillen når arbeidet gjelder blogginnhold eller bloggoppsett i dette
 
 Blogginnleggene skal hjelpe norske lesere med å forstå lønn, lønnsstatistikk, yrker, utdanning og karrierevalg. Innholdet skal gjøre det lettere å ta gode valg, stille bedre spørsmål og bruke lønnsdata på en praktisk måte.
 
-Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller eller fagterminologi. Tonen skal være konkret, hjelpsom og rolig, uten salgspreg, overdrevne løfter eller generiske SEO-avsnitt.
+Skriv for en smart leser som ikke nødvendigvis kan statistikk, SSB-tabeller eller fagterminologi – Minimer bruk av tekniske uttrykk. Tonen skal være konkret, hjelpsom og rolig, uten salgspreg, overdrevne løfter eller generiske SEO-avsnitt.
 
 ## Prioritering ved konflikt
 
@@ -151,6 +151,7 @@ Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen i
 - Unngå amerikanske karriereråd som ikke passer norske forhold.
 - Bruk `##` og `###` for struktur. Det gir automatisk innholdsfortegnelse.
 - Hold frontmatter ryddig og komplett.
+- Behold den opprinnelige `publishedAt` når et publisert innlegg oppdateres. Sett valgfri `updatedAt` til datoen for en reell innholdsoppdatering; feltet skal være senere enn `publishedAt`.
 - Legg nye innlegg i `src/content/blog/`.
 - For automatiserte yrke/lønn-innlegg skal det ikke lages eller genereres et nytt hero-bilde. Sett likevel `coverImage` til en full artikkelspesifikk sti, for eksempel `"/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"`, slik at brukeren kan legge inn bildet selv.
 - Opprett alltid tilhørende mappe under `public/blogg/<slug>/` når `coverImage` settes til en sti under `/blogg/<slug>/`, også når bildefilen skal legges inn manuelt senere.

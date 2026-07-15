@@ -16,7 +16,7 @@ import { siteConfig } from "@/lib/site-config";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
 
-export { formatBlogDate } from "@/lib/blog-shared";
+export { formatBlogDate, getBlogUpdatedAt } from "@/lib/blog-shared";
 export type { BlogFrontmatter, BlogPost, BlogPostPreview, BlogTableOfContentsItem } from "@/lib/blog-shared";
 
 function trimOptionalString(value: unknown) {
@@ -52,6 +52,7 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     description: assertRequiredString(data.description, "description"),
     slug: assertRequiredString(data.slug, "slug"),
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
+    updatedAt: trimOptionalString(data.updatedAt),
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
     coverImageAlt: trimOptionalString(data.coverImageAlt),
     coverImageAiGenerated: data.coverImageAiGenerated === true,

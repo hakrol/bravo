@@ -49,56 +49,6 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
-Hva tjener en bartender?
-
-- [ ] Hva tjener en bartender?
-
-Tittel:
-
-Hva tjener en bartender i måneden og året?
-
-Beskrivelse:
-
-Innlegget skal gi leseren en helhetlig oversikt over lønnsnivået blant bartendere. Det skal vise gjennomsnittlig timelønn, månedslønn og årslønn, samt hvordan lønnen fordeler seg mellom kvinnelige og mannlige bartendere.
-
-Artikkelen skal også forklare hva en bartender arbeider med, hvor mange som har bartender som registrert yrke, og hvordan lønnen har utviklet seg de siste fem årene. Reallønnsutviklingen bør brukes for å vise om kjøpekraften faktisk har økt.
-
-Overskrifter:
-
-Hva gjør en bartender?
-Hva er gjennomsnittslønnen til en bartender?
-Hva er timelønnen til en bartender?
-Hva er årslønnen til en bartender?
-Hvordan fordeler lønnen seg blant bartendere?
-Tjener mannlige og kvinnelige bartendere forskjellig?
-Hvordan har bartenderlønnen utviklet seg?
-Har bartendere hatt reallønnsvekst?
-Hvor mange jobber som bartendere?
-
-Diagrammer:
-
-Kjønnsdelt lønnskort
-Femårs lønnsutvikling
-Redaksjonelt stolpediagram som viser lønnsfordelingen
-Boblediagram med lønn, alder og antall lønnstakere
-
-FAQ:
-
-Hva er vanlig timelønn for en bartender?
-Hvor mye tjener en bartender i måneden?
-Hvor mye tjener en bartender i året?
-Får bartendere tillegg for kveld og helg?
-Hvor mange arbeider som bartendere i Norge?
-Hva er gjennomsnittsalderen blant bartendere?
-
-Interne lenker:
-
-/yrke/bartendere-lonn
-Lenker til relaterte yrker innen servering, restaurant og reiseliv
-Lenke til oversikten over yrker med tilsvarende lønnsnivå
-
-Eksterne lenker:
-
 - [ ] Førtrykkere: lønn og lønnsutvikling
 
 Tittel:
@@ -191,6 +141,10 @@ Eksterne lenker:
 * https://utdanning.no/yrker/beskrivelse/mur-og_flislegger
 
 ### Ferdig
+
+- [x] De 10 best betalte lærlingyrkene - `src/content/blog/de-10-best-betalte-laerlingyrkene.mdx` - 2026-07-15
+
+- [x] Hva tjener en bartender? - `src/content/blog/hva-tjener-en-bartender-i-maneden-og-aret.mdx` - 2026-07-14
 
 - [x] De 10 yrkene med mest overtidsbetaling - `src/content/blog/de-10-yrkene-med-mest-overtidsbetaling.mdx` - 2026-07-14
 

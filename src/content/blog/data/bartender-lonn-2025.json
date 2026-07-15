@@ -1,0 +1,149 @@
+{
+  "id": "bartender-lonn-2025",
+  "title": "Hva tjener en bartender i måneden og året?",
+  "source": "SSB tabell 11418 og 11658",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Lønnstallene gjelder STYRK-08 5132 Bartendere. Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 4. kvartal 2025. Reallønn er beregnet med årlig gjennomsnitt av SSBs KPI, tabell 14700, med 2025=100.",
+  "occupationMapping": {
+    "styrk08Code": "5132",
+    "styrk08Title": "Bartendere"
+  },
+  "rows": [
+    {
+      "code": "1411",
+      "label": "Hotellsjefer",
+      "href": "/yrke/hotellsjefer-lonn",
+      "value": 52610,
+      "employees": 773,
+      "averageAge": 44.4
+    },
+    {
+      "code": "5152",
+      "label": "Husholdere",
+      "href": "/yrke/husholdere-lonn",
+      "value": 52120,
+      "employees": 215,
+      "averageAge": 48.8
+    },
+    {
+      "code": "1412",
+      "label": "Restaurantsjefer",
+      "href": "/yrke/restaurantsjefer-lonn",
+      "value": 50770,
+      "employees": 3865,
+      "averageAge": 40.3
+    },
+    {
+      "code": "5120",
+      "label": "Kokker",
+      "href": "/yrke/kokker-lonn",
+      "value": 41610,
+      "employees": 23462,
+      "averageAge": 38.7
+    },
+    {
+      "code": "5111",
+      "label": "Flyverter, båtverter mv.",
+      "href": "/yrke/flyverter-batverter-mv-lonn",
+      "value": 41510,
+      "employees": 2720,
+      "averageAge": 40.6
+    },
+    {
+      "code": "5141",
+      "label": "Frisører",
+      "href": "/yrke/frisorer-lonn",
+      "value": 39670,
+      "employees": 8898,
+      "averageAge": 37.7
+    },
+    {
+      "code": "4224",
+      "label": "Hotellresepsjonister",
+      "href": "/yrke/hotellresepsjonister-lonn",
+      "value": 39630,
+      "employees": 9029,
+      "averageAge": 35.7
+    },
+    {
+      "code": "5132",
+      "label": "Bartendere",
+      "href": "/yrke/bartendere-lonn",
+      "value": 37480,
+      "average": 38710,
+      "p25": 34220,
+      "p75": 41400,
+      "employees": 6975,
+      "jobs": 10403,
+      "averageAge": 30.8
+    },
+    {
+      "code": "5131",
+      "label": "Servitører",
+      "href": "/yrke/servitorer-lonn",
+      "value": 37350,
+      "employees": 24470,
+      "averageAge": 32.3
+    },
+    {
+      "code": "5246",
+      "label": "Gatekjøkken- og kafémedarbeidere mv.",
+      "href": "/yrke/gatekjokken-og-kafemedarbeidere-mv-lonn",
+      "value": 36360,
+      "employees": 16444,
+      "averageAge": 31.1
+    }
+  ],
+  "distribution": {
+    "occupationLabel": "Bartendere",
+    "source": "SSB tabell 11418",
+    "period": "2025",
+    "p25": 34220,
+    "median": 37480,
+    "average": 38710,
+    "p75": 41400
+  },
+  "genderMedian": {
+    "occupationLabel": "Bartendere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 36370,
+    "menMonthlyMedian": 38970
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Bartendere",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 30120 },
+      { "label": "2022", "value": 32320 },
+      { "label": "2023", "value": 34100 },
+      { "label": "2024", "value": 35850 },
+      { "label": "2025", "value": 37480 }
+    ]
+  },
+  "realSalaryDevelopment": {
+    "occupationLabel": "Bartendere",
+    "source": "SSB tabell 11418 og KPI tabell 14700",
+    "baseYear": "2025",
+    "rows": [
+      { "label": "2021", "nominal": 30120, "cpi": 84.3, "real2025": 35733 },
+      { "label": "2022", "nominal": 32320, "cpi": 89.2, "real2025": 36250 },
+      { "label": "2023", "nominal": 34100, "cpi": 94.1, "real2025": 36254 },
+      { "label": "2024", "nominal": 35850, "cpi": 97.1, "real2025": 36940 },
+      { "label": "2025", "nominal": 37480, "cpi": 100, "real2025": 37480 }
+    ]
+  },
+  "laborMarket": {
+    "period": "4. kvartal 2025",
+    "employees": 6975,
+    "jobs": 10403,
+    "womenEmployees": 3829,
+    "menEmployees": 3146,
+    "womenShare": 54.9,
+    "menShare": 45.1,
+    "averageAge": 30.8,
+    "womenAverageAge": 28.9,
+    "menAverageAge": 32.7
+  }
+}

@@ -5,6 +5,7 @@ export type BlogFrontmatter = {
   description: string;
   slug: string;
   publishedAt: string;
+  updatedAt?: string;
   coverImage: string;
   coverImageAlt?: string;
   coverImageAiGenerated?: boolean;
@@ -39,4 +40,19 @@ export function formatBlogDate(dateString: string) {
     month: "long",
     year: "numeric",
   }).format(new Date(dateString));
+}
+
+export function getBlogUpdatedAt(publishedAt: string, updatedAt?: string) {
+  if (!updatedAt) {
+    return undefined;
+  }
+
+  const publishedTime = new Date(publishedAt).getTime();
+  const updatedTime = new Date(updatedAt).getTime();
+
+  if (Number.isNaN(publishedTime) || Number.isNaN(updatedTime) || updatedTime <= publishedTime) {
+    return undefined;
+  }
+
+  return updatedAt;
 }

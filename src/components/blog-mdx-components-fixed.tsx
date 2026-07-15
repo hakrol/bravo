@@ -9,6 +9,13 @@ import {
   AutomatikerSalaryEditorialChart,
 } from "@/components/blog-automatiker-salary-chart";
 import {
+  BartenderGenderSalaryCards,
+  BartenderRealSalaryDevelopmentChart,
+  BartenderSalaryBubbleChart,
+  BartenderSalaryDevelopmentChart,
+  BartenderSalaryDistributionChart,
+} from "@/components/blog-bartender-salary-chart";
+import {
   CarMechanicGenderSalaryCards,
   CarMechanicSalaryBubbleChart,
   CarMechanicSalaryEditorialChart,
@@ -119,6 +126,10 @@ import {
   TopHandverkerGenderSalaryCards,
   TopHandverkerSalaryEditorialChart,
 } from "@/components/blog-top-handverker-salary-chart";
+import {
+  TopApprenticeGenderSalaryCards,
+  TopApprenticeSalaryEditorialChart,
+} from "@/components/blog-top-apprentice-salary-chart";
 import {
   BlogTeacherHourlySalaryChart,
   BlogTeacherSalaryChart,
@@ -252,6 +263,11 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     AutomatikerSalaryBubbleChart,
     AutomatikerSalaryDevelopmentChart,
     AutomatikerSalaryEditorialChart,
+    BartenderGenderSalaryCards,
+    BartenderRealSalaryDevelopmentChart,
+    BartenderSalaryBubbleChart,
+    BartenderSalaryDevelopmentChart,
+    BartenderSalaryDistributionChart,
     BuildingWorkerFamiliesSalaryChart,
     BuildingWorkerFamiliesSalaryDevelopmentChart,
     CarMechanicGenderSalaryCards,
@@ -327,6 +343,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     SurgeonSalaryEditorialChart,
     TopHandverkerGenderSalaryCards,
     TopHandverkerSalaryEditorialChart,
+    TopApprenticeGenderSalaryCards,
+    TopApprenticeSalaryEditorialChart,
     NorwayAverageSalaryDevelopmentChart,
     NorwayRealSalaryGrowthChart,
     NorwayTopOccupationSalaryGrowthChart,
