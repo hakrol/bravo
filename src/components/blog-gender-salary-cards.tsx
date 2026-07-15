@@ -43,19 +43,19 @@ export function BlogGenderSalaryCards({
       : undefined;
   return (
     <section className="my-10 rounded-[5px] border border-black/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] p-5 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+      <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="min-w-0">
           <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-3xl">
             Lønn {occupationLabel.toLowerCase()}
           </h3>
         </div>
 
-        <div className="flex max-w-full items-center gap-2">
-          <div className="grid grid-cols-3 rounded-[5px] bg-slate-100 p-1" aria-label="Velg lønnsvisning">
+        <div className="flex max-w-full items-center gap-2 overflow-x-auto xl:shrink-0">
+          <div className="grid w-max grid-cols-3 rounded-[5px] bg-slate-100 p-1" aria-label="Velg lønnsvisning">
             {salaryViews.map((view) => (
               <button
                 aria-pressed={salaryView === view.id}
-                className={`h-9 min-w-[5.75rem] whitespace-nowrap rounded-[5px] px-3 text-xs font-semibold transition ${
+                className={`h-9 w-[6.5rem] whitespace-nowrap rounded-[5px] px-3 text-xs font-semibold transition ${
                   salaryView === view.id
                     ? "bg-white text-slate-950 shadow-[0_6px_18px_rgba(15,23,42,0.08)]"
                     : "text-slate-600 hover:bg-white/70 hover:text-slate-950"
@@ -150,7 +150,13 @@ function GenderSalaryCard({ gender, value }: GenderSalaryCardProps) {
         <MetricAvatar tone={tone} />
         <span>{gender}</span>
       </div>
-      <div className="mt-6 break-words text-6xl font-extrabold leading-none tracking-[-0.04em] text-slate-950 sm:text-[4rem]">
+      <div
+        className={`mt-6 break-words font-extrabold text-slate-950 ${
+          value !== undefined
+            ? "text-6xl leading-none tracking-[-0.04em] sm:text-[4rem]"
+            : "max-w-[13rem] text-3xl leading-tight tracking-[-0.02em] sm:text-4xl"
+        }`}
+      >
         {value !== undefined ? formatCurrency(value) : "Ikke tilgjengelig"}
       </div>
     </article>

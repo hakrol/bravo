@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import advokaterJuristerLonn2025Snapshot from "@/content/blog/data/advokater-jurister-lonn-2025.json";
 import automatikerLonn2025Snapshot from "@/content/blog/data/automatiker-lonn-2025.json";
+import bartenderLonn2025Snapshot from "@/content/blog/data/bartender-lonn-2025.json";
+import bestBetalteLaerlingyrker2025Snapshot from "@/content/blog/data/best-betalte-laerlingyrker-2025.json";
 import bestBetalteYrker2025Snapshot from "@/content/blog/data/best-betalte-yrker-2025.json";
 import betongarbeiderLonn2025Snapshot from "@/content/blog/data/betongarbeider-lonn-2025.json";
 import bilmekanikerLonn2025Snapshot from "@/content/blog/data/bilmekaniker-lonn-2025.json";
@@ -63,6 +65,8 @@ const rowsPerPage = 25;
 const snapshots = {
   "advokater-jurister-lonn-2025": advokaterJuristerLonn2025Snapshot as OccupationSalarySnapshot,
   "automatiker-lonn-2025": automatikerLonn2025Snapshot as OccupationSalarySnapshot,
+  "bartender-lonn-2025": bartenderLonn2025Snapshot as OccupationSalarySnapshot,
+  "best-betalte-laerlingyrker-2025": bestBetalteLaerlingyrker2025Snapshot as OccupationSalarySnapshot,
   "best-betalte-yrker-2025": bestBetalteYrker2025Snapshot as OccupationSalarySnapshot,
   "betongarbeider-lonn-2025": betongarbeiderLonn2025Snapshot as OccupationSalarySnapshot,
   "bilmekaniker-lonn-2025": bilmekanikerLonn2025Snapshot as OccupationSalarySnapshot,

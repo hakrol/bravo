@@ -5,7 +5,13 @@ import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
 import { HomeExploreOccupationsSection } from "@/components/home-explore-occupations-section";
 import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
-import { getAllBlogPosts, getBlogPostBySlug, getBlogPostSlugs, getBlogPostUrl } from "@/lib/blog";
+import {
+  getAllBlogPosts,
+  getBlogPostBySlug,
+  getBlogPostSlugs,
+  getBlogPostUrl,
+  getBlogUpdatedAt,
+} from "@/lib/blog";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type BlogPostPageProps = {
@@ -34,6 +40,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const description = post.seoDescription ?? post.description;
   const canonicalUrl = getBlogPostUrl(post.slug);
   const imageUrl = getAbsoluteUrl(post.coverImage);
+  const updatedAt = getBlogUpdatedAt(post.publishedAt, post.updatedAt);
 
   return {
     title,
@@ -49,6 +56,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title,
       description,
       publishedTime: post.publishedAt,
+      modifiedTime: updatedAt,
       authors: [post.author],
       images: [
         {

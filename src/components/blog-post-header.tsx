@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatBlogDate, type BlogPost } from "@/lib/blog";
+import { formatBlogDate, getBlogUpdatedAt, type BlogPost } from "@/lib/blog";
 import { getBlogCategory } from "@/lib/blog-taxonomy";
 
 type BlogPostHeaderProps = {
@@ -16,6 +16,7 @@ function sentence(value: string) {
 export function BlogPostHeader({ post }: BlogPostHeaderProps) {
   const coverImageDescription = post.coverImageAlt ?? `Illustrasjon til artikkelen ${post.title}`;
   const category = getBlogCategory(post.category);
+  const updatedAt = getBlogUpdatedAt(post.publishedAt, post.updatedAt);
 
   return (
     <header className="blog-post-hero">
@@ -63,6 +64,14 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
             <span>{post.author}</span>
             <span aria-hidden="true">•</span>
             <time dateTime={post.publishedAt}>{formatBlogDate(post.publishedAt)}</time>
+            {updatedAt ? (
+              <>
+                <span aria-hidden="true">•</span>
+                <span>
+                  Oppdatert <time dateTime={updatedAt}>{formatBlogDate(updatedAt)}</time>
+                </span>
+              </>
+            ) : null}
             <span aria-hidden="true">•</span>
             <span>{post.readingTimeMinutes} min lesetid</span>
           </div>
