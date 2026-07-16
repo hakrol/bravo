@@ -1002,6 +1002,24 @@ a.blog-meta-chip:focus-visible {
   text-decoration: none !important;
 }
 
+.blog-post-lonnsjekk-callout-wrap {
+  margin-top: -1rem;
+  margin-bottom: 2.75rem;
+}
+
+.blog-post-lonnsjekk-callout {
+  margin: 0;
+  border-color: rgba(91, 112, 143, 0.16);
+  background:
+    radial-gradient(circle at 12% 35%, rgba(218, 230, 245, 0.72), transparent 34%),
+    linear-gradient(135deg, #fbfcfe 0%, #f1f5fa 100%);
+  box-shadow: 0 14px 34px rgba(31, 51, 73, 0.07);
+}
+
+.blog-post-lonnsjekk-callout .blog-tool-callout-description {
+  color: #475569;
+}
+
 .blog-faq {
   margin: 2.4rem 0;
   background: #ffffff;

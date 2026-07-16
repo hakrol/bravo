@@ -5,9 +5,9 @@ import type { HTMLAttributes } from "react";
 import { track } from "@vercel/analytics";
 
 const LONNSJEKK_CALLOUT_HREF = "/lonnsjekk";
-const LONNSJEKK_CALLOUT_TITLE = "Vil du sjekke din egen årslønn mot markedet?";
+const LONNSJEKK_CALLOUT_TITLE = "Sjekk hvordan lønnen din ligger an";
 const LONNSJEKK_CALLOUT_DESCRIPTION =
-  "Bruk Lønnsjekk for å sammenligne lønnen din med SSB-tall for riktig yrke og få et bedre grunnlag før lønnssamtale eller jobbskifte.";
+  "Sammenlign lønnen din med oppdaterte SSB-tall for yrket ditt, og få en personlig lønnsrapport på sekunder.";
 const LONNSJEKK_CALLOUT_CTA = "Prøv Lønnsjekk";
 
 type BlogLonnsjekkCalloutProps = Omit<HTMLAttributes<HTMLDivElement>, "title">;

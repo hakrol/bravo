@@ -28,5 +28,6 @@ export async function GET(request: Request) {
     purchasingPowerSeries: detailData.purchasingPowerSeries,
     salarySeries: detailData.series,
     age: laborMarketStats?.age ?? null,
+    employmentGrowth: laborMarketStats?.growth ?? null,
   });
 }

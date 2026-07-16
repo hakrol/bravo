@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
+import { BlogLonnsjekkCallout } from "@/components/blog-lonnsjekk-callout";
 import { HomeExploreOccupationsSection } from "@/components/home-explore-occupations-section";
 import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
 import {
@@ -93,6 +94,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <article>
           <BlogPostHeader post={post} />
+          <div className="blog-post-lonnsjekk-callout-wrap mx-auto max-w-3xl">
+            <BlogLonnsjekkCallout className="blog-post-lonnsjekk-callout" />
+          </div>
           <div className="blog-post-content mx-auto max-w-3xl">
             <BlogProse>{post.content}</BlogProse>
           </div>

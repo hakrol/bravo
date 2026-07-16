@@ -51,6 +51,11 @@ const distributionAccents: Record<DistributionRow["id"], string> = {
   men: "from-blue-100 via-blue-300 to-blue-100",
 };
 
+const P25_INFO_DESCRIPTION =
+  "25 % tjener mindre betyr at en fjerdedel av lønnstakerne i gruppen har månedslønn på dette nivået eller lavere.";
+const P75_INFO_DESCRIPTION =
+  "25 % tjener mer betyr at en fjerdedel av lønnstakerne i gruppen har månedslønn på dette nivået eller høyere.";
+
 export function OccupationSalaryDistributionSection({
   distribution,
   visibleRows,
@@ -103,14 +108,16 @@ export function OccupationSalaryDistributionSection({
           median: medianPosition,
           p75: p75Position,
         });
-        const userOffsetPx =
-          userPosition !== null
-            ? getOverlapOffset(
-                userPosition,
-                [p25Position, medianPosition, p75Position],
-                medianPosition,
-              )
-            : 0;
+        const userCollisionLayout = getUserMarkerCollisionLayout(userPosition, {
+          p25: p25Position,
+          median: medianPosition,
+          p75: p75Position,
+        });
+
+        if (userCollisionLayout) {
+          markerLayout[userCollisionLayout.marker].valueAnchor =
+            userCollisionLayout.comparisonAnchor;
+        }
         const tone = getDistributionTone(row.id);
         const spread = calculateSpread(row.metrics.p25, row.metrics.p75);
 
@@ -135,6 +142,7 @@ export function OccupationSalaryDistributionSection({
             <div className="mt-6 grid gap-2 md:hidden">
               {row.metrics.p25 !== undefined ? (
                 <MobileDistributionPoint
+                  infoDescription={P25_INFO_DESCRIPTION}
                   label="25% tjener mindre"
                   tone={tone.dot}
                   value={row.metrics.p25}
@@ -150,6 +158,7 @@ export function OccupationSalaryDistributionSection({
               ) : null}
               {row.metrics.p75 !== undefined ? (
                 <MobileDistributionPoint
+                  infoDescription={P75_INFO_DESCRIPTION}
                   label="25% tjener mer"
                   tone={tone.dot}
                   value={row.metrics.p75}
@@ -177,6 +186,7 @@ export function OccupationSalaryDistributionSection({
                 ) : null}
                 {p25Position !== null && row.metrics.p25 !== undefined ? (
                   <Marker
+                    infoDescription={P25_INFO_DESCRIPTION}
                     label="25% tjener mindre"
                     labelAnchor={markerLayout.p25.labelAnchor}
                     labelOffsetY={markerLayout.p25.labelOffsetY}
@@ -204,6 +214,7 @@ export function OccupationSalaryDistributionSection({
                 ) : null}
                 {p75Position !== null && row.metrics.p75 !== undefined ? (
                   <Marker
+                    infoDescription={P75_INFO_DESCRIPTION}
                     label="25% tjener mer"
                     labelAnchor={markerLayout.p75.labelAnchor}
                     labelOffsetY={markerLayout.p75.labelOffsetY}
@@ -217,12 +228,15 @@ export function OccupationSalaryDistributionSection({
                 ) : null}
                 {userPosition !== null && userMarker ? (
                   <Marker
-                    label=""
-                    offsetPx={userOffsetPx}
+                    emphasizeLabel
+                    label={userMarker.label}
                     position={userPosition}
                     tone="bg-[#1d4ed8]"
                     toneClassName="text-[#1d4ed8]"
                     value={userMarker.value}
+                    valueAnchor={
+                      userCollisionLayout?.userAnchor ?? getEdgeAwareAnchor(userPosition)
+                    }
                   />
                 ) : null}
               </div>
@@ -352,6 +366,7 @@ function hasAnyDistributionMetric(metrics: OccupationSalaryDistributionMetrics) 
 }
 
 function Marker({
+  emphasizeLabel = false,
   label,
   labelAnchor = "center",
   labelOffsetY = 0,
@@ -359,11 +374,11 @@ function Marker({
   tone,
   toneClassName = "text-[var(--muted)]",
   infoDescription,
-  offsetPx = 0,
   value,
   valueAnchor = "center",
   valueOffsetY = 0,
 }: {
+  emphasizeLabel?: boolean;
   label: string;
   labelAnchor?: MarkerAnchor;
   labelOffsetY?: number;
@@ -371,7 +386,6 @@ function Marker({
   tone: string;
   toneClassName?: string;
   infoDescription?: string;
-  offsetPx?: number;
   value: number;
   valueAnchor?: MarkerAnchor;
   valueOffsetY?: number;
@@ -382,9 +396,16 @@ function Marker({
   return (
     <div
       className="absolute top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2"
-      style={{ left: `calc(${position}% + ${offsetPx}px)` }}
+      style={{ left: `${position}%` }}
     >
-      {label ? (
+      {label && emphasizeLabel ? (
+        <div className="absolute bottom-[12px] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center whitespace-nowrap text-sm font-black italic tracking-[-0.03em] text-[#1d4ed8]">
+          <span>{label}</span>
+          <svg aria-hidden="true" className="mt-0.5 h-4 w-4" fill="none" viewBox="0 0 16 16">
+            <path d="M8 2v10m0 0-3-3m3 3 3-3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+          </svg>
+        </div>
+      ) : label ? (
         <div
           className={`absolute bottom-[14px] z-10 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.12em] ${toneClassName} ${labelAnchorStyles.className}`}
           style={labelAnchorStyles.style}
@@ -467,25 +488,39 @@ function buildDistributionScale(
   };
 }
 
-function getOverlapOffset(
-  position: number,
-  comparisonPositions: Array<number | null>,
-  medianPosition: number | null,
-) {
-  const overlaps = comparisonPositions.some(
-    (comparisonPosition) =>
-      comparisonPosition !== null && Math.abs(comparisonPosition - position) < 3.5,
-  );
-
-  if (!overlaps) {
-    return 0;
+function getUserMarkerCollisionLayout(
+  userPosition: number | null,
+  markerPositions: Record<MarkerKey, number | null>,
+): {
+  comparisonAnchor: MarkerAnchor;
+  marker: MarkerKey;
+  userAnchor: MarkerAnchor;
+} | null {
+  if (userPosition === null) {
+    return null;
   }
 
-  if (medianPosition !== null) {
-    return position >= medianPosition ? 42 : -42;
+  const nearestMarker = (Object.entries(markerPositions) as Array<[MarkerKey, number | null]>)
+    .filter((entry): entry is [MarkerKey, number] => entry[1] !== null)
+    .map(([marker, position]) => ({
+      distance: Math.abs(position - userPosition),
+      marker,
+      position,
+    }))
+    .filter(({ distance }) => distance < 10)
+    .sort((left, right) => left.distance - right.distance)[0];
+
+  if (!nearestMarker) {
+    return null;
   }
 
-  return 42;
+  const userIsOnLeft = userPosition <= nearestMarker.position;
+
+  return {
+    comparisonAnchor: userIsOnLeft ? "left" : "right",
+    marker: nearestMarker.marker,
+    userAnchor: userIsOnLeft ? "right" : "left",
+  };
 }
 
 function buildMarkerLayout(positions: Record<MarkerKey, number | null>): MarkerLayout {
