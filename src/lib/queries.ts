@@ -2788,7 +2788,7 @@ function buildOccupationPurchasingPowerTimeSeriesPoints(
       .map((point) => [point.periodCode, point] as const),
   );
 
-  return Array.from(salaryByPeriod.keys())
+  const quarterlyPoints = Array.from(salaryByPeriod.keys())
     .filter((periodCode): periodCode is string => inflationByPeriod.has(periodCode))
     .sort((left, right) => left.localeCompare(right, "nb-NO"))
     .flatMap((periodCode) => {
@@ -2835,6 +2835,101 @@ function buildOccupationPurchasingPowerTimeSeriesPoints(
         },
       ];
     });
+
+  if (quarterlyPoints.length > 0) {
+    return quarterlyPoints;
+  }
+
+  return buildAnnualOccupationPurchasingPowerTimeSeriesPoints(
+    salarySeries,
+    inflationQuarterSeries,
+  );
+}
+
+function buildAnnualOccupationPurchasingPowerTimeSeriesPoints(
+  salarySeries: OccupationSalaryTimeSeries,
+  inflationQuarterSeries: InflationQuarterPoint[],
+): OccupationPurchasingPowerTimeSeriesPoint[] {
+  const salaryByYear = new Map(
+    salarySeries.points
+      .map((point) => {
+        const year = extractAnnualPeriodYear(point.periodCode, point.periodLabel);
+        return year ? [year, point] as const : null;
+      })
+      .filter((entry): entry is [string, OccupationSalaryTimeSeriesPoint] => entry !== null),
+  );
+  const inflationIndexesByYear = new Map<string, number[]>();
+
+  inflationQuarterSeries.forEach((point) => {
+    const year = point.periodCode.match(/^(20\d{2})K[1-4]$/)?.[1];
+
+    if (!year || !Number.isFinite(point.averageIndex)) {
+      return;
+    }
+
+    const indexes = inflationIndexesByYear.get(year) ?? [];
+    indexes.push(point.averageIndex);
+    inflationIndexesByYear.set(year, indexes);
+  });
+
+  const inflationByYear = new Map(
+    Array.from(inflationIndexesByYear.entries()).map(([year, indexes]) => [
+      year,
+      indexes.reduce((sum, value) => sum + value, 0) / indexes.length,
+    ]),
+  );
+
+  return Array.from(salaryByYear.keys())
+    .sort((left, right) => left.localeCompare(right, "nb-NO"))
+    .flatMap((year) => {
+      const previousYear = String(Number(year) - 1);
+      const salaryPoint = salaryByYear.get(year);
+      const previousSalaryPoint = salaryByYear.get(previousYear);
+      const inflationIndex = inflationByYear.get(year);
+      const previousInflationIndex = inflationByYear.get(previousYear);
+
+      if (
+        !salaryPoint ||
+        !previousSalaryPoint ||
+        inflationIndex === undefined ||
+        previousInflationIndex === undefined ||
+        previousInflationIndex === 0
+      ) {
+        return [];
+      }
+
+      const inflationGrowth =
+        ((inflationIndex - previousInflationIndex) / previousInflationIndex) * 100;
+      const salaryGrowthAll = calculateYearOverYearGrowth(
+        salaryPoint.valueAll,
+        previousSalaryPoint.valueAll,
+      );
+      const salaryGrowthWomen = calculateYearOverYearGrowth(
+        salaryPoint.valueWomen,
+        previousSalaryPoint.valueWomen,
+      );
+      const salaryGrowthMen = calculateYearOverYearGrowth(
+        salaryPoint.valueMen,
+        previousSalaryPoint.valueMen,
+      );
+
+      return [{
+        periodCode: year,
+        periodLabel: year,
+        inflationIndex,
+        salaryGrowthAll,
+        salaryGrowthWomen,
+        salaryGrowthMen,
+        inflationGrowth,
+        realGrowthAll: calculateRealGrowth(salaryGrowthAll, inflationGrowth),
+        realGrowthWomen: calculateRealGrowth(salaryGrowthWomen, inflationGrowth),
+        realGrowthMen: calculateRealGrowth(salaryGrowthMen, inflationGrowth),
+      }];
+    });
+}
+
+function extractAnnualPeriodYear(periodCode: string, periodLabel: string) {
+  return periodCode.match(/^(20\d{2})$/)?.[1] ?? periodLabel.match(/^(20\d{2})$/)?.[1] ?? null;
 }
 
 function calculateYearOverYearGrowth(current?: number, previous?: number) {

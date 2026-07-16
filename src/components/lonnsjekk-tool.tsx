@@ -1,7 +1,9 @@
 "use client";
 
+import { useDeferredValue, useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
-import { useDeferredValue, useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { LonnsjekkShareAction } from "@/components/lonnsjekk-share-action";
+import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import {
   buildLonnsjekkReport,
@@ -10,7 +12,7 @@ import {
 } from "@/lib/lonnsjekk";
 import type {
   OccupationAgeLatest,
-  OccupationSalaryTimeSeries,
+  OccupationEmploymentGrowth,
   OccupationPurchasingPowerTimeSeries,
   OccupationSalaryDistribution,
 } from "@/lib/ssb";
@@ -23,21 +25,19 @@ type FormState = {
   salary: string;
   gender: LonnsjekkKjonn;
   occupationCode: string;
-  workStartYear: string;
   age: string;
 };
 
 type OccupationInsightsResponse = {
   age: OccupationAgeLatest | null;
+  employmentGrowth: OccupationEmploymentGrowth | null;
   purchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
-  salarySeries: OccupationSalaryTimeSeries;
 };
 
 const initialFormState: FormState = {
   salary: "",
   gender: "kvinne",
   occupationCode: "",
-  workStartYear: "",
   age: "",
 };
 
@@ -48,25 +48,33 @@ const HOLIDAY_PAY_RATE = 12;
 const VACATION_WEEKS = 5;
 const WORK_DAYS_PER_YEAR = 260;
 const VACATION_DAYS = VACATION_WEEKS * 5;
+const salaryNegotiationArticles = [
+  { href: "/blogg/hvordan-be-om-mer-lonn", title: "Hvordan be om mer lønn" },
+  { href: "/blogg/nar-bor-man-be-om-hoyere-lonn", title: "Når bør du be om høyere lønn?" },
+  { href: "/blogg/hvor-mye-mer-kan-man-be-om-i-lonn", title: "Hvor mye mer kan du be om?" },
+] as const;
 
 export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [submitted, setSubmitted] = useState<FormState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [occupationQuery, setOccupationQuery] = useState("");
+  const [activeOccupationIndex, setActiveOccupationIndex] = useState(0);
   const [isOccupationMenuOpen, setIsOccupationMenuOpen] = useState(false);
+  const occupationPickerRef = useRef<HTMLDivElement>(null);
+  const reportSectionRef = useRef<HTMLElement>(null);
   const [distribution, setDistribution] = useState<OccupationSalaryDistribution | null>(null);
   const [distributionError, setDistributionError] = useState<string | null>(null);
   const [isDistributionLoading, setIsDistributionLoading] = useState(false);
   const [purchasingPowerSeries, setPurchasingPowerSeries] =
     useState<OccupationPurchasingPowerTimeSeries | null>(null);
-  const [salarySeries, setSalarySeries] = useState<OccupationSalaryTimeSeries | null>(null);
   const [ageInsight, setAgeInsight] = useState<OccupationAgeLatest | null>(null);
+  const [employmentGrowth, setEmploymentGrowth] = useState<OccupationEmploymentGrowth | null>(null);
   const [purchasingPowerError, setPurchasingPowerError] = useState<string | null>(null);
   const [isPurchasingPowerLoading, setIsPurchasingPowerLoading] = useState(false);
+  const reportDate = useMemo(() => new Date(), []);
 
   const parsedSalary = submitted ? parseSalary(submitted.salary) : undefined;
-  const submittedStartYear = submitted ? parseInteger(submitted.workStartYear) : undefined;
   const submittedAge = submitted ? parseInteger(submitted.age) : undefined;
   const report =
     submitted && parsedSalary !== undefined
@@ -83,17 +91,36 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
     occupationOptions,
     deferredOccupationQuery,
   ).slice(0, 8);
+
+  useEffect(() => {
+    if (!isOccupationMenuOpen) {
+      return;
+    }
+
+    function handlePointerDown(event: PointerEvent) {
+      if (
+        event.target instanceof Node &&
+        !occupationPickerRef.current?.contains(event.target)
+      ) {
+        setIsOccupationMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [isOccupationMenuOpen]);
+
+  useEffect(() => {
+    if (!submitted) {
+      return;
+    }
+
+    reportSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [submitted]);
   const activeDistributionRow = submitted?.gender === "mann" ? "men" : "women";
-  const userPurchasingPowerInsight =
-    report && submittedStartYear !== undefined && salarySeries && purchasingPowerSeries
-      ? buildUserPurchasingPowerInsight({
-          currentSalary: report.salary,
-          gender: report.gender,
-          salarySeries,
-          purchasingPowerSeries,
-          startYear: submittedStartYear,
-        })
-      : null;
   const userAgeInsight =
     report && submittedAge !== undefined && ageInsight
       ? buildUserAgeInsight({
@@ -101,6 +128,13 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
           ageInsight,
           gender: report.gender,
         })
+      : null;
+  const reportPurchasingPowerSeries = purchasingPowerSeries
+    ? getLastTenYearsPurchasingPowerSeries(purchasingPowerSeries)
+    : null;
+  const latestRealWageGrowth =
+    reportPurchasingPowerSeries && submitted
+      ? getLatestRealWageGrowth(reportPurchasingPowerSeries, submitted.gender)
       : null;
 
   useEffect(() => {
@@ -165,8 +199,8 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
     if (!submittedOccupationCode) {
       setPurchasingPowerSeries(null);
-      setSalarySeries(null);
       setAgeInsight(null);
+      setEmploymentGrowth(null);
       setPurchasingPowerError(null);
       setIsPurchasingPowerLoading(false);
       return;
@@ -196,16 +230,16 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
         const nextInsights = (await response.json()) as OccupationInsightsResponse;
         setAgeInsight(nextInsights.age);
+        setEmploymentGrowth(nextInsights.employmentGrowth);
         setPurchasingPowerSeries(nextInsights.purchasingPowerSeries);
-        setSalarySeries(nextInsights.salarySeries);
       } catch (fetchError) {
         if (controller.signal.aborted) {
           return;
         }
 
         setAgeInsight(null);
+        setEmploymentGrowth(null);
         setPurchasingPowerSeries(null);
-        setSalarySeries(null);
         setPurchasingPowerError(
           fetchError instanceof Error ? fetchError.message : "Kunne ikke hente kjøpekraft akkurat nå.",
         );
@@ -225,7 +259,6 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
     event.preventDefault();
 
     const salary = parseSalary(form.salary);
-    const workStartYear = parseOptionalInteger(form.workStartYear);
     const age = parseOptionalInteger(form.age);
 
     if (salary === undefined || salary <= 0) {
@@ -235,11 +268,6 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
     if (!form.occupationCode) {
       setError("Velg et yrke før du sjekker lønnen.");
-      return;
-    }
-
-    if (form.workStartYear.trim() && (workStartYear === undefined || workStartYear < 2016 || workStartYear > 2025)) {
-      setError("Legg inn arbeidsstart fra 2016 til 2025, eller la feltet stå tomt.");
       return;
     }
 
@@ -264,234 +292,305 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
   return (
     <div className="grid gap-8">
-      <section className="fade-up relative overflow-visible rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
-        <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
-        <div className="relative grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(420px,1.15fr)] lg:gap-12">
-          <div className="flex flex-col">
-            <div className="space-y-3">
-              <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+      <section className="fade-up relative isolate overflow-visible rounded-[18px] bg-[radial-gradient(circle_at_15%_72%,rgba(218,230,245,0.62),transparent_28%),linear-gradient(135deg,#fbfcfe_0%,#f4f7fb_100%)] px-5 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-8">
+        <div className="relative grid gap-8 lg:grid-cols-[minmax(0,0.68fr)_minmax(34rem,1.08fr)] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-6">
+          <div className="lg:col-start-1 lg:row-start-1">
+            <h1 className="text-5xl font-semibold tracking-[-0.065em] text-[#101827] sm:text-6xl lg:text-[4rem]">
               Lønnsjekk
-              </h1>
-              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+            </h1>
+            <p className="mt-4 max-w-[25rem] text-lg leading-8 text-[#38465d]">
               Sammenlign lønnen din med oppdaterte lønnstall fra SSB for yrket ditt.
-              </p>
-              <p className="text-sm leading-6 text-slate-500">
-              Siste data: {formatPeriodLabel(data.periodLabel)}
-              </p>
-            </div>
+            </p>
 
-            <div className="mt-8 flex items-center justify-center text-[var(--primary-strong)] lg:mt-auto lg:justify-start lg:pt-10">
-              <SalaryCheckIcon />
+            <div className="mt-7 grid gap-4">
+              <BenefitItem
+                detail="Vi lagrer eller deler ikke dine opplysninger."
+                icon={<ShieldCheckIcon />}
+                title="100% anonymt"
+              />
+              <BenefitItem
+                detail="Ferske tall du kan stole på."
+                icon={<StatisticsIcon />}
+                title="Oppdatert med SSB-data"
+              />
+              <BenefitItem
+                detail="Få resultatet ditt på sekunder."
+                icon={<BoltIcon />}
+                title="Raskt og enkelt"
+              />
             </div>
           </div>
 
-          <form className="grid content-start gap-4" onSubmit={handleSubmit}>
-            <label className="grid gap-2" htmlFor="salary">
-                <span className="text-sm font-semibold text-slate-950">Brutto månedslønn</span>
-                <input
-                  id="salary"
-                  className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-                  inputMode="numeric"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      salary: event.target.value,
-                    }))
-                  }
-                  placeholder="For eksempel 58 000"
-                  type="text"
-                  value={form.salary}
-                />
-            </label>
+          <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+            <div className="rounded-[14px] border border-[#e3e8ef] bg-white px-5 py-6 shadow-[0_20px_55px_rgba(31,51,73,0.10)] sm:px-8 sm:py-7">
+              <StepIndicator />
 
-            <fieldset className="grid gap-2">
-                <legend className="text-sm font-semibold text-slate-950">Kjønn</legend>
+              <form className="mt-7 grid content-start gap-4" onSubmit={handleSubmit}>
                 <div className="grid gap-2">
-                  <GenderButton
-                    active={form.gender === "kvinne"}
-                    icon={<FemaleIcon />}
-                    label="Kvinne"
-                    onClick={() =>
-                      setForm((current) => ({
-                        ...current,
-                        gender: "kvinne",
-                      }))
-                    }
-                    type="button"
-                  />
-                  <GenderButton
-                    active={form.gender === "mann"}
-                    icon={<MaleIcon />}
-                    label="Mann"
-                    onClick={() =>
-                      setForm((current) => ({
-                        ...current,
-                        gender: "mann",
-                      }))
-                    }
-                    type="button"
-                  />
-                </div>
-            </fieldset>
-            <div className="grid gap-2">
-              <span className="text-sm font-semibold text-slate-950">Yrke</span>
-              <div className="relative">
-                <input
-                  id="occupation-search"
-                  autoComplete="off"
-                  className="h-11 w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-                  onChange={(event) => {
-                    const nextValue = event.target.value;
-                    setOccupationQuery(nextValue);
-                    setIsOccupationMenuOpen(true);
-                    setForm((current) => ({
-                      ...current,
-                      occupationCode: "",
-                    }));
-                  }}
-                  onFocus={() => setIsOccupationMenuOpen(true)}
-                  placeholder="Skriv f.eks. regnskapsfører"
-                  type="search"
-                  value={occupationQuery}
-                />
-
-                {isOccupationMenuOpen && filteredOccupationOptions.length > 0 ? (
-                  <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-30 overflow-hidden rounded-[5px] border border-black/10 bg-white shadow-[0_18px_40px_rgba(27,36,48,0.12)]">
-                    <ul className="max-h-72 overflow-y-auto py-2">
-                      {filteredOccupationOptions.map((option) => (
-                        <li key={option.occupationCode}>
-                          <button
-                            className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-[#f8faf8] hover:text-slate-950"
-                            onClick={() => handleOccupationSelect(option)}
-                            type="button"
-                          >
-                            <span>{option.occupationLabel}</span>
-                            <span className="shrink-0 text-xs text-[var(--muted)]">
-                              {option.groupLabel}
-                            </span>
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm font-semibold text-[#101827]" htmlFor="salary">
+                      Brutto månedslønn
+                    </label>
+                    <FieldInfoIcon label="Beløpet før skatt og andre trekk." />
                   </div>
+                  <span className="relative">
+                    <input
+                      id="salary"
+                      className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-12 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#17633b] focus:ring-4 focus:ring-[#e7f5ed]"
+                      inputMode="numeric"
+                      onChange={(event) =>
+                        setForm((current) => ({ ...current, salary: event.target.value }))
+                      }
+                      placeholder="For eksempel 58 000"
+                      type="text"
+                      value={form.salary}
+                    />
+                    <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-[#101827]">
+                      kr
+                    </span>
+                  </span>
+                </div>
+
+                <fieldset className="grid gap-2">
+                  <legend className="text-sm font-semibold text-[#101827]">Kjønn</legend>
+                  <div className="grid grid-cols-2 gap-2">
+                    <GenderButton
+                      active={form.gender === "kvinne"}
+                      icon={<FemaleIcon />}
+                      label="Kvinne"
+                      onClick={() => setForm((current) => ({ ...current, gender: "kvinne" }))}
+                      type="button"
+                    />
+                    <GenderButton
+                      active={form.gender === "mann"}
+                      icon={<MaleIcon />}
+                      label="Mann"
+                      onClick={() => setForm((current) => ({ ...current, gender: "mann" }))}
+                      type="button"
+                    />
+                  </div>
+                </fieldset>
+
+                <div className="grid gap-2" ref={occupationPickerRef}>
+                  <label className="text-sm font-semibold text-[#101827]" htmlFor="occupation-search">
+                    Yrke
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="occupation-search"
+                      aria-autocomplete="list"
+                      aria-controls="occupation-options"
+                      aria-activedescendant={
+                        isOccupationMenuOpen && filteredOccupationOptions.length > 0
+                          ? `occupation-option-${activeOccupationIndex}`
+                          : undefined
+                      }
+                      aria-expanded={isOccupationMenuOpen}
+                      autoComplete="off"
+                      className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-11 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#17633b] focus:ring-4 focus:ring-[#e7f5ed]"
+                      onChange={(event) => {
+                        setOccupationQuery(event.target.value);
+                        setActiveOccupationIndex(0);
+                        setIsOccupationMenuOpen(true);
+                        setForm((current) => ({ ...current, occupationCode: "" }));
+                      }}
+                      onFocus={() => setIsOccupationMenuOpen(true)}
+                      onKeyDown={(event) => {
+                        if (event.key === "ArrowDown") {
+                          event.preventDefault();
+                          setIsOccupationMenuOpen(true);
+                          if (filteredOccupationOptions.length > 0) {
+                            setActiveOccupationIndex((current) =>
+                              Math.min(current + 1, filteredOccupationOptions.length - 1),
+                            );
+                          }
+                        } else if (event.key === "ArrowUp") {
+                          event.preventDefault();
+                          setActiveOccupationIndex((current) => Math.max(current - 1, 0));
+                        } else if (
+                          event.key === "Enter" &&
+                          isOccupationMenuOpen &&
+                          filteredOccupationOptions[activeOccupationIndex]
+                        ) {
+                          event.preventDefault();
+                          handleOccupationSelect(filteredOccupationOptions[activeOccupationIndex]);
+                        } else if (event.key === "Escape") {
+                          setIsOccupationMenuOpen(false);
+                        }
+                      }}
+                      placeholder="Skriv f.eks. regnskapsfører eller elektriker"
+                      role="combobox"
+                      type="search"
+                      value={occupationQuery}
+                    />
+                    <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-[#53627a]">
+                      <SearchIcon />
+                    </span>
+
+                    {isOccupationMenuOpen && filteredOccupationOptions.length > 0 ? (
+                      <div className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-30 overflow-hidden rounded-[8px] border border-[#dce3ec] bg-white shadow-[0_18px_40px_rgba(27,36,48,0.12)]">
+                        <ul className="max-h-72 overflow-y-auto py-2" id="occupation-options" role="listbox">
+                          {filteredOccupationOptions.map((option, index) => (
+                            <li key={option.occupationCode}>
+                              <button
+                                aria-selected={activeOccupationIndex === index}
+                                className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-[#f2f8f5] hover:text-slate-950 focus-visible:bg-[#f2f8f5] focus-visible:outline-none aria-selected:bg-[#f2f8f5]"
+                                id={`occupation-option-${index}`}
+                                onClick={() => handleOccupationSelect(option)}
+                                onMouseEnter={() => setActiveOccupationIndex(index)}
+                                role="option"
+                                type="button"
+                              >
+                                <span>{option.occupationLabel}</span>
+                                <span className="shrink-0 text-xs text-[#53627a]">{option.groupLabel}</span>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                  {occupationQuery.trim().length > 0 && filteredOccupationOptions.length === 0 ? (
+                    <p className="text-sm leading-6 text-[#53627a]">Ingen yrker matcher søket ditt akkurat nå.</p>
+                  ) : null}
+                </div>
+
+                <label className="grid gap-2" htmlFor="age">
+                  <span className="text-sm font-semibold text-[#101827]">
+                    Alder <span className="font-normal text-[#76859b]">(valgfritt)</span>
+                  </span>
+                  <input
+                    id="age"
+                    className="h-11 rounded-[7px] border border-[#dce3ec] bg-white px-4 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#17633b] focus:ring-4 focus:ring-[#e7f5ed]"
+                    inputMode="numeric"
+                    onChange={(event) => setForm((current) => ({ ...current, age: event.target.value }))}
+                    placeholder="For eksempel 34 år"
+                    type="text"
+                    value={form.age}
+                  />
+                </label>
+
+                <button
+                  className="mt-1 inline-flex h-11 w-full items-center justify-center gap-5 rounded-[7px] bg-[#0f4a2d] px-6 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(15,74,45,0.16)] transition hover:-translate-y-px hover:bg-[#17633b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b]"
+                  type="submit"
+                >
+                  Sjekk lønnen din
+                  <ArrowRightIcon />
+                </button>
+
+                {error ? (
+                  <p className="rounded-[7px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {error}
+                  </p>
                 ) : null}
-              </div>
-
-              {occupationQuery.trim().length > 0 && filteredOccupationOptions.length === 0 ? (
-                <p className="text-sm leading-6 text-[var(--muted)]">
-                  Ingen yrker matcher søket ditt akkurat nå.
-                </p>
-              ) : null}
+              </form>
             </div>
 
-            <div className="grid gap-4">
-              <label className="grid gap-2" htmlFor="workStartYear">
-                <span className="text-sm font-semibold text-slate-950">
-                  Arbeidsstart
-                  <span className="ml-2 font-normal text-slate-500">(valgfritt)</span>
-                </span>
-                <input
-                  id="workStartYear"
-                  className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-                  inputMode="numeric"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      workStartYear: event.target.value,
-                    }))
-                  }
-                  placeholder="For eksempel 2019"
-                  type="text"
-                  value={form.workStartYear}
-                />
-              </label>
+          </div>
 
-              <label className="grid gap-2" htmlFor="age">
-                <span className="text-sm font-semibold text-slate-950">
-                  Alder
-                  <span className="ml-2 font-normal text-slate-500">(valgfritt)</span>
-                </span>
-                <input
-                  id="age"
-                  className="h-11 rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-                  inputMode="numeric"
-                  onChange={(event) =>
-                    setForm((current) => ({
-                      ...current,
-                      age: event.target.value,
-                    }))
-                  }
-                  placeholder="For eksempel 34"
-                  type="text"
-                  value={form.age}
-                />
-              </label>
-
-              <button
-                className="inline-flex h-11 w-full items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-6 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(20,83,45,0.16)] transition hover:bg-[var(--primary)] disabled:cursor-not-allowed disabled:opacity-60"
-                type="submit"
-              >
-                Sjekk lønn
-              </button>
+          <div className="grid gap-5 lg:col-start-1 lg:row-start-2 lg:self-end">
+            <div className="hidden justify-center lg:flex lg:justify-start">
+              <SalaryCheckIcon />
             </div>
-
-            {error ? (
-              <p className="rounded-[5px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                {error}
+            <div className="flex w-fit max-w-[25rem] items-center gap-3 rounded-[12px] border border-[#e6ebf2] bg-[#eef3fa]/80 px-4 py-3 text-sm leading-6 text-[#38465d]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/80 text-[#667eea]">
+                <UsersIcon />
+              </span>
+              <p>
+                Finn ut om du tjener godt nok!
               </p>
-            ) : null}
-          </form>
+            </div>
+          </div>
         </div>
       </section>
 
       {report ? (
-        <section className="fade-up-delay grid gap-6">
-          <div className="rounded-[5px] bg-white px-6 py-7 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-              Rapport
-            </p>
-            <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="space-y-3">
-                <h2 className="text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-4xl">
-                  {report.headline}
-                </h2>
-                <p className="max-w-3xl text-base leading-7 text-slate-700">{report.summary}</p>
-              </div>
-              {report.occupation.href ? (
-                <Link
-                  className="inline-flex items-center justify-center gap-2 rounded-[5px] bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100 hover:text-[var(--primary-strong)]"
-                  href={report.occupation.href}
-                >
-                  <ExploreIcon />
-                  Utforsk lønn til {report.occupation.occupationLabel.toLowerCase()}
-                </Link>
+        <section
+          className="fade-up-delay scroll-mt-24 overflow-hidden rounded-[14px] border border-[#dce3ec] bg-[#fbfcfe] shadow-[0_20px_55px_rgba(31,51,73,0.08)]"
+          ref={reportSectionRef}
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(23,99,59,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(23,99,59,0.035) 1px, transparent 1px), radial-gradient(circle, rgba(23,99,59,0.10) 0.8px, transparent 0.9px)",
+            backgroundSize: "32px 32px, 32px 32px, 8px 8px",
+          }}
+        >
+          <header className="px-6 py-8 text-center sm:px-8 sm:py-10">
+            <h2 className="text-3xl font-semibold tracking-[-0.045em] text-slate-950 sm:text-5xl">
+              Lønnsjekk: {report.occupation.occupationLabel}
+            </h2>
+            <time
+              className="mt-3 block text-sm font-medium text-slate-500"
+              dateTime={reportDate.toISOString().slice(0, 10)}
+              suppressHydrationWarning
+            >
+              {formatReportDate(reportDate)}
+            </time>
+
+            <nav aria-label="Innhold i rapporten" className="mt-6 flex flex-wrap justify-center gap-2">
+              <ReportSectionLink href="#rapport-lonn" icon="salary">Lønn</ReportSectionLink>
+              <ReportSectionLink href="#rapport-lonnsestimat" icon="estimate">Lønnsestimat</ReportSectionLink>
+              <ReportSectionLink href="#rapport-visste-du-at" icon="insight">Visste du at</ReportSectionLink>
+              {submittedAge !== undefined ? (
+                <ReportSectionLink href="#rapport-arbeidsmarked" icon="market">Arbeidsmarked</ReportSectionLink>
               ) : null}
+            </nav>
+
+            <ReportOverviewGraphic report={report} />
+          </header>
+
+          <LonnsjekkShareAction />
+
+          <section className="scroll-mt-24 px-6 py-10 sm:px-8 sm:py-14" id="rapport-lonn">
+            <div>
+              <ReportSectionHeading icon="salary">Lønn</ReportSectionHeading>
+              <ReportHeadline report={report} />
+              <p className="mx-auto mt-3 max-w-3xl text-center text-base leading-7 text-slate-700">
+                {report.summary}
+              </p>
             </div>
-          </div>
 
-          <div className="grid gap-4 lg:grid-cols-3">
-            <ReportCard
-              label="Din månedslønn"
-              value={formatCurrency(report.salary)}
-              detail={`Årslønn: ${formatCurrency(report.annualSalary)}`}
-            />
-            <ReportCard
-              label={report.comparisonToMedian.label}
-              value={formatCurrency(report.comparisonToMedian.value)}
-              detail={formatDifference(report.comparisonToMedian.difference)}
-              tone={getTone(report.comparisonToMedian.difference)}
-            />
-            <ReportCard
-              label={report.comparisonToAverage.label}
-              value={formatCurrency(report.comparisonToAverage.value)}
-              detail={formatDifference(report.comparisonToAverage.difference)}
-              tone={getTone(report.comparisonToAverage.difference)}
-            />
-          </div>
+            <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+              <ReportCard
+                label="Din månedslønn"
+                value={formatCurrency(report.salary)}
+                detail={`Årslønn: ${formatCurrency(report.annualSalary)}`}
+              />
+              <ReportCard
+                label={report.comparisonToMedian.label}
+                value={formatCurrency(report.comparisonToMedian.value)}
+                detail={formatDifference(report.comparisonToMedian.difference)}
+                tone={getTone(report.comparisonToMedian.difference)}
+              />
+              <ReportCard
+                label={report.comparisonToAverage.label}
+                value={formatCurrency(report.comparisonToAverage.value)}
+                detail={formatDifference(report.comparisonToAverage.difference)}
+                tone={getTone(report.comparisonToAverage.difference)}
+              />
+            </div>
 
-          <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold text-slate-950">Plassering i lønnsfordelingen</h3>
+            <div className="mx-auto my-14 max-w-5xl text-center sm:my-16">
+              <h4 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                Kom i gang med å få bedre lønn
+              </h4>
+              <div className="mt-4 flex flex-wrap justify-center gap-3">
+                {salaryNegotiationArticles.map((article) => (
+                  <Link
+                    className="group inline-flex items-center gap-2 rounded-full border border-emerald-900/15 bg-emerald-50/70 px-4 py-2.5 text-sm font-semibold text-emerald-950 transition hover:border-emerald-900/30 hover:bg-emerald-100/80"
+                    href={article.href}
+                    key={article.href}
+                  >
+                    {article.title}
+                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-2 text-center">
+              <h4 className="text-xl font-semibold text-slate-950 sm:text-2xl">Plassering i lønnsfordelingen</h4>
               <p className="text-sm leading-6 text-slate-600">
                 Her ser du om lønnen din ligger i den lave, midtre eller høye delen av lønnsnivået i yrket.
               </p>
@@ -499,24 +598,44 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
             <div className="mt-5">
               {isDistributionLoading ? (
-                <p className="text-sm leading-6 text-slate-600">Henter lønnsfordeling fra SSB ...</p>
+                <p className="text-center text-sm leading-6 text-slate-600">Henter lønnsfordeling fra SSB ...</p>
               ) : distribution ? (
                 <OccupationSalaryDistributionSection
                   distribution={distribution}
                   scaleMode="focusBand"
                   userMarkers={{
                     [activeDistributionRow]: {
-                      label: "Din lønn",
+                      label: "Du er her",
                       value: report.salary,
                     },
                   }}
                   visibleRows={[activeDistributionRow]}
                 />
               ) : distributionError ? (
-                <p className="text-sm leading-6 text-slate-600">{distributionError}</p>
+                <p className="text-center text-sm leading-6 text-slate-600">{distributionError}</p>
               ) : (
-                <p className="text-sm leading-6 text-slate-600">
+                <p className="text-center text-sm leading-6 text-slate-600">
                   Det finnes ikke nok fordelingsdata for å vise plasseringen akkurat nå.
+                </p>
+              )}
+            </div>
+
+            <div className="mt-12">
+              {isPurchasingPowerLoading ? (
+                <p className="text-center text-sm leading-6 text-slate-600">
+                  Henter reallønnsvekst fra SSB ...
+                </p>
+              ) : reportPurchasingPowerSeries && reportPurchasingPowerSeries.points.length > 0 ? (
+                <OccupationPurchasingPowerLineChart
+                  initialFilter={report.gender === "mann" ? "realGrowthMen" : "realGrowthWomen"}
+                  key={`${report.occupation.occupationCode}-${report.gender}`}
+                  series={reportPurchasingPowerSeries}
+                />
+              ) : purchasingPowerError ? (
+                <p className="text-center text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
+              ) : (
+                <p className="text-center text-sm leading-6 text-slate-600">
+                  Det finnes ikke nok historiske data til å vise reallønnsveksten akkurat nå.
                 </p>
               )}
             </div>
@@ -524,63 +643,272 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
           <EstimateSection report={report} />
 
-          {submittedAge !== undefined ? (
-            <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-              <div className="space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  Alder
+          <section className="scroll-mt-24 px-6 py-10 sm:px-8 sm:py-14" id="rapport-visste-du-at">
+            <ReportSectionHeading icon="insight">Visste du at</ReportSectionHeading>
+            <div className="mx-auto max-w-4xl space-y-4 text-center text-base leading-8 text-slate-700">
+              <p>
+                <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span> er rangert på <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span> når vi rangerer yrkene fra høyest til lavest median månedslønn. {report.occupationPlacement.label}
+              </p>
+              {report.genderGap ? (
+                <p>
+                  {report.genderGap.label} Forskjellen er{" "}
+                  <span className="font-semibold text-slate-950">
+                    {formatCurrency(report.genderGap.difference)} ({formatPercent(report.genderGap.differencePercent)})
+                  </span>.
                 </p>
-                <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+              ) : null}
+              {employmentGrowth?.yearOverYearChange !== undefined &&
+              employmentGrowth.previousValue !== undefined ? (
+                <p>
+                  Antall lønnstakere i yrket endret seg med{" "}
+                  <span className="font-semibold text-slate-950">
+                    {formatPercent(employmentGrowth.yearOverYearChange)}
+                  </span>{" "}
+                  fra {formatPeriodLabel(employmentGrowth.previousPeriodLabel)} til{" "}
+                  {formatPeriodLabel(employmentGrowth.latestPeriodLabel)}, fra{" "}
+                  {formatInteger(employmentGrowth.previousValue)} til {formatInteger(employmentGrowth.latestValue)}.
+                </p>
+              ) : null}
+              {latestRealWageGrowth ? (
+                <p>
+                  Fra {latestRealWageGrowth.previousYear} til {latestRealWageGrowth.year} var reallønnsveksten for{" "}
+                  {report.gender === "mann" ? "menn" : "kvinner"} i yrket{" "}
+                  <span className="font-semibold text-slate-950">
+                    {formatPercent(latestRealWageGrowth.value)}
+                  </span>.
+                </p>
+              ) : null}
+            </div>
+
+          </section>
+
+          {submittedAge !== undefined ? (
+            <section className="scroll-mt-24 px-6 py-10 sm:px-8 sm:py-14" id="rapport-arbeidsmarked">
+              <div className="text-center">
+                <ReportSectionHeading icon="market">Arbeidsmarked</ReportSectionHeading>
+                <p className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
                   Din alder sammenlignet med yrket
-                </h3>
-                <p className="text-sm leading-7 text-slate-700">
+                </p>
+                <p className="mx-auto mt-2 max-w-3xl text-sm leading-7 text-slate-700">
                   Denne sammenligningen bruker siste tilgjengelige snittalder for valgt kjønn i yrket.
                 </p>
               </div>
 
               <div className="mt-5">
                 {isPurchasingPowerLoading ? (
-                  <p className="text-sm leading-6 text-slate-600">Henter aldersdata fra SSB ...</p>
+                  <p className="text-center text-sm leading-6 text-slate-600">Henter aldersdata fra SSB ...</p>
                 ) : userAgeInsight ? (
                   <UserAgeSection insight={userAgeInsight} />
                 ) : purchasingPowerError ? (
-                  <p className="text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
+                  <p className="text-center text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
                 ) : (
-                  <p className="text-sm leading-6 text-slate-600">
+                  <p className="text-center text-sm leading-6 text-slate-600">
                     Vi har ikke nok aldersdata for valgt kjønn til å sammenligne deg med yrket akkurat nå.
                   </p>
                 )}
               </div>
             </section>
           ) : null}
-
-          <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-            <h3 className="text-xl font-semibold text-slate-950">Interessante fakta</h3>
-            <div className="mt-5 space-y-4 text-base leading-8 text-slate-700">
-              <p>
-                <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span>{" "}
-                ligger i {formatTopPercent(report.occupationPlacement.percentile)} av yrkene når vi
-                rangerer etter median månedslønn.
-              </p>
-              <p>
-                Yrkets plassering er <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span>. {report.occupationPlacement.label}
-              </p>
-              {report.genderGap ? (
-                <p>
-                  {report.genderGap.label} Forskjellen er {formatCurrency(report.genderGap.difference)} (
-                  {formatPercent(report.genderGap.differencePercent)}).
-                </p>
-              ) : (
-                <p>
-                  Det finnes ikke nok kjønnsdelte tall for median månedslønn til å vise et
-                  tydelig gap i yrket.
-                </p>
-              )}
-            </div>
-          </section>
         </section>
       ) : null}
     </div>
+  );
+}
+
+type ReportSectionIconName = "salary" | "estimate" | "insight" | "market";
+
+function ReportSectionLink({
+  children,
+  href,
+  icon,
+}: {
+  children: ReactNode;
+  href: string;
+  icon: ReportSectionIconName;
+}) {
+  return (
+    <a
+      className="inline-flex items-center gap-2 rounded-full border border-[#dce3ec] bg-white px-4 py-2 text-sm font-semibold text-[#38465d] transition hover:border-[#17633b] hover:bg-[#f2f8f5] hover:text-[#0f4a2d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b]"
+      href={href}
+    >
+      <span className="text-[#17633b]">
+        <ReportSectionIcon name={icon} />
+      </span>
+      {children}
+    </a>
+  );
+}
+
+function ReportSectionHeading({
+  children,
+  icon,
+}: {
+  children: ReactNode;
+  icon: ReportSectionIconName;
+}) {
+  return (
+    <div className="mb-8 flex items-center gap-2 sm:gap-7">
+      <span className="h-px flex-1 bg-[linear-gradient(90deg,transparent,#b9c7d5)]" />
+      <h3 className="flex shrink-0 items-center gap-2 text-center text-3xl font-semibold tracking-[-0.05em] text-slate-950 sm:gap-3 sm:text-5xl">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e7f5ed] text-[#17633b] sm:h-12 sm:w-12">
+          <ReportSectionIcon name={icon} />
+        </span>
+        {children}
+      </h3>
+      <span className="h-px flex-1 bg-[linear-gradient(90deg,#b9c7d5,transparent)]" />
+    </div>
+  );
+}
+
+function ReportSectionIcon({ name }: { name: ReportSectionIconName }) {
+  if (name === "salary") {
+    return (
+      <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+        <rect x="3" y="6" width="18" height="13" rx="3" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M3 10h18M16 14h2" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+      </svg>
+    );
+  }
+
+  if (name === "estimate") {
+    return (
+      <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+        <rect x="5" y="3" width="14" height="18" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M8 7h8M8 12h1m3 0h1m3 0h1M8 16h1m3 0h1m3 0h1" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+      </svg>
+    );
+  }
+
+  if (name === "insight") {
+    return (
+      <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+        <path d="M9 18h6M10 21h4M8.2 14.8A6 6 0 1 1 15.8 14.8C14.7 15.7 14 16.4 14 18h-4c0-1.6-.7-2.3-1.8-3.2Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <rect x="3" y="7" width="18" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function ReportOverviewGraphic({
+  report,
+}: {
+  report: NonNullable<ReturnType<typeof buildLonnsjekkReport>>;
+}) {
+  const differenceTone = getTone(report.comparisonToMedian.difference);
+  const differenceClassName =
+    differenceTone === "positive"
+      ? "text-emerald-200"
+      : differenceTone === "negative"
+        ? "text-rose-200"
+        : "text-white";
+
+  return (
+    <div className="relative mx-auto mt-8 min-h-[17rem] max-w-5xl overflow-hidden rounded-[14px] bg-[linear-gradient(135deg,#0b2f20_0%,#0f4a2d_48%,#173f55_100%)] text-left text-white shadow-[0_22px_55px_rgba(15,74,45,0.20)]">
+      <svg aria-hidden="true" className="absolute inset-0 h-full w-full" fill="none" viewBox="0 0 1000 300" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="report-line-gradient" x1="80" y1="235" x2="920" y2="70" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#7DD3FC" />
+            <stop offset="0.55" stopColor="#6EE7B7" />
+            <stop offset="1" stopColor="#C4B5FD" />
+          </linearGradient>
+          <linearGradient id="report-area-gradient" x1="500" y1="70" x2="500" y2="270" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#A7F3D0" stopOpacity="0.24" />
+            <stop offset="1" stopColor="#A7F3D0" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <circle cx="850" cy="42" r="185" fill="#93C5FD" opacity="0.08" />
+        <circle cx="110" cy="300" r="190" fill="#6EE7B7" opacity="0.08" />
+        <path d="M70 239C172 222 221 240 307 194C393 148 462 189 544 142C626 95 700 137 779 94C850 55 890 73 940 45V284H70V239Z" fill="url(#report-area-gradient)" />
+        <path d="M70 239C172 222 221 240 307 194C393 148 462 189 544 142C626 95 700 137 779 94C850 55 890 73 940 45" stroke="url(#report-line-gradient)" strokeLinecap="round" strokeWidth="5" />
+        <g fill="#D1FAE5" opacity="0.22">
+          <rect x="695" y="202" width="38" height="68" rx="8" />
+          <rect x="750" y="171" width="38" height="99" rx="8" />
+          <rect x="805" y="132" width="38" height="138" rx="8" />
+          <rect x="860" y="91" width="38" height="179" rx="8" />
+        </g>
+      </svg>
+
+      <div className="relative grid min-h-[17rem] items-center gap-8 px-7 py-9 sm:px-10 md:grid-cols-2 md:px-12">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100/80">
+            Din månedslønn
+          </p>
+          <p className="mt-3 text-4xl font-semibold tracking-[-0.05em] tabular-nums sm:text-6xl">
+            {formatCurrency(report.salary)}
+          </p>
+          <p className="mt-3 text-sm text-white/70">
+            Årslønn: {formatCurrency(report.annualSalary)}
+          </p>
+        </div>
+
+        <div className="md:text-right">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100/80">
+            Median i yrket
+          </p>
+          <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] tabular-nums sm:text-4xl">
+            {formatCurrency(report.comparisonToMedian.value)}
+          </p>
+          <p className={`mt-3 text-base font-semibold ${differenceClassName}`}>
+            {formatDifference(report.comparisonToMedian.difference)} mot medianen
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepIndicator() {
+  return (
+    <div className="mx-auto max-w-[17rem]">
+      <div className="flex items-center px-4">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0f4a2d] text-xs font-semibold text-white shadow-[0_5px_12px_rgba(15,74,45,0.2)]">
+          1
+        </span>
+        <span className="mx-3 h-[3px] flex-1 rounded-full bg-[#dce3ec]" />
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#f0f3f7] text-xs font-semibold text-[#53627a]">
+          2
+        </span>
+      </div>
+      <p className="mt-3 text-center text-sm font-semibold text-[#101827]">
+        Legg inn lønn og velg yrke
+      </p>
+    </div>
+  );
+}
+
+function BenefitItem({ detail, icon, title }: { detail: string; icon: ReactNode; title: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e7f5ed] text-[#17633b]">
+        {icon}
+      </span>
+      <div>
+        <p className="text-sm font-semibold text-[#243249]">{title}</p>
+        <p className="mt-0.5 text-xs leading-5 text-[#53627a]">{detail}</p>
+      </div>
+    </div>
+  );
+}
+
+function FieldInfoIcon({ label }: { label: string }) {
+  return (
+    <details className="group relative">
+      <summary
+        aria-label="Vis forklaring av brutto månedslønn"
+        className="flex h-4 w-4 cursor-pointer list-none items-center justify-center rounded-full border border-[#b9c4d2] text-[10px] font-semibold text-[#76859b] transition hover:border-[#17633b] hover:text-[#17633b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b] [&::-webkit-details-marker]:hidden"
+      >
+        i
+      </summary>
+      <span className="absolute left-1/2 top-[calc(100%+0.5rem)] z-40 w-60 -translate-x-1/2 rounded-[8px] border border-[#dce3ec] bg-white px-3 py-2 text-xs font-normal leading-5 text-[#53627a] shadow-[0_12px_30px_rgba(27,36,48,0.14)] sm:left-0 sm:translate-x-0">
+        {label}
+      </span>
+    </details>
   );
 }
 
@@ -595,16 +923,17 @@ type GenderButtonProps = {
 function GenderButton({ active, icon, label, onClick, type }: GenderButtonProps) {
   return (
     <button
+      aria-pressed={active}
       className={[
-        "inline-flex h-11 items-center justify-center gap-2 rounded-[5px] border px-4 text-sm font-semibold transition",
+        "inline-flex h-11 items-center justify-center gap-2 rounded-[7px] border px-4 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b]",
         active
-          ? "border-[var(--primary-strong)] bg-[var(--primary-strong)] text-white shadow-[0_12px_28px_rgba(20,83,45,0.16)]"
-          : "border-black/8 bg-white text-slate-700 hover:border-[rgba(20,83,45,0.28)] hover:text-[var(--primary-strong)]",
+          ? "border-[#0f4a2d] bg-[#0f4a2d] text-white shadow-[0_8px_20px_rgba(15,74,45,0.16)]"
+          : "border-[#dce3ec] bg-white text-[#243249] hover:border-[#aebac8] hover:text-[#0f4a2d]",
       ].join(" ")}
       onClick={onClick}
       type={type}
     >
-      <span className={active ? "text-white" : "text-[var(--primary-strong)]"}>{icon}</span>
+      <span className={active ? "text-white" : "text-[#53627a]"}>{icon}</span>
       {label}
     </button>
   );
@@ -626,11 +955,40 @@ function ReportCard({ label, value, detail, tone = "default" }: ReportCardProps)
         : "text-slate-950";
 
   return (
-    <article className="rounded-[5px] bg-white px-6 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+    <article className="px-6 py-6 sm:px-8">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
       <p className={`mt-3 text-3xl font-semibold tracking-[-0.04em] tabular-nums ${valueClassName}`}>{value}</p>
       {detail ? <p className="mt-2 text-sm leading-6 text-slate-600">{detail}</p> : null}
     </article>
+  );
+}
+
+function ReportHeadline({
+  report,
+}: {
+  report: NonNullable<ReturnType<typeof buildLonnsjekkReport>>;
+}) {
+  const markerMatch = report.headline.match(/(?:klart|litt) (?:over|under)/);
+
+  if (!markerMatch || markerMatch.index === undefined) {
+    return (
+      <p className="text-center text-2xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-3xl">
+        {report.headline}
+      </p>
+    );
+  }
+
+  const marker = markerMatch[0];
+  const markerClassName = marker.includes("over") ? "text-emerald-700" : "text-red-700";
+  const beforeMarker = report.headline.slice(0, markerMatch.index);
+  const afterMarker = report.headline.slice(markerMatch.index + marker.length);
+
+  return (
+    <p className="text-center text-2xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-3xl">
+      {beforeMarker}
+      <span className={`font-bold ${markerClassName}`}>{marker}</span>
+      {afterMarker}
+    </p>
   );
 }
 
@@ -645,19 +1003,17 @@ function EstimateSection({ report }: EstimateSectionProps) {
   const userEstimate = buildEstimate(report.salary);
 
   return (
-    <section className="rounded-[5px] bg-white px-6 py-6 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-      <div className="space-y-4">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-          Lønnsestimat
-        </p>
-        <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+    <section className="scroll-mt-24 px-6 py-10 sm:px-8 sm:py-14" id="rapport-lonnsestimat">
+      <div>
+        <ReportSectionHeading icon="estimate">Lønnsestimat</ReportSectionHeading>
+        <h4 className="text-center text-2xl font-semibold tracking-[-0.03em] text-slate-950">
           Timelønn, feriepenger og netto
-        </h3>
-        <p className="text-sm leading-7 text-slate-700">
+        </h4>
+        <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-7 text-slate-700">
           Her ser du et forenklet estimat for yrket basert på median samlet månedslønn, og et eget
           estimat basert på lønnen du har lagt inn.
         </p>
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-500">
+        <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-center text-xs leading-6 text-slate-500">
           <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
           <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
           <span>{ESTIMATED_TAX_RATE} % estimert skatt</span>
@@ -666,7 +1022,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
         </div>
       </div>
 
-      <div className="mt-6 grid gap-4 lg:grid-cols-2">
+      <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
         {medianEstimate ? (
           <EstimateSummaryCard
             description="Median samlet månedslønn i yrket."
@@ -683,7 +1039,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
         />
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+      <div className="grid divide-y divide-[#e6ebf2] border-b border-[#e6ebf2] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
         {medianEstimate ? (
           <EstimateHolidayCard
             estimate={medianEstimate}
@@ -713,9 +1069,9 @@ function EstimateSummaryCard({
   salaryLabel,
 }: EstimateSummaryCardProps) {
   return (
-    <article className="rounded-[5px] bg-slate-50 px-5 py-5">
+    <article className="px-1 py-6 sm:px-5">
       <div className="space-y-4">
-        <div className="space-y-1">
+        <div className="space-y-1 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
             {title}
           </p>
@@ -742,9 +1098,9 @@ type EstimateHolidayCardProps = {
 
 function EstimateHolidayCard({ title, estimate }: EstimateHolidayCardProps) {
   return (
-    <article className="rounded-[5px] bg-amber-50 px-5 py-5">
+    <article className="px-1 py-6 sm:px-5">
       <div className="space-y-5">
-        <div className="space-y-1">
+        <div className="space-y-1 text-center">
           <p className="text-sm font-semibold text-slate-900">{title}</p>
           <p className="text-sm font-medium text-amber-800">
             {HOLIDAY_PAY_RATE.toLocaleString("nb-NO")} % feriepengesats | {VACATION_WEEKS.toLocaleString("nb-NO")} uker
@@ -802,17 +1158,6 @@ function EstimateRow({ label, value, tone = "default", strong = false }: Estimat
   );
 }
 
-type UserPurchasingPowerInsight = {
-  startYear: number;
-  quarter: number;
-  cumulativeInflationPercent: number;
-  inflationAdjustedStartSalary: number;
-  differenceFromAdjustedStart: number;
-  differencePercent: number;
-  startSalaryReference: number;
-  latestPeriodLabel: string;
-};
-
 type UserAgeInsight = {
   userAge: number;
   referenceAge: number;
@@ -822,103 +1167,18 @@ type UserAgeInsight = {
   periodLabel: string;
 };
 
-type UserPurchasingPowerSectionProps = {
-  insight: UserPurchasingPowerInsight;
-};
-
-function UserPurchasingPowerSection({ insight }: UserPurchasingPowerSectionProps) {
-  const cumulativeInflationValue = formatPercent(insight.cumulativeInflationPercent) ?? "Mangler data";
-  const differencePercentValue = formatPercent(insight.differencePercent) ?? "Mangler data";
-  const trendTone = getTone(insight.differenceFromAdjustedStart);
-  const trendValueClassName =
-    trendTone === "positive"
-      ? "text-emerald-700"
-      : trendTone === "negative"
-        ? "text-red-700"
-        : "text-slate-950";
-  const trendSurfaceClassName =
-    trendTone === "positive"
-      ? "bg-emerald-50"
-      : trendTone === "negative"
-        ? "bg-red-50"
-        : "bg-slate-50";
-  const trendHeadline =
-    trendTone === "positive"
-      ? "Du har fått bedre kjøpekraft"
-      : trendTone === "negative"
-        ? "Du har fått dårligere kjøpekraft"
-        : "Du har omtrent samme kjøpekraft";
-
-  return (
-    <div className="grid gap-4">
-      <div className={`rounded-[5px] px-5 py-4 ${trendSurfaceClassName}`}>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
-              Viktigste tall
-            </p>
-            <p className={`mt-1 text-2xl font-semibold tracking-[-0.03em] ${trendValueClassName}`}>
-              {trendHeadline}
-            </p>
-            <p className="mt-2 text-sm leading-6 text-slate-700">
-              Dette viser om månedslønnen din kan kjøpe mer eller mindre enn da du startet, etter at vi har justert for prisvekst.
-            </p>
-          </div>
-          <div
-            className={`inline-flex items-center gap-2 text-3xl font-semibold tracking-[-0.04em] ${trendValueClassName}`}
-          >
-            <TrendArrowIcon direction={trendTone === "negative" ? "down" : "up"} />
-            {differencePercentValue}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <ReportCard
-          detail={`Sammenlignet med ${insight.startYear}`}
-          label="Prisvekst siden start"
-          value={cumulativeInflationValue}
-        />
-        <ReportCard
-          detail="Inflasjonsjustert startnivå i dagens kroner"
-          label="Median ved start"
-          value={formatCurrency(insight.inflationAdjustedStartSalary)}
-        />
-        <ReportCard
-          detail={`${formatDifference(insight.differenceFromAdjustedStart)} mot inflasjonsjustert startnivå`}
-          label="Endring i kjøpekraft"
-          tone={trendTone}
-          value={differencePercentValue}
-        />
-      </div>
-
-      <div className="rounded-[5px] bg-slate-50 px-5 py-4 text-sm leading-7 text-slate-700">
-        <p>
-          Hvis vi bruker median samlet månedslønn i yrket som startnivå i {insight.startYear}, tilsvarer det{" "}
-          <span className="font-semibold text-slate-950">{formatCurrency(insight.inflationAdjustedStartSalary)}</span>{" "}
-          i {insight.latestPeriodLabel.toLowerCase()} når vi justerer for prisvekst.
-        </p>
-        <p className="mt-2">
-          Med lønnen du har lagt inn ligger du {formatDifferenceTextLong(insight.differenceFromAdjustedStart)} det
-          inflasjonsjusterte nivået, som tilsvarer {differencePercentValue}.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 type UserAgeSectionProps = {
   insight: UserAgeInsight;
 };
 
 function UserAgeSection({ insight }: UserAgeSectionProps) {
   const tone = insight.difference > 0 ? "negative" : insight.difference < 0 ? "positive" : "default";
-  const surfaceClassName =
+  const accentClassName =
     tone === "positive"
-      ? "bg-emerald-50"
+      ? "border-emerald-500"
       : tone === "negative"
-        ? "bg-red-50"
-        : "bg-slate-50";
+        ? "border-red-500"
+        : "border-slate-300";
   const headlineClassName =
     tone === "positive"
       ? "text-emerald-700"
@@ -928,14 +1188,14 @@ function UserAgeSection({ insight }: UserAgeSectionProps) {
 
   return (
     <div className="grid gap-4">
-      <div className={`rounded-[5px] px-5 py-4 ${surfaceClassName}`}>
+      <div className={`border-x-4 px-5 py-1 text-center ${accentClassName}`}>
         <p className={`text-2xl font-semibold tracking-[-0.03em] ${headlineClassName}`}>
           {insight.label}
         </p>
         <p className="mt-2 text-sm leading-6 text-slate-700">{insight.detail}</p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
         <ReportCard
           detail="Alderen du la inn"
           label="Din alder"
@@ -1008,6 +1268,65 @@ function parseInteger(value: string) {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
+function getLastTenYearsPurchasingPowerSeries(
+  series: OccupationPurchasingPowerTimeSeries,
+): OccupationPurchasingPowerTimeSeries {
+  const pointsWithRealGrowth = series.points.filter((point) =>
+    [point.realGrowthAll, point.realGrowthWomen, point.realGrowthMen].some((value) =>
+      Number.isFinite(value),
+    ),
+  );
+  const pointsWithYears = pointsWithRealGrowth.map((point) => ({
+    point,
+    year: extractYearFromPeriod(point.periodCode) ?? extractYearFromPeriod(point.periodLabel),
+  }));
+  const availableYears = pointsWithYears
+    .map((entry) => entry.year)
+    .filter((year): year is number => year !== null);
+  const latestYear = availableYears.length > 0 ? Math.max(...availableYears) : null;
+
+  if (latestYear === null) {
+    return {
+      ...series,
+      points: pointsWithRealGrowth.slice(-40),
+    };
+  }
+
+  const firstYear = latestYear - 9;
+
+  return {
+    ...series,
+    points: pointsWithYears
+      .filter((entry) => entry.year !== null && entry.year >= firstYear)
+      .map((entry) => entry.point),
+  };
+}
+
+function extractYearFromPeriod(value: string) {
+  const match = value.match(/(20\d{2})/);
+  return match ? Number(match[1]) : null;
+}
+
+function getLatestRealWageGrowth(
+  series: OccupationPurchasingPowerTimeSeries,
+  gender: LonnsjekkKjonn,
+) {
+  const points = [...series.points].reverse();
+
+  for (const point of points) {
+    const value = gender === "mann"
+      ? point.realGrowthMen ?? point.realGrowthAll
+      : point.realGrowthWomen ?? point.realGrowthAll;
+    const year = extractYearFromPeriod(point.periodCode) ?? extractYearFromPeriod(point.periodLabel);
+
+    if (value !== undefined && year !== null) {
+      return { value, year, previousYear: year - 1 };
+    }
+  }
+
+  return null;
+}
+
 function formatCurrency(value?: number) {
   if (value === undefined) {
     return "Mangler data";
@@ -1045,11 +1364,6 @@ function formatPercent(value?: number) {
   })} %`;
 }
 
-function formatTopPercent(percentile: number) {
-  const topShare = Math.max(1, Math.round(100 - percentile));
-  return `øverste ${topShare} %`;
-}
-
 function getTone(value?: number) {
   if (value === undefined || value === 0) {
     return "default";
@@ -1064,6 +1378,18 @@ function normalizeText(value: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]+/g, "")
     .toLowerCase();
+}
+
+function formatInteger(value: number) {
+  return value.toLocaleString("nb-NO", { maximumFractionDigits: 0 });
+}
+
+function formatReportDate(date: Date) {
+  return new Intl.DateTimeFormat("nb-NO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(date);
 }
 
 function formatPeriodLabel(periodLabel?: string) {
@@ -1113,96 +1439,6 @@ function formatDecimal(value: number) {
   });
 }
 
-function buildUserPurchasingPowerSectionIntro(
-  startYear: number,
-  occupationLabel: string,
-) {
-  return `Vi bruker dagens lønn opp mot et inflasjonsjustert startnivå for ${occupationLabel.toLowerCase()} i ${startYear}.`;
-}
-
-function buildUserPurchasingPowerInsight({
-  currentSalary,
-  gender,
-  salarySeries,
-  purchasingPowerSeries,
-  startYear,
-}: {
-  currentSalary: number;
-  gender: LonnsjekkKjonn;
-  salarySeries: OccupationSalaryTimeSeries;
-  purchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
-  startYear: number;
-}) {
-  const latestPoint = purchasingPowerSeries.points[purchasingPowerSeries.points.length - 1];
-
-  if (!latestPoint) {
-    return null;
-  }
-
-  const latestQuarterMatch = latestPoint.periodCode.match(/^(\d{4})K([1-4])$/);
-
-  if (!latestQuarterMatch) {
-    return null;
-  }
-
-  const latestYear = Number(latestQuarterMatch[1]);
-  const latestQuarter = Number(latestQuarterMatch[2]);
-
-  if (startYear >= latestYear) {
-    return null;
-  }
-
-  const startSalaryPoint = findAnnualPointForYear(salarySeries.points, startYear, latestQuarter);
-
-  if (!startSalaryPoint) {
-    return null;
-  }
-
-  const startSalaryReference = pickSalaryValue(startSalaryPoint, gender);
-
-  if (startSalaryReference === undefined) {
-    return null;
-  }
-
-  const annualPurchasingPowerPoints = Array.from(
-    new Map(
-      purchasingPowerSeries.points
-        .filter((point) => {
-          const match = point.periodCode.match(/^(\d{4})K([1-4])$/);
-          return match ? Number(match[2]) === latestQuarter : false;
-        })
-        .map((point) => [point.periodCode.slice(0, 4), point] as const),
-    ).values(),
-  ).sort((left, right) => left.periodCode.localeCompare(right.periodCode, "nb-NO"));
-
-  const relevantPoints = annualPurchasingPowerPoints.filter((point) => {
-    const year = Number(point.periodCode.slice(0, 4));
-    return year > startYear && year <= latestYear;
-  });
-
-  if (relevantPoints.length === 0) {
-    return null;
-  }
-
-  const cumulativeInflationFactor = relevantPoints.reduce((factor, point) => {
-    return factor * (1 + point.inflationGrowth / 100);
-  }, 1);
-
-  const inflationAdjustedStartSalary = startSalaryReference * cumulativeInflationFactor;
-  const differenceFromAdjustedStart = currentSalary - inflationAdjustedStartSalary;
-
-  return {
-    startYear,
-    quarter: latestQuarter,
-    cumulativeInflationPercent: (cumulativeInflationFactor - 1) * 100,
-    inflationAdjustedStartSalary,
-    differenceFromAdjustedStart,
-    differencePercent: (differenceFromAdjustedStart / inflationAdjustedStartSalary) * 100,
-    startSalaryReference,
-    latestPeriodLabel: formatPeriodLabel(latestPoint.periodLabel),
-  };
-}
-
 function buildUserAgeInsight({
   age,
   ageInsight,
@@ -1246,83 +1482,6 @@ function buildUserAgeInsight({
   };
 }
 
-function findAnnualPointForYear(
-  points: Array<{
-    periodCode: string;
-    periodLabel: string;
-    valueAll?: number;
-    valueWomen?: number;
-    valueMen?: number;
-  }>,
-  year: number,
-  preferredQuarter: number,
-) {
-  const matchingPoints = points
-    .map((point) => {
-      const match = point.periodCode.match(/^(\d{4})K([1-4])$/);
-
-      if (!match || Number(match[1]) !== year) {
-        return null;
-      }
-
-      return {
-        point,
-        quarter: Number(match[2]),
-      };
-    })
-    .filter((entry): entry is { point: (typeof points)[number]; quarter: number } => Boolean(entry))
-    .sort((left, right) => right.quarter - left.quarter);
-
-  return (
-    matchingPoints.find((entry) => entry.quarter === preferredQuarter)?.point ??
-    matchingPoints[0]?.point ??
-    null
-  );
-}
-
-function pickSalaryValue(
-  point: { valueAll?: number; valueWomen?: number; valueMen?: number },
-  gender: LonnsjekkKjonn,
-) {
-  return gender === "kvinne" ? point.valueWomen ?? point.valueAll : point.valueMen ?? point.valueAll;
-}
-
-function formatDifferenceTextLong(value: number) {
-  if (value === 0) {
-    return "akkurat på nivå med";
-  }
-
-  const absoluteValue = Math.abs(value).toLocaleString("nb-NO", {
-    maximumFractionDigits: 0,
-  });
-
-  return value > 0 ? `${absoluteValue} kr over` : `${absoluteValue} kr under`;
-}
-
-function TrendArrowIcon({ direction }: { direction: "up" | "down" }) {
-  return direction === "down" ? (
-    <svg aria-hidden="true" className="h-6 w-6" fill="none" viewBox="0 0 24 24">
-      <path
-        d="M12 5v14M12 19l-5-5M12 19l5-5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-      />
-    </svg>
-  ) : (
-    <svg aria-hidden="true" className="h-6 w-6" fill="none" viewBox="0 0 24 24">
-      <path
-        d="M12 19V5M12 5l-5 5M12 5l5 5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
-
 function FemaleIcon() {
   return (
     <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
@@ -1341,46 +1500,104 @@ function MaleIcon() {
   );
 }
 
-function SalaryCheckIcon() {
+function ShieldCheckIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      className="h-36 w-36 sm:h-44 sm:w-44 lg:h-52 lg:w-52"
-      fill="none"
-      viewBox="0 0 200 200"
-    >
-      <circle cx="100" cy="100" r="78" fill="currentColor" opacity="0.06" />
-      <rect
-        x="48"
-        y="55"
-        width="104"
-        height="78"
-        rx="12"
-        stroke="currentColor"
-        strokeWidth="7"
-      />
-      <path
-        d="M48 78h104M72 113h26"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="7"
-      />
-      <circle cx="123" cy="105" r="27" fill="white" stroke="currentColor" strokeWidth="7" />
-      <path
-        d="m112 105 8 8 15-18"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="7"
-      />
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.8" />
+      <path d="m9 12 2 2 4-4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
     </svg>
   );
 }
 
-function ExploreIcon() {
+function StatisticsIcon() {
   return (
-    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
-      <path d="M3 13 13 3M13 3H7.5M13 3v5.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <path d="M5 19v-5h3v5M10.5 19V9h3v10M16 19V5h3v14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+      <path d="m5 10 5-4 4 2 5-5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function BoltIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <path d="m13.5 2-8 12h6L10.5 22l8-12h-6l1-8Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+      <path d="m16 16 4 4" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function UsersIcon() {
+  return (
+    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+      <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M3.5 19v-1.5A4.5 4.5 0 0 1 8 13h2a4.5 4.5 0 0 1 4.5 4.5V19" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" />
+      <path d="M15 5.5a3 3 0 0 1 0 5.8M17 13.5a4.5 4.5 0 0 1 3.5 4.4V19" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
+function SalaryCheckIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-auto w-full max-w-[19rem]"
+      fill="none"
+      viewBox="0 0 320 210"
+    >
+      <defs>
+        <linearGradient id="salary-card" x1="105" y1="36" x2="245" y2="178" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#F7F8FF" />
+          <stop offset="1" stopColor="#E4E8FF" />
+        </linearGradient>
+        <linearGradient id="salary-lens" x1="49" y1="79" x2="142" y2="166" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#BAC6FF" />
+          <stop offset="0.5" stopColor="#7583D5" />
+          <stop offset="1" stopColor="#4D568F" />
+        </linearGradient>
+        <linearGradient id="salary-handle" x1="107" y1="143" x2="166" y2="199" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#7D81D9" />
+          <stop offset="1" stopColor="#44447F" />
+        </linearGradient>
+        <filter id="salary-shadow" x="25" y="16" width="272" height="194" filterUnits="userSpaceOnUse">
+          <feDropShadow dx="0" dy="12" floodColor="#63709D" floodOpacity="0.2" stdDeviation="9" />
+        </filter>
+      </defs>
+      <circle cx="272" cy="47" r="25" fill="#E9EEF5" opacity="0.85" />
+      <g filter="url(#salary-shadow)">
+        <path d="M113 36h139c10 0 17 8 16 18l-13 111c-1 9-8 15-17 15H99c-10 0-18-9-16-19L96 51c1-9 8-15 17-15Z" fill="url(#salary-card)" />
+        <path d="M113 36h139c10 0 17 8 16 18l-13 111c-1 9-8 15-17 15H99c-10 0-18-9-16-19L96 51c1-9 8-15 17-15Z" stroke="#CED5F2" strokeWidth="2" />
+        <rect x="119" y="56" width="35" height="7" rx="3.5" fill="#D9DFF6" />
+        <rect x="119" y="76" width="49" height="7" rx="3.5" fill="#93DACA" />
+        <rect x="122" y="139" width="18" height="24" rx="4" fill="#C9D5FF" />
+        <rect x="151" y="124" width="18" height="39" rx="4" fill="#C9D5FF" />
+        <rect x="180" y="117" width="18" height="46" rx="4" fill="#C9D5FF" />
+        <rect x="209" y="101" width="18" height="62" rx="4" fill="#C9D5FF" />
+        <path d="m113 122 26-19 27 11 31-28 29 8 23-25" stroke="#57C69A" strokeLinecap="round" strokeLinejoin="round" strokeWidth="7" />
+        <circle cx="249" cy="69" r="6" fill="#57C69A" />
+      </g>
+      <g filter="url(#salary-shadow)">
+        <circle cx="91" cy="118" r="47" fill="white" fillOpacity="0.56" stroke="url(#salary-lens)" strokeWidth="9" />
+        <circle cx="91" cy="118" r="36" fill="#F8FCFF" fillOpacity="0.58" />
+        <path d="m124 153 40 39" stroke="url(#salary-handle)" strokeLinecap="round" strokeWidth="20" />
+        <path d="m119 148 13 13" stroke="#646BA8" strokeLinecap="round" strokeWidth="12" />
+      </g>
     </svg>
   );
 }

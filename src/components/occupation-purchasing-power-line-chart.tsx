@@ -18,6 +18,7 @@ const filterOptions = [
 type FilterKey = (typeof filterOptions)[number]["key"];
 
 type OccupationPurchasingPowerLineChartProps = {
+  initialFilter?: FilterKey;
   series: OccupationPurchasingPowerTimeSeries;
 };
 
@@ -34,9 +35,10 @@ type SegmentPoint = {
 };
 
 export function OccupationPurchasingPowerLineChart({
+  initialFilter = "realGrowthAll",
   series,
 }: OccupationPurchasingPowerLineChartProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterKey>("realGrowthAll");
+  const [activeFilter, setActiveFilter] = useState<FilterKey>(initialFilter);
 
   const availableFilters = useMemo(
     () =>
@@ -99,43 +101,38 @@ export function OccupationPurchasingPowerLineChart({
     periodCode: point.periodCode,
     periodLabel: point.periodLabel,
   })));
-  const latestValues = filterOptions
-    .filter((option) => option.key !== "realGrowthAll")
-    .flatMap((option) => {
-      const latestPoint = getLatestSeriesPoint(series.points, option.key);
-
-      if (!latestPoint) {
-        return [];
-      }
-
-      return [{
-        key: option.key,
-        label: option.label,
-        periodLabel: latestPoint.periodLabel,
-        value: latestPoint.value,
-      }];
-    });
+  const activeOption = filterOptions.find((option) => option.key === resolvedFilter);
+  const latestSeriesPoint = getLatestSeriesPoint(series.points, resolvedFilter);
+  const latestValues = activeOption && latestSeriesPoint
+    ? [{
+        key: activeOption.key,
+        label: activeOption.label,
+        periodLabel: latestSeriesPoint.periodLabel,
+        value: latestSeriesPoint.value,
+      }]
+    : [];
   const latestPeriodLabel = latestValues[0]?.periodLabel;
+  const fiveYearGrowth = calculateFiveYearRealWageGrowth(series.points, resolvedFilter);
 
   return (
     <section className="bg-transparent">
       <div className="space-y-4">
-        <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+        <h3 className="text-center text-xl font-semibold text-slate-950 sm:text-2xl">
           {`Utvikling i reallønnsvekst for ${series.occupationLabel}`}
         </h3>
 
         {latestValues.length > 0 ? (
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
+          <div className="space-y-2 text-center">
+            <div className="flex items-center justify-center gap-2">
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Siste data
               </p>
               <MetricInfoButton
-                description={`Her ser du siste registrerte reallønnsvekst for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og viser lønnsvekst justert for prisvekst.`}
+                description={`Her ser du siste registrerte reallønnsvekst for valgt visning. Tallet gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og viser lønnsvekst justert for prisvekst.`}
                 label="Siste data"
               />
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               {latestPeriodLabel ? (
                 <span className="rounded-[5px] border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm">
                   {formatPeriodLabel(latestPeriodLabel)}
@@ -156,7 +153,7 @@ export function OccupationPurchasingPowerLineChart({
           </div>
         ) : null}
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
         {filterOptions.map((option) => {
           const isActive = option.key === resolvedFilter;
           const isAvailable = availableFilters[option.key];
@@ -184,6 +181,13 @@ export function OccupationPurchasingPowerLineChart({
           );
         })}
         </div>
+        {latestSeriesPoint && fiveYearGrowth !== null && activeOption ? (
+          <p className="mx-auto max-w-3xl text-center text-sm leading-7 text-slate-700 sm:text-base">
+            Reallønnen for {getFilterSubject(activeOption.key)}{" "}
+            {getGrowthDescription(latestSeriesPoint.value)} det siste året og{" "}
+            {getGrowthDescription(fiveYearGrowth)} samlet de siste fem årene.
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-8 overflow-x-auto">
@@ -409,4 +413,53 @@ function getLatestSeriesPoint(
   }
 
   return null;
+}
+
+function calculateFiveYearRealWageGrowth(
+  points: OccupationPurchasingPowerTimeSeries["points"],
+  key: FilterKey,
+) {
+  const annualValues = Array.from(
+    new Map(
+      points.flatMap((point) => {
+        const year = extractYear(point.periodCode) ?? extractYear(point.periodLabel);
+        const value = point[key];
+
+        return year && value !== undefined ? [[year, value] as const] : [];
+      }),
+    ).entries(),
+  )
+    .sort(([left], [right]) => left.localeCompare(right, "nb-NO"))
+    .map(([, value]) => value);
+
+  if (annualValues.length < 5) {
+    return null;
+  }
+
+  const cumulativeFactor = annualValues
+    .slice(-5)
+    .reduce((factor, value) => factor * (1 + value / 100), 1);
+
+  return (cumulativeFactor - 1) * 100;
+}
+
+function getFilterSubject(key: FilterKey) {
+  if (key === "realGrowthWomen") {
+    return "kvinner";
+  }
+
+  if (key === "realGrowthMen") {
+    return "menn";
+  }
+
+  return "begge kjønn";
+}
+
+function getGrowthDescription(value: number) {
+  if (value === 0) {
+    return "var uendret";
+  }
+
+  const formattedValue = `${percentFormatter.format(Math.abs(value))} %`;
+  return value > 0 ? `økte med ${formattedValue}` : `gikk ned med ${formattedValue}`;
 }

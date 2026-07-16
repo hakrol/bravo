@@ -6,6 +6,7 @@ import { HomeAboutInsightSection } from "@/components/home-about-insight-section
 import { HomeExploreOccupationsSection } from "@/components/home-explore-occupations-section";
 import { HomeHeroSearch } from "@/components/home-hero-search";
 import { HomeOccupationCards } from "@/components/home-occupation-cards";
+import { HomeSalaryCheckSection } from "@/components/home-salary-check-section";
 import type { OccupationSalaryRow } from "@/components/occupation-salary-overview";
 import type { OccupationCardStats } from "@/lib/occupation-card-stats";
 import type { OccupationPurchasingPowerTimeSeries, OccupationSalaryTimeSeries } from "@/lib/types";
@@ -67,6 +68,7 @@ export function HomeOccupationSalarySearch({
         series={allOccupationsSalarySeries}
       />
       <HomeExploreOccupationsSection />
+      <HomeSalaryCheckSection />
       <HomeAboutInsightSection />
     </>
   );
