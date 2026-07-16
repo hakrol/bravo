@@ -2,6 +2,7 @@
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { LonnsjekkShareAction } from "@/components/lonnsjekk-share-action";
 import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
@@ -257,6 +258,11 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    track("Lonnsjekk check salary clicked", {
+      page_path: window.location.pathname,
+      source: "lonnsjekk_form",
+    });
 
     const salary = parseSalary(form.salary);
     const age = parseOptionalInteger(form.age);
