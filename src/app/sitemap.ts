@@ -10,6 +10,10 @@ import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-re
 import { listOccupationFamilies } from "@/lib/occupation-families";
 import { listOccupationGroups } from "@/lib/occupation-groups";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
+import {
+  buildOccupationSalaryGrowthHref,
+  getAvailableOccupationSalaryGrowthPages,
+} from "@/lib/occupation-salary-growth";
 import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
 import { getAbsoluteUrl } from "@/lib/site-config";
 
@@ -230,6 +234,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     occupationIndex,
     apprenticeshipIndex,
     occupationMedianDataset,
+    occupationSalaryGrowthPages,
   ] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getAllForklarerPosts().catch(() => []),
@@ -238,6 +243,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getOccupationDetailViewModelIndex().catch(() => null),
     getApprenticeshipDetailViewModelIndex().catch(() => null),
     getLatestOccupationMedianMonthlySalaryDataset().catch(() => null),
+    getAvailableOccupationSalaryGrowthPages().catch(() => []),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
@@ -310,6 +316,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const occupationSalaryGrowthRoutes: MetadataRoute.Sitemap = occupationSalaryGrowthPages.map((page) => ({
+    url: getAbsoluteUrl(buildOccupationSalaryGrowthHref(page.slug)),
+    lastModified: occupationContentLastModified,
+    changeFrequency: "yearly",
+    priority: 0.7,
+  }));
+
   const hourlySalaryRoutes: MetadataRoute.Sitemap = hourlySalaryPages.map((page) => ({
     url: getAbsoluteUrl(page.href),
     lastModified: occupationContentLastModified,
@@ -332,6 +345,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogCategoryRoutes,
     ...forklarerRoutes,
     ...occupationRoutes,
+    ...occupationSalaryGrowthRoutes,
     ...hourlySalaryRoutes,
     ...apprenticeshipRoutes,
   ];
