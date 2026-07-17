@@ -1026,6 +1026,16 @@ a.blog-meta-chip:focus-visible {
   padding: 0;
 }
 
+.blog-faq.occupation-salary-growth-faq {
+  padding: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .blog-faq.occupation-salary-growth-faq {
+    padding: 1.75rem;
+  }
+}
+
 .blog-faq-header {
   margin-bottom: 1rem;
 }

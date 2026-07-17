@@ -10,6 +10,14 @@ const servitorBlogPath = "/blogg/hva-er-lonnen-til-en-servitor";
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx", "md", "mdx"],
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: "/lonnsvekst-:slug",
+        destination: "/lonnsvekst/yrke/:slug",
+      },
+    ];
+  },
   async redirects() {
     return [
       {
