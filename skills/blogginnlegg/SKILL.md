@@ -138,16 +138,15 @@ Når brukeren ber om et `forklareringsinnlegg`, skal det behandles som en egen i
 ## Regler for blogginnhold
 
 - Blogginnlegg skal skrives på naturlig Norsk Bokmål med direkte og konkret språk.
-- Skriv konkret, tydelig og uten fluff.
+- Bruk et klart og direkte språk, og unngå kompleks terminologi.
+- Sikt mot en Flesch-lesbarhetsscore på 80 eller høyere. 
+- Bruk aktiv form. 
+- Unngå adverb.
 - Unngå fet tekst for å fremheve poeng.
-- Ikke start med “X omtales ofte som…”
-- Ikke skriv “det er viktig å merke seg at…” med mindre det faktisk trengs.
 - Bruk konkret subjekt: “En brannmann…”, “Lønnen…”, “SSB-tallene…”
 - Gå rett på hva leseren prøver å forstå.
 - Første setning i innlegget skal være en engasjerende hook. Hook skal være relevant for temaet, ikke en generisk klisjé.
-- Bruk `du` når brukeren ber om direkte rådgivende bloggtekst.
-- Forklar vanskelige begreper enkelt, uten å bli barnslig.
-- Skill mellom fakta, tolkning og råd.
+- Varier setningslengden bevisst – bland korte, slagkraftige setninger med lengre setninger. Skriv aldri tre setninger med omtrent samme lengde etter hverandre.
 - Unngå amerikanske karriereråd som ikke passer norske forhold.
 - Bruk `##` og `###` for struktur. Det gir automatisk innholdsfortegnelse.
 - Hold frontmatter ryddig og komplett.

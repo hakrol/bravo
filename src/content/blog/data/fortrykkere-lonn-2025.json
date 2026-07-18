@@ -1,0 +1,173 @@
+{
+  "id": "fortrykkere-lonn-2025",
+  "title": "Førtrykkere sammenlignet med grafiske yrker i 2025",
+  "source": "SSB tabell 11418, 11658 og 14700",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Lønnstallene gjelder median månedslønn for begge kjønn, alle sektorer og heltid og deltid samlet i 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 1. kvartal 2026 fra SSB tabell 11658. Reallønn er beregnet med KPI fra SSB tabell 14700, der 2025=100.",
+  "rows": [
+    {
+      "code": "7311",
+      "label": "Presisjonsinstrumentmakere og -reparatører",
+      "href": "/yrke/presisjonsinstrumentmakere-og-reparatorer-lonn",
+      "value": 55430,
+      "average": 61230,
+      "p25": 47580,
+      "p75": 77270,
+      "employees": 534,
+      "jobs": 543,
+      "averageAge": 44.2,
+      "womenEmployees": 56,
+      "menEmployees": 478,
+      "womenShare": 10.5,
+      "menShare": 89.5,
+      "womenMedian": null,
+      "menMedian": 56310
+    },
+    {
+      "code": "7321",
+      "label": "Førtrykkere",
+      "href": "/yrke/fortrykkere-lonn",
+      "value": 47350,
+      "average": 49390,
+      "p25": 41670,
+      "p75": 56180,
+      "employees": 783,
+      "jobs": 822,
+      "averageAge": 46.2,
+      "womenEmployees": 348,
+      "menEmployees": 435,
+      "womenShare": 44.4,
+      "menShare": 55.6,
+      "womenMedian": 45830,
+      "menMedian": 48330
+    },
+    {
+      "code": "7322",
+      "label": "Trykkere",
+      "href": "/yrke/trykkere-lonn",
+      "value": 46730,
+      "average": 48530,
+      "p25": 41190,
+      "p75": 56020,
+      "employees": 1001,
+      "jobs": 1030,
+      "averageAge": 45.7,
+      "womenEmployees": 255,
+      "menEmployees": 746,
+      "womenShare": 25.5,
+      "menShare": 74.5,
+      "womenMedian": 42220,
+      "menMedian": 48500
+    },
+    {
+      "code": "7319",
+      "label": "Andre kunsthåndverkere",
+      "href": "/yrke/andre-kunsthandverkere-lonn",
+      "value": 45750,
+      "average": 46820,
+      "p25": 43260,
+      "p75": 48850,
+      "employees": 169,
+      "jobs": 175,
+      "averageAge": 44.1,
+      "womenEmployees": 58,
+      "menEmployees": 111,
+      "womenShare": 34.3,
+      "menShare": 65.7,
+      "womenMedian": null,
+      "menMedian": 45300
+    },
+    {
+      "code": "7323",
+      "label": "Innbindere mv.",
+      "href": "/yrke/innbindere-mv-lonn",
+      "value": 43110,
+      "average": 44000,
+      "p25": 38970,
+      "p75": 46040,
+      "employees": 222,
+      "jobs": 225,
+      "averageAge": 48.6,
+      "womenEmployees": 64,
+      "menEmployees": 158,
+      "womenShare": 28.8,
+      "menShare": 71.2,
+      "womenMedian": null,
+      "menMedian": 43290
+    }
+  ],
+  "occupation": {
+    "code": "7321",
+    "label": "Førtrykkere",
+    "href": "/yrke/fortrykkere-lonn",
+    "medianMonthlySalary": 47350,
+    "medianAnnualSalary": 568200,
+    "estimatedHourlySalary": 291,
+    "averageMonthlySalary": 49390,
+    "p25": 41670,
+    "p75": 56180,
+    "employees": 783,
+    "jobs": 822,
+    "averageAge": 46.2,
+    "womenEmployees": 348,
+    "menEmployees": 435,
+    "womenShare": 44.4,
+    "menShare": 55.6
+  },
+  "genderMedian": {
+    "occupationLabel": "førtrykkere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 45830,
+    "menMonthlyMedian": 48330,
+    "note": "Tallene gjelder median månedslønn for kvinner og menn i STYRK-08 7321 Førtrykkere i 2025."
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Førtrykkere",
+    "source": "SSB tabell 11418 og 14700",
+    "rows": [
+      {
+        "label": "2021",
+        "nominal": 40050,
+        "real2025": 47514
+      },
+      {
+        "label": "2022",
+        "nominal": 42310,
+        "real2025": 47455
+      },
+      {
+        "label": "2023",
+        "nominal": 43580,
+        "real2025": 46333
+      },
+      {
+        "label": "2024",
+        "nominal": 45700,
+        "real2025": 47089
+      },
+      {
+        "label": "2025",
+        "nominal": 47350,
+        "real2025": 47350
+      }
+    ],
+    "nominalGrowth": 7300,
+    "nominalGrowthPercent": 18.2,
+    "realGrowth": -164,
+    "realGrowthPercent": -0.3
+  },
+  "metadata": {
+    "salaryTableId": "11418",
+    "workforceTableId": "11658",
+    "inflationTableId": "14700",
+    "salaryPeriod": "2025",
+    "workforcePeriod": "1. kvartal 2026",
+    "salaryMeasure": "Median månedslønn",
+    "distributionMeasure": "Median, gjennomsnitt, nedre kvartil og øvre kvartil",
+    "workforceMeasure": "Antall lønnstakere, arbeidsforhold og gjennomsnittsalder",
+    "occupationCode": "7321",
+    "generatedFromLocalSsbDataAt": "2026-07-18"
+  }
+}

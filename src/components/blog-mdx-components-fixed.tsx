@@ -61,6 +61,11 @@ import {
 } from "@/components/blog-ergoterapeut-fysioterapeut-salary-chart";
 import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@/components/blog-firefighter-salary-chart";
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
+import {
+  FortrykkereGenderSalaryCards,
+  FortrykkereSalaryDevelopmentChart,
+  FortrykkereSalaryEditorialChart,
+} from "@/components/blog-fortrykkere-salary-chart";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import {
   GlassWorkerGenderSalaryCards,
@@ -293,6 +298,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     FysioterapeutGenderSalaryCards,
     FirefighterSalaryBubbleChart,
     FirefighterSalaryEditorialChart,
+    FortrykkereGenderSalaryCards,
+    FortrykkereSalaryDevelopmentChart,
+    FortrykkereSalaryEditorialChart,
     GlassWorkerGenderSalaryCards,
     GlassWorkerSalaryBubbleChart,
     GlassWorkerSalaryEditorialChart,

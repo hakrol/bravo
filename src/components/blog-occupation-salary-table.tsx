@@ -18,6 +18,7 @@ import de10YrkeneMedMestOvertidsbetaling2025Snapshot from "@/content/blog/data/d
 import energimontorLonn2025Snapshot from "@/content/blog/data/energimontor-lonn-2025.json";
 import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025.json";
 import ergoterapeutFysioterapeutLonn2025Snapshot from "@/content/blog/data/ergoterapeut-fysioterapeut-lonn-2025.json";
+import fortrykkereLonn2025Snapshot from "@/content/blog/data/fortrykkere-lonn-2025.json";
 import handverkereLonn2025Snapshot from "@/content/blog/data/handverkere-lonn-2025.json";
 import glassarbeiderLonn2025Snapshot from "@/content/blog/data/glassarbeider-lonn-2025.json";
 import intensivsykepleierLonn2025Snapshot from "@/content/blog/data/intensivsykepleier-lonn-2025.json";
@@ -79,6 +80,7 @@ const snapshots = {
   "energimontor-lonn-2025": energimontorLonn2025Snapshot as OccupationSalarySnapshot,
   "elektriker-lonn-2025": elektrikerLonn2025Snapshot as OccupationSalarySnapshot,
   "ergoterapeut-fysioterapeut-lonn-2025": ergoterapeutFysioterapeutLonn2025Snapshot as OccupationSalarySnapshot,
+  "fortrykkere-lonn-2025": fortrykkereLonn2025Snapshot as OccupationSalarySnapshot,
   "glassarbeider-lonn-2025": glassarbeiderLonn2025Snapshot as OccupationSalarySnapshot,
   "handverkere-lonn-2025": handverkereLonn2025Snapshot as OccupationSalarySnapshot,
   "intensivsykepleier-lonn-2025": intensivsykepleierLonn2025Snapshot as OccupationSalarySnapshot,

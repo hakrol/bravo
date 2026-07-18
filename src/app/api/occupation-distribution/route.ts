@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   getOccupationSalaryDistribution,
-  OCCUPATION_MONTHLY_SALARY_FILTERS,
+  OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
 
 export async function GET(request: Request) {
@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
   const distribution = await getOccupationSalaryDistribution(
     occupationCode,
-    OCCUPATION_MONTHLY_SALARY_FILTERS,
+    OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
   );
 
   return NextResponse.json(distribution);
