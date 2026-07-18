@@ -2,10 +2,23 @@ import type {
   OccupationMedianSalaryRow,
   OccupationSalaryRow,
 } from "@/lib/occupation-salary-overview";
+import type { OccupationSupplementTimeSeries } from "@/lib/ssb";
 import { getOccupationDetailHref } from "@/lib/occupation-detail-pages";
 import { getOccupationGroupByCode } from "@/lib/occupation-groups";
 
 export type LonnsjekkKjonn = "kvinne" | "mann";
+
+export type LonnsjekkSalaryInput =
+  | {
+      mode: "annual";
+      annualSalary: number;
+    }
+  | {
+      mode: "hourly";
+      hourlyWage: number;
+      employmentPercentage: number;
+      fullTimeWeeklyHours: number;
+    };
 
 export type LonnsjekkOccupationOption = {
   occupationCode: string;
@@ -28,12 +41,16 @@ export type LonnsjekkPageData = {
   totalOccupations: number;
   averageMonthlySalaryAll?: number;
   periodLabel?: string;
+  contractedSalaryPeriodLabel?: string;
+  overtimePeriodLabel?: string;
   updated?: string;
 };
 
 export type LonnsjekkReport = {
-  salary: number;
   annualSalary: number;
+  monthlySalary: number;
+  personalAnnualSalary: number;
+  salaryInput: LonnsjekkSalaryInput;
   gender: LonnsjekkKjonn;
   genderLabel: string;
   occupation: LonnsjekkOccupationOption;
@@ -74,19 +91,39 @@ export type LonnsjekkReport = {
   summary: string;
 };
 
+export type LonnsjekkOvertimeReport = {
+  userAnnual?: number;
+  userMonthlyAverage?: number;
+  marketMonthlyAverage?: number;
+  marketAnnualized?: number;
+  monthlyDifference?: number;
+  annualizedDifference?: number;
+  periodLabel?: string;
+  referenceGenderLabel: string;
+  usesAllGendersFallback: boolean;
+};
+
 type BuildLonnsjekkPageDataInput = {
   averageRows: OccupationSalaryRow[];
   medianRows: OccupationMedianSalaryRow[];
   averageMonthlySalaryAll?: number;
   periodLabel?: string;
+  contractedSalaryPeriodLabel?: string;
+  overtimePeriodLabel?: string;
   updated?: string;
 };
 
 type BuildLonnsjekkReportInput = {
-  salary: number;
+  salaryInput: LonnsjekkSalaryInput;
   gender: LonnsjekkKjonn;
   occupationCode: string;
   data: LonnsjekkPageData;
+};
+
+type BuildLonnsjekkOvertimeReportInput = {
+  annualOvertime?: number;
+  gender: LonnsjekkKjonn;
+  series?: OccupationSupplementTimeSeries | null;
 };
 
 export function buildLonnsjekkPageData({
@@ -94,6 +131,8 @@ export function buildLonnsjekkPageData({
   medianRows,
   averageMonthlySalaryAll,
   periodLabel,
+  contractedSalaryPeriodLabel,
+  overtimePeriodLabel,
   updated,
 }: BuildLonnsjekkPageDataInput): LonnsjekkPageData {
   const medianRowsByCode = new Map(
@@ -146,12 +185,14 @@ export function buildLonnsjekkPageData({
     totalOccupations,
     averageMonthlySalaryAll,
     periodLabel,
+    contractedSalaryPeriodLabel,
+    overtimePeriodLabel,
     updated,
   };
 }
 
 export function buildLonnsjekkReport({
-  salary,
+  salaryInput,
   gender,
   occupationCode,
   data,
@@ -163,22 +204,33 @@ export function buildLonnsjekkReport({
   }
 
   const genderLabel = gender === "kvinne" ? "kvinner" : "menn";
-  const selectedMedian = pickGenderValue(occupation, gender, "median");
-  const selectedAverage = pickGenderValue(occupation, gender, "average");
+  const monthlySalary = salaryInput.mode === "hourly"
+    ? salaryInput.hourlyWage * salaryInput.fullTimeWeeklyHours * 4.33
+    : salaryInput.annualSalary / 12;
+  const annualSalary = monthlySalary * 12;
+  const personalAnnualSalary = salaryInput.mode === "hourly"
+    ? annualSalary * (salaryInput.employmentPercentage / 100)
+    : annualSalary;
+  const selectedMedian = annualizeMonthlySalary(
+    pickGenderValue(occupation, gender, "median"),
+  );
+  const selectedAverage = annualizeMonthlySalary(
+    pickGenderValue(occupation, gender, "average"),
+  );
   const comparisonToMedian = buildComparison(
-    salary,
+    annualSalary,
     selectedMedian,
-    `Median avtalt månedslønn (${genderLabel})`,
+    `Median avtalt årslønn (${genderLabel})`,
   );
   const comparisonToAverage = buildComparison(
-    salary,
+    annualSalary,
     selectedAverage,
-    `Gjennomsnittlig avtalt månedslønn (${genderLabel})`,
+    `Gjennomsnittlig avtalt årslønn (${genderLabel})`,
   );
   const comparisonToNationalAverage = buildComparison(
-    salary,
-    data.averageMonthlySalaryAll,
-    "Gjennomsnittlig avtalt månedslønn for alle yrker",
+    annualSalary,
+    annualizeMonthlySalary(data.averageMonthlySalaryAll),
+    "Gjennomsnittlig avtalt årslønn for alle yrker",
   );
   const occupationPlacement = {
     rank: occupation.medianRank,
@@ -189,7 +241,8 @@ export function buildLonnsjekkReport({
   const genderGap = buildGenderGap(occupation);
   const headline = buildHeadline(comparisonToMedian.differencePercent);
   const summary = buildSummary({
-    salary,
+    annualSalary,
+    salaryInput,
     occupationLabel: occupation.occupationLabel,
     genderLabel,
     median: comparisonToMedian.value,
@@ -197,8 +250,10 @@ export function buildLonnsjekkReport({
   });
 
   return {
-    salary,
-    annualSalary: salary * 12,
+    annualSalary,
+    monthlySalary,
+    personalAnnualSalary,
+    salaryInput,
     gender,
     genderLabel,
     occupation,
@@ -211,6 +266,43 @@ export function buildLonnsjekkReport({
     genderGap,
     headline,
     summary,
+  };
+}
+
+export function buildLonnsjekkOvertimeReport({
+  annualOvertime,
+  gender,
+  series,
+}: BuildLonnsjekkOvertimeReportInput): LonnsjekkOvertimeReport {
+  const latestPoint = series?.points.at(-1);
+  const genderSpecificMarketAverage =
+    gender === "kvinne" ? latestPoint?.overtimeWomen : latestPoint?.overtimeMen;
+  const marketMonthlyAverage = genderSpecificMarketAverage ?? latestPoint?.overtimeAll;
+  const usesAllGendersFallback =
+    genderSpecificMarketAverage === undefined && latestPoint?.overtimeAll !== undefined;
+  const userMonthlyAverage =
+    annualOvertime !== undefined ? annualOvertime / 12 : undefined;
+  const monthlyDifference =
+    userMonthlyAverage !== undefined && marketMonthlyAverage !== undefined
+      ? userMonthlyAverage - marketMonthlyAverage
+      : undefined;
+
+  return {
+    userAnnual: annualOvertime,
+    userMonthlyAverage,
+    marketMonthlyAverage,
+    marketAnnualized:
+      marketMonthlyAverage !== undefined ? marketMonthlyAverage * 12 : undefined,
+    monthlyDifference,
+    annualizedDifference:
+      monthlyDifference !== undefined ? monthlyDifference * 12 : undefined,
+    periodLabel: latestPoint?.periodLabel,
+    referenceGenderLabel: usesAllGendersFallback
+      ? "begge kjønn"
+      : gender === "kvinne"
+        ? "kvinner"
+        : "menn",
+    usesAllGendersFallback,
   };
 }
 
@@ -230,23 +322,23 @@ function pickGenderValue(
     : occupation.averageSalaryMen ?? occupation.averageSalaryAll;
 }
 
-function buildComparison(salary: number, reference: number | undefined, label: string) {
-  const difference = reference !== undefined ? salary - reference : undefined;
+function buildComparison(annualSalary: number, annualReference: number | undefined, label: string) {
+  const difference = annualReference !== undefined ? annualSalary - annualReference : undefined;
 
   return {
     label,
-    value: reference,
+    value: annualReference,
     difference,
     differencePercent:
-      difference !== undefined && reference && reference !== 0
-        ? (difference / reference) * 100
+      difference !== undefined && annualReference && annualReference !== 0
+        ? (difference / annualReference) * 100
         : undefined,
   };
 }
 
 function buildGenderGap(occupation: LonnsjekkOccupationOption) {
-  const womenMedian = occupation.medianSalaryWomen;
-  const menMedian = occupation.medianSalaryMen;
+  const womenMedian = annualizeMonthlySalary(occupation.medianSalaryWomen);
+  const menMedian = annualizeMonthlySalary(occupation.medianSalaryMen);
 
   if (womenMedian === undefined || menMedian === undefined || womenMedian === 0) {
     return undefined;
@@ -262,10 +354,10 @@ function buildGenderGap(occupation: LonnsjekkOccupationOption) {
     differencePercent,
     label:
       difference > 0
-        ? "Median avtalt månedslønn for menn er høyere enn for kvinner i dette yrket."
+        ? "Median avtalt årslønn for menn er høyere enn for kvinner i dette yrket."
         : difference < 0
-          ? "Median avtalt månedslønn for kvinner er høyere enn for menn i dette yrket."
-          : "Median avtalt månedslønn er lik for kvinner og menn i dette yrket.",
+          ? "Median avtalt årslønn for kvinner er høyere enn for menn i dette yrket."
+          : "Median avtalt årslønn er lik for kvinner og menn i dette yrket.",
   };
 }
 
@@ -294,21 +386,31 @@ function buildHeadline(differencePercent?: number) {
 }
 
 function buildSummary({
-  salary,
+  annualSalary,
+  salaryInput,
   occupationLabel,
   genderLabel,
   median,
   medianDifference,
 }: {
-  salary: number;
+  annualSalary: number;
+  salaryInput: LonnsjekkSalaryInput;
   occupationLabel: string;
   genderLabel: string;
   median?: number;
   medianDifference?: number;
 }) {
+  const salaryDescription = salaryInput.mode === "hourly"
+    ? `${formatHourlyWage(salaryInput.hourlyWage)} per time i fast avtalt timeslønn, tilsvarende ${formatCurrency(annualSalary)} i 100 % stilling,`
+    : `${formatCurrency(annualSalary)} i fast avtalt årslønn før skatt`;
+
   return median !== undefined && medianDifference !== undefined
-    ? `Med ${formatCurrency(salary)} i avtalt månedslønn før skatt ligger du ${formatDifferenceText(medianDifference)} median avtalt månedslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
-    : `Med ${formatCurrency(salary)} i avtalt månedslønn før skatt har vi ikke nok kjønnsdelte tall for median avtalt månedslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
+    ? `Med ${salaryDescription} ligger du ${formatDifferenceText(medianDifference)} median avtalt årslønn for ${genderLabel} som jobber som ${occupationLabel.toLowerCase()}.`
+    : `Med ${salaryDescription} har vi ikke nok kjønnsdelte tall for median avtalt årslønn til å sammenligne deg presist med ${occupationLabel.toLowerCase()}.`;
+}
+
+function annualizeMonthlySalary(monthlySalary?: number) {
+  return monthlySalary !== undefined ? monthlySalary * 12 : undefined;
 }
 
 function getPlacementLabel(percentile: number) {
@@ -338,6 +440,12 @@ function calculatePercentile(rank: number, total: number) {
 function formatCurrency(value: number) {
   return `${value.toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
+  })} kr`;
+}
+
+function formatHourlyWage(value: number) {
+  return `${value.toLocaleString("nb-NO", {
+    maximumFractionDigits: 2,
   })} kr`;
 }
 

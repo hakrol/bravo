@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import {
   getOccupationDetailTrendData,
   getOccupationLaborMarketStats,
+  getOccupationSupplementTimeSeries,
+  getOccupationWorkforceRanking,
   OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
 } from "@/lib/ssb";
 
@@ -16,12 +18,14 @@ export async function GET(request: Request) {
     );
   }
 
-  const [detailData, laborMarketStats] = await Promise.all([
+  const [detailData, laborMarketStats, supplementSeries, workforceRanking] = await Promise.all([
     getOccupationDetailTrendData(
       occupationCode,
       OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
     ),
     getOccupationLaborMarketStats(occupationCode),
+    getOccupationSupplementTimeSeries(occupationCode),
+    getOccupationWorkforceRanking(occupationCode),
   ]);
 
   return NextResponse.json({
@@ -29,5 +33,7 @@ export async function GET(request: Request) {
     salarySeries: detailData.series,
     age: laborMarketStats?.age ?? null,
     employmentGrowth: laborMarketStats?.growth ?? null,
+    workforceRanking,
+    supplementSeries,
   });
 }

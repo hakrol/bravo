@@ -7,15 +7,19 @@ import { LonnsjekkShareAction } from "@/components/lonnsjekk-share-action";
 import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import {
+  buildLonnsjekkOvertimeReport,
   buildLonnsjekkReport,
   type LonnsjekkKjonn,
   type LonnsjekkPageData,
+  type LonnsjekkSalaryInput,
 } from "@/lib/lonnsjekk";
 import type {
   OccupationAgeLatest,
   OccupationEmploymentGrowth,
   OccupationPurchasingPowerTimeSeries,
   OccupationSalaryDistribution,
+  OccupationSupplementTimeSeries,
+  OccupationWorkforceRanking,
 } from "@/lib/ssb";
 
 type LonnsjekkToolProps = {
@@ -23,7 +27,13 @@ type LonnsjekkToolProps = {
 };
 
 type FormState = {
-  salary: string;
+  salaryMode: "annual" | "hourly";
+  annualSalary: string;
+  hourlyWage: string;
+  employmentPercentage: string;
+  fullTimeWeeklyHours: string;
+  overtime: string;
+  noOvertime: boolean;
   gender: LonnsjekkKjonn;
   occupationCode: string;
   age: string;
@@ -33,10 +43,20 @@ type OccupationInsightsResponse = {
   age: OccupationAgeLatest | null;
   employmentGrowth: OccupationEmploymentGrowth | null;
   purchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
+  supplementSeries: OccupationSupplementTimeSeries;
+  workforceRanking: OccupationWorkforceRanking | null;
 };
 
+type SalaryDisplayPeriod = "hourly" | "monthly" | "annual";
+
 const initialFormState: FormState = {
-  salary: "",
+  salaryMode: "annual",
+  annualSalary: "",
+  hourlyWage: "",
+  employmentPercentage: "100",
+  fullTimeWeeklyHours: "37,5",
+  overtime: "",
+  noOvertime: false,
   gender: "kvinne",
   occupationCode: "",
   age: "",
@@ -58,6 +78,8 @@ const salaryNegotiationArticles = [
 export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [submitted, setSubmitted] = useState<FormState | null>(null);
+  const [salaryDisplayPeriod, setSalaryDisplayPeriod] =
+    useState<SalaryDisplayPeriod>("annual");
   const [error, setError] = useState<string | null>(null);
   const [occupationQuery, setOccupationQuery] = useState("");
   const [activeOccupationIndex, setActiveOccupationIndex] = useState(0);
@@ -71,16 +93,27 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
     useState<OccupationPurchasingPowerTimeSeries | null>(null);
   const [ageInsight, setAgeInsight] = useState<OccupationAgeLatest | null>(null);
   const [employmentGrowth, setEmploymentGrowth] = useState<OccupationEmploymentGrowth | null>(null);
-  const [purchasingPowerError, setPurchasingPowerError] = useState<string | null>(null);
-  const [isPurchasingPowerLoading, setIsPurchasingPowerLoading] = useState(false);
+  const [workforceRanking, setWorkforceRanking] = useState<OccupationWorkforceRanking | null>(null);
+  const [supplementSeries, setSupplementSeries] =
+    useState<OccupationSupplementTimeSeries | null>(null);
+  const [insightsError, setInsightsError] = useState<string | null>(null);
+  const [isInsightsLoading, setIsInsightsLoading] = useState(false);
   const reportDate = useMemo(() => new Date(), []);
 
-  const parsedSalary = submitted ? parseSalary(submitted.salary) : undefined;
+  const submittedSalaryInput = submitted ? parseSalaryInput(submitted) : undefined;
+  const submittedOvertime = submitted
+    ? submitted.noOvertime
+      ? 0
+      : parseSalary(submitted.overtime)
+    : undefined;
+  const hasActivatedOvertime = submitted
+    ? submitted.noOvertime || submitted.overtime.trim().length > 0
+    : false;
   const submittedAge = submitted ? parseInteger(submitted.age) : undefined;
   const report =
-    submitted && parsedSalary !== undefined
+    submitted && submittedSalaryInput
       ? buildLonnsjekkReport({
-          salary: parsedSalary,
+          salaryInput: submittedSalaryInput,
           gender: submitted.gender,
           occupationCode: submitted.occupationCode,
           data,
@@ -137,6 +170,17 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
     reportPurchasingPowerSeries && submitted
       ? getLatestRealWageGrowth(reportPurchasingPowerSeries, submitted.gender)
       : null;
+  const salaryDisplayHoursPerYear =
+    report?.salaryInput.mode === "hourly"
+      ? report.salaryInput.fullTimeWeeklyHours * 4.33 * 12
+      : HOURS_PER_YEAR;
+  const overtimeReport = report && hasActivatedOvertime
+    ? buildLonnsjekkOvertimeReport({
+        annualOvertime: submittedOvertime,
+        gender: report.gender,
+        series: supplementSeries,
+      })
+    : null;
 
   useEffect(() => {
     const submittedOccupationCode = submitted?.occupationCode;
@@ -202,8 +246,10 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
       setPurchasingPowerSeries(null);
       setAgeInsight(null);
       setEmploymentGrowth(null);
-      setPurchasingPowerError(null);
-      setIsPurchasingPowerLoading(false);
+      setWorkforceRanking(null);
+      setSupplementSeries(null);
+      setInsightsError(null);
+      setIsInsightsLoading(false);
       return;
     }
 
@@ -217,8 +263,8 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
       }
 
       try {
-        setIsPurchasingPowerLoading(true);
-        setPurchasingPowerError(null);
+        setIsInsightsLoading(true);
+        setInsightsError(null);
 
         const response = await fetch(
           `/api/occupation-insights?occupationCode=${encodeURIComponent(occupationCode)}`,
@@ -226,13 +272,15 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
         );
 
         if (!response.ok) {
-          throw new Error("Kunne ikke hente kjøpekraft akkurat nå.");
+          throw new Error("Kunne ikke hente yrkesinnsikt akkurat nå.");
         }
 
         const nextInsights = (await response.json()) as OccupationInsightsResponse;
         setAgeInsight(nextInsights.age);
         setEmploymentGrowth(nextInsights.employmentGrowth);
+        setWorkforceRanking(nextInsights.workforceRanking);
         setPurchasingPowerSeries(nextInsights.purchasingPowerSeries);
+        setSupplementSeries(nextInsights.supplementSeries);
       } catch (fetchError) {
         if (controller.signal.aborted) {
           return;
@@ -240,13 +288,15 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
         setAgeInsight(null);
         setEmploymentGrowth(null);
+        setWorkforceRanking(null);
         setPurchasingPowerSeries(null);
-        setPurchasingPowerError(
-          fetchError instanceof Error ? fetchError.message : "Kunne ikke hente kjøpekraft akkurat nå.",
+        setSupplementSeries(null);
+        setInsightsError(
+          fetchError instanceof Error ? fetchError.message : "Kunne ikke hente yrkesinnsikt akkurat nå.",
         );
       } finally {
         if (!controller.signal.aborted) {
-          setIsPurchasingPowerLoading(false);
+          setIsInsightsLoading(false);
         }
       }
     }
@@ -264,16 +314,46 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
       source: "lonnsjekk_form",
     });
 
-    const salary = parseSalary(form.salary);
+    const annualSalary = parseSalary(form.annualSalary);
+    const hourlyWage = parseSalary(form.hourlyWage);
+    const employmentPercentage = parseSalary(form.employmentPercentage);
+    const fullTimeWeeklyHours = parseSalary(form.fullTimeWeeklyHours);
+    const overtime = form.noOvertime ? 0 : parseSalary(form.overtime);
     const age = parseOptionalInteger(form.age);
 
-    if (salary === undefined || salary <= 0) {
-      setError("Legg inn en gyldig avtalt månedslønn.");
+    if (form.salaryMode === "annual" && (annualSalary === undefined || annualSalary <= 0)) {
+      setError("Legg inn en gyldig fast avtalt årslønn.");
+      return;
+    }
+
+    if (form.salaryMode === "hourly" && (hourlyWage === undefined || hourlyWage <= 0)) {
+      setError("Legg inn en gyldig fast avtalt timeslønn.");
+      return;
+    }
+
+    if (
+      form.salaryMode === "hourly" &&
+      (employmentPercentage === undefined || employmentPercentage <= 0 || employmentPercentage > 100)
+    ) {
+      setError("Legg inn en stillingsprosent mellom 1 og 100.");
+      return;
+    }
+
+    if (
+      form.salaryMode === "hourly" &&
+      (fullTimeWeeklyHours === undefined || fullTimeWeeklyHours <= 0 || fullTimeWeeklyHours > 60)
+    ) {
+      setError("Legg inn ukentlig arbeidstid i full stilling, mellom 1 og 60 timer.");
       return;
     }
 
     if (!form.occupationCode) {
       setError("Velg et yrke før du sjekker lønnen.");
+      return;
+    }
+
+    if (form.overtime.trim() && (overtime === undefined || overtime < 0)) {
+      setError("Legg inn et gyldig beløp for overtidsbetaling, eller la feltet stå tomt.");
       return;
     }
 
@@ -332,30 +412,202 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               <StepIndicator />
 
               <form className="mt-7 grid content-start gap-4" onSubmit={handleSubmit}>
-                <div className="grid gap-2">
-                  <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-[#101827]" htmlFor="salary">
-                      Avtalt månedslønn
-                    </label>
-                    <FieldInfoIcon label="Den faste avtalte månedslønnen før skatt. Ikke ta med overtid, bonus eller uregelmessige tillegg." />
+                <div className="grid gap-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <label
+                        className="text-sm font-semibold text-[#101827]"
+                        htmlFor={form.salaryMode === "annual" ? "annual-salary" : "hourly-wage"}
+                      >
+                        {form.salaryMode === "annual"
+                          ? "Fast avtalt årslønn"
+                          : "Fast avtalt timeslønn"}
+                      </label>
+                      <FieldInfoIcon
+                        label={
+                          form.salaryMode === "annual"
+                            ? "Den faste avtalte årslønnen før skatt i 100 % stilling. Ikke ta med overtid, bonus, feriepenger eller uregelmessige tillegg."
+                            : "Den faste avtalte timesatsen før skatt. Ikke ta med overtidstillegg, bonus, feriepenger eller uregelmessige tillegg."
+                        }
+                      />
+                    </div>
+                    <button
+                      className="inline-flex min-h-9 items-center justify-center rounded-full bg-[#4f46e5] px-4 py-2 text-xs font-bold text-white shadow-[0_6px_16px_rgba(79,70,229,0.24)] transition hover:bg-[#4338ca] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4f46e5]"
+                      onClick={() => {
+                        setForm((current) => ({
+                          ...current,
+                          salaryMode: current.salaryMode === "annual" ? "hourly" : "annual",
+                        }));
+                        setError(null);
+                      }}
+                      type="button"
+                    >
+                      {form.salaryMode === "annual"
+                        ? "Bytt til timesbetaling"
+                        : "Bytt til årslønn"}
+                    </button>
                   </div>
-                  <span className="relative">
-                    <input
-                      id="salary"
-                      className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-12 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#17633b] focus:ring-4 focus:ring-[#e7f5ed]"
-                      inputMode="numeric"
-                      onChange={(event) =>
-                        setForm((current) => ({ ...current, salary: event.target.value }))
-                      }
-                      placeholder="For eksempel 58 000"
-                      type="text"
-                      value={form.salary}
-                    />
-                    <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-[#101827]">
-                      kr
+
+                  {form.salaryMode === "annual" ? (
+                    <span className="relative">
+                      <input
+                        id="annual-salary"
+                        className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-12 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#17633b] focus:ring-4 focus:ring-[#e7f5ed]"
+                        inputMode="numeric"
+                        onChange={(event) =>
+                          setForm((current) => ({ ...current, annualSalary: event.target.value }))
+                        }
+                        placeholder="For eksempel 696 000"
+                        type="text"
+                        value={form.annualSalary}
+                      />
+                      <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-[#101827]">
+                        kr
+                      </span>
                     </span>
-                  </span>
+                  ) : (
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <label className="grid gap-2" htmlFor="hourly-wage">
+                        <span className="text-xs font-semibold text-[#38465d]">Timesats</span>
+                        <span className="relative">
+                          <input
+                            id="hourly-wage"
+                            className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-20 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#4f46e5] focus:ring-4 focus:ring-[#eef2ff]"
+                            inputMode="decimal"
+                            onChange={(event) =>
+                              setForm((current) => ({ ...current, hourlyWage: event.target.value }))
+                            }
+                            placeholder="For eksempel 250"
+                            type="text"
+                            value={form.hourlyWage}
+                          />
+                          <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-[#101827]">
+                            kr/time
+                          </span>
+                        </span>
+                      </label>
+                      <label className="grid gap-2" htmlFor="employment-percentage">
+                        <span className="text-xs font-semibold text-[#38465d]">Stillingsprosent</span>
+                        <span className="relative">
+                          <input
+                            id="employment-percentage"
+                            className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-12 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#4f46e5] focus:ring-4 focus:ring-[#eef2ff]"
+                            inputMode="decimal"
+                            onChange={(event) =>
+                              setForm((current) => ({
+                                ...current,
+                                employmentPercentage: event.target.value,
+                              }))
+                            }
+                            type="text"
+                            value={form.employmentPercentage}
+                          />
+                          <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-[#101827]">
+                            %
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+                  )}
+
+                  <p className="text-xs leading-5 text-[#53627a]">
+                    {form.salaryMode === "annual"
+                      ? "Oppgi årslønnen som tilsvarer 100 % stilling, før skatt og uten bonus, overtid, feriepenger og uregelmessige tillegg."
+                      : "Timesatsen omregnes til lønn i 100 % stilling for sammenligningen. Stillingsprosenten brukes til å beregne din forventede personlige årslønn."}{" "}
+                    Sammenlignes med SSB-tall fra{" "}
+                    {data.contractedSalaryPeriodLabel ?? "siste tilgjengelige år"}.
+                  </p>
+
+                  {form.salaryMode === "hourly" ? (
+                    <details className="group rounded-[7px] border border-[#dce3ec] bg-[#f8fafc]">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold text-[#38465d] [&::-webkit-details-marker]:hidden">
+                        <span>Tilpass ukentlig arbeidstid</span>
+                        <span>{form.fullTimeWeeklyHours || "37,5"} t i full stilling</span>
+                      </summary>
+                      <label className="grid gap-2 border-t border-[#dce3ec] px-3 py-3" htmlFor="full-time-weekly-hours">
+                        <span className="text-xs text-[#53627a]">
+                          Timer per uke som utgjør 100 % stilling i arbeidsforholdet
+                        </span>
+                        <span className="relative">
+                          <input
+                            id="full-time-weekly-hours"
+                            className="h-10 w-full rounded-[7px] border border-[#dce3ec] bg-white px-3 pr-14 text-sm text-[#101827] outline-none focus:border-[#4f46e5] focus:ring-4 focus:ring-[#eef2ff]"
+                            inputMode="decimal"
+                            onChange={(event) =>
+                              setForm((current) => ({
+                                ...current,
+                                fullTimeWeeklyHours: event.target.value,
+                              }))
+                            }
+                            type="text"
+                            value={form.fullTimeWeeklyHours}
+                          />
+                          <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-xs font-semibold text-[#38465d]">
+                            t/uke
+                          </span>
+                        </span>
+                      </label>
+                    </details>
+                  ) : null}
                 </div>
+
+                <details className="group rounded-[7px] border border-[#dce3ec] bg-[#f8fafc]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold text-[#38465d] transition hover:text-[#0f4a2d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b] [&::-webkit-details-marker]:hidden">
+                    <span>Legg til overtidsbetaling</span>
+                    <span aria-hidden="true" className="text-sm leading-none transition group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <div className="grid gap-3 border-t border-[#dce3ec] px-4 py-4">
+                    <label className="grid gap-2" htmlFor="overtime">
+                      <span className="text-sm font-semibold text-[#101827]">
+                        Overtidsbetaling i {data.overtimePeriodLabel ?? "siste tilgjengelige år"}{" "}
+                        <span className="font-normal text-[#76859b]">(valgfritt)</span>
+                      </span>
+                      <span className="relative">
+                        <input
+                          id="overtime"
+                          className="h-11 w-full rounded-[7px] border border-[#dce3ec] bg-white px-4 pr-12 text-base text-[#101827] outline-none transition placeholder:text-[#91a0b8] hover:border-[#c6d0dd] focus:border-[#17633b] focus:ring-4 focus:ring-[#e7f5ed] disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400"
+                          disabled={form.noOvertime}
+                          inputMode="numeric"
+                          onChange={(event) =>
+                            setForm((current) => ({
+                              ...current,
+                              overtime: event.target.value,
+                              noOvertime: false,
+                            }))
+                          }
+                          placeholder="Samlet beløp, for eksempel 36 000"
+                          type="text"
+                          value={form.overtime}
+                        />
+                        <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-[#101827]">
+                          kr
+                        </span>
+                      </span>
+                    </label>
+                    <p className="text-xs leading-5 text-[#53627a]">
+                      Bruk samlet beløp før skatt som ble utbetalt som overtid. Ikke ta med bonus,
+                      ekstravakter med vanlig timelønn eller skift-, natt- og helgetillegg.
+                    </p>
+                    <label className="flex items-center gap-2 text-sm text-[#38465d]">
+                      <input
+                        checked={form.noOvertime}
+                        className="h-4 w-4 rounded border-[#b9c4d2] text-[#17633b] focus:ring-[#17633b]"
+                        onChange={(event) =>
+                          setForm((current) => ({
+                            ...current,
+                            noOvertime: event.target.checked,
+                            overtime: event.target.checked ? "" : current.overtime,
+                          }))
+                        }
+                        type="checkbox"
+                      />
+                      Jeg fikk ikke overtidsbetaling i{" "}
+                      {data.overtimePeriodLabel ?? "det siste tilgjengelige året"}
+                    </label>
+                  </div>
+                </details>
 
                 <fieldset className="grid gap-2">
                   <legend className="text-sm font-semibold text-[#101827]">Kjønn</legend>
@@ -498,14 +750,6 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             <div className="hidden justify-center lg:flex lg:justify-start">
               <SalaryCheckIcon />
             </div>
-            <div className="flex w-fit max-w-[25rem] items-center gap-3 rounded-[12px] border border-[#e6ebf2] bg-[#eef3fa]/80 px-4 py-3 text-sm leading-6 text-[#38465d]">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/80 text-[#667eea]">
-                <UsersIcon />
-              </span>
-              <p>
-                Finn ut om du tjener godt nok!
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -534,6 +778,11 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
             <nav aria-label="Innhold i rapporten" className="mt-6 flex flex-wrap justify-center gap-2">
               <ReportSectionLink href="#rapport-lonn" icon="salary">Lønn</ReportSectionLink>
+              {overtimeReport ? (
+                <ReportSectionLink href="#rapport-overtid" icon="overtime">
+                  Overtid
+                </ReportSectionLink>
+              ) : null}
               <ReportSectionLink href="#rapport-lonnsestimat" icon="estimate">Lønnsestimat</ReportSectionLink>
               <ReportSectionLink href="#rapport-visste-du-at" icon="insight">Visste du at</ReportSectionLink>
               {submittedAge !== undefined ? (
@@ -555,25 +804,86 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               </p>
             </div>
 
-            <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+            <div
+              aria-label="Vis lønnstall som"
+              className="mt-6 flex flex-wrap justify-center gap-2"
+              role="group"
+            >
+              {([
+                ["hourly", "Timeslønn"],
+                ["monthly", "Månedslønn"],
+                ["annual", "Årslønn"],
+              ] as const).map(([period, label]) => {
+                const isActive = salaryDisplayPeriod === period;
+
+                return (
+                  <button
+                    aria-pressed={isActive}
+                    className={`rounded-full border px-4 py-2 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b] ${
+                      isActive
+                        ? "border-[#17633b] bg-[#17633b] text-white shadow-sm"
+                        : "border-[#cfd8e4] bg-white text-[#38465d] hover:border-[#17633b]/45 hover:bg-emerald-50"
+                    }`}
+                    key={period}
+                    onClick={() => setSalaryDisplayPeriod(period)}
+                    type="button"
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-4 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-3 lg:divide-x lg:divide-y-0">
               <ReportCard
-                label="Din avtalte månedslønn"
-                value={formatCurrency(report.salary)}
-                detail={`Årslønn: ${formatCurrency(report.annualSalary)}`}
+                label={getUserSalaryPeriodLabel(report.salaryInput.mode, salaryDisplayPeriod)}
+                value={formatSalaryForPeriod(
+                  report.annualSalary,
+                  salaryDisplayPeriod,
+                  salaryDisplayHoursPerYear,
+                )}
+                detail={
+                  salaryDisplayPeriod === "annual"
+                    ? report.salaryInput.mode === "hourly"
+                      ? `Basert på ${formatHourlyWage(report.salaryInput.hourlyWage)} per time. Forventet årslønn i ${formatDecimal(report.salaryInput.employmentPercentage)} % stilling: ${formatCurrency(report.personalAnnualSalary)}.`
+                      : `Tilsvarer ${formatCurrency(report.monthlySalary)} per måned`
+                    : `Tilsvarer ${formatCurrency(report.annualSalary)} per år i 100 % stilling`
+                }
               />
               <ReportCard
-                label={report.comparisonToMedian.label}
-                value={formatCurrency(report.comparisonToMedian.value)}
-                detail={formatDifference(report.comparisonToMedian.difference)}
+                label={getSalaryPeriodLabel(report.comparisonToMedian.label, salaryDisplayPeriod)}
+                value={formatSalaryForPeriod(
+                  report.comparisonToMedian.value,
+                  salaryDisplayPeriod,
+                  salaryDisplayHoursPerYear,
+                )}
+                detail={formatSalaryDifferenceForPeriod(
+                  report.comparisonToMedian.difference,
+                  salaryDisplayPeriod,
+                  salaryDisplayHoursPerYear,
+                )}
                 tone={getTone(report.comparisonToMedian.difference)}
               />
               <ReportCard
-                label={report.comparisonToAverage.label}
-                value={formatCurrency(report.comparisonToAverage.value)}
-                detail={formatDifference(report.comparisonToAverage.difference)}
+                label={getSalaryPeriodLabel(report.comparisonToAverage.label, salaryDisplayPeriod)}
+                value={formatSalaryForPeriod(
+                  report.comparisonToAverage.value,
+                  salaryDisplayPeriod,
+                  salaryDisplayHoursPerYear,
+                )}
+                detail={formatSalaryDifferenceForPeriod(
+                  report.comparisonToAverage.difference,
+                  salaryDisplayPeriod,
+                  salaryDisplayHoursPerYear,
+                )}
                 tone={getTone(report.comparisonToAverage.difference)}
               />
             </div>
+
+            <p className="mx-auto mt-4 max-w-3xl text-center text-xs leading-6 text-slate-500">
+              Årslønnstallene for yrket er beregnet som SSBs avtalte månedslønn multiplisert med
+              12. Bonus, overtid, feriepenger og uregelmessige tillegg er ikke inkludert.
+            </p>
 
             <div className="mx-auto my-14 max-w-5xl text-center sm:my-16">
               <h4 className="text-xl font-semibold text-slate-950 sm:text-2xl">
@@ -598,7 +908,8 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             <div className="space-y-2 text-center">
               <h4 className="text-xl font-semibold text-slate-950 sm:text-2xl">Plassering i lønnsfordelingen</h4>
               <p className="text-sm leading-6 text-slate-600">
-                Her ser du om lønnen din ligger i den lave, midtre eller høye delen av det avtalte lønnsnivået i yrket.
+                Her ser du om lønnen din ligger i den lave, midtre eller høye delen av det avtalte
+                lønnsnivået i yrket. Årslønnen din er omregnet til månedslønn i diagrammet.
               </p>
             </div>
 
@@ -612,7 +923,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   userMarkers={{
                     [activeDistributionRow]: {
                       label: "Du er her",
-                      value: report.salary,
+                      value: report.monthlySalary,
                     },
                   }}
                   visibleRows={[activeDistributionRow]}
@@ -627,7 +938,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             </div>
 
             <div className="mt-12">
-              {isPurchasingPowerLoading ? (
+              {isInsightsLoading ? (
                 <p className="text-center text-sm leading-6 text-slate-600">
                   Henter reallønnsvekst fra SSB ...
                 </p>
@@ -637,8 +948,8 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   key={`${report.occupation.occupationCode}-${report.gender}`}
                   series={reportPurchasingPowerSeries}
                 />
-              ) : purchasingPowerError ? (
-                <p className="text-center text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
+              ) : insightsError ? (
+                <p className="text-center text-sm leading-6 text-slate-600">{insightsError}</p>
               ) : (
                 <p className="text-center text-sm leading-6 text-slate-600">
                   Det finnes ikke nok historiske data til å vise reallønnsveksten akkurat nå.
@@ -647,13 +958,22 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             </div>
           </section>
 
+          {overtimeReport ? (
+            <OvertimeSection
+              error={insightsError}
+              insight={overtimeReport}
+              isLoading={isInsightsLoading}
+              occupationLabel={report.occupation.occupationLabel}
+            />
+          ) : null}
+
           <EstimateSection report={report} />
 
           <section className="scroll-mt-24 px-6 py-10 sm:px-8 sm:py-14" id="rapport-visste-du-at">
             <ReportSectionHeading icon="insight">Visste du at</ReportSectionHeading>
             <div className="mx-auto max-w-4xl space-y-4 text-center text-base leading-8 text-slate-700">
               <p>
-                <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span> er rangert på <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span> når vi rangerer yrkene fra høyest til lavest median avtalt månedslønn. {report.occupationPlacement.label}
+                <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span> er rangert på <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span> når vi rangerer yrkene fra høyest til lavest median avtalt årslønn. {report.occupationPlacement.label}
               </p>
               {report.genderGap ? (
                 <p>
@@ -661,6 +981,19 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   <span className="font-semibold text-slate-950">
                     {formatCurrency(report.genderGap.difference)} ({formatPercent(report.genderGap.differencePercent)})
                   </span>.
+                </p>
+              ) : null}
+              {workforceRanking ? (
+                <p>
+                  Målt etter antall arbeidstakere er yrket rangert på{" "}
+                  <span className="font-semibold text-slate-950">
+                    {workforceRanking.rank}. plass av {workforceRanking.total} yrker
+                  </span>
+                  . SSB registrerte{" "}
+                  <span className="font-semibold text-slate-950">
+                    {formatInteger(workforceRanking.employees)} arbeidstakere
+                  </span>{" "}
+                  i {formatPeriodLabel(workforceRanking.periodLabel)}.
                 </p>
               ) : null}
               {employmentGrowth?.yearOverYearChange !== undefined &&
@@ -701,12 +1034,12 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               </div>
 
               <div className="mt-5">
-                {isPurchasingPowerLoading ? (
+                {isInsightsLoading ? (
                   <p className="text-center text-sm leading-6 text-slate-600">Henter aldersdata fra SSB ...</p>
                 ) : userAgeInsight ? (
                   <UserAgeSection insight={userAgeInsight} />
-                ) : purchasingPowerError ? (
-                  <p className="text-center text-sm leading-6 text-slate-600">{purchasingPowerError}</p>
+                ) : insightsError ? (
+                  <p className="text-center text-sm leading-6 text-slate-600">{insightsError}</p>
                 ) : (
                   <p className="text-center text-sm leading-6 text-slate-600">
                     Vi har ikke nok aldersdata for valgt kjønn til å sammenligne deg med yrket akkurat nå.
@@ -715,13 +1048,23 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               </div>
             </section>
           ) : null}
+
+          <footer className="border-t border-[#e6ebf2] bg-[#f8fafc] px-6 py-8 text-center sm:px-8">
+            <p className="text-sm font-bold text-slate-900">Ansvarsfraskrivelse</p>
+            <p className="mx-auto mt-2 max-w-4xl text-xs leading-6 text-slate-600">
+              Lønnsjekk gir veiledende beregninger basert på SSB-data og opplysningene du legger
+              inn. Tallene er ikke et lønnstilbud, en garanti eller personlig økonomisk rådgivning.
+              Faktisk lønn, skatt, feriepenger og tillegg kan variere med arbeidsavtale,
+              stillingsprosent, arbeidstid og individuelle forhold.
+            </p>
+          </footer>
         </section>
       ) : null}
     </div>
   );
 }
 
-type ReportSectionIconName = "salary" | "estimate" | "insight" | "market";
+type ReportSectionIconName = "salary" | "overtime" | "estimate" | "insight" | "market";
 
 function ReportSectionLink({
   children,
@@ -776,6 +1119,15 @@ function ReportSectionIcon({ name }: { name: ReportSectionIconName }) {
     );
   }
 
+  if (name === "overtime") {
+    return (
+      <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M12 7.5V12l3 2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+      </svg>
+    );
+  }
+
   if (name === "estimate") {
     return (
       <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -806,6 +1158,7 @@ function ReportOverviewGraphic({
 }: {
   report: NonNullable<ReturnType<typeof buildLonnsjekkReport>>;
 }) {
+  const hourlyInput = report.salaryInput.mode === "hourly" ? report.salaryInput : null;
   const differenceTone = getTone(report.comparisonToMedian.difference);
   const differenceClassName =
     differenceTone === "positive"
@@ -843,19 +1196,21 @@ function ReportOverviewGraphic({
       <div className="relative grid min-h-[17rem] items-center gap-8 px-7 py-9 sm:px-10 md:grid-cols-2 md:px-12">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100/80">
-            Din avtalte månedslønn
+            {hourlyInput ? "Din beregnede årslønn i 100 % stilling" : "Din faste avtalte årslønn"}
           </p>
           <p className="mt-3 text-4xl font-semibold tracking-[-0.05em] tabular-nums sm:text-6xl">
-            {formatCurrency(report.salary)}
+            {formatCurrency(report.annualSalary)}
           </p>
           <p className="mt-3 text-sm text-white/70">
-            Årslønn: {formatCurrency(report.annualSalary)}
+            {hourlyInput
+              ? `Basert på ${formatHourlyWage(hourlyInput.hourlyWage)} per time`
+              : `Tilsvarer ${formatCurrency(report.monthlySalary)} per måned`}
           </p>
         </div>
 
         <div className="md:text-right">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100/80">
-            Median avtalt månedslønn
+            Median avtalt årslønn
           </p>
           <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] tabular-nums sm:text-4xl">
             {formatCurrency(report.comparisonToMedian.value)}
@@ -906,7 +1261,7 @@ function FieldInfoIcon({ label }: { label: string }) {
   return (
     <details className="group relative">
       <summary
-        aria-label="Vis forklaring av avtalt månedslønn"
+        aria-label="Vis forklaring av lønnsfeltet"
         className="flex h-4 w-4 cursor-pointer list-none items-center justify-center rounded-full border border-[#b9c4d2] text-[10px] font-semibold text-[#76859b] transition hover:border-[#17633b] hover:text-[#17633b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b] [&::-webkit-details-marker]:hidden"
       >
         i
@@ -1002,11 +1357,127 @@ type EstimateSectionProps = {
   report: NonNullable<ReturnType<typeof buildLonnsjekkReport>>;
 };
 
+type OvertimeSectionProps = {
+  error: string | null;
+  insight: ReturnType<typeof buildLonnsjekkOvertimeReport>;
+  isLoading: boolean;
+  occupationLabel: string;
+};
+
+function OvertimeSection({
+  error,
+  insight,
+  isLoading,
+  occupationLabel,
+}: OvertimeSectionProps) {
+  const hasUserOvertime = insight.userAnnual !== undefined;
+  const hasMarketOvertime = insight.marketAnnualized !== undefined;
+  const marketValue = isLoading
+    ? "Henter data ..."
+    : error || !hasMarketOvertime
+      ? "Mangler data"
+      : formatCurrency(insight.marketAnnualized);
+  const differenceValue = isLoading
+    ? "Henter data ..."
+    : insight.annualizedDifference !== undefined
+      ? formatDifference(insight.annualizedDifference)
+      : "Ikke beregnet";
+  const differenceDetail = isLoading
+    ? "Henter sammenligningsgrunnlaget fra SSB."
+    : !hasUserOvertime
+      ? "Oppgi overtidsbetaling for å beregne forskjellen."
+      : error || !hasMarketOvertime
+        ? "SSB publiserer ikke et sammenlignbart tall for dette yrket."
+        : insight.monthlyDifference === 0
+          ? "Ingen forskjell per måned."
+          : `${formatDifference(insight.monthlyDifference)} per måned i gjennomsnitt.`;
+  const comparisonHeadline = isLoading
+    ? "Sammenligner overtidsbetalingen din med yrket"
+    : error || !hasMarketOvertime || insight.annualizedDifference === undefined
+      ? "Overtidsbetalingen din sammenlignet med yrket"
+      : insight.annualizedDifference > 0
+        ? "Du har høyere overtidsbetaling enn gjennomsnittet"
+        : insight.annualizedDifference < 0
+          ? "Du har lavere overtidsbetaling enn gjennomsnittet"
+          : "Du har overtidsbetaling på nivå med gjennomsnittet";
+
+  return (
+    <section
+      className="scroll-mt-24 border-t border-[#e6ebf2] px-6 py-10 sm:px-8 sm:py-14"
+      id="rapport-overtid"
+    >
+      <ReportSectionHeading icon="overtime">Overtid</ReportSectionHeading>
+      <div className="text-center">
+        <p className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
+          {comparisonHeadline}
+        </p>
+        <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-slate-700">
+          SSB-tallet viser hvor mye overtidsbetaling ansatte i dette yrket i gjennomsnitt mottar
+          per måned i ett arbeidsforhold. Mer overtidsbetaling er ikke nødvendigvis positivt eller
+          negativt, og beløpet sier ikke hvor mange overtidstimer som ligger bak.
+        </p>
+      </div>
+
+      <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-3 lg:divide-x lg:divide-y-0">
+        <ReportCard
+          detail={
+            hasUserOvertime
+              ? `${formatCurrency(insight.userMonthlyAverage)} per måned i gjennomsnitt.`
+              : "Du oppga ikke overtidsbetaling."
+          }
+          label={`Din overtidsbetaling${insight.periodLabel ? ` i ${insight.periodLabel}` : ""}`}
+          value={hasUserOvertime ? formatCurrency(insight.userAnnual) : "Ikke oppgitt"}
+        />
+        <ReportCard
+          detail={
+            isLoading
+              ? "Henter siste tilgjengelige overtidsdata fra SSB."
+              : hasMarketOvertime && !error
+                ? `${formatCurrency(insight.marketMonthlyAverage)} per måned i gjennomsnitt.`
+                : error ?? "SSB publiserer ikke et sammenlignbart tall for dette yrket."
+          }
+          label={`Gjennomsnitt i yrket per år (${insight.referenceGenderLabel})`}
+          value={marketValue}
+        />
+        <ReportCard
+          detail={differenceDetail}
+          label="Forskjell per år"
+          value={differenceValue}
+        />
+      </div>
+
+      <div className="mx-auto mt-6 max-w-4xl space-y-2 text-center text-xs leading-6 text-slate-500">
+        {insight.usesAllGendersFallback ? (
+          <p>
+            SSB publiserer ikke eget overtidsbeløp for valgt kjønn blant {occupationLabel.toLowerCase()}.
+            Sammenligningen bruker derfor begge kjønn.
+          </p>
+        ) : null}
+        <p>
+          Overtidsbetalingen er ikke inkludert i den faste avtalte årslønnen. SSB-tallet er et
+          beregnet månedsgjennomsnitt fra januar til november og gjelder kontant overtidsbetaling
+          per arbeidsforhold.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function EstimateSection({ report }: EstimateSectionProps) {
+  const hourlyInput = report.salaryInput.mode === "hourly" ? report.salaryInput : null;
+  const fullTimeWeeklyHours = hourlyInput?.fullTimeWeeklyHours ?? HOURS_PER_WEEK;
+  const employmentPercentage = hourlyInput?.employmentPercentage ?? 100;
+  const fullTimeHoursPerYear = hourlyInput
+    ? fullTimeWeeklyHours * 4.33 * 12
+    : HOURS_PER_YEAR;
+  const personalHoursPerYear = fullTimeHoursPerYear * (employmentPercentage / 100);
   const medianEstimate = report.comparisonToMedian.value !== undefined
-    ? buildEstimate(report.comparisonToMedian.value)
+    ? buildEstimate(report.comparisonToMedian.value, { hoursPerYear: fullTimeHoursPerYear })
     : null;
-  const userEstimate = buildEstimate(report.salary);
+  const userEstimate = buildEstimate(report.personalAnnualSalary, {
+    hourlyPaid: Boolean(hourlyInput),
+    hoursPerYear: personalHoursPerYear,
+  });
 
   return (
     <section className="scroll-mt-24 px-6 py-10 sm:px-8 sm:py-14" id="rapport-lonnsestimat">
@@ -1016,12 +1487,13 @@ function EstimateSection({ report }: EstimateSectionProps) {
           Timelønn, feriepenger og netto
         </h4>
         <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-7 text-slate-700">
-          Her ser du et forenklet estimat for yrket basert på median avtalt månedslønn, og et eget
-          estimat basert på lønnen du har lagt inn.
+          Her ser du et forenklet estimat for yrket basert på beregnet median avtalt årslønn, og et
+          eget estimat basert på lønnsopplysningene du har lagt inn.
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-center text-xs leading-6 text-slate-500">
-          <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
-          <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
+          <span>{formatDecimal(fullTimeWeeklyHours)} t/uke i 100 % stilling</span>
+          <span>{formatInteger(Math.round(fullTimeHoursPerYear))} t/år i 100 %</span>
+          {hourlyInput ? <span>{formatDecimal(employmentPercentage)} % stilling</span> : null}
           <span>{ESTIMATED_TAX_RATE} % estimert skatt</span>
           <span>{HOLIDAY_PAY_RATE} % feriepengesats</span>
           <span>{VACATION_WEEKS} uker ferie</span>
@@ -1031,16 +1503,24 @@ function EstimateSection({ report }: EstimateSectionProps) {
       <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
         {medianEstimate ? (
           <EstimateSummaryCard
-            description="Median avtalt månedslønn i yrket."
+            description="Beregnet median avtalt årslønn i yrket."
             estimate={medianEstimate}
-            salaryLabel="Median avtalt månedslønn"
+            salaryLabel="Median avtalt årslønn"
             title="Basert på median i yrket"
           />
         ) : null}
         <EstimateSummaryCard
-          description="Den avtalte månedslønnen før skatt som du har lagt inn."
+          description={
+            hourlyInput
+              ? `Beregnet fra ${formatHourlyWage(hourlyInput.hourlyWage)} per time og ${formatDecimal(employmentPercentage)} % stilling.`
+              : "Den faste avtalte årslønnen før skatt som du har lagt inn."
+          }
           estimate={userEstimate}
-          salaryLabel="Din avtalte månedslønn"
+          salaryLabel={
+            hourlyInput
+              ? `Forventet avtalt årslønn (${formatDecimal(employmentPercentage)} %)`
+              : "Din faste avtalte årslønn"
+          }
           title="Basert på din lønn"
         />
       </div>
@@ -1054,6 +1534,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
         ) : null}
         <EstimateHolidayCard
           estimate={userEstimate}
+          hourlyPaid={Boolean(hourlyInput)}
           title="Feriepenger basert på din lønn"
         />
       </div>
@@ -1078,15 +1559,15 @@ function EstimateSummaryCard({
     <article className="px-1 py-6 sm:px-5">
       <div className="space-y-4">
         <div className="space-y-1 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+          <p className="text-base font-bold text-slate-900">
             {title}
           </p>
           <p className="text-sm leading-6 text-slate-600">{description}</p>
         </div>
 
         <div className="grid gap-3">
-          <EstimateRow label={salaryLabel} value={formatCurrency(estimate.monthlySalary)} strong />
-          <EstimateRow label="Årslønn" value={formatCurrency(estimate.annualSalary)} />
+          <EstimateRow label={salaryLabel} value={formatCurrency(estimate.annualSalary)} strong />
+          <EstimateRow label="Tilsvarer per måned" value={formatCurrency(estimate.monthlySalary)} />
           <EstimateRow label="Timelønn" value={formatCurrency(estimate.hourlySalary)} />
           <EstimateRow label="Daglønn (7,5 t)" value={formatCurrency(estimate.dailySalary)} />
           <EstimateRow label="Skatt per måned" tone="negative" value={formatCurrency(estimate.monthlyTax)} />
@@ -1100,9 +1581,10 @@ function EstimateSummaryCard({
 type EstimateHolidayCardProps = {
   title: string;
   estimate: ReturnType<typeof buildEstimate>;
+  hourlyPaid?: boolean;
 };
 
-function EstimateHolidayCard({ title, estimate }: EstimateHolidayCardProps) {
+function EstimateHolidayCard({ title, estimate, hourlyPaid = false }: EstimateHolidayCardProps) {
   return (
     <article className="px-1 py-6 sm:px-5">
       <div className="space-y-5">
@@ -1116,7 +1598,11 @@ function EstimateHolidayCard({ title, estimate }: EstimateHolidayCardProps) {
         <div className="space-y-3 border-b border-black/10 pb-4">
           <EstimateRow label="Årslønn (brutto)" value={formatCurrency(estimate.annualSalary)} />
           <EstimateRow label="Feriepengegrunnlag" value={formatCurrency(estimate.holidayPayBasis)} strong />
-          <EstimateRow label="Ferietrekk" tone="negative" value={formatCurrency(estimate.holidayDeduction)} />
+          <EstimateRow
+            label={hourlyPaid ? "Ferietrekk (estimert lønnsbortfall)" : "Ferietrekk"}
+            tone="negative"
+            value={formatCurrency(estimate.holidayDeduction)}
+          />
         </div>
 
         <div className="space-y-3">
@@ -1126,12 +1612,21 @@ function EstimateHolidayCard({ title, estimate }: EstimateHolidayCardProps) {
             value={formatCurrency(estimate.estimatedHolidayPay)}
             strong
           />
-          <EstimateRow label="Til utbetaling i juni" value={formatCurrency(estimate.junePayout)} strong />
+          {hourlyPaid ? (
+            <EstimateRow
+              label="Til utbetaling (feriepenger)"
+              value={formatCurrency(estimate.junePayout)}
+              strong
+            />
+          ) : (
+            <EstimateRow label="Til utbetaling i juni" value={formatCurrency(estimate.junePayout)} strong />
+          )}
         </div>
 
         <p className="text-xs leading-6 text-slate-700">
-          Forenklet estimat basert på årslønn i 100 % stilling minus ferietrekk. Faktiske feriepenger
-          beregnes ut fra lønn som er opptjent året før.
+          {hourlyPaid
+            ? "For timelønte viser ferietrekket estimert lønn du ikke opptjener i fem ferieuker, ikke et trekk fra en fast månedslønn. Beløpet til utbetaling viser bare estimerte feriepenger. Eventuell lønn for arbeidede timer kommer i tillegg. Faktisk feriepengegrunnlag avhenger av utbetalt lønn året før."
+            : "Forenklet estimat basert på årslønn i 100 % stilling minus ferietrekk. Faktiske feriepenger beregnes ut fra lønn som er opptjent året før."}
         </p>
       </div>
     </article>
@@ -1259,6 +1754,39 @@ function parseSalary(value: string) {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
+function parseSalaryInput(form: FormState): LonnsjekkSalaryInput | undefined {
+  if (form.salaryMode === "annual") {
+    const annualSalary = parseSalary(form.annualSalary);
+    return annualSalary !== undefined && annualSalary > 0
+      ? { mode: "annual", annualSalary }
+      : undefined;
+  }
+
+  const hourlyWage = parseSalary(form.hourlyWage);
+  const employmentPercentage = parseSalary(form.employmentPercentage);
+  const fullTimeWeeklyHours = parseSalary(form.fullTimeWeeklyHours);
+
+  if (
+    hourlyWage === undefined ||
+    hourlyWage <= 0 ||
+    employmentPercentage === undefined ||
+    employmentPercentage <= 0 ||
+    employmentPercentage > 100 ||
+    fullTimeWeeklyHours === undefined ||
+    fullTimeWeeklyHours <= 0 ||
+    fullTimeWeeklyHours > 60
+  ) {
+    return undefined;
+  }
+
+  return {
+    mode: "hourly",
+    hourlyWage,
+    employmentPercentage,
+    fullTimeWeeklyHours,
+  };
+}
+
 function parseOptionalInteger(value: string) {
   const normalized = value.trim();
 
@@ -1333,6 +1861,77 @@ function getLatestRealWageGrowth(
   return null;
 }
 
+function getUserSalaryPeriodLabel(
+  salaryInputMode: LonnsjekkSalaryInput["mode"],
+  period: SalaryDisplayPeriod,
+) {
+  if (period === "hourly") {
+    return salaryInputMode === "hourly"
+      ? "Din faste avtalte timeslønn"
+      : "Din beregnede timeslønn i 100 % stilling";
+  }
+
+  if (period === "monthly") {
+    return "Din beregnede månedslønn i 100 % stilling";
+  }
+
+  return salaryInputMode === "hourly"
+    ? "Din beregnede årslønn i 100 % stilling"
+    : "Din faste avtalte årslønn";
+}
+
+function getSalaryPeriodLabel(label: string, period: SalaryDisplayPeriod) {
+  const periodLabel =
+    period === "hourly" ? "timeslønn" : period === "monthly" ? "månedslønn" : "årslønn";
+
+  return label.replace(/årslønn/gi, (match) =>
+    match[0] === match[0].toUpperCase()
+      ? periodLabel.charAt(0).toUpperCase() + periodLabel.slice(1)
+      : periodLabel,
+  );
+}
+
+function convertAnnualSalaryToPeriod(
+  value: number | undefined,
+  period: SalaryDisplayPeriod,
+  hoursPerYear: number,
+) {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (period === "hourly") {
+    return value / hoursPerYear;
+  }
+
+  return period === "monthly" ? value / 12 : value;
+}
+
+function formatSalaryForPeriod(
+  value: number | undefined,
+  period: SalaryDisplayPeriod,
+  hoursPerYear: number,
+) {
+  const convertedValue = convertAnnualSalaryToPeriod(value, period, hoursPerYear);
+
+  if (convertedValue === undefined) {
+    return "Mangler data";
+  }
+
+  return period === "hourly" ? formatHourlyWage(convertedValue) : formatCurrency(convertedValue);
+}
+
+function formatSalaryDifferenceForPeriod(
+  value: number | undefined,
+  period: SalaryDisplayPeriod,
+  hoursPerYear: number,
+) {
+  return formatDifference(
+    convertAnnualSalaryToPeriod(value, period, hoursPerYear),
+    period === "hourly" ? 2 : 0,
+  );
+}
+
 function formatCurrency(value?: number) {
   if (value === undefined) {
     return "Mangler data";
@@ -1343,7 +1942,13 @@ function formatCurrency(value?: number) {
   })} kr`;
 }
 
-function formatDifference(value?: number) {
+function formatHourlyWage(value: number) {
+  return `${value.toLocaleString("nb-NO", {
+    maximumFractionDigits: 2,
+  })} kr`;
+}
+
+function formatDifference(value?: number, maximumFractionDigits = 0) {
   if (value === undefined) {
     return "Mangler sammenligning";
   }
@@ -1354,7 +1959,7 @@ function formatDifference(value?: number) {
 
   const prefix = value > 0 ? "+" : "-";
   return `${prefix}${Math.abs(value).toLocaleString("nb-NO", {
-    maximumFractionDigits: 0,
+    maximumFractionDigits,
   })} kr`;
 }
 
@@ -1412,9 +2017,13 @@ function formatPeriodLabel(periodLabel?: string) {
   return `${match[2]}. kvartal ${match[1]}`;
 }
 
-function buildEstimate(monthlySalary: number) {
-  const annualSalary = monthlySalary * 12;
-  const hourlySalary = annualSalary / HOURS_PER_YEAR;
+function buildEstimate(
+  annualSalary: number,
+  options: { hourlyPaid?: boolean; hoursPerYear?: number } = {},
+) {
+  const hoursPerYear = options.hoursPerYear ?? HOURS_PER_YEAR;
+  const monthlySalary = annualSalary / 12;
+  const hourlySalary = annualSalary / hoursPerYear;
   const dailySalary = annualSalary / WORK_DAYS_PER_YEAR;
   const annualTax = annualSalary * (ESTIMATED_TAX_RATE / 100);
   const monthlyTax = annualTax / 12;
@@ -1422,7 +2031,9 @@ function buildEstimate(monthlySalary: number) {
   const holidayDeduction = dailySalary * VACATION_DAYS;
   const holidayPayBasis = annualSalary - holidayDeduction;
   const estimatedHolidayPay = holidayPayBasis * (HOLIDAY_PAY_RATE / 100);
-  const junePayout = monthlySalary + estimatedHolidayPay - holidayDeduction;
+  const junePayout = options.hourlyPaid
+    ? estimatedHolidayPay
+    : monthlySalary + estimatedHolidayPay - holidayDeduction;
 
   return {
     monthlySalary,
@@ -1545,16 +2156,6 @@ function ArrowRightIcon() {
   return (
     <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
       <path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
-    </svg>
-  );
-}
-
-function UsersIcon() {
-  return (
-    <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 24 24">
-      <circle cx="9" cy="8" r="3" stroke="currentColor" strokeWidth="1.7" />
-      <path d="M3.5 19v-1.5A4.5 4.5 0 0 1 8 13h2a4.5 4.5 0 0 1 4.5 4.5V19" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" />
-      <path d="M15 5.5a3 3 0 0 1 0 5.8M17 13.5a4.5 4.5 0 0 1 3.5 4.4V19" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" />
     </svg>
   );
 }

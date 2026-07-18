@@ -28,7 +28,7 @@ Yrkesdetaljsidene skal gi et mer komplett bilde av ett yrke. De bør vise lønn,
 
 ### Lønnsjekk
 
-Lønnsjekk er et praktisk verktøy der brukeren legger inn brutto månedslønn, kjønn og yrke for å få en tydelig sammenligning mot markedet. Verktøyet sammenligner mot median og gjennomsnitt, viser avvik i kroner og prosent, og kan gi ekstra innsikt om plassering, kjønnsforskjeller, kjøpekraft, alder og estimater for års-, time- og nettolønn.
+Lønnsjekk er et praktisk verktøy der brukeren legger inn fast avtalt årslønn eller timeslønn, kjønn og yrke for å få en tydelig sammenligning mot markedet. For timelønte brukes stillingsprosent og ukentlig arbeidstid i full stilling til å skille mellom sammenlignbar lønn i 100 prosent stilling og brukerens forventede personlige årslønn. Verktøyet omregner lønnen til sammenlignbar månedslønn mot SSB-dataene, sammenligner mot median og gjennomsnitt, viser avvik i kroner og prosent, og kan gi ekstra innsikt om plassering, kjønnsforskjeller, kjøpekraft, alder og estimater for måneds-, time- og nettolønn.
 
 Lønnsjekk skal være konkret, forståelig og handlingsrettet. Resultatet skal hjelpe brukeren å se om de ligger under, rundt eller over nivået i yrket, og gi et bedre grunnlag før en samtale om lønn.
 

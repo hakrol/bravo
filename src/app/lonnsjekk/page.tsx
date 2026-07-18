@@ -8,6 +8,7 @@ import {
   OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
+import { getGeneratedSsbManifest } from "@/lib/ssb-store";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
@@ -35,10 +36,10 @@ export const metadata: Metadata = {
 };
 
 export default async function LonnsjekkPage() {
-  const averageDataset = await getLatestSalaryDataset(
-    "occupationDetailed",
-    OCCUPATION_MONTHLY_SALARY_FILTERS,
-  );
+  const [averageDataset, generatedManifest] = await Promise.all([
+    getLatestSalaryDataset("occupationDetailed", OCCUPATION_MONTHLY_SALARY_FILTERS),
+    getGeneratedSsbManifest(),
+  ]);
   const averageOverview = buildOccupationSalaryOverview(averageDataset);
   const medianOverview = await getOccupationMedianSalaryOverview(
     averageOverview.rows.map((row) => row.occupationCode),
@@ -49,6 +50,12 @@ export default async function LonnsjekkPage() {
     medianRows: medianOverview.rows,
     averageMonthlySalaryAll: averageOverview.averageMonthlySalary,
     periodLabel: averageOverview.periodLabel ?? medianOverview.periodLabel,
+    contractedSalaryPeriodLabel: medianOverview.periodLabel,
+    overtimePeriodLabel: getLatestYearFromDatasetTitle(
+      generatedManifest.datasets.find(
+        (dataset) => dataset.key === "occupationSupplementTimeSeries",
+      )?.title,
+    ),
     updated: averageDataset.updated,
   });
 
@@ -59,4 +66,8 @@ export default async function LonnsjekkPage() {
       </div>
     </div>
   );
+}
+
+function getLatestYearFromDatasetTitle(title?: string) {
+  return title?.match(/(\d{4})\s*$/)?.[1];
 }

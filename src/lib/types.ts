@@ -365,6 +365,14 @@ export type OccupationEmploymentGrowth = {
   changeSinceBaseline?: number;
 };
 
+export type OccupationWorkforceRanking = {
+  rank: number;
+  total: number;
+  employees: number;
+  periodCode: string;
+  periodLabel: string;
+};
+
 export type OccupationEmploymentContractType = {
   periodCode: string;
   periodLabel: string;
