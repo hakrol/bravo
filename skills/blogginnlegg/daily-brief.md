@@ -49,52 +49,6 @@ Bruk første ukryssede tema i listen under.
 
 ### Ikke startet
 
-- [ ] Førtrykkere: lønn og lønnsutvikling
-
-Tittel:
-Lønn og lønnsutvikling blant førtrykkere
-
-Beskrivelse:
-Innlegget skal handle om et mindre og mer spesialisert grafisk yrke. Vinklingen bør være at førtrykkere ikke bare skal vurderes på lønnsnivå, men også på utviklingen i antall lønnstakere, alder og relaterte grafiske yrker. Ta med yrkesbeskrivelsen, lønn for kvinner og menn, lønnsfordeling og femårs utvikling. Artikkelen bør forklare tallene nøkternt og unngå å gjøre brede bransjepåstander hvis datagrunnlaget ikke støtter det.
-
-Overskrifter:
-
-* Hva tjener førtrykkere?
-* Hva gjør en førtrykker?
-* Lønn for kvinner og menn
-* Lønnsutvikling og reallønn
-* Antall lønnstakere og gjennomsnittsalder
-* Førtrykkere sammenlignet med andre grafiske yrker
-
-Diagrammer:
-
-* Kjønnsdelt lønnskort
-* Femårs lønnsutvikling
-* Redaksjonelt stolpediagram
-* Søkbar yrkesliste
-
-FAQ:
-
-* Hva er månedslønnen til førtrykkere?
-* Hva blir årslønnen til en førtrykker?
-* Hva er timelønnen til en førtrykker?
-* Er det lønnsforskjell mellom kvinner og menn blant førtrykkere?
-* Hvor mange jobber som førtrykkere?
-* Hvilke yrker ligner på førtrykkere?
-
-Interne lenker:
-
-* /yrke/fortrykkere-lonn
-* /yrke/trykkere-lonn
-* /yrke/innbindere-mv-lonn
-* /yrke/andre-kunsthandverkere-lonn
-* /yrke/presisjonsinstrumentmakere-og-reparatorer-lonn
-
-Eksterne lenker:
-
-* https://utdanning.no/yrker/beskrivelse/mediegrafiker
-
-
 - [ ] Gulv- og flisleggere: lønnstallene du bør kjenne til
 
 Tittel:
@@ -141,6 +95,8 @@ Eksterne lenker:
 * https://utdanning.no/yrker/beskrivelse/mur-og_flislegger
 
 ### Ferdig
+
+- [x] Førtrykkere: lønn og lønnsutvikling - `src/content/blog/lonn-og-lonnsutvikling-blant-fortrykkere.mdx` - 2026-07-18
 
 - [x] De 10 best betalte lærlingyrkene - `src/content/blog/de-10-best-betalte-laerlingyrkene.mdx` - 2026-07-15
 

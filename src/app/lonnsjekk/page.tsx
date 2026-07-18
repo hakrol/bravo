@@ -5,6 +5,7 @@ import { buildOccupationSalaryOverview } from "@/lib/occupation-salary-overview"
 import {
   getLatestSalaryDataset,
   getOccupationMedianSalaryOverview,
+  OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
   OCCUPATION_MONTHLY_SALARY_FILTERS,
 } from "@/lib/ssb";
 import { siteConfig } from "@/lib/site-config";
@@ -41,7 +42,7 @@ export default async function LonnsjekkPage() {
   const averageOverview = buildOccupationSalaryOverview(averageDataset);
   const medianOverview = await getOccupationMedianSalaryOverview(
     averageOverview.rows.map((row) => row.occupationCode),
-    OCCUPATION_MONTHLY_SALARY_FILTERS,
+    OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
   );
   const data = buildLonnsjekkPageData({
     averageRows: averageOverview.rows,

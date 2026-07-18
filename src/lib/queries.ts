@@ -71,6 +71,15 @@ export const OCCUPATION_MEDIAN_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
   ContentsCode: "Manedslonn",
 };
 
+export const OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS: SsbSalaryFilters = {
+  MaaleMetode: "01",
+  Yrke: "*",
+  Sektor: "ALLE",
+  Kjonn: ["0", "1", "2"],
+  AvtaltVanlig: "0",
+  ContentsCode: "AvtaltManedslonn",
+};
+
 export const OCCUPATION_AVERAGE_AGE_FILTERS: SsbSalaryFilters = {
   Alder: "999D",
   ContentsCode: "GjsnAlder",
@@ -845,11 +854,20 @@ export async function getOccupationSalaryDistribution(
   lang: SsbLanguage = "no",
 ): Promise<OccupationSalaryDistribution | null> {
   if (shouldUseLocalSsbStore()) {
-    if (!matchesFilters(filters, OCCUPATION_MONTHLY_SALARY_FILTERS)) {
+    const usesContractedSalary = matchesFilters(
+      filters,
+      OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
+    );
+
+    if (!usesContractedSalary && !matchesFilters(filters, OCCUPATION_MONTHLY_SALARY_FILTERS)) {
       throw new Error("Lokalt SSB-lager støtter foreløpig bare standardfiltre for lønnsfordeling.");
     }
 
-    const normalized = await getStoredDataset("occupationDistributionLatest");
+    const normalized = await getStoredDataset(
+      usesContractedSalary
+        ? "occupationContractedDistributionLatest"
+        : "occupationDistributionLatest",
+    );
     return buildOccupationSalaryDistribution(normalized, occupationCode);
   }
 
@@ -862,7 +880,8 @@ export async function getOccupationSalaryDistribution(
     Sektor: "ALLE",
     Kjonn: ["0", "1", "2"],
     AvtaltVanlig: "0",
-    ContentsCode: "Manedslonn",
+    ContentsCode:
+      filters.ContentsCode === "AvtaltManedslonn" ? "AvtaltManedslonn" : "Manedslonn",
   });
   const [info, dataset] = await Promise.all([
     getTableInfo(tableId, lang),
@@ -893,11 +912,20 @@ export async function getOccupationMedianSalaryOverview(
   }
 
   if (shouldUseLocalSsbStore()) {
-    if (!matchesFilters(filters, OCCUPATION_MONTHLY_SALARY_FILTERS)) {
+    const usesContractedSalary = matchesFilters(
+      filters,
+      OCCUPATION_CONTRACTED_MONTHLY_SALARY_FILTERS,
+    );
+
+    if (!usesContractedSalary && !matchesFilters(filters, OCCUPATION_MONTHLY_SALARY_FILTERS)) {
       throw new Error("Lokalt SSB-lager støtter foreløpig bare standardfiltre for medianoversikt.");
     }
 
-    const normalized = await getStoredDataset("occupationDistributionLatest");
+    const normalized = await getStoredDataset(
+      usesContractedSalary
+        ? "occupationContractedDistributionLatest"
+        : "occupationDistributionLatest",
+    );
     return buildOccupationMedianSalaryOverview(normalized, {
       occupationCodes: uniqueOccupationCodes,
     });
@@ -912,7 +940,8 @@ export async function getOccupationMedianSalaryOverview(
     Sektor: "ALLE",
     Kjonn: ["0", "1", "2"],
     AvtaltVanlig: "0",
-    ContentsCode: "Manedslonn",
+    ContentsCode:
+      filters.ContentsCode === "AvtaltManedslonn" ? "AvtaltManedslonn" : "Manedslonn",
   });
   const distributionBody = buildPostBodyFromQueryParams(distributionQuery);
   const [info, dataset] = await Promise.all([

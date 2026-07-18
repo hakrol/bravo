@@ -268,7 +268,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
     const age = parseOptionalInteger(form.age);
 
     if (salary === undefined || salary <= 0) {
-      setError("Legg inn en gyldig brutto månedslønn.");
+      setError("Legg inn en gyldig avtalt månedslønn.");
       return;
     }
 
@@ -335,9 +335,9 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                 <div className="grid gap-2">
                   <div className="flex items-center gap-2">
                     <label className="text-sm font-semibold text-[#101827]" htmlFor="salary">
-                      Brutto månedslønn
+                      Avtalt månedslønn
                     </label>
-                    <FieldInfoIcon label="Beløpet før skatt og andre trekk." />
+                    <FieldInfoIcon label="Den faste avtalte månedslønnen før skatt. Ikke ta med overtid, bonus eller uregelmessige tillegg." />
                   </div>
                   <span className="relative">
                     <input
@@ -557,7 +557,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
 
             <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-3 lg:divide-x lg:divide-y-0">
               <ReportCard
-                label="Din månedslønn"
+                label="Din avtalte månedslønn"
                 value={formatCurrency(report.salary)}
                 detail={`Årslønn: ${formatCurrency(report.annualSalary)}`}
               />
@@ -598,7 +598,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             <div className="space-y-2 text-center">
               <h4 className="text-xl font-semibold text-slate-950 sm:text-2xl">Plassering i lønnsfordelingen</h4>
               <p className="text-sm leading-6 text-slate-600">
-                Her ser du om lønnen din ligger i den lave, midtre eller høye delen av lønnsnivået i yrket.
+                Her ser du om lønnen din ligger i den lave, midtre eller høye delen av det avtalte lønnsnivået i yrket.
               </p>
             </div>
 
@@ -653,7 +653,7 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
             <ReportSectionHeading icon="insight">Visste du at</ReportSectionHeading>
             <div className="mx-auto max-w-4xl space-y-4 text-center text-base leading-8 text-slate-700">
               <p>
-                <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span> er rangert på <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span> når vi rangerer yrkene fra høyest til lavest median månedslønn. {report.occupationPlacement.label}
+                <span className="font-semibold text-slate-950">{report.occupation.occupationLabel}</span> er rangert på <span className="font-semibold text-slate-950">{report.occupationPlacement.rank}. plass av {report.occupationPlacement.total}</span> når vi rangerer yrkene fra høyest til lavest median avtalt månedslønn. {report.occupationPlacement.label}
               </p>
               {report.genderGap ? (
                 <p>
@@ -843,7 +843,7 @@ function ReportOverviewGraphic({
       <div className="relative grid min-h-[17rem] items-center gap-8 px-7 py-9 sm:px-10 md:grid-cols-2 md:px-12">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-100/80">
-            Din månedslønn
+            Din avtalte månedslønn
           </p>
           <p className="mt-3 text-4xl font-semibold tracking-[-0.05em] tabular-nums sm:text-6xl">
             {formatCurrency(report.salary)}
@@ -855,7 +855,7 @@ function ReportOverviewGraphic({
 
         <div className="md:text-right">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-100/80">
-            Median i yrket
+            Median avtalt månedslønn
           </p>
           <p className="mt-3 text-3xl font-semibold tracking-[-0.04em] tabular-nums sm:text-4xl">
             {formatCurrency(report.comparisonToMedian.value)}
@@ -906,7 +906,7 @@ function FieldInfoIcon({ label }: { label: string }) {
   return (
     <details className="group relative">
       <summary
-        aria-label="Vis forklaring av brutto månedslønn"
+        aria-label="Vis forklaring av avtalt månedslønn"
         className="flex h-4 w-4 cursor-pointer list-none items-center justify-center rounded-full border border-[#b9c4d2] text-[10px] font-semibold text-[#76859b] transition hover:border-[#17633b] hover:text-[#17633b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#17633b] [&::-webkit-details-marker]:hidden"
       >
         i
@@ -1016,7 +1016,7 @@ function EstimateSection({ report }: EstimateSectionProps) {
           Timelønn, feriepenger og netto
         </h4>
         <p className="mx-auto mt-4 max-w-3xl text-center text-sm leading-7 text-slate-700">
-          Her ser du et forenklet estimat for yrket basert på median samlet månedslønn, og et eget
+          Her ser du et forenklet estimat for yrket basert på median avtalt månedslønn, og et eget
           estimat basert på lønnen du har lagt inn.
         </p>
         <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-2 text-center text-xs leading-6 text-slate-500">
@@ -1031,16 +1031,16 @@ function EstimateSection({ report }: EstimateSectionProps) {
       <div className="mt-6 grid divide-y divide-[#e6ebf2] border-y border-[#e6ebf2] lg:grid-cols-2 lg:divide-x lg:divide-y-0">
         {medianEstimate ? (
           <EstimateSummaryCard
-            description="Median samlet månedslønn i yrket."
+            description="Median avtalt månedslønn i yrket."
             estimate={medianEstimate}
-            salaryLabel="Median samlet månedslønn"
+            salaryLabel="Median avtalt månedslønn"
             title="Basert på median i yrket"
           />
         ) : null}
         <EstimateSummaryCard
-          description="Brutto månedslønnen du har lagt inn."
+          description="Den avtalte månedslønnen før skatt som du har lagt inn."
           estimate={userEstimate}
-          salaryLabel="Din månedslønn"
+          salaryLabel="Din avtalte månedslønn"
           title="Basert på din lønn"
         />
       </div>
