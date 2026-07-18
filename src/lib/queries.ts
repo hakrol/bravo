@@ -24,6 +24,7 @@ import type {
   OccupationEmploymentGrowth,
   OccupationEmploymentTimeSeriesPoint,
   OccupationLaborMarketStats,
+  OccupationWorkforceRanking,
   OccupationWorkforceTimeSeriesPoint,
   OccupationPurchasingPowerDetail,
   OccupationPurchasingPowerOverview,
@@ -1105,6 +1106,13 @@ export async function getOccupationLaborMarketStats(
   }
 
   return getOccupationLaborMarketStatsCached(occupationCode, lang);
+}
+
+export async function getOccupationWorkforceRanking(
+  occupationCode: string,
+): Promise<OccupationWorkforceRanking | null> {
+  const workforceDataset = await getStoredDataset("occupationWorkforceTimeSeries");
+  return buildOccupationWorkforceRanking(workforceDataset, occupationCode);
 }
 
 export async function getOccupationPurchasingPowerOverview(
@@ -2234,6 +2242,89 @@ function buildOccupationWorkforceTimeSeries(
   return Array.from(pointsByPeriod.values()).sort((left, right) =>
     left.periodCode.localeCompare(right.periodCode, "nb-NO"),
   );
+}
+
+function buildOccupationWorkforceRanking(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationWorkforceRanking | null {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "kjønn",
+    "sex",
+  ]);
+  const measureDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "contentscode",
+    "contents",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "quarter",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode || !periodDimensionCode) {
+    return null;
+  }
+
+  const workforceRows = dataset.rows.filter((row) => {
+    const occupation = row.dimensions[occupationDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+    const measure = row.dimensions[measureDimensionCode];
+
+    return (
+      row.value !== null &&
+      /^\d{4}$/.test(occupation?.code ?? "") &&
+      occupation?.code !== "0000" &&
+      gender?.code === "0" &&
+      measure?.code === "Lonsstakere"
+    );
+  });
+  const latestPeriodCode = workforceRows
+    .map((row) => row.dimensions[periodDimensionCode]?.code)
+    .filter((periodCode): periodCode is string => Boolean(periodCode))
+    .sort((left, right) => left.localeCompare(right, "nb-NO", { numeric: true }))
+    .at(-1);
+
+  if (!latestPeriodCode) {
+    return null;
+  }
+
+  const latestByOccupation = new Map<string, { employees: number; periodLabel: string }>();
+
+  for (const row of workforceRows) {
+    const occupation = row.dimensions[occupationDimensionCode];
+    const period = row.dimensions[periodDimensionCode];
+
+    if (!occupation || !period || period.code !== latestPeriodCode || row.value === null) {
+      continue;
+    }
+
+    latestByOccupation.set(occupation.code, {
+      employees: row.value,
+      periodLabel: period.label,
+    });
+  }
+
+  const selected = latestByOccupation.get(occupationCode);
+
+  if (!selected) {
+    return null;
+  }
+
+  const values = Array.from(latestByOccupation.values());
+
+  return {
+    rank: values.filter((entry) => entry.employees > selected.employees).length + 1,
+    total: values.length,
+    employees: selected.employees,
+    periodCode: latestPeriodCode,
+    periodLabel: selected.periodLabel,
+  };
 }
 
 function buildOccupationAgeTimeSeries(
