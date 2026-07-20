@@ -70,9 +70,18 @@ const VACATION_WEEKS = 5;
 const WORK_DAYS_PER_YEAR = 260;
 const VACATION_DAYS = VACATION_WEEKS * 5;
 const salaryNegotiationArticles = [
-  { href: "/blogg/hvordan-be-om-mer-lonn", title: "Hvordan be om mer lønn" },
-  { href: "/blogg/nar-bor-man-be-om-hoyere-lonn", title: "Når bør du be om høyere lønn?" },
-  { href: "/blogg/hvor-mye-mer-kan-man-be-om-i-lonn", title: "Hvor mye mer kan du be om?" },
+  {
+    href: "/blogg/gjor-dette-nar-arbeidsgiver-utsetter-lonnssamtalen",
+    title: "Gjør dette når arbeidsgiver utsetter lønnssamtalen",
+  },
+  {
+    href: "/blogg/slik-ber-du-om-lonnsokning-etter-mer-ansvar",
+    title: "Slik ber du om lønnsøkning etter mer ansvar",
+  },
+  {
+    href: "/blogg/slik-snakker-du-om-resultater-i-lonnssamtalen",
+    title: "Slik snakker du om resultater i lønnssamtalen",
+  },
 ] as const;
 
 export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
@@ -889,10 +898,10 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
               <h4 className="text-xl font-semibold text-slate-950 sm:text-2xl">
                 Kom i gang med å få bedre lønn
               </h4>
-              <div className="mt-4 flex flex-wrap justify-center gap-3">
+              <div className="mt-4 flex flex-wrap justify-center gap-2.5">
                 {salaryNegotiationArticles.map((article) => (
                   <Link
-                    className="group inline-flex items-center gap-2 rounded-full border border-emerald-900/15 bg-emerald-50/70 px-4 py-2.5 text-sm font-semibold text-emerald-950 transition hover:border-emerald-900/30 hover:bg-emerald-100/80"
+                    className="group inline-flex items-center gap-1.5 rounded-full border border-emerald-900/15 bg-emerald-50/70 px-3.5 py-2 text-[13px] font-semibold leading-5 text-emerald-950 transition hover:border-emerald-900/30 hover:bg-emerald-100/80"
                     href={article.href}
                     key={article.href}
                   >
@@ -903,6 +912,12 @@ export function LonnsjekkTool({ data }: LonnsjekkToolProps) {
                   </Link>
                 ))}
               </div>
+              <Link
+                className="mt-4 inline-block text-sm font-medium text-emerald-800 underline decoration-emerald-800/35 underline-offset-4 transition hover:text-emerald-950 hover:decoration-emerald-950"
+                href="/blogg/kategori/lonnsforhandling"
+              >
+                Få flere tips om lønnsforhandling her
+              </Link>
             </div>
 
             <div className="space-y-2 text-center">
