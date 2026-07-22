@@ -19,6 +19,7 @@ const footerGroups = [
     links: [
       { href: "/yrker", label: "Yrker" },
       { href: "/yrkesgrupper", label: "Yrkesgrupper" },
+      { href: "/yrkesomrader", label: "Yrkesområder" },
       { href: "/yrkesfamilier", label: "Yrkesfamilier" },
       { href: "/laerling", label: "Lærlingfag" },
       { href: "/lønnsforskjell-mellom-kvinner-og-menn", label: "Lønnsforskjell mellom kvinner og menn" },

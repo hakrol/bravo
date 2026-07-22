@@ -34,7 +34,9 @@ export function OccupationLinkGrid({
   plainCenteredHeader = false,
   sortBySalary = false,
 }: OccupationLinkGridProps) {
-  const [sortOrder, setSortOrder] = useState("alphabetical");
+  const [sortOrder, setSortOrder] = useState(
+    sortBySalary ? "salary-desc" : "alphabetical",
+  );
   const sortedItems = useMemo(() => {
     if (!sortBySalary || sortOrder === "alphabetical") {
       return items;

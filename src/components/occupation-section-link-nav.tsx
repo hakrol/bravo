@@ -9,24 +9,31 @@ type OccupationSectionLinkNavItem = {
 
 type OccupationSectionLinkNavProps = {
   analytics: {
+    eventName?: string;
     occupationCode: string;
     occupationLabel: string;
     occupationSlug: string;
+    pageType?: string;
   };
+  ariaLabel?: string;
   items: OccupationSectionLinkNavItem[];
 };
 
-export function OccupationSectionLinkNav({ analytics, items }: OccupationSectionLinkNavProps) {
+export function OccupationSectionLinkNav({
+  analytics,
+  ariaLabel = "Seksjoner på yrkessiden",
+  items,
+}: OccupationSectionLinkNavProps) {
   if (items.length === 0) {
     return null;
   }
 
   function handleSectionClick(item: OccupationSectionLinkNavItem) {
-    track("Occupation detail section clicked", {
+    track(analytics.eventName ?? "Occupation detail section clicked", {
       occupation_code: analytics.occupationCode,
       occupation_label: analytics.occupationLabel,
       occupation_slug: analytics.occupationSlug,
-      page_type: "occupation_detail",
+      page_type: analytics.pageType ?? "occupation_detail",
       section_id: item.href.replace(/^#/, ""),
       section_label: item.label,
     });
@@ -34,7 +41,7 @@ export function OccupationSectionLinkNav({ analytics, items }: OccupationSection
 
   return (
     <nav
-      aria-label="Seksjoner på yrkessiden"
+      aria-label={ariaLabel}
       className="mx-auto mb-2 w-full max-w-7xl overflow-x-auto pb-1"
     >
       <div className="flex min-w-max gap-2">
