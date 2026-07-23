@@ -44,6 +44,7 @@ const footerGroups = [
     title: "Lønnsinnsikt",
     links: [
       { href: "/om", label: "Om" },
+      { href: "/kontakt", label: "Kontakt" },
       { href: "/hjelpeside", label: "Hjelpeside" },
       { href: "/kilder", label: "Kilder" },
       { href: "/redaksjonelle-retningslinjer", label: "Redaksjonelle retningslinjer" },

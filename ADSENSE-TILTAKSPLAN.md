@@ -112,21 +112,14 @@ Relevant kode:
 - `src/app/personvern/page.tsx`
 - `src/app/layout.tsx`
 
-### 4. Publisher-ID-ene samsvarer ikke
+### 4. Publisher-ID-en er rettet
 
-Den globale AdSense-koden bruker:
-
-```text
-ca-pub-8107670237938150
-```
-
-Filen `public/ads.txt` bruker:
+Publisher-ID-en er bekreftet mot AdSense-kontoen. Den globale AdSense-koden og `public/ads.txt` bruker nå samme konto-ID:
 
 ```text
+ca-pub-3073306475357950
 pub-3073306475357950
 ```
-
-Én av disse er feil. Riktig publisher-ID må bekreftes mot den faktiske AdSense-kontoen. Deretter må samme ID brukes i AdSense-scriptet og `ads.txt`.
 
 Relevant kode:
 

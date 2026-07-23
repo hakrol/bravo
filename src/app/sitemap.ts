@@ -201,6 +201,12 @@ const staticRoutes = [
     changeFrequency: "yearly" as const,
   },
   {
+    path: "/kontakt",
+    filePath: "src/app/kontakt/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
     path: "/hjelpeside",
     filePath: "src/app/hjelpeside/page.tsx",
     priority: 0.3,
