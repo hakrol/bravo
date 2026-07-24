@@ -2663,3 +2663,7 @@ a.blog-meta-chip:focus-visible {
     background: #ffffff;
   }
 }
+
+body.clickio-cmp-in-scope .clickio-cmp-settings-display {
+  display: inherit !important;
+}

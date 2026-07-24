@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AdsenseScript } from "@/components/adsense-script";
 import { AppShell } from "@/components/app-shell";
+import {
+  clickioDefaultConsentMode,
+  clickioTcfStub,
+} from "@/lib/clickio-consent";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
 const manrope = Manrope({
   subsets: ["latin"],
 });
-
-const adsenseClientId = "ca-pub-3073306475357950";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -60,13 +64,26 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
-      <body className="flex min-h-screen flex-col">
-        <script
-          id="google-adsense"
-          async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
-          crossOrigin="anonymous"
+      <head>
+        <Script
+          id="clickio-tcf-stub"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: clickioTcfStub }}
         />
+        <Script
+          id="clickio-default-consent-mode"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: clickioDefaultConsentMode }}
+        />
+        <Script
+          id="clickio-consent"
+          async
+          strategy="beforeInteractive"
+          src="https://clickiocmp.com/t/consent_249773.js"
+        />
+      </head>
+      <body suppressHydrationWarning className="flex min-h-screen flex-col">
+        <AdsenseScript />
         <AppShell>{children}</AppShell>
         <Analytics />
         <SpeedInsights />

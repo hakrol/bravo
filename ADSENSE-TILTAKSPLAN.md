@@ -135,9 +135,10 @@ annonseteknologileverandører og Datatilsynet. Den dynamiske og fullstendige lev
 formål, behandlingsgrunnlag og lagringstid skal vises i CMP-en, slik at den følger det faktiske
 leverandørvalget i AdSense.
 
-Selve CMP-en og en permanent lenke som åpner personvernvalgene på nytt, er fortsatt ikke
-implementert. Personvernsiden må dessuten unntas fra AdSense- og CMP-script i tråd med Googles
-oppsettsveiledning før hele personvernkravet kan regnes som teknisk gjennomført.
+Clickio CMP er integrert i kodebasen med TCF-stub, standardinnstillinger for Google Consent
+Mode v2 og Clickios hovedtagg før AdSense. En permanent lenke for å åpne personvernvalgene på
+nytt er lagt i bunnteksten. Personvernsiden er unntatt fra AdSense-scriptet, og Clickio-lenkene
+bruker `?showConsent=no` slik at siden kan åpnes uten ny samtykkedialog.
 
 For norsk trafikk bør nettstedet også bruke en Google-sertifisert samtykkeplattform, CMP, som støtter IAB TCF.
 
@@ -230,7 +231,8 @@ Status: Gjennomført i kodebasen. Publisert `ads.txt` bør kontrolleres etter ne
 
 #### 2. Implementer en Google-sertifisert CMP
 
-Status: Ikke gjennomført.
+Status: Implementert i kodebasen med Clickio CMP, TCF-stub og Google Consent Mode v2.
+Produksjonsutrulling og kontroll for norske og øvrige EØS-brukere gjenstår.
 
 - Velg Google sin egen CMP eller en annen Google-sertifisert CMP.
 - Sørg for støtte for gjeldende IAB TCF-versjon.
@@ -239,8 +241,9 @@ Status: Ikke gjennomført.
 
 #### 3. Skriv en fullstendig personvernerklæring
 
-Status: Innholdet er gjennomført. Teknisk CMP-implementering, gjenåpning av personvernvalg og
-utelatelse av annonse- og CMP-script på selve personvernsiden gjenstår under CMP-arbeidet.
+Status: Innholdet er gjennomført, personvernsiden er unntatt fra AdSense-scriptet, og en
+permanent lenke for å åpne personvernvalgene på nytt er lagt i bunnteksten. Produksjonstest
+av personvernsiden og Clickio-dialogen gjenstår.
 
 Personvernerklæringen bør minst forklare:
 
@@ -529,7 +532,7 @@ Før det klikkes «Be om gjennomgang», skal følgende være kontrollert:
 ### Uke 1: Compliance og grunnmur
 
 - [x] Bekreft og rett publisher-ID.
-- Implementer CMP.
+- [x] Implementer CMP i kodebasen.
 - [x] Utvid personvernerklæringen for kontaktskjema, Resend og Gmail.
 - [x] Ferdigstill AdSense- og samtykkedelen av personvernerklæringen.
 - [x] Opprett kontaktside og integrasjon mot Resend.

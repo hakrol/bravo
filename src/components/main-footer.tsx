@@ -94,7 +94,16 @@ export function MainFooter() {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-[rgba(27,36,48,0.1)] pt-6 text-sm leading-6 text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>© {currentYear} Lønnsinnsikt. Alle rettigheter reservert.</p>
-          <p>Bygget på åpne kilder og offisiell statistikk.</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a
+              className="clickio-cmp-settings-display font-semibold text-slate-700 underline underline-offset-4 transition hover:text-[var(--primary-strong)]"
+              href="#"
+              style={{ display: "none" }}
+            >
+              Personvernvalg
+            </a>
+            <p>Bygget på åpne kilder og offisiell statistikk.</p>
+          </div>
         </div>
       </div>
     </footer>
