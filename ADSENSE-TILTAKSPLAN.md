@@ -1,6 +1,7 @@
 # AdSense: vurdering og tiltaksplan for Lønnsinnsikt
 
-Dato for vurderingen: 22. juli 2026
+Dato for vurderingen: 22. juli 2026  
+Sist oppdatert: 23. juli 2026
 
 ## Sammendrag
 
@@ -17,6 +18,32 @@ De viktigste tiltakene er derfor ikke å produsere flest mulig nye artikler. Net
 5. Gjennomføre en full kvalitetskontroll før det bes om ny gjennomgang.
 
 Det er ikke mulig å garantere godkjenning, men tiltakene nedenfor retter seg direkte mot de sterkeste risikosignalene i Googles retningslinjer og dagens kodebase.
+
+## Fremdriftsstatus
+
+Følgende tiltak er gjennomført i kodebasen eller konfigurert i de tilhørende tjenestene:
+
+- Publisher-ID-en er avstemt mellom AdSense-scriptet og `public/ads.txt`.
+- E-postadressen `lonnsinnsikt@gmail.com` er opprettet.
+- Resend-konto og nytt API-oppsett er opprettet.
+- DNS-postene for Resend sitt avsenderdomene er verifisert.
+- En tidligere eksponert API-nøkkel er tilbakekalt og erstattet.
+- `RESEND_API_KEY`, `CONTACT_TO_EMAIL` og `CONTACT_FROM_EMAIL` er lagt inn som sensitive miljøvariabler for Production og Preview i Vercel.
+- Kontaktsiden `/kontakt` er implementert med ett enkelt, sentrert skjema.
+- Skjemaet samler inn navn, e-postadresse og melding.
+- Skjemaet bruker serverbasert validering, honeypot, tidskontroll og en enkel rate limit.
+- Resend-kallet skjer bare på serveren, og API-nøkkelen eksponeres ikke i nettleseren eller kildekoden.
+- Innsenderens e-postadresse brukes som `Reply-To`, slik at svar fra Gmail går direkte til innsenderen.
+- Kontakt er lagt til i footer og sitemap.
+- Personvernerklæringen er utvidet med behandling av kontakthenvendelser, Resend og Gmail.
+- Målrettet ESLint, TypeScript-kontroll og fullt Next.js-produksjonsbygg er bestått.
+
+Følgende gjenstår for kontaktløsningen:
+
+- Endringene må distribueres i en ny Vercel-utrulling.
+- Det publiserte skjemaet må testes med en reell melding til `lonnsinnsikt@gmail.com`.
+- Det må kontrolleres at svarfunksjonen i Gmail bruker innsenderens adresse.
+- Lokal e-postsending i dev-modus krever de tre miljøvariablene i `.env.local`. De er foreløpig bare konfigurert i Vercel for Production og Preview.
 
 ## Hva Google krever
 
@@ -82,7 +109,9 @@ Relevant kode:
 
 Alle blogg- og forklaringsartiklene oppgir bare «Kristian». Navnet er ikke lenket til en forfatterside, og nettstedet forklarer ikke fullt navn, relevant bakgrunn, kompetanse eller redaksjonelt ansvar.
 
-Om-siden forklarer produktet, men ikke tydelig hvem som står bak. Det finnes heller ingen synlig e-postadresse, kontaktside, organisasjonsinformasjon eller rettelseskanal i den undersøkte kodebasen.
+Om-siden forklarer produktet, men ikke tydelig hvem som står bak. En kontaktside og synlig
+e-postadresse er nå implementert, men fullt navn på ansvarlig person, organisasjonsinformasjon,
+forfatterside og en tydelig rettelseskanal gjenstår.
 
 Dette svekker signalene Google omtaler som «Who, How and Why», særlig for innhold om lønn, økonomi og arbeidsliv.
 
@@ -92,18 +121,23 @@ Relevant kode:
 - `src/app/om/page.tsx`
 - `src/app/redaksjonelle-retningslinjer/page.tsx`
 
-### 3. Personvernsiden oppfyller ikke AdSense-kravene
+### 3. Personvernerklæringens AdSense- og samtykkedel er ferdigstilt
 
-Den nåværende personvernsiden omtaler hovedsakelig teknisk informasjon og anonymiserte besøksdata. Den mangler blant annet:
+Personvernsiden identifiserer nå Håkon Rolfsen og enkeltpersonforetakets organisasjonsnummer som
+eier og behandlingsansvarlig. Den beskriver opplysningstyper, formål og behandlingsgrunnlag,
+kontaktskjemaet, Resend og Gmail, teknisk drift, Vercel Analytics og Speed Insights. Den forklarer
+også Google AdSense, personlig tilpassede og ikke-personlig tilpassede annonser, annonseformål,
+informasjonskapsler og lignende teknologier, aktuelle mottakere, internasjonale overføringer,
+lagring, samtykke, tilbaketrekking, brukerrettigheter og klageadgang.
 
-- informasjon om at Google og andre tredjepartsleverandører bruker informasjonskapsler til annonser
-- informasjon om hvordan annonser kan personaliseres basert på tidligere besøk
-- lenke til Googles annonseinnstillinger eller reservasjon mot personlig tilpassede annonser
-- oversikt over relevante leverandører og behandlingsformål
-- informasjon om samtykke og lagringstid
-- reell kontaktinformasjon
+Erklæringen lenker til Googles forklaring av databruk, Mitt annonsesenter, informasjon om
+annonseteknologileverandører og Datatilsynet. Den dynamiske og fullstendige leverandørlisten med
+formål, behandlingsgrunnlag og lagringstid skal vises i CMP-en, slik at den følger det faktiske
+leverandørvalget i AdSense.
 
-Dette er et separat complianceproblem, selv om avslaget er merket «lav verdi».
+Selve CMP-en og en permanent lenke som åpner personvernvalgene på nytt, er fortsatt ikke
+implementert. Personvernsiden må dessuten unntas fra AdSense- og CMP-script i tråd med Googles
+oppsettsveiledning før hele personvernkravet kan regnes som teknisk gjennomført.
 
 For norsk trafikk bør nettstedet også bruke en Google-sertifisert samtykkeplattform, CMP, som støtter IAB TCF.
 
@@ -188,11 +222,15 @@ Dette bør gjennomføres før nytt innholdsarbeid og før ny AdSense-gjennomgang
 
 #### 1. Bekreft riktig AdSense publisher-ID
 
+Status: Gjennomført i kodebasen. Publisert `ads.txt` bør kontrolleres etter neste utrulling.
+
 - Kontroller publisher-ID-en i den faktiske AdSense-kontoen.
 - Bruk samme ID i AdSense-scriptet og `public/ads.txt`.
 - Kontroller den publiserte `ads.txt`-filen etter utrulling.
 
 #### 2. Implementer en Google-sertifisert CMP
+
+Status: Ikke gjennomført.
 
 - Velg Google sin egen CMP eller en annen Google-sertifisert CMP.
 - Sørg for støtte for gjeldende IAB TCF-versjon.
@@ -200,6 +238,9 @@ Dette bør gjennomføres før nytt innholdsarbeid og før ny AdSense-gjennomgang
 - Kontroller oppførselen for norske og øvrige EØS-brukere.
 
 #### 3. Skriv en fullstendig personvernerklæring
+
+Status: Innholdet er gjennomført. Teknisk CMP-implementering, gjenåpning av personvernvalg og
+utelatelse av annonse- og CMP-script på selve personvernsiden gjenstår under CMP-arbeidet.
 
 Personvernerklæringen bør minst forklare:
 
@@ -217,13 +258,21 @@ Personvernerklæringen bør minst forklare:
 
 #### 4. Opprett en kontaktside
 
-Kontaktsiden bør inneholde:
+Status: Implementert og teknisk validert. Utrulling og reell produksjonstest gjenstår.
+
+Kontaktsiden inneholder nå:
 
 - fungerende e-postadresse
+- kanal for feilretting og redaksjonelle henvendelser
+- sikkert kontaktskjema via Resend
+- servervalidering og grunnleggende spamvern
+- lenke til personvernerklæringen
+
+Følgende bør fortsatt legges til senere:
+
 - navn på ansvarlig person eller virksomhet
 - eventuelt organisasjonsnummer
-- kanal for feilretting og redaksjonelle henvendelser
-- forventet behandling av henvendelser
+- tydelig forventning til svartid
 
 #### 5. Begrens hvor AdSense lastes
 
@@ -479,10 +528,12 @@ Før det klikkes «Be om gjennomgang», skal følgende være kontrollert:
 
 ### Uke 1: Compliance og grunnmur
 
-- Bekreft og rett publisher-ID.
+- [x] Bekreft og rett publisher-ID.
 - Implementer CMP.
-- Utvid personvernerklæringen.
-- Opprett kontaktside.
+- [x] Utvid personvernerklæringen for kontaktskjema, Resend og Gmail.
+- [x] Ferdigstill AdSense- og samtykkedelen av personvernerklæringen.
+- [x] Opprett kontaktside og integrasjon mot Resend.
+- [x] Distribuer kontaktsiden og test reell e-postlevering.
 - Velg canonical-domene.
 - Begrens global AdSense-lasting.
 
@@ -522,10 +573,14 @@ Det finnes ingen garanti for at Google rekryper eller godkjenner nettstedet inne
 
 Ny gjennomgang bør ikke bestilles før alle punktene nedenfor kan besvares med ja:
 
-- [ ] Riktig publisher-ID brukes både i AdSense-scriptet og `ads.txt`.
+- [x] Riktig publisher-ID brukes både i AdSense-scriptet og `ads.txt`.
 - [ ] Google-sertifisert CMP er implementert og testet.
 - [ ] Personvernerklæringen oppfyller AdSense-kravene.
 - [ ] Kontaktside og fungerende e-postadresse er publisert.
+- [x] Kontaktsiden er implementert og teknisk validert.
+- [x] Resend-domene og DNS-poster er verifisert.
+- [x] Resend-hemmeligheter er konfigurert som sensitive Vercel-variabler.
+- [ ] En reell kontakthenvendelse er sendt og mottatt etter utrulling.
 - [ ] Ansvarlig eier og redaktør er tydelig oppgitt.
 - [ ] Forfattersiden er publisert og byline lenker til den.
 - [ ] Metode og AI-bruk er forklart konkret.
