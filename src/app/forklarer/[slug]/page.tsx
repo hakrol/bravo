@@ -8,6 +8,7 @@ import {
   getForklarerPostSlugs,
   getForklarerPostUrl,
 } from "@/lib/forklarer";
+import { editorialIdentity } from "@/lib/editorial-identity";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type ForklarerPostPageProps = {
@@ -39,6 +40,12 @@ export async function generateMetadata({ params }: ForklarerPostPageProps): Prom
   return {
     title,
     description,
+    authors: [
+      {
+        name: editorialIdentity.authorName,
+        url: getAbsoluteUrl(editorialIdentity.authorPath),
+      },
+    ],
     alternates: {
       canonical: canonicalUrl,
     },
@@ -106,6 +113,11 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
     url: canonicalUrl,
     inDefinedTermSet: getAbsoluteUrl("/forklarer"),
     datePublished: post.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: editorialIdentity.authorName,
+      url: getAbsoluteUrl(editorialIdentity.authorPath),
+    },
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
@@ -138,7 +150,14 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
               {post.term}
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700">{post.description}</p>
-            <div className="mt-6 flex flex-wrap gap-2 text-sm font-semibold text-slate-500">
+            <div className="mt-6 flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500">
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href={editorialIdentity.authorPath}
+              >
+                {post.author}
+              </Link>
+              <span aria-hidden="true">•</span>
               <span>{post.readingTimeMinutes} min lesetid</span>
             </div>
           </div>

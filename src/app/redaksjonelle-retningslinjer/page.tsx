@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
@@ -93,6 +94,38 @@ export default function RedaksjonelleRetningslinjerPage() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="rounded-[5px] border border-[rgba(20,83,45,0.18)] bg-[#f4f7f1] p-6 sm:p-8">
+            <h2 className="text-2xl font-extrabold text-slate-950">
+              Ansvar, metode og rettelser
+            </h2>
+            <p className="mt-4 max-w-4xl text-base leading-8 text-slate-700">
+              Redaksjonen er den felles bylinen for artikler og forklaringer. Håkon Rolfsen
+              driver nettstedet og har redaksjonelt ansvar. Metodesiden forklarer
+              databehandling og AI-bruk, mens rettelsessiden viser hvordan feil kan meldes
+              og håndteres.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href="/forfatter/redaksjonen"
+              >
+                Om Redaksjonen
+              </Link>
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href="/metode"
+              >
+                Metode
+              </Link>
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href="/rettelser"
+              >
+                Rettelser
+              </Link>
+            </div>
           </div>
 
           <div className="max-w-5xl border-t border-[rgba(27,36,48,0.12)] pt-8">

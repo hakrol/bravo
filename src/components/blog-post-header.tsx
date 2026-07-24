@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatBlogDate, getBlogUpdatedAt, type BlogPost } from "@/lib/blog";
 import { getBlogCategory } from "@/lib/blog-taxonomy";
+import { editorialIdentity } from "@/lib/editorial-identity";
 
 type BlogPostHeaderProps = {
   post: BlogPost;
@@ -61,7 +62,9 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
           <p className="blog-post-hero-description">{post.description}</p>
 
           <div className="blog-post-hero-author">
-            <span>{post.author}</span>
+            <Link className="blog-post-hero-author-link" href={editorialIdentity.authorPath}>
+              {post.author}
+            </Link>
             <span aria-hidden="true">•</span>
             <time dateTime={post.publishedAt}>{formatBlogDate(post.publishedAt)}</time>
             {updatedAt ? (

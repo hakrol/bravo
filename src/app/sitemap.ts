@@ -208,6 +208,24 @@ const staticRoutes = [
     changeFrequency: "yearly" as const,
   },
   {
+    path: "/forfatter/redaksjonen",
+    filePath: "src/app/forfatter/redaksjonen/page.tsx",
+    priority: 0.4,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/metode",
+    filePath: "src/app/metode/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/rettelser",
+    filePath: "src/app/rettelser/page.tsx",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
     path: "/ordbok",
     filePath: "src/app/ordbok/page.tsx",
     priority: 0.3,

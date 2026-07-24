@@ -559,9 +559,18 @@ a.blog-meta-chip:focus-visible {
   line-height: 1.35;
 }
 
-.blog-post-hero-author span:first-child {
+.blog-post-hero-author-link {
   color: #101820;
   font-weight: 760;
+  text-decoration: underline;
+  text-decoration-color: rgba(20, 83, 45, 0.28);
+  text-underline-offset: 0.2em;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+
+.blog-post-hero-author-link:hover {
+  color: var(--primary-strong);
+  text-decoration-color: var(--primary-strong);
 }
 
 .blog-post-hero-figure {

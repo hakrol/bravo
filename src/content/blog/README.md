@@ -13,7 +13,7 @@ publishedAt: "2026-04-03"
 coverImage: "/blogg/min-slug/yrke-lonn.png"
 coverImageAlt: "Kort beskrivelse av hva hero-bildet viser"
 coverImageAiGenerated: false
-author: "Kristian"
+author: "Redaksjonen"
 category: "lonn"
 tags:
   - "Snekker"

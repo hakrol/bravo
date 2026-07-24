@@ -6,6 +6,7 @@ import { cache } from "react";
 import type { ReactNode } from "react";
 import { buildForklarerMdxComponents } from "@/components/forklarer-mdx-components";
 import type { BlogTableOfContentsItem } from "@/lib/blog-shared";
+import { editorialIdentity } from "@/lib/editorial-identity";
 import { siteConfig } from "@/lib/site-config";
 
 const FORKLARER_DIRECTORY = path.join(process.cwd(), "src", "content", "forklarer");
@@ -44,6 +45,16 @@ function assertRequiredString(value: unknown, fieldName: keyof ForklarerFrontmat
   return value.trim();
 }
 
+function assertEditorialAuthor(value: unknown) {
+  const author = assertRequiredString(value, "author");
+
+  if (author !== editorialIdentity.authorName) {
+    throw new Error(`Forklareringsinnlegget må bruke forfatteren ${editorialIdentity.authorName}.`);
+  }
+
+  return author;
+}
+
 function normalizeRelatedTerms(value: unknown) {
   if (!Array.isArray(value)) {
     return undefined;
@@ -68,7 +79,7 @@ function normalizeFrontmatter(frontmatter: unknown): ForklarerFrontmatter {
     description: assertRequiredString(data.description, "description"),
     slug: assertRequiredString(data.slug, "slug"),
     publishedAt: assertRequiredString(data.publishedAt, "publishedAt"),
-    author: assertRequiredString(data.author, "author"),
+    author: assertEditorialAuthor(data.author),
     term: assertRequiredString(data.term, "term"),
     draft: data.draft === true,
     seoTitle: trimOptionalString(data.seoTitle),

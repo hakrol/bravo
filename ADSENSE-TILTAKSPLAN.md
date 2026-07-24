@@ -107,17 +107,22 @@ Relevant kode:
 
 ### 2. Svak avsenderidentitet
 
-Alle blogg- og forklaringsartiklene oppgir bare «Kristian». Navnet er ikke lenket til en forfatterside, og nettstedet forklarer ikke fullt navn, relevant bakgrunn, kompetanse eller redaksjonelt ansvar.
+Status 24. juli 2026: Gjennomført i kodebasen. Alle blogg- og forklaringsartikler bruker
+«Redaksjonen» som forfatter, og bylinen lenker til `/forfatter/redaksjonen`.
+Forfattersiden forklarer at Håkon Rolfsen eier, utvikler og har redaksjonelt ansvar for
+hobbyprosjektet, og viser organisasjonsnummer og kontaktinformasjon.
 
-Om-siden forklarer produktet, men ikke tydelig hvem som står bak. En kontaktside og synlig
-e-postadresse er nå implementert, men fullt navn på ansvarlig person, organisasjonsinformasjon,
-forfatterside og en tydelig rettelseskanal gjenstår.
-
-Dette svekker signalene Google omtaler som «Who, How and Why», særlig for innhold om lønn, økonomi og arbeidsliv.
+Egne sider for metode og rettelser dokumenterer databehandling, beregninger, AI-bruk,
+begrensninger og hvordan feil meldes og håndteres. Sidene er lagt i footer og sitemap.
+Produksjonsutrulling og kontroll av de publiserte sidene gjenstår.
 
 Relevant kode:
 
 - `src/components/blog-post-header.tsx`
+- `src/app/forfatter/redaksjonen/page.tsx`
+- `src/app/metode/page.tsx`
+- `src/app/rettelser/page.tsx`
+- `src/lib/editorial-identity.ts`
 - `src/app/om/page.tsx`
 - `src/app/redaksjonelle-retningslinjer/page.tsx`
 
@@ -390,6 +395,9 @@ Det bør ikke brukes en vilkårlig ordgrense. Kravet skal være et komplett, pre
 
 #### 1. Opprett en forfatterside
 
+Status: Implementert i kodebasen med «Redaksjonen» som felles byline og Håkon Rolfsen som
+navngitt eier og redaksjonelt ansvarlig.
+
 Forfattersiden bør vise:
 
 - fullt navn
@@ -404,6 +412,9 @@ Navnet i artikkelens byline bør lenke til denne siden.
 
 #### 2. Utvid om-siden
 
+Status: Gjennomført. Om-siden identifiserer eier, organisasjonsnummer og hobbyprosjektets
+forhold til SSB, og lenker til Redaksjonen, metode, retningslinjer og rettelser.
+
 Om-siden bør forklare:
 
 - hvem som eier og driver Lønnsinnsikt
@@ -414,6 +425,8 @@ Om-siden bør forklare:
 
 #### 3. Opprett en rettelsespolicy
 
+Status: Implementert på `/rettelser`.
+
 Forklar:
 
 - hvordan feil kan meldes
@@ -422,6 +435,9 @@ Forklar:
 - hvordan oppdateringsdatoer brukes
 
 #### 4. Lag en detaljert metodeside
+
+Status: Implementert på `/metode` med datakilder, arbeidsflyt, beregninger, AI-bruk,
+oppdateringer og begrensninger.
 
 Metodesiden bør dokumentere:
 
@@ -436,6 +452,8 @@ Metodesiden bør dokumentere:
 - kjente begrensninger
 
 #### 5. Konkretiser AI-policyen
+
+Status: Implementert på metodesiden og støttet av de redaksjonelle retningslinjene.
 
 Forklar tydelig:
 
@@ -572,8 +590,9 @@ Før det klikkes «Be om gjennomgang», skal følgende være kontrollert:
 
 ### Uke 3 og 4: Redaksjonell kvalitet
 
-- Opprett forfatter-, metode- og rettelsessider.
-- Utvid om-siden og redaksjonelle retningslinjer.
+- [x] Opprett forfatter-, metode- og rettelsessider.
+- [x] Utvid om-siden og redaksjonelle retningslinjer.
+- [ ] Distribuer og kontroller tillitssidene og byline-lenkene i produksjon.
 - Innfør publiseringskrav for yrkessider.
 - Forbedre de viktigste eksisterende yrkessidene.
 - Forbedre eksisterende artikler med søkevisninger.

@@ -230,9 +230,27 @@ export default function OmPage() {
             <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1 text-base">
               <Link
                 className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href="/forfatter/redaksjonen"
+              >
+                Om Redaksjonen
+              </Link>
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href="/metode"
+              >
+                Metode
+              </Link>
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
                 href="/redaksjonelle-retningslinjer"
               >
                 Redaksjonelle retningslinjer
+              </Link>
+              <Link
+                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                href="/rettelser"
+              >
+                Rettelser
               </Link>
               <Link
                 className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"

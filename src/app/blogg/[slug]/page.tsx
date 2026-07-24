@@ -13,6 +13,7 @@ import {
   getBlogPostUrl,
   getBlogUpdatedAt,
 } from "@/lib/blog";
+import { editorialIdentity } from "@/lib/editorial-identity";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type BlogPostPageProps = {
@@ -46,6 +47,12 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   return {
     title,
     description,
+    authors: [
+      {
+        name: editorialIdentity.authorName,
+        url: getAbsoluteUrl(editorialIdentity.authorPath),
+      },
+    ],
     alternates: {
       canonical: canonicalUrl,
     },
@@ -75,6 +82,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   };
 }
 
+function serializeJsonLd(value: unknown) {
+  return JSON.stringify(value).replace(/</g, "\\u003c");
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const [post, blogPosts] = await Promise.all([getBlogPostBySlug(slug), getAllBlogPosts()]);
@@ -84,9 +95,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const latestBlogPosts = blogPosts.slice(0, 3);
+  const canonicalUrl = getBlogPostUrl(post.slug);
+  const updatedAt = getBlogUpdatedAt(post.publishedAt, post.updatedAt);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    mainEntityOfPage: canonicalUrl,
+    datePublished: post.publishedAt,
+    dateModified: updatedAt ?? post.publishedAt,
+    image: getAbsoluteUrl(post.coverImage),
+    author: {
+      "@type": "Organization",
+      name: editorialIdentity.authorName,
+      url: getAbsoluteUrl(editorialIdentity.authorPath),
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.siteUrl,
+    },
+  };
 
   return (
     <div className="blog-post-page min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(jsonLd),
+        }}
+      />
       <div className="mx-auto flex w-full max-w-6xl flex-col">
         <Link className="blog-post-back-link" href="/blogg">
           ← Tilbake til blogg

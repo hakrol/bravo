@@ -12,6 +12,7 @@ import type {
   BlogTableOfContentsItem,
 } from "@/lib/blog-shared";
 import { getBlogCategory } from "@/lib/blog-taxonomy";
+import { editorialIdentity } from "@/lib/editorial-identity";
 import { siteConfig } from "@/lib/site-config";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "src", "content", "blog");
@@ -29,6 +30,16 @@ function assertRequiredString(value: unknown, fieldName: keyof BlogFrontmatter) 
   }
 
   return value.trim();
+}
+
+function assertEditorialAuthor(value: unknown) {
+  const author = assertRequiredString(value, "author");
+
+  if (author !== editorialIdentity.authorName) {
+    throw new Error(`Blogginnlegget må bruke forfatteren ${editorialIdentity.authorName}.`);
+  }
+
+  return author;
 }
 
 function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
@@ -56,7 +67,7 @@ function normalizeFrontmatter(frontmatter: unknown): BlogFrontmatter {
     coverImage: assertRequiredString(data.coverImage, "coverImage"),
     coverImageAlt: trimOptionalString(data.coverImageAlt),
     coverImageAiGenerated: data.coverImageAiGenerated === true,
-    author: assertRequiredString(data.author, "author"),
+    author: assertEditorialAuthor(data.author),
     category,
     tags,
     draft: data.draft === true,
