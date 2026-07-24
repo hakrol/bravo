@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { shouldLoadAdsense } from "@/lib/adsense-routes";
 
 const ADSENSE_CLIENT_ID = "ca-pub-3073306475357950";
 const ADSENSE_SCRIPT_ID = "google-adsense";
-const ADSENSE_EXCLUDED_PATHS = new Set(["/personvern"]);
 
 export function AdsenseScript() {
   const pathname = usePathname();
@@ -13,7 +13,7 @@ export function AdsenseScript() {
   useEffect(() => {
     const existingScript = document.getElementById(ADSENSE_SCRIPT_ID);
 
-    if (ADSENSE_EXCLUDED_PATHS.has(pathname)) {
+    if (!shouldLoadAdsense(pathname)) {
       existingScript?.remove();
       return;
     }

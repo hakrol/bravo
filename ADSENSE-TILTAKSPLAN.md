@@ -161,17 +161,23 @@ Relevant kode:
 - `src/app/layout.tsx`
 - `public/ads.txt`
 
-### 5. AdSense-koden lastes globalt
+### 5. AdSense-lastingen er begrenset med en tillatelsesliste
 
-AdSense-scriptet ligger i rotlayouten. Det lastes derfor potensielt også på admin-, innloggings-, utviklings-, verktøy-, katalog- og andre sider hvor hovedinnholdet kan være begrenset.
+AdSense-scriptet bruker nå en sentral tillatelsesliste. Forsiden, ferdige artikler, utvalgte
+ressurser og analyser, yrkesdetaljer samt kalkulator- og verktøysidene kan laste AdSense.
+Admin, innlogging, utviklingsruter, idésider, personvern, kontakt, feilsider, katalogsider og
+genererte URL-familier som fortsatt skal kvalitetsvurderes, er blokkert som standard.
 
-Hvis Auto Ads er aktivert, kan Google forsøke å plassere annonser på sider som ikke egner seg for annonser. Google tillater ikke annonser på blant annet tomme sider, feilsider, innloggingssider, sider under utvikling eller sider som primært består av navigasjon.
+Nye ruter får ikke AdSense før de legges uttrykkelig til i tillatelseslisten. Dette reduserer
+risikoen for at Auto Ads forsøker å plassere annonser på sider uten tilstrekkelig
+publisistinnhold. Tilsvarende sideunntak må fortsatt konfigureres i AdSense-kontoen og
+kontrolleres etter produksjonsutrulling, særlig ved intern navigasjon uten full sidelasting.
 
 Relevant kode:
 
 - `src/app/layout.tsx`
-- `src/app/(admin)/admin/layout.tsx`
-- `src/app/dev/layout.tsx`
+- `src/components/adsense-script.tsx`
+- `src/lib/adsense-routes.ts`
 
 ### 6. Domenesignaler bør samordnes
 
@@ -538,7 +544,8 @@ Før det klikkes «Be om gjennomgang», skal følgende være kontrollert:
 - [x] Opprett kontaktside og integrasjon mot Resend.
 - [x] Distribuer kontaktsiden og test reell e-postlevering.
 - Velg canonical-domene.
-- Begrens global AdSense-lasting.
+- [x] Begrens AdSense-lasting med en sentral tillatelsesliste i kodebasen.
+- Konfigurer tilsvarende sideunntak for Auto Ads i AdSense-kontoen.
 
 ### Uke 2: URL- og indeksanalyse
 
@@ -577,7 +584,7 @@ Det finnes ingen garanti for at Google rekryper eller godkjenner nettstedet inne
 Ny gjennomgang bør ikke bestilles før alle punktene nedenfor kan besvares med ja:
 
 - [x] Riktig publisher-ID brukes både i AdSense-scriptet og `ads.txt`.
-- [ ] Google-sertifisert CMP er implementert og testet.
+- [x] Google-sertifisert CMP er implementert og testet.
 - [ ] Personvernerklæringen oppfyller AdSense-kravene.
 - [ ] Kontaktside og fungerende e-postadresse er publisert.
 - [x] Kontaktsiden er implementert og teknisk validert.
