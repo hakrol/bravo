@@ -193,11 +193,15 @@ Relevant kode:
 
 ### 7. Flere overlappende URL-familier
 
+Status 24. juli 2026: Gjennomført for timelønn og yrkesspesifikk lønnsvekst.
+406 separate timelønnssider og 367 separate lønnsvekstsider er fjernet fra App Router
+og sitemap. Gamle URL-er videresendes permanent til den tilsvarende hovedsiden for yrket.
+Timelønn, lønnsutvikling og reallønnsvekst vises fortsatt på hovedsidene for yrker.
+Den selvstendige lønnsvekstkalkulatoren på `/lonnsvekst` er beholdt som verktøy.
+
 Nettstedet har separate sider for blant annet:
 
 - hovedinformasjon om et yrke
-- timelønn for samme yrke
-- lønnsvekst for samme yrke
 - lærlinglønn
 - yrkesfamilie
 - yrkesområde
@@ -303,8 +307,6 @@ Følgende bør fortsatt legges til senere:
 Lag en full URL-oversikt fra sitemap og Google Search Console, gruppert etter sidetype:
 
 - `/yrke/[slug]`
-- `/timelonn/[slug]`
-- `/lonnsvekst/yrke/[slug]`
 - `/laerling/[slug]`
 - yrkesfamilier
 - yrkesområder
@@ -330,7 +332,7 @@ Sider som ikke består kontrollen bør:
 - beholdes for brukere hvis de fortsatt har en nyttig intern funksjon
 - forbedres før de eventuelt åpnes for indeksering igjen
 
-Sidene skal ikke nødvendigvis slettes.
+For gjenværende sidefamilier skal sidene ikke nødvendigvis slettes.
 
 #### Konsolider overlappende innhold
 
@@ -340,6 +342,8 @@ En anbefalt hovedstruktur er:
 - Timelønn, lønnsvekst, lønnsspredning, kjøpekraft og kjønnsforskjeller samles på hovedsiden.
 - Separate undersider beholdes bare når de dekker en tydelig annen brukeroppgave og har selvstendig innhold.
 - Alternative URL-er videresendes permanent til foretrukket side.
+
+Status: Konsolideringen av timelønn og yrkesspesifikk lønnsvekst er gjennomført.
 
 ### Fase 3: Innfør en publiseringsgrense for yrkessider
 

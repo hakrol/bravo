@@ -5,16 +5,11 @@ import { getAllBlogPosts } from "@/lib/blog";
 import { blogCategories } from "@/lib/blog-taxonomy";
 import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-detail-view-models";
 import { getAllForklarerPosts } from "@/lib/forklarer";
-import { getHourlySalaryPages } from "@/lib/hourly-salary-pages";
 import { listOccupationAreas } from "@/lib/occupation-areas";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 import { listOccupationFamilies } from "@/lib/occupation-families";
 import { listOccupationGroups } from "@/lib/occupation-groups";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
-import {
-  buildOccupationSalaryGrowthHref,
-  getAvailableOccupationSalaryGrowthPages,
-} from "@/lib/occupation-salary-growth";
 import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
 import { getAbsoluteUrl } from "@/lib/site-config";
 
@@ -147,12 +142,6 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
-    path: "/timelonn",
-    filePath: "src/app/timelonn/page.tsx",
-    priority: 0.7,
-    changeFrequency: "monthly" as const,
-  },
-  {
     path: "/laerling",
     filePath: "src/app/laerling/page.tsx",
     priority: 0.7,
@@ -243,20 +232,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     blogPosts,
     forklarerPosts,
     occupationPages,
-    hourlySalaryPages,
     occupationIndex,
     apprenticeshipIndex,
     occupationMedianDataset,
-    occupationSalaryGrowthPages,
   ] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getAllForklarerPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
-    getHourlySalaryPages().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
     getApprenticeshipDetailViewModelIndex().catch(() => null),
     getLatestOccupationMedianMonthlySalaryDataset().catch(() => null),
-    getAvailableOccupationSalaryGrowthPages().catch(() => []),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
@@ -338,20 +323,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const occupationSalaryGrowthRoutes: MetadataRoute.Sitemap = occupationSalaryGrowthPages.map((page) => ({
-    url: getAbsoluteUrl(buildOccupationSalaryGrowthHref(page.slug)),
-    lastModified: occupationContentLastModified,
-    changeFrequency: "yearly",
-    priority: 0.7,
-  }));
-
-  const hourlySalaryRoutes: MetadataRoute.Sitemap = hourlySalaryPages.map((page) => ({
-    url: getAbsoluteUrl(page.href),
-    lastModified: occupationContentLastModified,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
   const apprenticeshipRoutes: MetadataRoute.Sitemap = (apprenticeshipIndex?.pages ?? []).map((page) => ({
     url: getAbsoluteUrl(`/laerling/${page.slug}`),
     lastModified: apprenticeshipContentLastModified,
@@ -368,8 +339,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogCategoryRoutes,
     ...forklarerRoutes,
     ...occupationRoutes,
-    ...occupationSalaryGrowthRoutes,
-    ...hourlySalaryRoutes,
     ...apprenticeshipRoutes,
   ];
 }

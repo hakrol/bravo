@@ -122,13 +122,6 @@ const dynamicRouteFamilies: DynamicRouteFamilyDefinition[] = [
     hasCanonical: false,
   },
   {
-    id: "group:/timelonn/[slug]",
-    title: "Timelønn-detaljer",
-    url: "/timelonn/[slug]",
-    hasGenerateMetadata: true,
-    hasCanonical: true,
-  },
-  {
     id: "group:/laerling/[slug]",
     title: "Lærlinglønn-detaljer",
     url: "/laerling/[slug]",
