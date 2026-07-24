@@ -181,9 +181,16 @@ Relevant kode:
 
 ### 6. Domenesignaler bør samordnes
 
-Produksjon videresender fra `lonnsinnsikt.no` til `www.lonnsinnsikt.no`, mens fallback-verdien i nettstedskonfigurasjonen bruker domenet uten `www`.
+Status 24. juli 2026: `https://www.lonnsinnsikt.no` er valgt som canonical-domene.
+Rotdomenet `lonnsinnsikt.no` videresendes permanent med HTTP 308 til `www.lonnsinnsikt.no`,
+og DNS-posten for rotdomenet er oppdatert til Vercels anbefalte adresse.
+Fallback-verdien i nettstedskonfigurasjonen er endret til canonical-domenet.
 
-Sitemap, canonical, Open Graph, AdSense-registrering og interne absolutte URL-er bør bruke samme foretrukne domene uten å gå gjennom en videresending.
+Metadata, sitemap, robots og interne absolutte URL-er henter domenet fra den sentrale
+nettstedskonfigurasjonen. Etter neste produksjonsutrulling må de publiserte verdiene kontrolleres.
+URL-ene i Clickio, AdSense og Google Search Console må også bruke det valgte domenet.
+Lokalt produksjonsbygg bekrefter canonical- og Open Graph-URL med `www`, sitemap-URL-er med
+`www` og robots-henvisning til `https://www.lonnsinnsikt.no/sitemap.xml`.
 
 Relevant kode:
 
@@ -298,9 +305,12 @@ Følgende bør fortsatt legges til senere:
 
 #### 6. Velg ett canonical-domene
 
-- Velg enten `https://www.lonnsinnsikt.no` eller `https://lonnsinnsikt.no`.
-- Bruk valgt domene i miljøvariabler, metadata, sitemap og AdSense.
-- Videresend alle alternative vertsnavn permanent til valgt domene.
+- [x] Velg `https://www.lonnsinnsikt.no` som canonical-domene.
+- [x] Bruk valgt domene som fallback for metadata, sitemap, robots og absolutte URL-er.
+- [x] Videresend rotdomenet permanent med HTTP 308 til canonical-domenet.
+- [ ] Bekreft `NEXT_PUBLIC_SITE_URL=https://www.lonnsinnsikt.no` i Vercel.
+- [ ] Kontroller publiserte canonical-, Open Graph-, robots- og sitemap-URL-er etter utrulling.
+- [ ] Oppdater AdSense, Clickio og Google Search Console til canonical-domenet.
 
 ### Fase 2: Kartlegg og reduser indeksérbart malinnhold
 
@@ -547,7 +557,8 @@ Før det klikkes «Be om gjennomgang», skal følgende være kontrollert:
 - [x] Ferdigstill AdSense- og samtykkedelen av personvernerklæringen.
 - [x] Opprett kontaktside og integrasjon mot Resend.
 - [x] Distribuer kontaktsiden og test reell e-postlevering.
-- Velg canonical-domene.
+- [x] Velg canonical-domene og konfigurer permanent videresending.
+- [ ] Distribuer og kontroller canonical-metadata, robots og sitemap i produksjon.
 - [x] Begrens AdSense-lasting med en sentral tillatelsesliste i kodebasen.
 - Konfigurer tilsvarende sideunntak for Auto Ads i AdSense-kontoen.
 

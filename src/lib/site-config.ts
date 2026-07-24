@@ -4,7 +4,9 @@ export const siteConfig = {
     "Finn lønnsnivå, lønnsvekst og lønnsinnsikt for norske yrker med oppdaterte tall fra SSB.",
   author: "Lønnsinnsikt",
   siteUrl:
-    process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://lonnsinnsikt.no",
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.SITE_URL ??
+    "https://www.lonnsinnsikt.no",
 } as const;
 
 export function getAbsoluteUrl(pathname: string) {
