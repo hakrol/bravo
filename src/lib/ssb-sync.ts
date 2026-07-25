@@ -200,6 +200,20 @@ async function main() {
         ),
     },
     {
+      key: "occupationSupplementMedianLatest",
+      fileName: "occupation-supplement-median-latest.json",
+      tableId: queries.SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
+      buildQuery: (metadata) =>
+        queries.buildLatestQueryFromMetadata(metadata, {
+          MaaleMetode: "01",
+          Yrke: "*",
+          Sektor: "ALLE",
+          Kjonn: ["0", "1", "2"],
+          AvtaltVanlig: "0",
+          ContentsCode: ["Bonus", "Overtid", "Uregtil"],
+        }),
+    },
+    {
       key: "occupationWorkforceTimeSeries",
       fileName: "occupation-workforce-timeseries.json",
       tableId: queries.SSB_SALARY_TABLES.occupationDetailed.id,

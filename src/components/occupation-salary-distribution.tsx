@@ -666,27 +666,6 @@ function MarkerInfoButton({ label, description }: MarkerInfoButtonProps) {
         i
       </button>
 
-      {false ? (
-        <span className="absolute left-1/2 top-full z-20 mt-3 w-72 -translate-x-1/2 whitespace-normal rounded-md border border-black/10 bg-white p-4 text-left normal-case shadow-[0_18px_50px_rgba(15,23,42,0.18)]">
-          <span className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-            Forklaring
-          </span>
-          <span className="mt-2 block text-base font-semibold tracking-[-0.02em] text-slate-950">
-            {label}
-          </span>
-          <span className="mt-2 block text-sm leading-6 text-slate-700">
-            {description}
-          </span>
-          <button
-            aria-label="Lukk forklaring"
-            className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] text-sm text-slate-600 transition hover:bg-slate-50"
-            onClick={() => setIsOpen(false)}
-            type="button"
-          >
-            ×
-          </button>
-        </span>
-      ) : null}
       {isOpen && typeof document !== "undefined"
         ? createPortal(
             <div
@@ -700,11 +679,8 @@ function MarkerInfoButton({ label, description }: MarkerInfoButtonProps) {
                 role="dialog"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-                      Forklaring
-                    </p>
-                    <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-slate-950">
+                  <div className="pt-1">
+                    <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
                       {label}
                     </h3>
                   </div>
@@ -718,7 +694,9 @@ function MarkerInfoButton({ label, description }: MarkerInfoButtonProps) {
                   </button>
                 </div>
 
-                <p className="mt-5 text-sm leading-7 text-slate-700">{description}</p>
+                <p className="mt-5 text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
+                  {description}
+                </p>
               </div>
             </div>,
             document.body,

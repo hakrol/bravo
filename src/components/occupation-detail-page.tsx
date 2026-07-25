@@ -5,6 +5,10 @@ import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purc
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import { OccupationSalaryEstimate } from "@/components/occupation-salary-estimate";
 import { MetricInfoButton } from "@/components/metric-info-button";
+import {
+  MonthlySalaryOverview,
+  type MonthlySalaryOverviewCardData,
+} from "@/components/monthly-salary-overview";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
 import { OccupationSectorSalaryTimeSeriesChart } from "@/components/occupation-sector-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
@@ -16,7 +20,9 @@ import {
   type OccupationFiveYearGrowthComparison,
 } from "@/lib/occupation-five-year-growth";
 import type { OccupationDetailViewModel } from "@/lib/occupation-detail-view-models";
+import type { OccupationSupplementMetrics } from "@/lib/occupation-detail-view-model-types";
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
+import type { OccupationSalaryDistributionMetrics } from "@/lib/ssb";
 
 type OccupationDetailPageProps = {
   detail: OccupationDetailViewModel;
@@ -140,6 +146,15 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     contractedDistribution,
     latestSalaryPeriodLabel,
   });
+  const monthlySalaryOverviewCards = buildMonthlySalaryOverviewCards({
+    distribution,
+    contractedDistribution,
+    latestSalaryPeriodLabel,
+  });
+  const salarySupplementCards = buildSalarySupplementCards({
+    median: detail.data.supplementMedian,
+    average: detail.data.supplementAverage,
+  });
   const hasEstimate =
     estimateMonthlySalary !== undefined ||
     estimateMonthlySalaryWomen !== undefined ||
@@ -189,6 +204,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   );
   const sectionNavItems = [
     topSummary ? { href: "#kort-oppsummert", label: "Kort oppsummert" } : null,
+    monthlySalaryOverviewCards.length > 0
+      ? { href: "#manedslonn", label: "Lønn" }
+      : null,
+    salarySupplementCards.length > 0 ? { href: "#lonn", label: "Overtid" } : null,
     distribution ? { href: "#lonnsfordeling", label: "Lønnsfordeling" } : null,
     { href: "#lonnsutvikling", label: "Lønnsutvikling" },
     { href: "#reallonn", label: "Reallønn" },
@@ -276,30 +295,85 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
         <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
-            {topSummary ? (
+            {topSummary || salaryCompositionCards.length > 0 ? (
               <section
                 className="rounded-[5px] border border-slate-200 bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:px-6"
                 id="kort-oppsummert"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
-                  Kort oppsummert
-                </p>
-                <p className="mt-3 max-w-4xl text-base leading-7 text-slate-950 sm:text-lg sm:leading-8">
-                  {topSummary}
-                </p>
-                <OccupationCardStatsRow
-                  className="mt-4"
-                  gridClassName="grid-cols-2 sm:grid-cols-4"
-                  stats={topSummaryStats}
-                />
+                {topSummary ? (
+                  <>
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-emerald-700">
+                      Kort oppsummert
+                    </p>
+                    <p className="mt-3 max-w-4xl text-base leading-7 text-slate-950 sm:text-lg sm:leading-8">
+                      {topSummary}
+                    </p>
+                    <OccupationCardStatsRow
+                      className="mt-4"
+                      gridClassName="grid-cols-2 sm:grid-cols-4"
+                      stats={topSummaryStats}
+                    />
+                  </>
+                ) : null}
+
+                {salaryCompositionCards.length > 0 ? (
+                  <div className={`${topSummary ? "mt-5" : ""} grid gap-4 sm:grid-cols-2`}>
+                    {salaryCompositionCards.map((card) => (
+                      <SalaryCompositionCard card={card} key={card.key} />
+                    ))}
+                  </div>
+                ) : null}
               </section>
             ) : null}
 
-            <section className="grid gap-4 sm:grid-cols-2">
-              {salaryCompositionCards.map((card) => (
-                <SalaryCompositionCard card={card} key={card.key} />
-              ))}
-            </section>
+            {monthlySalaryOverviewCards.length > 0 ? (
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="manedslonn"
+              >
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                    Median og gjennomsnittlig lønn for {occupationText.titleLabel}
+                  </h2>
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    Her kan du sammenligne median og gjennomsnitt for både samlet og avtalt lønn.
+                    Velg om tallene skal vises som årslønn, månedslønn eller timelønn. Års- og
+                    timelønn er omregnet fra SSBs månedstall. Samlet lønn inkluderer avtalt lønn,
+                    bonus og uregelmessige tillegg. Overtidsbetaling er ikke med.
+                  </p>
+                </div>
+
+                <AverageMedianInsight />
+
+                <MonthlySalaryOverview cards={monthlySalaryOverviewCards} />
+              </section>
+            ) : null}
+
+            {salarySupplementCards.length > 0 ? (
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="lonn"
+              >
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                    Overtid, bonus og uregelmessige tillegg for {occupationText.titleLabel}
+                  </h2>
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    Her ser du median og gjennomsnittlig månedsbeløp for bonus, uregelmessige
+                    tillegg og overtid. Medianen er beløpet i midten når alle observasjonene
+                    sorteres.
+                  </p>
+                </div>
+
+                <AverageMedianInsight />
+
+                <div className="mt-7 grid gap-4 xl:grid-cols-2">
+                  {salarySupplementCards.map((card) => (
+                    <SalarySupplementCard card={card} key={card.key} />
+                  ))}
+                </div>
+              </section>
+            ) : null}
 
             {distribution ? (
               <section
@@ -629,6 +703,15 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   );
 }
 
+function AverageMedianInsight() {
+  return (
+    <div className="mt-5 rounded-[6px] bg-emerald-50 px-4 py-3 text-sm font-medium leading-6 text-emerald-950 sm:px-5 sm:text-base sm:leading-7">
+      Når gjennomsnittet er høyere enn medianen, betyr det vanligvis at en mindre gruppe med høye
+      utbetalinger trekker gjennomsnittet opp.
+    </div>
+  );
+}
+
 type SalaryCompositionCardData = {
   key: string;
   title: string;
@@ -636,7 +719,6 @@ type SalaryCompositionCardData = {
   icon?: React.ReactNode;
   contractedMedian?: number;
   totalMedian?: number;
-  extraMedian?: number;
   p25?: number;
   p75?: number;
   tone: "women" | "men" | "neutral";
@@ -685,11 +767,6 @@ function SalaryCompositionCard({ card }: SalaryCompositionCardProps) {
           label="Avtalt månedslønn (median)"
           value={formatKr(card.contractedMedian)}
         />
-        <SalaryCompositionRow
-          info="Bonus og tillegg vises som forskjellen mellom samlet median månedslønn og avtalt median månedslønn når begge tall finnes. Det består av bonus og uregelmessige tillegg. Overtid er ikke med."
-          label="Bonus og tillegg (median)"
-          value={formatKr(card.extraMedian)}
-        />
       </dl>
 
       <SalaryCompositionRangeLine
@@ -715,8 +792,8 @@ function SalaryCompositionRow({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-white/65 px-4 py-3 last:border-b-0">
-      <dt className="flex min-w-0 items-center gap-2 text-sm font-medium text-slate-600">
-        <span className="truncate">{label}</span>
+      <dt className="flex min-w-0 items-center gap-2 text-sm font-medium leading-5 text-slate-600">
+        <span>{label}</span>
         {info ? <MetricInfoButton description={info} label={`${label} forklart`} variant="muted" /> : null}
       </dt>
       <dd
@@ -769,6 +846,264 @@ function SalaryCompositionRangeLine({
   );
 }
 
+function buildMonthlySalaryOverviewCards({
+  distribution,
+  contractedDistribution,
+  latestSalaryPeriodLabel,
+}: {
+  distribution: OccupationDetailViewModel["data"]["distribution"];
+  contractedDistribution: OccupationDetailViewModel["data"]["contractedDistribution"];
+  latestSalaryPeriodLabel?: string;
+}) {
+  const cards: MonthlySalaryOverviewCardData[] = [];
+  const hasWomen =
+    hasSalaryDistributionMetrics(distribution?.women) ||
+    hasSalaryDistributionMetrics(contractedDistribution?.women);
+  const hasMen =
+    hasSalaryDistributionMetrics(distribution?.men) ||
+    hasSalaryDistributionMetrics(contractedDistribution?.men);
+
+  if (hasWomen) {
+    cards.push({
+      key: "women",
+      title: "Kvinner",
+      caption: latestSalaryPeriodLabel,
+      tone: "women",
+      totalMedian: distribution?.women?.median,
+      totalAverage: distribution?.women?.average,
+      contractedMedian: contractedDistribution?.women?.median,
+      contractedAverage: contractedDistribution?.women?.average,
+    });
+  }
+
+  if (hasMen) {
+    cards.push({
+      key: "men",
+      title: "Menn",
+      caption: latestSalaryPeriodLabel,
+      tone: "men",
+      totalMedian: distribution?.men?.median,
+      totalAverage: distribution?.men?.average,
+      contractedMedian: contractedDistribution?.men?.median,
+      contractedAverage: contractedDistribution?.men?.average,
+    });
+  }
+
+  if (
+    (!hasWomen || !hasMen) &&
+    (hasSalaryDistributionMetrics(distribution?.total) ||
+      hasSalaryDistributionMetrics(contractedDistribution?.total))
+  ) {
+    cards.push({
+      key: "all",
+      title: "Alle",
+      caption: latestSalaryPeriodLabel,
+      tone: "neutral",
+      totalMedian: distribution?.total?.median,
+      totalAverage: distribution?.total?.average,
+      contractedMedian: contractedDistribution?.total?.median,
+      contractedAverage: contractedDistribution?.total?.average,
+    });
+  }
+
+  return cards;
+}
+
+function hasSalaryDistributionMetrics(metrics?: OccupationSalaryDistributionMetrics) {
+  return Boolean(
+    metrics &&
+      (metrics.median !== undefined ||
+        metrics.average !== undefined),
+  );
+}
+
+type SalarySupplementCardData = {
+  key: string;
+  title: string;
+  caption?: string;
+  icon?: React.ReactNode;
+  tone: "women" | "men" | "neutral";
+  bonusMedian?: number;
+  bonusAverage?: number;
+  overtimeMedian?: number;
+  overtimeAverage?: number;
+  irregularAdditionsMedian?: number;
+  irregularAdditionsAverage?: number;
+};
+
+function SalarySupplementCard({ card }: { card: SalarySupplementCardData }) {
+  const tone = getSalaryCompositionTone(card.tone);
+  const rows = [
+    {
+      key: "irregular",
+      label: "Uregelmessige tillegg",
+      description: "Skift, turnus, offshore og lignende tillegg.",
+      median: card.irregularAdditionsMedian,
+      average: card.irregularAdditionsAverage,
+    },
+    {
+      key: "bonus",
+      label: "Bonus",
+      description: "Bonusutbetalinger omregnet til månedsbeløp.",
+      median: card.bonusMedian,
+      average: card.bonusAverage,
+    },
+    {
+      key: "overtime",
+      label: "Overtid",
+      description: "Betaling for arbeid utover avtalt arbeidstid.",
+      median: card.overtimeMedian,
+      average: card.overtimeAverage,
+    },
+  ];
+
+  return (
+    <article className="overflow-hidden rounded-[6px] border border-slate-200 bg-white">
+      <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-4 sm:px-5">
+        <div className="flex items-center gap-3">
+          {card.icon ? <div className="shrink-0">{card.icon}</div> : null}
+          <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-slate-950">
+            {card.title}
+          </h3>
+        </div>
+        {card.caption ? (
+          <p className={`shrink-0 rounded-[10px] px-3 py-1.5 text-sm font-semibold shadow-sm ${tone.period}`}>
+            {card.caption}
+          </p>
+        ) : null}
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full table-fixed border-collapse text-left">
+          <thead>
+            <tr className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+              <th className="w-[48%] px-4 py-3 sm:px-5" scope="col">
+                Lønnstype
+              </th>
+              <th className="w-[22%] px-2 py-3 text-right" scope="col">
+                Median
+              </th>
+              <th className="w-[30%] px-3 py-3 text-right sm:px-4" scope="col">
+                Gjennomsnitt
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr className="border-t border-slate-200" key={row.key}>
+                <th className="px-4 py-4 font-normal sm:px-5" scope="row">
+                  <span className="block text-sm font-semibold text-slate-900">{row.label}</span>
+                  <span className="mt-1 block text-xs leading-5 text-slate-500">
+                    {row.description}
+                  </span>
+                </th>
+                <td className="whitespace-nowrap px-2 py-4 text-right text-sm font-semibold tabular-nums text-slate-950">
+                  {formatKr(row.median)}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold tabular-nums text-slate-950 sm:px-4">
+                  {formatKr(row.average)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  );
+}
+
+function buildSalarySupplementCards({
+  median,
+  average,
+}: {
+  median: OccupationDetailViewModel["data"]["supplementMedian"];
+  average: OccupationDetailViewModel["data"]["supplementAverage"];
+}) {
+  const cards: SalarySupplementCardData[] = [];
+  const hasWomen = hasSupplementMetrics(median?.women) || hasSupplementMetrics(average?.women);
+  const hasMen = hasSupplementMetrics(median?.men) || hasSupplementMetrics(average?.men);
+  const caption =
+    median?.periodLabel === average?.periodLabel
+      ? median?.periodLabel
+      : median?.periodLabel ?? average?.periodLabel;
+
+  if (hasWomen) {
+    cards.push(buildSalarySupplementCard({
+      key: "women",
+      title: "Kvinner",
+      caption,
+      icon: <MetricAvatar tone="women" />,
+      tone: "women",
+      median: median?.women,
+      average: average?.women,
+    }));
+  }
+
+  if (hasMen) {
+    cards.push(buildSalarySupplementCard({
+      key: "men",
+      title: "Menn",
+      caption,
+      icon: <MetricAvatar tone="men" />,
+      tone: "men",
+      median: median?.men,
+      average: average?.men,
+    }));
+  }
+
+  if (
+    (!hasWomen || !hasMen) &&
+    (hasSupplementMetrics(median?.total) || hasSupplementMetrics(average?.total))
+  ) {
+    cards.push(buildSalarySupplementCard({
+      key: "all",
+      title: "Alle",
+      caption,
+      tone: "neutral",
+      median: median?.total,
+      average: average?.total,
+    }));
+  }
+
+  return cards;
+}
+
+function buildSalarySupplementCard({
+  key,
+  title,
+  caption,
+  icon,
+  tone,
+  median,
+  average,
+}: Pick<SalarySupplementCardData, "key" | "title" | "caption" | "icon" | "tone"> & {
+  median?: OccupationSupplementMetrics;
+  average?: OccupationSupplementMetrics;
+}): SalarySupplementCardData {
+  return {
+    key,
+    title,
+    caption,
+    icon,
+    tone,
+    bonusMedian: median?.bonus,
+    bonusAverage: average?.bonus,
+    overtimeMedian: median?.overtime,
+    overtimeAverage: average?.overtime,
+    irregularAdditionsMedian: median?.irregularAdditions,
+    irregularAdditionsAverage: average?.irregularAdditions,
+  };
+}
+
+function hasSupplementMetrics(metrics?: OccupationSupplementMetrics) {
+  return Boolean(
+    metrics &&
+      (metrics.bonus !== undefined ||
+        metrics.overtime !== undefined ||
+        metrics.irregularAdditions !== undefined),
+  );
+}
+
 function buildSalaryCompositionCards({
   distribution,
   contractedDistribution,
@@ -793,10 +1128,6 @@ function buildSalaryCompositionCards({
       totalMedian: distribution?.women?.median,
       p25: distribution?.women?.p25,
       p75: distribution?.women?.p75,
-      extraMedian: calculatePositiveDifference(
-        distribution?.women?.median,
-        contractedDistribution?.women?.median,
-      ),
       tone: "women",
     });
   }
@@ -811,10 +1142,6 @@ function buildSalaryCompositionCards({
       totalMedian: distribution?.men?.median,
       p25: distribution?.men?.p25,
       p75: distribution?.men?.p75,
-      extraMedian: calculatePositiveDifference(
-        distribution?.men?.median,
-        contractedDistribution?.men?.median,
-      ),
       tone: "men",
     });
   }
@@ -828,10 +1155,6 @@ function buildSalaryCompositionCards({
       totalMedian: distribution?.total?.median,
       p25: distribution?.total?.p25,
       p75: distribution?.total?.p75,
-      extraMedian: calculatePositiveDifference(
-        distribution?.total?.median,
-        contractedDistribution?.total?.median,
-      ),
       tone: "neutral",
     });
   }
@@ -1471,12 +1794,12 @@ function buildTopSummary({
   const menRange = formatSalaryRangeText(menP25, menP75);
   const medianSentence =
     womenMedian !== undefined && menMedian !== undefined
-      ? `Median lønn i yrket i Norge er ${formatKr(womenMedian)} for kvinner og ${formatKr(menMedian)} for menn.`
-      : totalMedian !== undefined && womenMedian === undefined && menMedian === undefined
-        ? `Median lønn i yrket i Norge er ${formatKr(totalMedian)}.`
-      : womenMedian !== undefined
-        ? `Median lønn for kvinner i yrket i Norge er ${formatKr(womenMedian)}.`
-        : `Median lønn for menn i yrket i Norge er ${formatKr(menMedian)}.`;
+          ? `Median månedslønn i yrket i Norge er ${formatKr(womenMedian)} for kvinner og ${formatKr(menMedian)} for menn.`
+          : totalMedian !== undefined && womenMedian === undefined && menMedian === undefined
+            ? `Median månedslønn i yrket i Norge er ${formatKr(totalMedian)}.`
+            : womenMedian !== undefined
+              ? `Median månedslønn for kvinner i yrket i Norge er ${formatKr(womenMedian)}.`
+              : `Median månedslønn for menn i yrket i Norge er ${formatKr(menMedian)}.`;
 
   let rangeSentence: string | null = null;
 
@@ -1563,14 +1886,6 @@ function calculateSpread(min?: number, max?: number) {
   }
 
   return Math.max(0, max - min);
-}
-
-function calculatePositiveDifference(total?: number, base?: number) {
-  if (total === undefined || base === undefined) {
-    return undefined;
-  }
-
-  return Math.max(0, total - base);
 }
 
 function formatKrPlain(value?: number) {

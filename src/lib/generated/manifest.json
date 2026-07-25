@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-04T08:12:54.395Z",
+  "generatedAt": "2026-07-25T08:56:23.810Z",
   "source": "ssb",
   "datasets": [
     {
@@ -161,6 +161,23 @@
       "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
       "updated": "2026-02-05T07:00:00Z",
       "rowCount": 57618,
+      "dimensions": [
+        "MaaleMetode",
+        "Yrke",
+        "Sektor",
+        "Kjonn",
+        "AvtaltVanlig",
+        "ContentsCode",
+        "Tid"
+      ]
+    },
+    {
+      "key": "occupationSupplementMedianLatest",
+      "fileName": "occupation-supplement-median-latest.json",
+      "tableId": "11418",
+      "title": "11418: Yrkesfordelt månedslønn, etter sektor, kjønn og arbeidstid 2015-2025",
+      "updated": "2026-02-05T07:00:00Z",
+      "rowCount": 5238,
       "dimensions": [
         "MaaleMetode",
         "Yrke",

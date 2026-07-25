@@ -19,6 +19,22 @@ export type OccupationRelatedSalaryRow = {
   groupCode: string;
 };
 
+export type OccupationSupplementMetrics = {
+  bonus?: number;
+  overtime?: number;
+  irregularAdditions?: number;
+};
+
+export type OccupationSupplementSnapshot = {
+  occupationCode: string;
+  occupationLabel: string;
+  periodLabel?: string;
+  updated?: string;
+  total?: OccupationSupplementMetrics;
+  women?: OccupationSupplementMetrics;
+  men?: OccupationSupplementMetrics;
+};
+
 export type OccupationDetailPageData = {
   trendData: OccupationDetailTrendData;
   distribution: OccupationSalaryDistribution | null;
@@ -30,6 +46,8 @@ export type OccupationDetailPageData = {
   };
   laborMarketStats: OccupationLaborMarketStats | null;
   sectorSalarySeries?: OccupationSectorSalaryTimeSeries | null;
+  supplementMedian?: OccupationSupplementSnapshot | null;
+  supplementAverage?: OccupationSupplementSnapshot | null;
   medianBasicSalarySeries: OccupationSalaryTimeSeries;
   relatedRows: OccupationRelatedSalaryRow[];
 };

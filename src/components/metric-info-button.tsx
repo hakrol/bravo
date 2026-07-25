@@ -58,11 +58,8 @@ export function MetricInfoButton({
             role="dialog"
           >
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
-                  Forklaring
-                </p>
-                <h3 className="mt-2 text-xl font-semibold tracking-[-0.03em] text-slate-950">
+              <div className="pt-1">
+                <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
                   {label}
                 </h3>
               </div>
@@ -77,9 +74,13 @@ export function MetricInfoButton({
             </div>
 
             {typeof description === "string" ? (
-              <p className="mt-5 text-sm leading-7 text-slate-700">{description}</p>
+              <p className="mt-5 text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
+                {description}
+              </p>
             ) : (
-              <div className="mt-5 text-sm leading-7 text-slate-700">{description}</div>
+              <div className="mt-5 text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
+                {description}
+              </div>
             )}
           </div>
         </div>
