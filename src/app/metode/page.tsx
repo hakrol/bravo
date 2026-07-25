@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InfoPageHero } from "@/components/info-page-hero";
 import { editorialIdentity } from "@/lib/editorial-identity";
 import { siteConfig } from "@/lib/site-config";
 
@@ -53,20 +54,12 @@ export const metadata: Metadata = {
 export default function MetodePage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
-      <section className="bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="mx-auto w-full max-w-5xl">
-          <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-            Åpenhet
-          </p>
-          <h1 className="mt-3 text-5xl font-extrabold leading-tight text-slate-950 sm:text-6xl">
-            Metode
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700">
-            Slik arbeider Lønnsinnsikt med kilder, databehandling, beregninger, redaksjonell
-            kontroll og bruk av AI.
-          </p>
-        </div>
-      </section>
+      <InfoPageHero
+        title="Metode"
+        description="Slik arbeider Lønnsinnsikt med kilder, databehandling, beregninger, redaksjonell kontroll og bruk av AI."
+        imageSrc="/images/hero-metode.png"
+        imageAlt="Illustrasjon av veien fra kilde og databehandling til kontrollert statistikk"
+      />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto grid w-full max-w-5xl gap-14">

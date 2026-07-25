@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { formatBlogDate, getAllBlogPosts } from "@/lib/blog";
 import { editorialIdentity } from "@/lib/editorial-identity";
-import { getAllForklarerPosts } from "@/lib/forklarer";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 const description =
-  "Møt Redaksjonen i Lønnsinnsikt og se hvem som har ansvar for nettstedets artikler, databruk og redaksjonelle innhold.";
-
-const responsibilities = [
-  "velge og prioritere temaer som er nyttige for arbeidstakere og jobbsøkere",
-  "kontrollere at lønnstall og andre datapunkter kan spores til oppgitte kilder",
-  "skille tydelig mellom offisiell statistikk, egne beregninger og redaksjonelle vurderinger",
-  "oppdatere innhold når nye tall eller vesentlige opplysninger blir tilgjengelige",
-  "behandle tips om feil og gjennomføre nødvendige rettelser",
-];
+  "Se de siste artiklene fra Lønnsinnsikt og finn kontaktinformasjon til redaksjonelt ansvarlig.";
 
 export const metadata: Metadata = {
   title: "Redaksjonen",
@@ -42,12 +34,8 @@ function serializeJsonLd(value: unknown) {
 }
 
 export default async function RedaksjonenPage() {
-  const [blogPosts, forklarerPosts] = await Promise.all([
-    getAllBlogPosts(),
-    getAllForklarerPosts(),
-  ]);
+  const blogPosts = await getAllBlogPosts();
   const latestBlogPosts = blogPosts.slice(0, 6);
-  const latestForklarerPosts = forklarerPosts.slice(0, 6);
   const authorUrl = getAbsoluteUrl(editorialIdentity.authorPath);
   const jsonLd = {
     "@context": "https://schema.org",
@@ -79,19 +67,27 @@ export default async function RedaksjonenPage() {
         }}
       />
 
-      <section className="bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="mx-auto w-full max-w-5xl">
-          <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-            Forfatter
-          </p>
-          <h1 className="mt-3 text-5xl font-extrabold leading-tight text-slate-950 sm:text-6xl">
-            Redaksjonen
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700">
-            Redaksjonen er den felles bylinen for artikler og forklaringer som publiseres av
-            Lønnsinnsikt. Her kan du se hvem som har ansvaret, og hvordan innholdet blir
-            utviklet og kontrollert.
-          </p>
+      <section className="overflow-hidden bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(340px,1.18fr)] lg:gap-14">
+          <div>
+            <h1 className="text-5xl font-extrabold leading-tight text-slate-950 sm:text-6xl">
+              Redaksjonen
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-700">
+              Her finner du de siste artiklene fra Lønnsinnsikt og kontaktinformasjon til
+              redaksjonelt ansvarlig.
+            </p>
+          </div>
+
+          <div className="relative aspect-[3/2] overflow-hidden rounded-[5px] bg-[#ebece2] shadow-[0_20px_50px_rgba(27,36,48,0.1)]">
+            <Image
+              alt=""
+              className="object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 540px"
+              src="/images/redaksjonen-header.png"
+            />
+          </div>
         </div>
       </section>
 
@@ -131,8 +127,7 @@ export default async function RedaksjonenPage() {
             <div className="grid gap-5 text-base leading-8 text-slate-700 sm:text-lg">
               <p>
                 Lønnsinnsikt utvikles og drives av Håkon Rolfsen som et uavhengig norsk
-                hobbyprosjekt. «Redaksjonen» er en redaksjonell avsender, ikke en påstand om
-                at nettstedet har en stor eller separat bemannet redaksjon.
+                hobbyprosjekt.
               </p>
               <p>
                 Håkon har ansvar for nettstedets tekniske utvikling, valg av datakilder,
@@ -148,83 +143,60 @@ export default async function RedaksjonenPage() {
             </div>
           </div>
 
-          <div className="border-t border-[rgba(27,36,48,0.12)] pt-10">
+          <div>
             <h2 className="text-3xl font-extrabold leading-tight text-slate-950">
-              Hva Redaksjonen har ansvar for
-            </h2>
-            <ul className="mt-6 grid gap-4" aria-label="Redaksjonens ansvarsområder">
-              {responsibilities.map((responsibility) => (
-                <li className="flex gap-3 text-base leading-8 text-slate-700" key={responsibility}>
-                  <span className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--primary-strong)]" />
-                  <span>{responsibility}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border-t border-[rgba(27,36,48,0.12)] pt-10">
-            <h2 className="text-3xl font-extrabold leading-tight text-slate-950">
-              Publisert av Redaksjonen
+              Publisert
             </h2>
             <p className="mt-4 max-w-4xl text-base leading-8 text-slate-700">
-              Bylinen brukes på nettstedets redaksjonelle artikler og forklaringer. Her er
-              et utvalg av det nyeste innholdet.
+              De siste artiklene fra Lønnsinnsikt.
             </p>
 
-            <div className="mt-8 grid gap-8 lg:grid-cols-2">
-              <div>
-                <h3 className="text-xl font-extrabold text-slate-950">Nyeste artikler</h3>
-                <ul className="mt-4 grid gap-3">
-                  {latestBlogPosts.map((post) => (
-                    <li
-                      className="rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-4"
-                      key={post.slug}
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {latestBlogPosts.map((post) => (
+                <article
+                  className="group flex h-full flex-col overflow-hidden rounded-[5px] bg-white shadow-[0_16px_38px_rgba(27,36,48,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_rgba(27,36,48,0.11)]"
+                  key={post.slug}
+                >
+                  <Link
+                    aria-label={`Les ${post.title}`}
+                    className="relative block aspect-[16/10] overflow-hidden bg-[#eef6ef]"
+                    href={`/blogg/${post.slug}`}
+                  >
+                    <Image
+                      alt={post.coverImageAlt ?? post.title}
+                      className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+                      src={post.coverImage}
+                    />
+                  </Link>
+                  <div className="flex flex-1 flex-col p-5">
+                    <time
+                      className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500"
+                      dateTime={post.publishedAt}
                     >
+                      {formatBlogDate(post.publishedAt)}
+                    </time>
+                    <h3 className="mt-3 text-xl font-extrabold leading-snug text-slate-950">
                       <Link
-                        className="font-extrabold leading-6 text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+                        className="transition group-hover:text-[var(--primary-strong)]"
                         href={`/blogg/${post.slug}`}
                       >
                         {post.title}
                       </Link>
-                      <p className="mt-1 text-sm text-slate-500">
-                        {formatBlogDate(post.publishedAt)}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  className="mt-4 inline-block font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                  href="/blogg"
-                >
-                  Se alle artikler
-                </Link>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-extrabold text-slate-950">Forklaringer</h3>
-                <ul className="mt-4 grid gap-3">
-                  {latestForklarerPosts.map((post) => (
-                    <li
-                      className="rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-4"
-                      key={post.slug}
-                    >
-                      <Link
-                        className="font-extrabold leading-6 text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                        href={`/forklarer/${post.slug}`}
-                      >
-                        {post.term}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  className="mt-4 inline-block font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                  href="/forklarer"
-                >
-                  Se alle forklaringer
-                </Link>
-              </div>
+                    </h3>
+                  </div>
+                </article>
+              ))}
             </div>
+
+            <Link
+              className="mt-6 inline-flex items-center gap-3 font-extrabold text-[var(--primary-strong)] transition hover:text-[var(--primary)]"
+              href="/blogg"
+            >
+              Se alle artikler
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
 
           <div className="grid gap-5 rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-6 shadow-[0_14px_36px_rgba(27,36,48,0.05)] sm:p-8">
@@ -261,7 +233,7 @@ export default async function RedaksjonenPage() {
             </div>
           </div>
 
-          <p className="text-sm leading-7 text-slate-500">Sist oppdatert 24. juli 2026.</p>
+          <p className="text-sm leading-7 text-slate-500">Sist oppdatert 25. juli 2026.</p>
         </div>
       </section>
     </main>

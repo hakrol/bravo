@@ -8,7 +8,6 @@ import { calculators } from "@/lib/tool-catalog";
 const navItems = [
   { href: "/yrker", label: "Yrker" },
   { href: "/spesial", label: "Spesial" },
-  { href: "/ressurser", label: "Ressurser" },
   { href: "/blogg", label: "Blogg" },
   { href: "/om", label: "Om" },
 ] as const;

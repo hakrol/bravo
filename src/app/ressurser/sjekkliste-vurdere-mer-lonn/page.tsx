@@ -91,9 +91,9 @@ export default function SjekklisteVurdereMerLonnPage() {
           <div className="print:hidden">
             <Link
               className="text-sm font-semibold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.22)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-              href="/ressurser"
+              href="/verktoy"
             >
-              Tilbake til ressurser
+              Tilbake til verktøy
             </Link>
           </div>
 

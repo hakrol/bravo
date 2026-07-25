@@ -31,11 +31,10 @@ export default function KontaktPage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
       <InfoPageHero
-        eyebrow="Kontakt"
         title="Ta kontakt med oss"
         description="Har du funnet en feil, lurer du på hvordan tallene brukes, eller ønsker du å snakke med oss? Send en melding, så svarer vi så snart vi kan."
-        imageSrc="/images/hero-hjelpeside.png"
-        imageAlt="Illustrasjon for kontakt med Lønnsinnsikt"
+        imageSrc="/images/hero-kontakt.png"
+        imageAlt="Illustrasjon av en konvolutt, meldinger og en sendt henvendelse"
       />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">

@@ -69,11 +69,10 @@ export default function KilderPage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
       <InfoPageHero
-        eyebrow="Kilder"
         title="Kilder og datagrunnlag"
         description="Lønnsinnsikt skal være tydelig på hvor tallene kommer fra, hva de kan brukes til og hvilke begrensninger de har."
-        imageSrc="/images/hero-kilder.png"
-        imageAlt="Illustrasjon for kilder og datagrunnlag hos Lønnsinnsikt"
+        imageSrc="/images/hero-kilder-redaksjonell.png"
+        imageAlt="Illustrasjon av oppslagsverk, datakilder og kontrollert statistikk"
       />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">

@@ -619,24 +619,28 @@ Ny gjennomgang bør ikke bestilles før alle punktene nedenfor kan besvares med 
 
 - [x] Riktig publisher-ID brukes både i AdSense-scriptet og `ads.txt`.
 - [x] Google-sertifisert CMP er implementert og testet.
-- [ ] Personvernerklæringen oppfyller AdSense-kravene.
-- [ ] Kontaktside og fungerende e-postadresse er publisert.
+- [x] Personvernerklæringen er ferdigstilt med AdSense, CMP, informasjonskapsler, kontaktdata og behandlingsansvarlig.
+- [x] Kontaktside og fungerende e-postadresse er publisert.
 - [x] Kontaktsiden er implementert og teknisk validert.
 - [x] Resend-domene og DNS-poster er verifisert.
 - [x] Resend-hemmeligheter er konfigurert som sensitive Vercel-variabler.
-- [ ] En reell kontakthenvendelse er sendt og mottatt etter utrulling.
-- [ ] Ansvarlig eier og redaktør er tydelig oppgitt.
-- [ ] Forfattersiden er publisert og byline lenker til den.
-- [ ] Metode og AI-bruk er forklart konkret.
-- [ ] AdSense lastes ikke på admin-, utviklings-, feil- eller tomme sider.
-- [ ] Canonical-domene, redirects og sitemap samsvarer.
-- [ ] Overlappende URL-er er slått sammen eller tatt ut av indeksen.
+- [x] En reell kontakthenvendelse er sendt og mottatt etter utrulling.
+- [x] Håkon Rolfsen er tydelig oppgitt som eier og redaksjonelt ansvarlig.
+- [x] Forfatterside, lenket byline, metodeside og rettelsespolicy er implementert i kodebasen.
+- [x] Forfatter-, metode- og rettelsessidene er distribuert og kontrollert i produksjon.
+- [x] Metodesiden forklarer databehandling, beregninger, begrensninger og AI-bruk konkret.
+- [x] AdSense-lasting styres av en sentral tillatelsesliste som utelukker admin-, utviklings-, feil- og tillitssider.
+- [x] `www.lonnsinnsikt.no` brukes i canonical, HTTP 308-redirect, metadata, robots og sitemap.
+- [x] Search Console-testen bekrefter at forsiden kan indekseres og oppgir riktig brukerdefinert canonical.
+- [x] Tynne timelønns- og yrkesspesifikke lønnsvekstsider er fjernet og videresendes permanent.
+- [ ] Gjenværende overlappende URL-er er slått sammen eller tatt ut av indeksen.
 - [ ] Sitemap inneholder bare sider som tilfredsstiller kvalitetskravene.
 - [ ] Alle indeksérbare yrkessider er manuelt gjennomgått.
 - [ ] Alle indeksérbare sider gir selvstendig verdi utover rå SSB-data.
 - [ ] Grafer, tabeller og kalkulatorer fungerer på mobil og desktop.
 - [ ] Ingen side har mer annonser eller promotering enn hovedinnhold.
 - [ ] De viktigste endringene er rekrypet av Google.
+- [ ] Google har valgt `https://www.lonnsinnsikt.no/` som canonical etter ny indeksering.
 - [ ] Search Console viser ingen manuelle tiltak eller kritiske indeksfeil.
 
 ## Anbefalt rekkefølge

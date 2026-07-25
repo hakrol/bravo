@@ -70,12 +70,6 @@ const staticRoutes = [
     changeFrequency: "yearly" as const,
   },
   {
-    path: "/ressurser",
-    filePath: "src/app/ressurser/page.tsx",
-    priority: 0.6,
-    changeFrequency: "monthly" as const,
-  },
-  {
     path: "/ressurser/sjekkliste-for-lonnssamtale",
     filePath: "src/app/ressurser/sjekkliste-for-lonnssamtale/page.tsx",
     priority: 0.6,

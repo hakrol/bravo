@@ -32,7 +32,7 @@ const footerGroups = [
   {
     title: "Innhold",
     links: [
-      { href: "/ressurser", label: "Ressurser" },
+      { href: "/verktoy", label: "Verktøy" },
       { href: "/spesial", label: "Spesial" },
       { href: "/forklarer", label: "Forklarer" },
       { href: "/ordbok", label: "Ordbok" },

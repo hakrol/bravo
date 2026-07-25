@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InfoPageHero } from "@/components/info-page-hero";
 import { calculators } from "@/lib/tool-catalog";
 import { siteConfig } from "@/lib/site-config";
 
@@ -29,41 +30,37 @@ export const metadata: Metadata = {
 
 export default function KalkulatorerPage() {
   return (
-    <div className="min-h-screen px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
-        <section className="fade-up grid gap-4">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--primary-strong)]">
-            Kalkulatorer
-          </p>
-          <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
-            Alle kalkulatorene samlet på ett sted
-          </h1>
-          <p className="max-w-3xl text-lg leading-8 text-[var(--muted)]">
-            Regn på lønn, lønnsvekst, årsverk, lån og godtgjørelser med kalkulatorer laget for
-            norske forhold.
-          </p>
-        </section>
+    <main className="min-h-screen bg-[#fafafa]">
+      <InfoPageHero
+        title="Kalkulatorer"
+        description="Regn på lønn, lønnsvekst, årsverk, lån og godtgjørelser med kalkulatorer laget for norske forhold."
+        imageSrc="/images/hero-kalkulatorer.png"
+        imageAlt="Illustrasjon av en kalkulator med diagrammer for lønn, tid og økonomi"
+      />
 
-        <section className="fade-up-delay grid gap-5 md:grid-cols-2">
-          {calculators.map((calculator) => (
-            <ToolCard
-              description={calculator.description}
-              href={calculator.href}
-              key={calculator.href}
-              label={calculator.label}
-              tag="Kalkulator"
-            />
-          ))}
-        </section>
+      <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+          <section className="fade-up-delay grid gap-5 md:grid-cols-2">
+            {calculators.map((calculator) => (
+              <ToolCard
+                description={calculator.description}
+                href={calculator.href}
+                key={calculator.href}
+                label={calculator.label}
+                tag="Kalkulator"
+              />
+            ))}
+          </section>
 
-        <Link
-          className="inline-flex w-fit items-center font-semibold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.22)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-          href="/verktoy"
-        >
-          Se alle verktøy
-        </Link>
-      </div>
-    </div>
+          <Link
+            className="inline-flex w-fit items-center font-semibold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.22)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
+            href="/verktoy"
+          >
+            Se alle verktøy
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }
 

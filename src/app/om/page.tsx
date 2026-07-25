@@ -34,7 +34,7 @@ const productLinks = [
   },
   {
     title: "Les guider og forklaringer",
-    href: "/ressurser",
+    href: "/blogg",
     text: "Lær mer om lønn, begreper, lønnsforhandling og arbeidsliv.",
   },
 ] as const;
@@ -64,20 +64,16 @@ export default function OmPage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
       <InfoPageHero
-        eyebrow="Om"
         title="Om Lønnsinnsikt"
         description="Vi bygger en datadrevet lønnsplattform for Norge, der lønnstall blir forklart på en måte som er nyttig før lønnssamtaler, jobbskifter og karrierevalg."
-        imageSrc="/images/hero-om.png"
-        imageAlt="Illustrasjon for Lønnsinnsikt sin om-side"
+        imageSrc="/images/hero-om-redaksjonell.png"
+        imageAlt="Illustrasjon av lønnsdata, sammenligning og informerte karrierevalg"
       />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto grid w-full max-w-5xl gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-              Formål
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
+            <h2 className="text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
               Lønnstall skal være forståelige nok til å brukes.
             </h2>
           </div>
@@ -107,10 +103,7 @@ export default function OmPage() {
       <section className="border-y border-black/6 bg-white px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto w-full max-w-5xl">
           <div className="max-w-3xl">
-            <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-              Hvem siden er for
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
+            <h2 className="text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
               Bedre lønnsinnsikt er nyttig i flere situasjoner.
             </h2>
           </div>
@@ -133,10 +126,7 @@ export default function OmPage() {
         <div className="mx-auto w-full max-w-5xl">
           <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
             <div>
-              <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-                Datagrunnlag
-              </p>
-              <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
+              <h2 className="text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
                 Offisiell statistikk, forklart i en praktisk sammenheng.
               </h2>
             </div>
@@ -172,10 +162,7 @@ export default function OmPage() {
       <section className="bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto w-full max-w-5xl">
           <div className="max-w-3xl">
-            <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-              Dette kan du gjøre
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
+            <h2 className="text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
               Gå fra spørsmål til et mer konkret beslutningsgrunnlag.
             </h2>
           </div>
@@ -203,10 +190,7 @@ export default function OmPage() {
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto grid w-full max-w-5xl gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
           <div>
-            <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-              Bak Lønnsinnsikt
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
+            <h2 className="text-3xl font-extrabold leading-tight text-slate-950 sm:text-4xl">
               Et uavhengig hobbyprosjekt i løpende utvikling.
             </h2>
           </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InfoPageHero } from "@/components/info-page-hero";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
@@ -48,13 +49,12 @@ export const metadata: Metadata = {
 export default function RedaksjonelleRetningslinjerPage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
-      <section className="bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="mx-auto w-full max-w-6xl">
-          <h1 className="text-4xl font-extrabold leading-tight text-slate-950 sm:text-5xl">
-            Redaksjonelle retningslinjer
-          </h1>
-        </div>
-      </section>
+      <InfoPageHero
+        title="Redaksjonelle retningslinjer"
+        description="Prinsippene for redaksjonell kvalitet, kildebruk, AI og ansvarlig lønnsinnhold hos Lønnsinnsikt."
+        imageSrc="/images/hero-redaksjonelle-retningslinjer.png"
+        imageAlt="Illustrasjon av redaksjonelle prinsipper, balanse og kvalitetskontroll"
+      />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto grid w-full max-w-6xl gap-12">

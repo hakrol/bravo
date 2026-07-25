@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InfoPageHero } from "@/components/info-page-hero";
 import { editorialIdentity } from "@/lib/editorial-identity";
 import { siteConfig } from "@/lib/site-config";
 
@@ -56,20 +57,12 @@ export const metadata: Metadata = {
 export default function RettelserPage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
-      <section className="bg-[#f4f7f1] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="mx-auto w-full max-w-5xl">
-          <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
-            Kvalitet og ansvar
-          </p>
-          <h1 className="mt-3 text-5xl font-extrabold leading-tight text-slate-950 sm:text-6xl">
-            Rettelser
-          </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-700">
-            Lønnsinnsikt skal rette dokumenterte feil. Her kan du melde fra, og se hvordan
-            Redaksjonen vurderer og håndterer rettelser.
-          </p>
-        </div>
-      </section>
+      <InfoPageHero
+        title="Rettelser"
+        description="Lønnsinnsikt skal rette dokumenterte feil. Her kan du melde fra, og se hvordan Redaksjonen vurderer og håndterer rettelser."
+        imageSrc="/images/hero-rettelser.png"
+        imageAlt="Illustrasjon av et diagram som blir korrigert og kontrollert"
+      />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto grid w-full max-w-5xl gap-14">

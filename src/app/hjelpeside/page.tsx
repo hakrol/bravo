@@ -36,6 +36,21 @@ const faqs = [
     answer:
       "Ja, tallene kan gi et godt utgangspunkt. De bør likevel brukes sammen med egen erfaring, ansvar, resultater, bransje, geografi og arbeidsgivers situasjon. Statistikken viser markedet, men avgjør ikke automatisk hva du bør tjene.",
   },
+  {
+    question: "Hva er forskjellen på avtalt lønn og SSBs månedslønn?",
+    answer:
+      "Avtalt lønn er den faste lønnen som er avtalt for jobben. SSBs samlede månedslønn kan i tillegg omfatte bonus og uregelmessige tillegg, mens overtidsbetaling vises som en egen lønnsart. Se derfor hvilket lønnsmål som brukes før du sammenligner tallet med arbeidsavtalen eller lønnsslippen din.",
+  },
+  {
+    question: "Hvorfor kan lønnen min avvike fra statistikken?",
+    answer:
+      "Statistikken beskriver en gruppe, ikke én bestemt stilling. Erfaring, ansvar, sektor, bransje, geografi, arbeidstid, tillegg, lokale avtaler og tidspunktet for siste lønnsjustering kan gjøre at lønnen din ligger både over og under medianen eller gjennomsnittet.",
+  },
+  {
+    question: "Hvordan melder jeg fra om en mulig feil?",
+    answer:
+      "Bruk kontaktskjemaet og legg ved lenken til siden, hva du mener er feil, og gjerne en kilde som viser riktig informasjon. Konkrete opplysninger gjør det enklere å kontrollere og rette feilen.",
+  },
 ];
 
 export const metadata: Metadata = {
@@ -63,11 +78,10 @@ export default function HjelpesidePage() {
   return (
     <main className="min-h-screen bg-[#fafafa]">
       <InfoPageHero
-        eyebrow="Hjelp"
         title="Hjelpeside"
         description="Finn svar på de vanligste spørsmålene om hvordan Lønnsinnsikt fungerer, hvor tallene kommer fra og hvordan du bør tolke dem."
-        imageSrc="/images/hero-hjelpeside.png"
-        imageAlt="Illustrasjon for hjelpesiden til Lønnsinnsikt"
+        imageSrc="/images/hero-hjelpeside-redaksjonell.png"
+        imageAlt="Illustrasjon av en åpen hjelpeguide med spørsmål og kvalitetssikrede svar"
       />
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
