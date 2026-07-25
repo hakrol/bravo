@@ -16,6 +16,8 @@ type GeneratedSsbDatasetKey =
   | "occupationDistributionLatest"
   | "occupationSectorSalaryLatest"
   | "occupationContractedDistributionLatest"
+  | "occupationSupplementTimeSeries"
+  | "occupationSupplementMedianLatest"
   | "occupationWorkforceTimeSeries"
   | "occupationAgeTimeSeries"
   | "occupationContractLatest"
@@ -136,6 +138,14 @@ export async function syncOccupationDetailViewModels() {
             datasets.occupationSectorSalaryLatest,
             entry.page.occupationCode,
           ),
+          supplementMedian: buildSupplementSnapshot(
+            datasets.occupationSupplementMedianLatest,
+            entry.page.occupationCode,
+          ),
+          supplementAverage: buildSupplementSnapshot(
+            datasets.occupationSupplementTimeSeries,
+            entry.page.occupationCode,
+          ),
           medianBasicSalarySeries: buildSalaryTimeSeries(
             datasets.occupationMedianTimeSeries,
             entry.page.occupationCode,
@@ -195,6 +205,8 @@ async function readSourceDatasets(manifest: GeneratedManifest) {
     "occupationDistributionLatest",
     "occupationSectorSalaryLatest",
     "occupationContractedDistributionLatest",
+    "occupationSupplementTimeSeries",
+    "occupationSupplementMedianLatest",
     "occupationWorkforceTimeSeries",
     "occupationAgeTimeSeries",
     "occupationContractLatest",
@@ -436,6 +448,77 @@ function buildDistribution(dataset: SsbDataset, occupationCode: string) {
     occupationCode,
     occupationLabel,
     periodLabel: findFirstDimensionLabel(dataset, "Tid"),
+    updated: dataset.updated,
+    total: rowsByGender.get("0"),
+    women: rowsByGender.get("2"),
+    men: rowsByGender.get("1"),
+  };
+}
+
+function buildSupplementSnapshot(dataset: SsbDataset, occupationCode: string) {
+  const rowsByGender = new Map<string, {
+    bonus?: number;
+    overtime?: number;
+    irregularAdditions?: number;
+  }>();
+  const relevantRows = dataset.rows.filter(
+    (row) => row.dimensions.Yrke?.code === occupationCode && row.dimensions.Tid,
+  );
+  const latestPeriodCode = relevantRows.reduce<string | undefined>((latest, row) => {
+    const periodCode = row.dimensions.Tid?.code;
+
+    if (!periodCode || (latest && periodCode.localeCompare(latest, "nb-NO") <= 0)) {
+      return latest;
+    }
+
+    return periodCode;
+  }, undefined);
+  let occupationLabel = occupationCode;
+
+  for (const row of relevantRows) {
+    const occupation = row.dimensions.Yrke;
+    const gender = row.dimensions.Kjonn;
+    const measure = row.dimensions.ContentsCode;
+    const period = row.dimensions.Tid;
+
+    if (
+      !occupation ||
+      !gender ||
+      !measure ||
+      !period ||
+      period.code !== latestPeriodCode ||
+      row.value === null
+    ) {
+      continue;
+    }
+
+    occupationLabel = occupation.label;
+    const metrics = rowsByGender.get(gender.code) ?? {};
+
+    if (measure.code === "Bonus") {
+      metrics.bonus = row.value;
+    }
+
+    if (measure.code === "Overtid") {
+      metrics.overtime = row.value;
+    }
+
+    if (measure.code === "Uregtil") {
+      metrics.irregularAdditions = row.value;
+    }
+
+    rowsByGender.set(gender.code, metrics);
+  }
+
+  if (rowsByGender.size === 0) {
+    return null;
+  }
+
+  return {
+    occupationCode,
+    occupationLabel,
+    periodLabel: relevantRows.find((row) => row.dimensions.Tid?.code === latestPeriodCode)
+      ?.dimensions.Tid?.label,
     updated: dataset.updated,
     total: rowsByGender.get("0"),
     women: rowsByGender.get("2"),
