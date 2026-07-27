@@ -438,6 +438,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </div>
               <div className="mt-8">
                 <OccupationPurchasingPowerLineChart
+                  mobileOptimized
                   series={detail.data.trendData.purchasingPowerSeries}
                 />
               </div>

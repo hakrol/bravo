@@ -2,6 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
+import {
+  formatCompactChartYear,
+  useOccupationChartMobileLayout,
+} from "@/components/occupation-chart-mobile";
 import type { OccupationPurchasingPowerTimeSeries } from "@/lib/ssb";
 
 const percentFormatter = new Intl.NumberFormat("nb-NO", {
@@ -19,6 +23,7 @@ type FilterKey = (typeof filterOptions)[number]["key"];
 
 type OccupationPurchasingPowerLineChartProps = {
   initialFilter?: FilterKey;
+  mobileOptimized?: boolean;
   series: OccupationPurchasingPowerTimeSeries;
 };
 
@@ -36,9 +41,11 @@ type SegmentPoint = {
 
 export function OccupationPurchasingPowerLineChart({
   initialFilter = "realGrowthAll",
+  mobileOptimized = false,
   series,
 }: OccupationPurchasingPowerLineChartProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>(initialFilter);
+  const useMobileChartLayout = useOccupationChartMobileLayout(mobileOptimized);
 
   const availableFilters = useMemo(
     () =>
@@ -74,12 +81,12 @@ export function OccupationPurchasingPowerLineChart({
     return null;
   }
 
-  const chartWidth = 900;
-  const chartHeight = 300;
-  const paddingLeft = 76;
-  const paddingRight = 34;
-  const paddingTop = 18;
-  const paddingBottom = 42;
+  const chartWidth = useMobileChartLayout ? 390 : 900;
+  const chartHeight = useMobileChartLayout ? 360 : 300;
+  const paddingLeft = useMobileChartLayout ? 58 : 76;
+  const paddingRight = useMobileChartLayout ? 24 : 34;
+  const paddingTop = useMobileChartLayout ? 20 : 18;
+  const paddingBottom = useMobileChartLayout ? 48 : 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
   const minValue = Math.min(...points.map((point) => point.value), 0);
@@ -117,13 +124,15 @@ export function OccupationPurchasingPowerLineChart({
   return (
     <section className="bg-transparent">
       <div className="space-y-4">
-        <h3 className="text-center text-xl font-semibold text-slate-950 sm:text-2xl">
+        <h3 className={`text-xl font-semibold text-slate-950 sm:text-2xl ${
+          mobileOptimized ? "text-left" : "text-center"
+        }`}>
           {`Utvikling i reallønnsvekst for ${series.occupationLabel}`}
         </h3>
 
         {latestValues.length > 0 ? (
-          <div className="space-y-2 text-center">
-            <div className="flex items-center justify-center gap-2">
+          <div className={`space-y-2 ${mobileOptimized ? "text-left" : "text-center"}`}>
+            <div className={`flex items-center gap-2 ${mobileOptimized ? "" : "justify-center"}`}>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                 Siste data
               </p>
@@ -132,28 +141,37 @@ export function OccupationPurchasingPowerLineChart({
                 label="Siste data"
               />
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className={`grid grid-cols-2 divide-x divide-slate-200 border-y border-slate-200 sm:flex sm:flex-wrap sm:items-center sm:gap-2 sm:divide-x-0 sm:border-y-0 ${
+              mobileOptimized ? "" : "sm:justify-center"
+            }`}>
               {latestPeriodLabel ? (
-                <span className="rounded-[5px] border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-950 shadow-sm">
-                  {formatPeriodLabel(latestPeriodLabel)}
+                <span className="flex flex-col px-2 py-3 sm:block sm:rounded-[5px] sm:border sm:border-slate-200 sm:bg-white sm:px-4 sm:py-2 sm:text-sm sm:font-semibold sm:text-slate-950 sm:shadow-sm">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-slate-500 sm:hidden">
+                    Periode
+                  </span>
+                  <strong className="mt-1 text-sm font-semibold text-slate-950 sm:mt-0 sm:text-inherit">
+                    {formatPeriodLabel(latestPeriodLabel)}
+                  </strong>
                 </span>
               ) : null}
               {latestValues.map((entry) => (
                 <div
                   key={`latest-${entry.key}`}
-                  className={`rounded-[5px] border border-slate-200 bg-white px-4 py-2 text-sm leading-none shadow-sm ${
+                  className={`min-w-0 px-2 py-3 text-sm leading-5 sm:rounded-[5px] sm:border sm:border-slate-200 sm:bg-white sm:px-4 sm:py-2 sm:leading-none sm:shadow-sm ${
                     entry.value > 0 ? "text-emerald-700" : entry.value < 0 ? "text-red-700" : "text-slate-700"
                   }`}
                 >
-                  <span className="text-[15px]">{entry.label}: </span>
-                  <span className="text-[15px] font-semibold">{percentFormatter.format(entry.value)} %</span>
+                  <span className="block truncate text-xs sm:inline sm:text-[15px]">{entry.label}<span className="hidden sm:inline">: </span></span>
+                  <span className="block whitespace-nowrap text-[13px] font-semibold sm:inline sm:text-[15px]">{percentFormatter.format(entry.value)} %</span>
                 </div>
               ))}
             </div>
           </div>
         ) : null}
 
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className={`grid grid-cols-3 overflow-hidden rounded-[6px] border border-slate-200 sm:flex sm:flex-wrap sm:gap-2 sm:overflow-visible sm:border-0 ${
+          mobileOptimized ? "" : "sm:justify-center"
+        }`}>
         {filterOptions.map((option) => {
           const isActive = option.key === resolvedFilter;
           const isAvailable = availableFilters[option.key];
@@ -162,7 +180,7 @@ export function OccupationPurchasingPowerLineChart({
             <button
               key={option.key}
               disabled={!isAvailable}
-              className={`rounded-full border px-3 py-1.5 text-sm transition ${
+              className={`min-w-0 border-0 border-r border-slate-200 px-2 py-3 text-sm transition last:border-r-0 sm:rounded-full sm:border sm:px-3 sm:py-1.5 ${
                 !isAvailable
                   ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
                   : isActive
@@ -182,7 +200,9 @@ export function OccupationPurchasingPowerLineChart({
         })}
         </div>
         {latestSeriesPoint && fiveYearGrowth !== null && activeOption ? (
-          <p className="mx-auto max-w-3xl text-center text-sm leading-7 text-slate-700 sm:text-base">
+          <p className={`max-w-3xl text-sm leading-7 text-slate-700 sm:text-base ${
+            mobileOptimized ? "text-left" : "mx-auto text-center"
+          }`}>
             Reallønnen for {getFilterSubject(activeOption.key)}{" "}
             {getGrowthDescription(latestSeriesPoint.value)} det siste året og{" "}
             {getGrowthDescription(fiveYearGrowth)} samlet de siste fem årene.
@@ -190,7 +210,7 @@ export function OccupationPurchasingPowerLineChart({
         ) : null}
       </div>
 
-      <div className="mt-8 overflow-x-auto">
+      <div className="mt-5 overflow-visible sm:mt-8 sm:overflow-x-auto">
         <svg
           aria-label={`Reallønnsvekst for ${series.occupationLabel}`}
           className="w-full"
@@ -213,7 +233,7 @@ export function OccupationPurchasingPowerLineChart({
                 />
                 <text
                   fill="#000000"
-                  fontSize="13"
+                  fontSize={useMobileChartLayout ? "12" : "13"}
                   textAnchor="end"
                   x={paddingLeft - 10}
                   y={y + 4}
@@ -236,7 +256,7 @@ export function OccupationPurchasingPowerLineChart({
                 stroke={segment.tone === "positive" ? "#166534" : "#b91c1c"}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="3"
+                strokeWidth={useMobileChartLayout ? "3.5" : "3"}
               />
             </g>
           ))}
@@ -247,7 +267,7 @@ export function OccupationPurchasingPowerLineChart({
                 cx={point.x}
                 cy={point.y}
                 fill={point.value >= 0 ? "#166534" : "#b91c1c"}
-                r="4"
+                r={useMobileChartLayout ? "4.5" : "4"}
               />
               <title>{`${point.label}: ${percentFormatter.format(point.value)} %`}</title>
             </g>
@@ -260,12 +280,12 @@ export function OccupationPurchasingPowerLineChart({
               <text
                 key={`year-${tick.label}-${tick.index}`}
                 fill="#000000"
-                fontSize="13"
+                fontSize={useMobileChartLayout ? "10" : "13"}
                 textAnchor="middle"
                 x={x}
                 y={chartHeight - 18}
               >
-                {tick.label}
+                {useMobileChartLayout ? formatCompactChartYear(tick.label) : tick.label}
               </text>
             );
           })}

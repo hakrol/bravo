@@ -1,7 +1,11 @@
 ﻿'use client'
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
+import {
+  formatCompactChartYear,
+  useOccupationChartMobileLayout,
+} from "@/components/occupation-chart-mobile";
 import type { OccupationAgeTimeSeriesPoint } from "@/lib/ssb";
 
 const ageFormatter = new Intl.NumberFormat("nb-NO", {
@@ -40,22 +44,19 @@ export function OccupationAgeTimeSeriesChart({
   points,
 }: OccupationAgeTimeSeriesChartProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("averageAll");
+  const useMobileChartLayout = useOccupationChartMobileLayout();
 
   if (points.length === 0) {
     return null;
   }
 
-  const availableFilters = useMemo(
-    () =>
-      ({
-        averageAll: points.some(
-          (point) => point.averageWomen !== undefined || point.averageMen !== undefined,
-        ),
-        averageWomen: points.some((point) => point.averageWomen !== undefined),
-        averageMen: points.some((point) => point.averageMen !== undefined),
-      }) satisfies Record<FilterKey, boolean>,
-    [points],
-  );
+  const availableFilters = ({
+    averageAll: points.some(
+      (point) => point.averageWomen !== undefined || point.averageMen !== undefined,
+    ),
+    averageWomen: points.some((point) => point.averageWomen !== undefined),
+    averageMen: points.some((point) => point.averageMen !== undefined),
+  }) satisfies Record<FilterKey, boolean>;
 
   const resolvedFilter =
     availableFilters[activeFilter]
@@ -83,12 +84,12 @@ export function OccupationAgeTimeSeriesChart({
   const chartMin = Math.floor((minValue - 0.5) * 2) / 2;
   const chartMax = Math.ceil((maxValue + 0.5) * 2) / 2;
   const chartRange = Math.max(chartMax - chartMin, 1);
-  const chartWidth = 820;
-  const chartHeight = 300;
-  const paddingLeft = 48;
-  const paddingRight = 64;
+  const chartWidth = useMobileChartLayout ? 390 : 820;
+  const chartHeight = useMobileChartLayout ? 360 : 300;
+  const paddingLeft = useMobileChartLayout ? 58 : 48;
+  const paddingRight = useMobileChartLayout ? 58 : 64;
   const paddingTop = 20;
-  const paddingBottom = 42;
+  const paddingBottom = useMobileChartLayout ? 48 : 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
   const xStep = points.length > 1 ? plotWidth / (points.length - 1) : 0;
@@ -137,19 +138,24 @@ export function OccupationAgeTimeSeriesChart({
                 variant="muted"
               />
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="grid grid-cols-3 divide-x divide-slate-200 border-y border-slate-200 sm:flex sm:flex-wrap sm:items-center sm:gap-2 sm:divide-x-0 sm:border-y-0">
               {latestPeriodLabel ? (
-                <span className="rounded-[5px] border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm">
-                  {formatPeriodLabel(latestPeriodLabel)}
+                <span className="flex flex-col px-2 py-3 sm:block sm:rounded-[5px] sm:border sm:border-slate-200 sm:bg-white sm:px-3 sm:py-2 sm:text-sm sm:font-semibold sm:text-slate-800 sm:shadow-sm">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-slate-500 sm:hidden">
+                    Periode
+                  </span>
+                  <strong className="mt-1 text-sm font-semibold text-slate-950 sm:mt-0 sm:text-inherit">
+                    {formatPeriodLabel(latestPeriodLabel)}
+                  </strong>
                 </span>
               ) : null}
               {latestValues.map((entry) => (
                 <div
                   key={`latest-${entry.key}`}
-                  className="rounded-[5px] border border-slate-200 bg-white px-3 py-2 text-sm leading-none text-slate-700 shadow-sm"
+                  className="min-w-0 px-2 py-3 text-xs leading-5 text-slate-600 sm:rounded-[5px] sm:border sm:border-slate-200 sm:bg-white sm:px-3 sm:py-2 sm:text-sm sm:leading-none sm:text-slate-700 sm:shadow-sm"
                 >
-                  <span className="text-[15px]">{entry.label}: </span>
-                  <span className="text-[15px] font-semibold text-slate-950">
+                  <span className="block truncate sm:inline sm:text-[15px]">{entry.label}<span className="hidden sm:inline">: </span></span>
+                  <span className="block whitespace-nowrap text-[13px] font-semibold text-slate-950 sm:inline sm:text-[15px]">
                     {ageFormatter.format(entry.value)} år
                   </span>
                 </div>
@@ -158,7 +164,7 @@ export function OccupationAgeTimeSeriesChart({
           </div>
         ) : null}
 
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-3 overflow-hidden rounded-[6px] border border-slate-200 sm:flex sm:flex-wrap sm:gap-2 sm:overflow-visible sm:border-0">
           {filterOptions.map((option) => {
             const isActive = option.key === resolvedFilter;
             const isAvailable = availableFilters[option.key];
@@ -167,7 +173,7 @@ export function OccupationAgeTimeSeriesChart({
               <button
                 key={option.key}
                 disabled={!isAvailable}
-                className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                className={`min-w-0 border-0 border-r border-slate-200 px-2 py-3 text-sm transition last:border-r-0 sm:rounded-full sm:border sm:px-3 sm:py-1.5 ${
                   !isAvailable
                     ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
                     : isActive
@@ -193,7 +199,7 @@ export function OccupationAgeTimeSeriesChart({
           <div key={definition.key} className="flex items-center gap-2 text-sm text-slate-700">
             <span
               aria-hidden="true"
-              className="h-3 w-3 rounded-full"
+              className="h-0.5 w-8 rounded-full sm:h-3 sm:w-3"
               style={{ backgroundColor: definition.color }}
             />
             <span>{definition.label}</span>
@@ -224,7 +230,7 @@ export function OccupationAgeTimeSeriesChart({
                 />
                 <text
                   fill="#5f6773"
-                  fontSize="12"
+                  fontSize={useMobileChartLayout ? "13" : "12"}
                   textAnchor="end"
                   x={paddingLeft - 10}
                   y={y + 4}
@@ -274,11 +280,11 @@ export function OccupationAgeTimeSeriesChart({
                   stroke={definition.color}
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth="3"
+                  strokeWidth={useMobileChartLayout ? "3.5" : "3"}
                 />
                 {chartPoints.map((point) => (
                   <g key={`${definition.key}-${point.periodCode}`}>
-                    <circle cx={point.x} cy={point.y} fill={definition.color} r="4" />
+                    <circle cx={point.x} cy={point.y} fill={definition.color} r={useMobileChartLayout ? "4.5" : "4"} />
                     <title>
                       {`${definition.label}: ${formatAge(point.value)} (${formatPeriodLabel(point.periodLabel)})`}
                     </title>
@@ -311,14 +317,14 @@ export function OccupationAgeTimeSeriesChart({
               <text
                 key={`year-${tick.label}-${tick.index}`}
                 fill="#5f6773"
-                fontSize="12"
+                fontSize={useMobileChartLayout ? "10" : "12"}
                 textAnchor={
                   tick.index === 0 ? "start" : tick.index === points.length - 1 ? "end" : "middle"
                 }
                 x={x}
                 y={chartHeight - 18}
               >
-                {tick.label}
+                {useMobileChartLayout ? formatCompactChartYear(tick.label) : tick.label}
               </text>
             );
           })}
