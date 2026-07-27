@@ -98,6 +98,12 @@ import {
   NorwayCommonOccupationsSalaryGrowthChart,
 } from "@/components/blog-norway-common-occupations-chart";
 import { MalerGenderSalaryCards, MalerSalaryBubbleChart, MalerSalaryDevelopmentChart } from "@/components/blog-maler-salary-chart";
+import {
+  HighSalaryComparisonGraphic,
+  LowSalarySkewGraphic,
+  OccupationMedianAverageComparison,
+  SimpleSalarySequenceGraphic,
+} from "@/components/blog-median-average-salary-graphics";
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { TopOvertimePay2025Chart } from "@/components/blog-overtime-ranking-chart";
@@ -322,6 +328,10 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     MalerGenderSalaryCards,
     MalerSalaryBubbleChart,
     MalerSalaryDevelopmentChart,
+    HighSalaryComparisonGraphic,
+    LowSalarySkewGraphic,
+    OccupationMedianAverageComparison,
+    SimpleSalarySequenceGraphic,
     MillionSalaryGrowthChart,
     LowestPaidOccupationsBubbleChart,
     NorwayCommonOccupationsChart,

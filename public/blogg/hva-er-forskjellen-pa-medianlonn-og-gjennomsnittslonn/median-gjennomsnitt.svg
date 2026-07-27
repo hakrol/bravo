@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title description">
+  <title id="title">Medianlønn og gjennomsnittslønn</title>
+  <desc id="description">Fem månedslønninger på rekke. Den midterste lønnen er markert som median, og en egen markør viser gjennomsnittet.</desc>
+  <rect width="1200" height="675" fill="#f4f7f5"/>
+  <rect x="70" y="70" width="1060" height="535" rx="32" fill="#ffffff" stroke="#dce5e0" stroke-width="3"/>
+  <text x="120" y="155" fill="#101820" font-family="Arial, sans-serif" font-size="48" font-weight="700">Median eller gjennomsnitt?</text>
+  <text x="120" y="207" fill="#526173" font-family="Arial, sans-serif" font-size="26">Samme lønninger – to ulike mål</text>
+  <g font-family="Arial, sans-serif" font-size="27" font-weight="700" text-anchor="middle">
+    <rect x="120" y="285" width="155" height="96" rx="18" fill="#eef2f3"/><text x="197.5" y="344" fill="#334155">42 000</text>
+    <rect x="320" y="285" width="155" height="96" rx="18" fill="#eef2f3"/><text x="397.5" y="344" fill="#334155">44 000</text>
+    <rect x="520" y="270" width="160" height="126" rx="20" fill="#00664f"/><text x="600" y="329" fill="#ffffff">45 000</text><text x="600" y="365" fill="#d8f3e9" font-size="18">MEDIAN</text>
+    <rect x="725" y="285" width="155" height="96" rx="18" fill="#eef2f3"/><text x="802.5" y="344" fill="#334155">46 000</text>
+    <rect x="925" y="285" width="155" height="96" rx="18" fill="#eef2f3"/><text x="1002.5" y="344" fill="#334155">48 000</text>
+  </g>
+  <line x1="120" y1="480" x2="1080" y2="480" stroke="#bfccd3" stroke-width="4"/>
+  <circle cx="600" cy="480" r="16" fill="#2563eb"/>
+  <line x1="600" y1="480" x2="600" y2="525" stroke="#2563eb" stroke-width="4"/>
+  <text x="600" y="565" fill="#1e3a8a" font-family="Arial, sans-serif" font-size="25" font-weight="700" text-anchor="middle">Gjennomsnitt: 45 000 kr</text>
+</svg>
