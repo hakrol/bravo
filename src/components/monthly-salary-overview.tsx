@@ -126,7 +126,13 @@ function SalaryOverviewCard({
               Median
             </th>
             <th className="w-[30%] px-3 py-3 text-right sm:px-4" scope="col">
-              Gjennomsnitt
+              <span aria-hidden="true" className="sm:hidden">
+                Snitt
+              </span>
+              <span aria-hidden="true" className="hidden sm:inline">
+                Gjennomsnitt
+              </span>
+              <span className="sr-only">Gjennomsnitt</span>
             </th>
           </tr>
         </thead>

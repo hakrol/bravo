@@ -139,7 +139,7 @@ export function OccupationSalaryDistributionSection({
                 </p>
               ) : null}
             </div>
-            <div className="mt-6 grid gap-2 md:hidden">
+            <div className="mt-6 divide-y divide-slate-200 border-y border-slate-200 md:hidden">
               {row.metrics.p25 !== undefined ? (
                 <MobileDistributionPoint
                   infoDescription={P25_INFO_DESCRIPTION}
@@ -274,7 +274,7 @@ function MobileDistributionPoint({
   infoDescription?: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-[5px] bg-slate-50 px-4 py-3">
+    <div className="flex items-center justify-between gap-4 py-3">
       <div className="flex min-w-0 items-center gap-2">
         <span aria-hidden="true" className={`h-3 w-3 shrink-0 rounded-full ${tone}`} />
         <span className="text-sm font-medium text-slate-700">{label}</span>

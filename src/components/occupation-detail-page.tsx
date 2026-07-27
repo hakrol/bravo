@@ -416,6 +416,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               <div className="mt-8">
                 <OccupationSalaryTimeSeriesChart
                   description="Se utviklingen i månedslønn per år. Grafen viser median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB."
+                  mobileOptimized
                   series={detail.data.medianBasicSalarySeries}
                   variant="classic-emphasis"
                   title={`Utvikling i månedslønn for ${occupationText.titleLabel}`}
@@ -437,6 +438,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </div>
               <div className="mt-8">
                 <OccupationPurchasingPowerLineChart
+                  mobileOptimized
                   series={detail.data.trendData.purchasingPowerSeries}
                 />
               </div>
@@ -984,7 +986,13 @@ function SalarySupplementCard({ card }: { card: SalarySupplementCardData }) {
                 Median
               </th>
               <th className="w-[30%] px-3 py-3 text-right sm:px-4" scope="col">
-                Gjennomsnitt
+                <span aria-hidden="true" className="sm:hidden">
+                  Snitt
+                </span>
+                <span aria-hidden="true" className="hidden sm:inline">
+                  Gjennomsnitt
+                </span>
+                <span className="sr-only">Gjennomsnitt</span>
               </th>
             </tr>
           </thead>

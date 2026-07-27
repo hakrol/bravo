@@ -64,7 +64,7 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
-      <head>
+      <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <Script
           id="clickio-tcf-stub"
           strategy="beforeInteractive"
@@ -81,8 +81,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           strategy="beforeInteractive"
           src="https://clickiocmp.com/t/consent_249773.js"
         />
-      </head>
-      <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <AdsenseScript />
         <AppShell>{children}</AppShell>
         <Analytics />
