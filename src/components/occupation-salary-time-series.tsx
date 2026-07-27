@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationSalaryTimeSeries } from "@/lib/ssb";
 
@@ -38,6 +38,7 @@ type OccupationSalaryTimeSeriesProps = {
   valueDisplay?: "monthly" | "hourly";
   containerClassName?: string;
   variant?: "default" | "modern" | "classic-emphasis";
+  mobileOptimized?: boolean;
 };
 
 export function OccupationSalaryTimeSeriesChart({
@@ -49,8 +50,22 @@ export function OccupationSalaryTimeSeriesChart({
   valueDisplay = "monthly",
   containerClassName,
   variant = "default",
+  mobileOptimized = false,
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+    const updateViewport = () => setIsMobileViewport(mediaQuery.matches);
+
+    updateViewport();
+    mediaQuery.addEventListener("change", updateViewport);
+
+    return () => mediaQuery.removeEventListener("change", updateViewport);
+  }, []);
+
+  const useMobileChartLayout = mobileOptimized && isMobileViewport;
   const hasSplitByGender = useMemo(
     () => series.points.some((point) => point.valueWomen !== undefined || point.valueMen !== undefined),
     [series.points],
@@ -101,12 +116,12 @@ export function OccupationSalaryTimeSeriesChart({
       ? Math.ceil((maxValue + axisStep) / axisStep) * axisStep
       : Math.ceil(maxValue / axisStep) * axisStep;
   const chartRange = Math.max(chartMax - chartMin, 1);
-  const chartWidth = 900;
-  const chartHeight = 320;
-  const paddingLeft = 86;
-  const paddingRight = 90;
-  const paddingTop = 16;
-  const paddingBottom = 42;
+  const chartWidth = useMobileChartLayout ? 390 : 900;
+  const chartHeight = useMobileChartLayout ? 360 : 320;
+  const paddingLeft = useMobileChartLayout ? 54 : 86;
+  const paddingRight = useMobileChartLayout ? 58 : 90;
+  const paddingTop = useMobileChartLayout ? 20 : 16;
+  const paddingBottom = useMobileChartLayout ? 48 : 42;
   const plotWidth = chartWidth - paddingLeft - paddingRight;
   const plotHeight = chartHeight - paddingTop - paddingBottom;
   const xStep = series.points.length > 1 ? plotWidth / (series.points.length - 1) : 0;
@@ -163,7 +178,9 @@ export function OccupationSalaryTimeSeriesChart({
   const chartFrameClasses = isModern
     ? "mt-6 overflow-x-auto rounded-md border border-black bg-[linear-gradient(180deg,#f8fafc_0%,#ffffff_100%)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:p-4"
     : isClassicEmphasis
-      ? "mt-8 overflow-x-auto"
+      ? mobileOptimized
+        ? "mt-5 overflow-visible sm:mt-8 sm:overflow-x-auto"
+        : "mt-8 overflow-x-auto"
       : "mt-6 overflow-x-auto";
   const gridStroke = isModern
     ? "rgba(15, 23, 42, 0.10)"
@@ -176,8 +193,8 @@ export function OccupationSalaryTimeSeriesChart({
     : isClassicEmphasis
       ? "rgba(27, 36, 48, 0.2)"
       : "rgba(27, 36, 48, 0.14)";
-  const pointRadius = isModern ? 4.5 : 4;
-  const lineWidth = isModern ? 4 : 3;
+  const pointRadius = useMobileChartLayout ? 4.5 : isModern ? 4.5 : 4;
+  const lineWidth = useMobileChartLayout ? 3.5 : isModern ? 4 : 3;
   const axisLabelColor = isModern || isClassicEmphasis ? "#000000" : "#5f6773";
   const yearGuideStroke = isModern ? "rgba(15, 23, 42, 0.08)" : "transparent";
 
@@ -209,7 +226,13 @@ export function OccupationSalaryTimeSeriesChart({
                   label="Siste data"
                 />
               </div>
-              <div className="flex flex-wrap items-center gap-2">
+              <div
+                className={
+                  mobileOptimized
+                    ? "hidden sm:flex sm:flex-wrap sm:items-center sm:gap-2"
+                    : "flex flex-wrap items-center gap-2"
+                }
+              >
                 {latestPeriodLabel ? (
                   <span className={`rounded-[5px] border px-4 py-2 text-sm font-semibold ${
                     isModern
@@ -224,7 +247,7 @@ export function OccupationSalaryTimeSeriesChart({
                 {latestValues.map((entry) => (
                   <div
                     key={`latest-${entry.key}`}
-                    className={`rounded-[5px] border px-4 py-2 text-sm leading-none ${
+                    className={`rounded-[5px] border px-3 py-2 text-sm leading-none sm:px-4 ${
                       isModern
                         ? "border-black/10 bg-white text-slate-700 shadow-[0_8px_20px_rgba(15,23,42,0.06)]"
                         : isClassicEmphasis
@@ -242,10 +265,57 @@ export function OccupationSalaryTimeSeriesChart({
                   </div>
                 ))}
               </div>
+
+              {mobileOptimized ? (
+                <div className="flex divide-x divide-slate-200 border-y border-slate-200 sm:hidden">
+                  {latestPeriodLabel ? (
+                    <div className="flex w-[24%] min-w-0 flex-col justify-center py-3 pr-2">
+                      <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-slate-500">
+                        År
+                      </span>
+                      <strong className="mt-1 text-base font-semibold text-slate-950">
+                        {formatPeriodLabel(latestPeriodLabel)}
+                      </strong>
+                    </div>
+                  ) : null}
+                  {latestValues.map((entry) => {
+                    const definition = seriesDefinitions.find(
+                      (item) => item.key === entry.key,
+                    );
+
+                    return (
+                      <div
+                        className="flex min-w-0 flex-1 flex-col justify-center px-2 py-3 last:pr-0"
+                        key={`mobile-latest-${entry.key}`}
+                      >
+                        <span className="flex items-center gap-1.5 text-xs text-slate-500">
+                          {entry.key !== "valueAll" ? (
+                            <span
+                              aria-hidden="true"
+                              className="h-2.5 w-2.5 shrink-0 rounded-full"
+                              style={{ backgroundColor: definition?.color }}
+                            />
+                          ) : null}
+                          <span className="truncate">{entry.label}</span>
+                        </span>
+                        <strong className="mt-1 whitespace-nowrap text-[13px] font-semibold text-slate-950">
+                          {valueFormatter(entry.value)}
+                        </strong>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
             </div>
           ) : null}
 
-          <div className="flex flex-wrap gap-2">
+          <div
+            className={
+              mobileOptimized
+                ? "grid grid-cols-3 overflow-hidden rounded-[6px] border border-slate-200 sm:flex sm:flex-wrap sm:gap-2 sm:overflow-visible sm:border-0"
+                : "flex flex-wrap gap-2"
+            }
+          >
             {filterOptions.map((option) => {
               const isActive = option.key === resolvedFilter;
               const isAvailable = availableFilters[option.key];
@@ -254,7 +324,11 @@ export function OccupationSalaryTimeSeriesChart({
                 <button
                   key={option.key}
                   disabled={!isAvailable}
-                  className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                  className={`${
+                    mobileOptimized
+                      ? "min-w-0 rounded-none border-0 border-r border-slate-200 px-2 py-3 text-sm last:border-r-0 sm:rounded-full sm:border sm:px-3 sm:py-1.5 sm:last:border-r"
+                      : "rounded-full border px-3 py-1.5 text-sm"
+                  } transition ${
                     !isAvailable
                       ? "cursor-not-allowed border-black/10 bg-slate-100 text-slate-400"
                       : isActive
@@ -276,7 +350,7 @@ export function OccupationSalaryTimeSeriesChart({
             })}
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className={`flex flex-wrap gap-3 ${mobileOptimized ? "hidden sm:flex" : ""}`}>
             {activeSeries.map((definition) => (
               <div
                 key={definition.key}
@@ -297,7 +371,7 @@ export function OccupationSalaryTimeSeriesChart({
           </div>
 
           {growthValues.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+            <div className={`flex flex-wrap gap-2 ${mobileOptimized ? "hidden sm:flex" : ""}`}>
               {growthValues.map((entry) => (
                 <div
                   key={`growth-${entry.key}`}
@@ -319,6 +393,20 @@ export function OccupationSalaryTimeSeriesChart({
         </div>
 
         <div className={chartFrameClasses}>
+          {mobileOptimized ? (
+            <div className="mb-3 flex flex-wrap justify-center gap-5 text-sm text-slate-600 sm:hidden">
+              {activeSeries.map((definition) => (
+                <div className="flex items-center gap-2" key={`mobile-legend-${definition.key}`}>
+                  <span
+                    aria-hidden="true"
+                    className="h-0.5 w-8 rounded-full"
+                    style={{ backgroundColor: definition.color }}
+                  />
+                  <span>{definition.label}</span>
+                </div>
+              ))}
+            </div>
+          ) : null}
           <svg
             aria-label={ariaLabel ?? `Tidsserie for ${series.occupationLabel}`}
             className="w-full"
@@ -341,7 +429,7 @@ export function OccupationSalaryTimeSeriesChart({
                   />
                   <text
                     fill={axisLabelColor}
-                    fontSize={isModern || isClassicEmphasis ? "13" : "12"}
+                    fontSize={useMobileChartLayout ? "13" : isModern || isClassicEmphasis ? "13" : "12"}
                     fontWeight={isModern || isClassicEmphasis ? "600" : "400"}
                     textAnchor="end"
                     x={paddingLeft - 10}
@@ -459,6 +547,37 @@ export function OccupationSalaryTimeSeriesChart({
                           {endLabelFormatter(latestPoint.value)}
                         </text>
                       </g>
+                    ) : useMobileChartLayout ? (
+                      <g>
+                        <rect
+                          fill="white"
+                          height="24"
+                          rx="5"
+                          stroke={definition.color}
+                          strokeOpacity="0.55"
+                          width={Math.max(48, endLabelFormatter(latestPoint.value).length * 6.5 + 14)}
+                          x={latestPoint.x + 5}
+                          y={
+                            latestPoint.y -
+                            12 +
+                            (resolvedFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                          }
+                        />
+                        <text
+                          fill={definition.color}
+                          fontSize="11"
+                          fontWeight="700"
+                          textAnchor="start"
+                          x={latestPoint.x + 12}
+                          y={
+                            latestPoint.y +
+                            4 +
+                            (resolvedFilter === "valueAll" ? endLabelOffsets[definition.key] : 0)
+                          }
+                        >
+                          {endLabelFormatter(latestPoint.value)}
+                        </text>
+                      </g>
                     ) : (
                       <text
                         fill={definition.color}
@@ -497,7 +616,7 @@ export function OccupationSalaryTimeSeriesChart({
                   ) : null}
                   <text
                     fill={axisLabelColor}
-                    fontSize={isModern || isClassicEmphasis ? "13" : "12"}
+                    fontSize={useMobileChartLayout ? "10" : isModern || isClassicEmphasis ? "13" : "12"}
                     fontWeight={isModern || isClassicEmphasis ? "700" : "400"}
                     textAnchor={
                       tick.index === 0
@@ -509,13 +628,61 @@ export function OccupationSalaryTimeSeriesChart({
                     x={x}
                     y={chartHeight - 18}
                   >
-                    {tick.label}
+                    {useMobileChartLayout ? formatCompactYear(tick.label) : tick.label}
                   </text>
                 </g>
               );
             })}
           </svg>
+
+          {mobileOptimized ? (
+            <div className="mt-2 flex items-center gap-2 text-sm text-slate-600 sm:hidden">
+              <span
+                aria-hidden="true"
+                className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-800"
+              >
+                ↗
+              </span>
+              <span>Tallene er oppgitt i kroner per måned</span>
+            </div>
+          ) : null}
         </div>
+
+        {mobileOptimized && growthValues.length > 0 ? (
+          <div className="mt-4 grid grid-cols-2 gap-4 sm:hidden">
+            {growthValues.map((entry) => {
+              const definition = seriesDefinitions.find((item) => item.key === entry.key);
+
+              return (
+                <div
+                  className="min-w-0 py-2"
+                  key={`mobile-growth-${entry.key}`}
+                >
+                  <div className="flex items-center gap-2 text-sm text-slate-600">
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-lg"
+                      style={{
+                        backgroundColor: `${definition?.color ?? "#14532d"}14`,
+                        color: definition?.color,
+                      }}
+                    >
+                      ↗
+                    </span>
+                    <span>{entry.label}</span>
+                  </div>
+                  <strong className="mt-2 block text-2xl font-semibold text-emerald-800">
+                    {formatGrowthPercent(entry.value)}
+                  </strong>
+                  <span className="mt-1 block text-xs leading-5 text-slate-600">
+                    i perioden {formatPeriodLabel(entry.firstPeriodLabel)}–
+                    {formatPeriodLabel(entry.latestPeriodLabel)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
       </section>
     </section>
   );
@@ -523,6 +690,10 @@ export function OccupationSalaryTimeSeriesChart({
 
 function formatCurrency(value: number) {
   return `${currencyFormatter.format(value)} kr`;
+}
+
+function formatCompactYear(value: string) {
+  return /^\d{4}$/.test(value) ? value.slice(-2) : value;
 }
 
 function formatGrowthPercent(value: number) {
