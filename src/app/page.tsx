@@ -65,6 +65,7 @@ export default async function HomePage() {
           allOccupationsPurchasingPowerSeries={allOccupationsPurchasingPowerSeries}
           allOccupationsSalarySeries={allOccupationsSalarySeries}
           occupationCardStatsByCode={occupationCardStatsRecord}
+          periodLabel={overview.periodLabel}
           rows={overview.rows}
         />
         <HomeLatestBlogSection posts={latestBlogPosts} />
