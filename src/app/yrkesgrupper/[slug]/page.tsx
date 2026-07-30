@@ -4,15 +4,20 @@ import {
   OccupationDirectory,
   type OccupationDirectoryItem,
 } from "@/components/occupation-directory";
+import { OccupationDirectoryHero } from "@/components/occupation-directory-hero";
 import {
   formatOccupationDisplayLabel,
 } from "@/lib/occupation-detail-pages";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
 import { getOccupationCardStatsByCode } from "@/lib/occupation-card-stats";
-import { getOccupationGroupBySlug, listOccupationGroups } from "@/lib/occupation-groups";
+import {
+  getOccupationGroupBySlug,
+  listOccupationGroups,
+  type OccupationGroup,
+} from "@/lib/occupation-groups";
 import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-overview";
 import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
-import { siteConfig } from "@/lib/site-config";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 type OccupationGroupPageProps = {
   params: Promise<{
@@ -36,8 +41,8 @@ export async function generateMetadata({
     return {};
   }
 
-  const description = getOccupationGroupSeoDescription(group.label);
-  const title = getOccupationGroupSeoTitle(group.label);
+  const description = getOccupationGroupSeoDescription(group);
+  const title = getOccupationGroupSeoTitle(group);
   const canonicalPath = `/yrkesgrupper/${group.slug}`;
 
   return {
@@ -51,6 +56,11 @@ export async function generateMetadata({
       locale: "nb_NO",
       url: canonicalPath,
       siteName: siteConfig.name,
+      title: `${title} | ${siteConfig.name}`,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
       title: `${title} | ${siteConfig.name}`,
       description,
     },
@@ -109,28 +119,54 @@ export default async function OccupationGroupPage({
           .join(" "),
       };
     });
-  const description = getOccupationGroupSeoDescription(group.label);
+  const heroDescription = getOccupationGroupHeroDescription(group);
+  const canonicalPath = `/yrkesgrupper/${group.slug}`;
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Forside",
+        item: getAbsoluteUrl("/"),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Yrkesgrupper",
+        item: getAbsoluteUrl("/yrkesgrupper"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: group.label,
+        item: getAbsoluteUrl(canonicalPath),
+      },
+    ],
+  };
 
   return (
-    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <header className="mx-auto max-w-3xl space-y-4 text-center">
-          <h1 className="flex items-center justify-center gap-4 text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
-            <span>{getOccupationGroupSeoTitle(group.label)}</span>
-            <span aria-hidden="true" className="shrink-0 text-4xl sm:text-5xl lg:text-6xl">
-              {group.icon}
-            </span>
-          </h1>
-          <p className="text-base leading-7 text-slate-600 sm:text-lg">
-            {description}
-          </p>
-        </header>
+    <div className="min-h-screen overflow-x-clip pb-12 sm:pb-16">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+        type="application/ld+json"
+      />
+      <OccupationDirectoryHero
+        description={heroDescription}
+        icon={group.icon}
+        title={`${group.label}: yrker og lønn`}
+      />
 
+      <div className="relative z-10 mx-auto -mt-16 w-full max-w-7xl px-5 sm:-mt-20 sm:px-6 lg:-mt-24 lg:px-8">
         <OccupationDirectory
           colorByOccupationGroup
+          featuredControls
           filterByOccupationFamily
           items={items}
-          showSearch={false}
+          searchPlaceholder={`Søk etter yrke innen ${group.shortLabel.toLowerCase()}`}
           valueLabel="Median månedslønn"
         />
       </div>
@@ -152,12 +188,16 @@ function listOccupationCodesForGroup(groupCode: string) {
   return codes;
 }
 
-function getOccupationGroupSeoDescription(groupLabel: string) {
-  return `Utforsk lønn for ${groupLabel.toLowerCase()}, sammenlign median månedslønn og finn oppdaterte lønnstall for konkrete yrker basert på data fra SSB.`;
+function getOccupationGroupSeoDescription(group: OccupationGroup) {
+  return `Se yrker innen ${group.shortLabel.toLowerCase()} med lønn og oppdaterte lønnstall fra SSB. Søk, filtrer og sammenlign median månedslønn og lønnsvekst.`;
 }
 
-function getOccupationGroupSeoTitle(groupLabel: string) {
-  return `Lønn ${groupLabel.toLowerCase()}`;
+function getOccupationGroupSeoTitle(group: OccupationGroup) {
+  return `${group.shortLabel}: yrker og lønn fra SSB`;
+}
+
+function getOccupationGroupHeroDescription(group: OccupationGroup) {
+  return `Se alle yrker innen ${group.shortLabel.toLowerCase()} samlet på ett sted. Søk, filtrer og sammenlign lønn med oppdaterte lønnstall fra SSB.`;
 }
 
 function getOccupationLabelsByCode(
