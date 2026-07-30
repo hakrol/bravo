@@ -9,13 +9,16 @@ import { buildOccupationMedianGrowthOverview } from "@/lib/occupation-salary-ove
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
 import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
-import { siteConfig } from "@/lib/site-config";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
+const title = "Alle yrker og lønn – lønnstall fra SSB";
 const description =
-  "Utforsk alle yrker i Norge og sammenlign median månedslønn basert på oppdaterte lønnstall fra SSB.";
+  "Se alle yrker i Norge med lønn og oppdaterte lønnstall fra SSB. Søk, filtrer og sammenlign median månedslønn, lønnsvekst og arbeidstakervekst.";
+const heroDescription =
+  "Se alle yrker i Norge samlet på ett sted. Søk, filtrer og sammenlign lønn med oppdaterte lønnstall fra SSB.";
 
 export const metadata: Metadata = {
-  title: "Alle yrker",
+  title,
   description,
   alternates: {
     canonical: "/yrker",
@@ -25,12 +28,12 @@ export const metadata: Metadata = {
     locale: "nb_NO",
     url: "/yrker",
     siteName: siteConfig.name,
-    title: `Alle yrker | ${siteConfig.name}`,
+    title: `${title} | ${siteConfig.name}`,
     description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Alle yrker | ${siteConfig.name}`,
+    title: `${title} | ${siteConfig.name}`,
     description,
   },
 };
@@ -81,20 +84,85 @@ export default async function YrkerPage() {
         .join(" "),
     };
   });
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Forside",
+        item: getAbsoluteUrl("/"),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Alle yrker",
+        item: getAbsoluteUrl("/yrker"),
+      },
+    ],
+  };
 
   return (
-    <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-        <header className="mx-auto max-w-3xl space-y-4 text-center">
-          <h1 className="text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
+    <div className="min-h-screen overflow-x-clip pb-12 sm:pb-16">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+        type="application/ld+json"
+      />
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_10%_15%,rgba(214,230,216,0.64),transparent_28%),linear-gradient(180deg,#fbfcf8_0%,#ffffff_100%)] px-5 pb-24 pt-12 sm:px-6 sm:pb-28 sm:pt-16 lg:px-8 lg:pb-32 lg:pt-20">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-24 -top-20 h-72 w-72 rounded-full border-[42px] border-[#dce9dc]/70 sm:-left-20 sm:-top-24 sm:h-96 sm:w-96 sm:border-[54px]"
+        />
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute right-[5%] top-7 hidden h-24 w-24 text-[#76a67f] opacity-40 sm:block"
+          viewBox="0 0 96 96"
+        >
+          <defs>
+            <pattern id="occupation-hero-dots" height="16" patternUnits="userSpaceOnUse" width="16">
+              <circle cx="3" cy="3" fill="currentColor" r="1.5" />
+            </pattern>
+          </defs>
+          <rect fill="url(#occupation-hero-dots)" height="96" width="96" />
+        </svg>
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-16 bottom-3 hidden h-44 w-[22rem] text-[#78a782] opacity-20 md:block lg:w-[30rem]"
+          fill="none"
+          preserveAspectRatio="none"
+          viewBox="0 0 480 176"
+        >
+          {Array.from({ length: 8 }, (_, index) => (
+            <path
+              d={`M0 ${72 + index * 8} C 95 ${8 + index * 8}, 150 ${142 + index * 4}, 250 ${76 + index * 7} S 390 ${28 + index * 7}, 480 ${68 + index * 8}`}
+              key={index}
+              stroke="currentColor"
+              strokeWidth="1"
+            />
+          ))}
+        </svg>
+
+        <header className="relative z-10 mx-auto max-w-[650px] space-y-5 text-center">
+          <h1 className="text-[clamp(3rem,5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.04em] text-[var(--foreground)]">
             Alle yrker
           </h1>
-          <p className="text-base leading-7 text-slate-600 sm:text-lg">
-            {description}
+          <p className="mx-auto max-w-[650px] text-[1.05rem] leading-[1.6] text-[var(--muted)]">
+            {heroDescription}
           </p>
         </header>
+      </section>
 
-        <OccupationDirectory colorByOccupationGroup filterByOccupationHierarchy items={items} />
+      <div className="relative z-10 mx-auto -mt-16 w-full max-w-7xl px-5 sm:-mt-20 sm:px-6 lg:-mt-24 lg:px-8">
+        <OccupationDirectory
+          colorByOccupationGroup
+          featuredControls
+          filterByOccupationHierarchy
+          items={items}
+          searchPlaceholder="Søk etter yrke, for eksempel flyger"
+        />
       </div>
     </div>
   );
