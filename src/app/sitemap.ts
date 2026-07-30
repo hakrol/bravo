@@ -142,12 +142,6 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
-    path: "/yrkesgrupper/yrker",
-    filePath: "src/app/yrkesgrupper/yrker/page.tsx",
-    priority: 0.5,
-    changeFrequency: "monthly" as const,
-  },
-  {
     path: "/blogg",
     filePath: "src/app/blogg/page.tsx",
     priority: 0.7,

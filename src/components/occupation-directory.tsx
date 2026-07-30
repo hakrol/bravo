@@ -184,7 +184,8 @@ export function OccupationDirectory({
             </label>
           ) : null}
 
-          <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {filterByOccupationHierarchy ? (
+            <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div className="grid min-w-0 gap-2">
               <FilterLabel
                 description="Yrkesgruppe er det øverste og bredeste nivået i yrkesinndelingen. Den samler yrker med lignende hovedoppgaver, for eksempel ledere eller salgs- og serviceyrker."
@@ -271,7 +272,39 @@ export function OccupationDirectory({
                 </span>
               </span>
             </div>
-          </div>
+            </div>
+          ) : filterByOccupationFamily ? (
+            <div className="mt-5 max-w-xl">
+              <div className="grid min-w-0 gap-2">
+                <FilterLabel
+                  description="Yrkesfamilie samler nært beslektede yrker med lignende arbeidsoppgaver innenfor denne yrkesgruppen."
+                  htmlFor="occupation-family-filter"
+                  label="Yrkesfamilie"
+                />
+                <span className="relative block min-w-0">
+                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-700">
+                    <DirectoryIcon name="folder" />
+                  </span>
+                  <select
+                    id="occupation-family-filter"
+                    className="h-12 w-full min-w-0 appearance-none truncate rounded-[10px] border border-slate-300 bg-white py-2 pl-12 pr-11 text-base text-slate-800 outline-none transition hover:border-slate-400 focus:border-[#2d704c] focus:shadow-[0_0_0_4px_rgba(45,112,76,0.12)]"
+                    onChange={(event) => setOccupationFamilyFilter(event.target.value)}
+                    value={occupationFamilyFilter}
+                  >
+                    <option value="all">Alle yrkesfamilier</option>
+                    {occupationFamilies.map((family) => (
+                      <option key={family.value} value={family.value}>
+                        {family.label}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-700">
+                    <DirectoryIcon name="chevron" />
+                  </span>
+                </span>
+              </div>
+            </div>
+          ) : null}
 
           <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-slate-200 pt-5">
             <span className="mr-1 text-sm font-medium text-slate-600">Hurtigfilter:</span>
