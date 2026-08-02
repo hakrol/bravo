@@ -69,6 +69,12 @@ export function MonthlySalaryOverview({
           i 52 uker.
         </p>
       ) : null}
+
+      {activePeriod === "annual" ? (
+        <p className="mt-4 text-sm leading-6 text-slate-600">
+          Årslønn er beregnet ved å gange SSBs månedslønn med 12.
+        </p>
+      ) : null}
     </>
   );
 }

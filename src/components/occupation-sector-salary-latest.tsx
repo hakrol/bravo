@@ -2,11 +2,13 @@ import type {
   OccupationSectorSalaryTimeSeries,
   OccupationSectorSalaryTimeSeriesPoint,
 } from "@/lib/ssb";
+import { MetricInfoButton } from "@/components/metric-info-button";
 
 type SectorDefinition = {
   key: "private" | "municipal" | "state";
   label: string;
   summaryLabel: string;
+  description: string;
   medianFields: readonly [
     keyof OccupationSectorSalaryTimeSeriesPoint,
     keyof OccupationSectorSalaryTimeSeriesPoint,
@@ -26,6 +28,7 @@ const sectors = [
     key: "private",
     label: "Privat sektor og offentlig eide foretak",
     summaryLabel: "privat sektor og offentlig eide foretak",
+    description: "Private virksomheter og offentlig eide foretak som driver markedsrettet virksomhet.",
     medianFields: ["privateMedianAll", "privateMedianWomen", "privateMedianMen"],
     averageFields: ["privateAverageAll", "privateAverageWomen", "privateAverageMen"],
   },
@@ -33,6 +36,7 @@ const sectors = [
     key: "municipal",
     label: "Kommuneforvaltningen",
     summaryLabel: "kommuneforvaltningen",
+    description: "Kommuner og fylkeskommuner, inkludert virksomheter som inngår i kommuneforvaltningen.",
     medianFields: ["municipalMedianAll", "municipalMedianWomen", "municipalMedianMen"],
     averageFields: ["municipalAverageAll", "municipalAverageWomen", "municipalAverageMen"],
   },
@@ -40,6 +44,7 @@ const sectors = [
     key: "state",
     label: "Statsforvaltningen",
     summaryLabel: "statsforvaltningen",
+    description: "Statlige virksomheter som inngår i statsforvaltningen.",
     medianFields: ["stateMedianAll", "stateMedianWomen", "stateMedianMen"],
     averageFields: ["stateAverageAll", "stateAverageWomen", "stateAverageMen"],
   },
@@ -146,9 +151,14 @@ export function OccupationSectorSalaryLatest({
             className="overflow-hidden rounded-[6px] border border-slate-200 bg-white"
             key={sector.key}
           >
-            <h4 className="border-b border-slate-200 px-4 py-4 text-base font-semibold text-slate-950">
-              {sector.label}
-            </h4>
+            <div className="flex min-h-[57px] items-center gap-2 border-b border-slate-200 px-4 py-4">
+              <h4 className="text-base font-semibold text-slate-950">{sector.label}</h4>
+              <MetricInfoButton
+                description={sector.description}
+                label={sector.label}
+                variant="muted"
+              />
+            </div>
             <table className="w-full table-fixed border-collapse text-left">
               <thead>
                 <tr className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
