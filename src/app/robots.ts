@@ -27,7 +27,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/admin/*", "/yrke-demo", "/yrke-demo/*"],
+        disallow: ["/yrke-demo", "/yrke-demo/*"],
       },
     ],
     sitemap: `${siteConfig.siteUrl}/sitemap.xml`,
