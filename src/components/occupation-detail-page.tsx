@@ -4,6 +4,10 @@ import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purc
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
 import { OccupationSalaryEstimate } from "@/components/occupation-salary-estimate";
 import {
+  SalarySupplementOverview,
+  type SalarySupplementCardData,
+} from "@/components/salary-supplement-overview";
+import {
   MonthlySalaryOverview,
   type MonthlySalaryOverviewCardData,
 } from "@/components/monthly-salary-overview";
@@ -304,19 +308,13 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     Overtid, bonus og uregelmessige tillegg for {occupationText.titleLabel}
                   </h2>
                   <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    Her ser du median og gjennomsnittlig månedsbeløp for bonus, uregelmessige
-                    tillegg og overtid. Medianen er beløpet i midten når alle observasjonene
-                    sorteres.
+                    {buildSalarySupplementSummary({
+                      cards: salarySupplementCards,
+                      occupationLabel: occupationText.seoLabel,
+                    })}
                   </p>
                 </div>
-
-                <AverageMedianInsight />
-
-                <div className="mt-7 grid gap-4 xl:grid-cols-2">
-                  {salarySupplementCards.map((card) => (
-                    <SalarySupplementCard card={card} key={card.key} />
-                  ))}
-                </div>
+                <SalarySupplementOverview cards={salarySupplementCards} />
               </section>
             ) : null}
 
@@ -625,15 +623,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   );
 }
 
-function AverageMedianInsight() {
-  return (
-    <div className="mt-5 rounded-[6px] bg-emerald-50 px-4 py-3 text-sm font-medium leading-6 text-emerald-950 sm:px-5 sm:text-base sm:leading-7">
-      Når gjennomsnittet er høyere enn medianen, betyr det vanligvis at en mindre gruppe med høye
-      utbetalinger trekker gjennomsnittet opp.
-    </div>
-  );
-}
-
 function buildMonthlySalaryOverviewCards({
   distribution,
   contractedDistribution,
@@ -768,107 +757,6 @@ function hasSalaryDistributionMetrics(metrics?: OccupationSalaryDistributionMetr
   );
 }
 
-type SalarySupplementCardData = {
-  key: string;
-  title: string;
-  caption?: string;
-  icon?: React.ReactNode;
-  tone: "women" | "men" | "neutral";
-  bonusMedian?: number;
-  bonusAverage?: number;
-  overtimeMedian?: number;
-  overtimeAverage?: number;
-  irregularAdditionsMedian?: number;
-  irregularAdditionsAverage?: number;
-};
-
-function SalarySupplementCard({ card }: { card: SalarySupplementCardData }) {
-  const tone = getSalaryCompositionTone(card.tone);
-  const rows = [
-    {
-      key: "irregular",
-      label: "Uregelmessige tillegg",
-      description: "Skift, turnus, offshore og lignende tillegg.",
-      median: card.irregularAdditionsMedian,
-      average: card.irregularAdditionsAverage,
-    },
-    {
-      key: "bonus",
-      label: "Bonus",
-      description: "Bonusutbetalinger omregnet til månedsbeløp.",
-      median: card.bonusMedian,
-      average: card.bonusAverage,
-    },
-    {
-      key: "overtime",
-      label: "Overtid",
-      description: "Betaling for arbeid utover avtalt arbeidstid.",
-      median: card.overtimeMedian,
-      average: card.overtimeAverage,
-    },
-  ];
-
-  return (
-    <article className="overflow-hidden rounded-[6px] border border-slate-200 bg-white">
-      <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-4 sm:px-5">
-        <div className="flex items-center gap-3">
-          {card.icon ? <div className="shrink-0">{card.icon}</div> : null}
-          <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-slate-950">
-            {card.title}
-          </h3>
-        </div>
-        {card.caption ? (
-          <p className={`shrink-0 rounded-[10px] px-3 py-1.5 text-sm font-semibold shadow-sm ${tone.period}`}>
-            {card.caption}
-          </p>
-        ) : null}
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full table-fixed border-collapse text-left">
-          <thead>
-            <tr className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-              <th className="w-[48%] px-4 py-3 sm:px-5" scope="col">
-                Lønnstype
-              </th>
-              <th className="w-[22%] px-2 py-3 text-right" scope="col">
-                Median
-              </th>
-              <th className="w-[30%] px-3 py-3 text-right sm:px-4" scope="col">
-                <span aria-hidden="true" className="sm:hidden">
-                  Snitt
-                </span>
-                <span aria-hidden="true" className="hidden sm:inline">
-                  Gjennomsnitt
-                </span>
-                <span className="sr-only">Gjennomsnitt</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr className="border-t border-slate-200" key={row.key}>
-                <th className="px-4 py-4 font-normal sm:px-5" scope="row">
-                  <span className="block text-sm font-semibold text-slate-900">{row.label}</span>
-                  <span className="mt-1 block text-xs leading-5 text-slate-500">
-                    {row.description}
-                  </span>
-                </th>
-                <td className="whitespace-nowrap px-2 py-4 text-right text-sm font-semibold tabular-nums text-slate-950">
-                  {formatKr(row.median)}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold tabular-nums text-slate-950 sm:px-4">
-                  {formatKr(row.average)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </article>
-  );
-}
-
 function buildSalarySupplementCards({
   median,
   average,
@@ -889,7 +777,6 @@ function buildSalarySupplementCards({
       key: "women",
       title: "Kvinner",
       caption,
-      icon: <MetricAvatar tone="women" />,
       tone: "women",
       median: median?.women,
       average: average?.women,
@@ -901,7 +788,6 @@ function buildSalarySupplementCards({
       key: "men",
       title: "Menn",
       caption,
-      icon: <MetricAvatar tone="men" />,
       tone: "men",
       median: median?.men,
       average: average?.men,
@@ -929,11 +815,10 @@ function buildSalarySupplementCard({
   key,
   title,
   caption,
-  icon,
   tone,
   median,
   average,
-}: Pick<SalarySupplementCardData, "key" | "title" | "caption" | "icon" | "tone"> & {
+}: Pick<SalarySupplementCardData, "key" | "title" | "caption" | "tone"> & {
   median?: OccupationSupplementMetrics;
   average?: OccupationSupplementMetrics;
 }): SalarySupplementCardData {
@@ -941,7 +826,6 @@ function buildSalarySupplementCard({
     key,
     title,
     caption,
-    icon,
     tone,
     bonusMedian: median?.bonus,
     bonusAverage: average?.bonus,
@@ -959,6 +843,132 @@ function hasSupplementMetrics(metrics?: OccupationSupplementMetrics) {
         metrics.overtime !== undefined ||
         metrics.irregularAdditions !== undefined),
   );
+}
+
+function buildSalarySupplementSummary({
+  cards,
+  occupationLabel,
+}: {
+  cards: SalarySupplementCardData[];
+  occupationLabel: string;
+}) {
+  const womenCard = cards.find((card) => card.key === "women");
+  const menCard = cards.find((card) => card.key === "men");
+
+  if (hasOnlyZeroAverageSupplements(cards)) {
+    return `For ${occupationLabel} er det ingen registrerte gjennomsnittsbeløp for overtid, bonus eller uregelmessige tillegg.`;
+  }
+
+  const metrics = [
+    { key: "bonusAverage", label: "bonus" },
+    { key: "irregularAdditionsAverage", label: "uregelmessige tillegg" },
+    { key: "overtimeAverage", label: "overtidsbetaling" },
+  ] as const;
+  const womenHighest: string[] = [];
+  const menHighest: string[] = [];
+  const equal: string[] = [];
+
+  metrics.forEach((metric) => {
+    const womenValue = womenCard?.[metric.key];
+    const menValue = menCard?.[metric.key];
+
+    if (womenValue === undefined || menValue === undefined) {
+      return;
+    }
+
+    if (womenValue === menValue) {
+      equal.push(metric.label);
+    } else if (womenValue > menValue) {
+      womenHighest.push(metric.label);
+    } else {
+      menHighest.push(metric.label);
+    }
+  });
+
+  const descriptions: string[] = [];
+
+  if (womenHighest.length > 0) {
+    descriptions.push(
+      `Blant ${occupationLabel} har kvinner høyest ${formatNorwegianList(womenHighest)}.`,
+    );
+  }
+
+  if (menHighest.length > 0) {
+    descriptions.push(
+      `${womenHighest.length > 0 ? "Menn har" : `Blant ${occupationLabel} har menn`} høyest ${formatNorwegianList(menHighest)}.`,
+    );
+  }
+
+  if (equal.length > 0) {
+    descriptions.push(`Kvinner og menn har like mye i ${formatNorwegianList(equal)}.`);
+  }
+
+  if (womenHighest.length === 0 && menHighest.length === 0 && equal.length === 0) {
+    descriptions.push(
+      `SSB har ikke publisert nok kjønnstall til å sammenligne tilleggene blant ${occupationLabel}.`,
+    );
+  }
+
+  descriptions.push(...buildSupplementGenderDescriptions("kvinner", womenCard, metrics));
+  descriptions.push(...buildSupplementGenderDescriptions("menn", menCard, metrics));
+
+  return descriptions.join(" ");
+}
+
+function hasOnlyZeroAverageSupplements(cards: SalarySupplementCardData[]) {
+  const averageKeys = [
+    "bonusAverage",
+    "irregularAdditionsAverage",
+    "overtimeAverage",
+  ] as const;
+  const genderCards = cards.filter((card) => card.key === "women" || card.key === "men");
+  const relevantCards = genderCards.length > 0 ? genderCards : cards.filter((card) => card.key === "all");
+
+  if (genderCards.length === 1 || relevantCards.length === 0) {
+    return false;
+  }
+
+  return relevantCards.every((card) => averageKeys.every((key) => card[key] === 0));
+}
+
+function buildSupplementGenderDescriptions(
+  genderLabel: "kvinner" | "menn",
+  card: SalarySupplementCardData | undefined,
+  metrics: ReadonlyArray<{
+    key: "bonusAverage" | "irregularAdditionsAverage" | "overtimeAverage";
+    label: string;
+  }>,
+) {
+  const publishedValues = metrics.flatMap((metric) => {
+    const value = card?.[metric.key];
+    return value === undefined ? [] : [`${formatKr(value)} i ${metric.label}`];
+  });
+  const missingLabels = metrics
+    .filter((metric) => card?.[metric.key] === undefined)
+    .map((metric) => metric.label);
+  const descriptions: string[] = [];
+
+  if (publishedValues.length > 0) {
+    descriptions.push(
+      `Gjennomsnittsbeløpene per måned for ${genderLabel} er ${formatNorwegianList(publishedValues)}.`,
+    );
+  }
+
+  if (missingLabels.length > 0) {
+    descriptions.push(
+      `SSB har ikke publisert gjennomsnittsbeløp for ${formatNorwegianList(missingLabels)} for ${genderLabel}.`,
+    );
+  }
+
+  return descriptions;
+}
+
+function formatNorwegianList(values: string[]) {
+  if (values.length < 2) {
+    return values[0] ?? "";
+  }
+
+  return `${values.slice(0, -1).join(", ")} og ${values.at(-1)}`;
 }
 
 function buildApprenticeshipSidebarLabel(occupationLabel: string) {
@@ -1088,40 +1098,6 @@ function buildRelatedJobSalaryRows(
   }
 
   return salaryRows;
-}
-
-function MetricAvatar({ tone }: { tone: "women" | "men" }) {
-  const className =
-    tone === "women"
-      ? "bg-pink-100 text-pink-600 shadow-[0_8px_18px_rgba(236,72,153,0.16)]"
-      : "bg-sky-100 text-blue-600 shadow-[0_8px_18px_rgba(37,99,235,0.16)]";
-
-  return (
-    <span
-      aria-hidden="true"
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-2xl font-semibold ${className}`}
-    >
-      {tone === "women" ? "♀" : "♂"}
-    </span>
-  );
-}
-
-function getSalaryCompositionTone(tone: SalarySupplementCardData["tone"]) {
-  if (tone === "women") {
-    return {
-      period: "bg-pink-50 text-pink-900",
-    };
-  }
-
-  if (tone === "men") {
-    return {
-      period: "bg-blue-50 text-blue-900",
-    };
-  }
-
-  return {
-    period: "bg-slate-100 text-slate-700",
-  };
 }
 
 function formatKr(value?: number) {
