@@ -485,7 +485,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
           </div>
 
           <aside
-            className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-4 shadow-[0_16px_44px_rgba(15,23,42,0.05)] lg:sticky lg:top-6"
+            className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-4 shadow-[0_16px_44px_rgba(15,23,42,0.05)] lg:sticky lg:top-16"
           >
             <section className="pb-3">
               <p className="text-sm leading-6 text-slate-600">
