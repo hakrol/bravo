@@ -1,0 +1,485 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #f8faf7;
+  color: #071a36;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  min-height: clamp(580px, 39vw, 680px);
+  overflow: hidden;
+}
+
+.illustration,
+.visualFallback {
+  position: absolute;
+  z-index: -3;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.illustration {
+  background: #f5f8fb;
+}
+
+.illustration picture {
+  position: absolute;
+  inset: 0;
+}
+
+.illustrationImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.visualFallback {
+  background:
+    radial-gradient(circle at 76% 28%, rgba(51, 111, 70, 0.15) 0 5%, transparent 5.2%),
+    radial-gradient(circle at 88% 68%, rgba(51, 111, 70, 0.08) 0 13%, transparent 13.2%),
+    linear-gradient(145deg, rgba(223, 235, 224, 0.18), rgba(197, 219, 201, 0.5));
+}
+
+.visualFallback::after {
+  position: absolute;
+  inset: 9% 5% 8% 18%;
+  opacity: 0.35;
+  background-image: radial-gradient(#4c8460 1.4px, transparent 1.4px);
+  background-size: 19px 19px;
+  mask-image: linear-gradient(90deg, transparent, #000 35%, #000);
+  content: "";
+}
+
+.imageFade {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(248, 250, 247, 0.58) 0%,
+    rgba(248, 250, 247, 0.3) 34%,
+    rgba(248, 250, 247, 0.06) 49%,
+    transparent 63%
+  );
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  max-width: 1660px;
+  min-height: clamp(580px, 39vw, 680px);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-inline: auto;
+  padding: clamp(28px, 2.5vw, 42px) 50% clamp(30px, 2.7vw, 46px) clamp(28px, 3.4vw, 60px);
+}
+
+.breadcrumbs {
+  max-width: 100%;
+  margin-bottom: clamp(21px, 1.6vw, 29px);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0 17px;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.06);
+}
+
+.breadcrumbs ol {
+  display: flex;
+  min-width: 0;
+  min-height: 46px;
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumbs li {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  color: #14243e;
+  font-size: 14px;
+  font-weight: 580;
+  white-space: nowrap;
+}
+
+.breadcrumbs li:last-child {
+  overflow: hidden;
+}
+
+.breadcrumbs li:last-child span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumbs svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.breadcrumbs li > svg:last-child {
+  width: 13px;
+  height: 13px;
+  color: #087a3d;
+}
+
+.breadcrumbs a {
+  border-radius: 4px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: #087a3d;
+}
+
+.breadcrumbs a:focus-visible {
+  outline: 3px solid rgba(8, 122, 61, 0.26);
+  outline-offset: 3px;
+}
+
+.heading {
+  max-width: 11.5em;
+  margin: 0;
+  color: #071a36;
+  font-size: clamp(3.15rem, 4.35vw, 4.85rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1.02;
+  overflow-wrap: anywhere;
+}
+
+.occupationName {
+  background: linear-gradient(112deg, #087a3d 4%, #05a779 56%, #087a3d 100%);
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.description {
+  display: grid;
+  max-width: 650px;
+  gap: 15px;
+  margin-top: 20px;
+  font-size: clamp(1.05rem, 1.18vw, 1.2rem);
+  line-height: 1.55;
+}
+
+.description p {
+  margin: 0;
+}
+
+.metricCards {
+  display: grid;
+  width: min(100%, 690px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.metricCard {
+  display: flex;
+  min-width: 0;
+  min-height: 56px;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(38, 91, 55, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.84);
+  padding: 8px 10px;
+  box-shadow: 0 6px 18px rgba(15, 47, 34, 0.045);
+}
+
+.metricIcon {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(8, 122, 61, 0.08);
+  color: #087a3d;
+}
+
+.metricIcon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.metricText {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.metricLabel {
+  overflow: hidden;
+  color: #536175;
+  font-size: 0.66rem;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metricValue {
+  margin-top: 3px;
+  color: #071a36;
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.metricValuePositive {
+  color: #087a3d;
+}
+
+.metricValueNegative {
+  color: #c0262d;
+}
+
+.rankingCards {
+  display: flex;
+  width: auto;
+  max-width: none;
+  flex-wrap: nowrap;
+  gap: 7px;
+  margin: 10px 0 0;
+}
+
+.rankingCard {
+  display: flex;
+  flex: 0 0 auto;
+  min-width: 0;
+  min-height: 32px;
+  align-items: center;
+  border: 1px solid rgba(8, 122, 61, 0.18);
+  border-radius: 999px;
+  background: rgba(244, 251, 246, 0.88);
+  padding: 5px 10px 5px 8px;
+  box-shadow: 0 4px 12px rgba(15, 47, 34, 0.04);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.rankingCard:hover {
+  border-color: rgba(8, 122, 61, 0.3);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(15, 47, 34, 0.08);
+}
+
+.rankingCard:focus-visible {
+  outline: 3px solid rgba(8, 122, 61, 0.3);
+  outline-offset: 3px;
+}
+
+.rankingIcon {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: #087a3d;
+}
+
+.rankingIcon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.rankingValue,
+.rankingLabel,
+.rankingSeparator {
+  margin: 0;
+}
+
+.rankingValue {
+  color: #087a3d;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.rankingSeparator {
+  color: rgba(7, 26, 54, 0.32);
+  font-size: 0.72rem;
+}
+
+.rankingLabel {
+  color: #334155;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+@media (max-width: 1100px) {
+  .inner,
+  .content {
+    min-height: 580px;
+  }
+
+  .content {
+    width: 100%;
+    padding-right: 47%;
+    padding-block: 29px;
+  }
+
+  .heading {
+    font-size: clamp(2.85rem, 5vw, 3.75rem);
+  }
+
+  .breadcrumbs {
+    margin-bottom: 21px;
+  }
+
+}
+
+@media (max-width: 767px) {
+  .inner {
+    min-height: clamp(700px, 185vw, 780px);
+    overflow: hidden;
+  }
+
+  .content {
+    width: 100%;
+    min-height: clamp(700px, 185vw, 780px);
+    justify-content: flex-start;
+    padding: 21px 22px clamp(220px, 62vw, 280px);
+  }
+
+  .illustration,
+  .visualFallback {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+  }
+
+  .illustrationImage {
+    object-position: center bottom;
+  }
+
+  .imageFade {
+    background: linear-gradient(
+      180deg,
+      rgba(248, 250, 247, 0.54) 0%,
+      rgba(248, 250, 247, 0.42) 48%,
+      rgba(248, 250, 247, 0.08) 62%,
+      transparent 76%
+    );
+  }
+
+  .breadcrumbs {
+    width: auto;
+    max-width: 100%;
+    margin-bottom: 24px;
+    padding-inline: 14px;
+  }
+
+  .breadcrumbs ol {
+    gap: 7px;
+  }
+
+  .breadcrumbs li {
+    gap: 7px;
+    font-size: 13px;
+  }
+
+  .heading {
+    max-width: 100%;
+    font-size: clamp(2.3rem, 10vw, 3.15rem);
+    line-height: 1.02;
+  }
+
+  .description {
+    gap: 14px;
+    margin-top: 18px;
+    font-size: 1.03rem;
+    line-height: 1.55;
+  }
+
+  .metricCards {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 17px;
+  }
+
+  .metricCard {
+    min-height: 54px;
+    gap: 7px;
+    padding: 7px 8px;
+  }
+
+  .metricIcon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .metricLabel {
+    font-size: 0.61rem;
+  }
+
+  .metricValue {
+    font-size: 0.82rem;
+  }
+
+  .rankingCards {
+    width: auto;
+    gap: 6px;
+    margin-top: 9px;
+  }
+
+  .rankingCard {
+    min-height: 30px;
+    padding: 4px 9px 4px 7px;
+  }
+}
+
+@media (max-width: 380px) {
+  .breadcrumbs li:nth-child(2) {
+    display: none;
+  }
+
+  .content {
+    padding-inline: 20px;
+  }
+
+  .metricCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metricCard {
+    min-height: 46px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero *,
+  .hero *::before,
+  .hero *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -13,7 +13,7 @@ import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-
 import { OccupationSectorSalaryTimeSeriesChart } from "@/components/occupation-sector-salary-time-series";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
 import { OccupationSectionLinkNav } from "@/components/occupation-section-link-nav";
-import { PageShareButton } from "@/components/page-share-button";
+import { OccupationHero } from "@/components/occupation-hero";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
 import {
   getOccupationFiveYearGrowthComparison,
@@ -21,6 +21,8 @@ import {
 } from "@/lib/occupation-five-year-growth";
 import type { OccupationDetailViewModel } from "@/lib/occupation-detail-view-models";
 import type { OccupationSupplementMetrics } from "@/lib/occupation-detail-view-model-types";
+import { getOccupationHeroImages } from "@/lib/occupation-hero-images";
+import { getOccupationHeroRankings } from "@/lib/occupation-hero-rankings";
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
 import type { OccupationSalaryDistributionMetrics } from "@/lib/ssb";
 
@@ -128,6 +130,8 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const fiveYearGrowthComparison = await getOccupationFiveYearGrowthComparison(
     detail.detailPage.occupationCode,
   );
+  const heroRankings = await getOccupationHeroRankings(detail.detailPage.occupationCode);
+  const heroImages = getOccupationHeroImages(detail.detailPage.occupationCode);
   const latestSalaryPoint =
     detail.data.medianBasicSalarySeries.points[
       detail.data.medianBasicSalarySeries.points.length - 1
@@ -218,81 +222,34 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
   return (
     <main className="min-h-screen bg-[#f7fafc] text-slate-950">
-      <section className="px-4 pb-3 pt-3 text-white sm:px-6 lg:px-8">
-        <div
-          className="mx-auto w-full max-w-7xl rounded-[5px] bg-[radial-gradient(circle_at_20%_15%,rgba(12,116,77,0.56),transparent_32%),linear-gradient(135deg,#053428_0%,#072d25_52%,#0b3b2e_100%)] px-5 py-7 shadow-[0_24px_60px_rgba(15,47,34,0.16)] sm:px-8 sm:py-9 lg:px-12"
-        >
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-center">
-            <div className="max-w-4xl space-y-4">
-              <h1 className="max-w-4xl text-3xl font-semibold leading-tight sm:text-5xl">
-                Lønn for {occupationText.titleLabel}
-              </h1>
-              <p className="max-w-3xl text-base leading-7 text-emerald-50 sm:text-lg sm:leading-8">
-                {buildHeroIntro(occupationText.seoLabel, intro)} Her finner du lønn,
-                lønnsutvikling og arbeidsmarkedstall for {occupationText.seoLabel}, basert på
-                tall fra Statistisk sentralbyrå.
-              </p>
-              <PageShareButton
-                analytics={{
-                  data: {
-                    occupation_code: detail.detailPage.occupationCode,
-                    occupation_label: occupationText.titleLabel,
-                    occupation_slug: detail.detailPage.slug,
-                    page_type: "occupation_detail",
-                  },
-                  eventName: "Occupation detail shared",
-                }}
-                text={`Se lønn, lønnsutvikling og arbeidsmarkedstall for ${occupationText.seoLabel}.`}
-                title={`Lønn for ${occupationText.titleLabel}`}
-              />
-            </div>
+      <OccupationHero
+        averageBonusRank={heroRankings.averageBonusRank}
+        averageAge={laborMarket?.age?.averageAll}
+        backgroundImage={heroImages.desktop}
+        contentDescription={`Her finner du lønn, lønnsutvikling og arbeidsmarkedsdata for ${occupationText.seoLabel}, basert på tall fra Statistisk sentralbyrå.`}
+        description={buildHeroIntro(occupationText.seoLabel, intro)}
+        employeeGrowthPercent={laborMarket?.growth?.yearOverYearChange}
+        employeeCountRank={heroRankings.employeeCountRank}
+        occupationName={occupationText.titleLabel}
+        medianMonthlySalary={estimateMonthlySalary}
+        mobileBackgroundImage={heroImages.mobile}
+        oldestAverageAgeRank={heroRankings.oldestAverageAgeRank}
+        salaryGrowthRank={heroRankings.salaryGrowthRank}
+        salaryGrowthPercent={medianGrowthMetrics?.salaryGrowth}
+        salaryRank={heroRankings.salaryRank}
+        youngestAverageAgeRank={heroRankings.youngestAverageAgeRank}
+      />
 
-            {medianGrowthMetrics ? (
-              <div className="lg:justify-self-end">
-                <div className="flex w-full max-w-sm items-start justify-between gap-4 rounded-[5px] bg-white px-5 py-5 text-slate-950 shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:px-6 sm:py-6 lg:max-w-none">
-                  <div className="flex flex-1 flex-col items-center text-center">
-                    <div className="flex items-center justify-center gap-3">
-                      <span
-                        aria-hidden="true"
-                        className={`text-4xl leading-none ${
-                          medianGrowthMetrics.salaryGrowth >= 0 ? "text-emerald-700" : "text-red-700"
-                        }`}
-                      >
-                        {medianGrowthMetrics.salaryGrowth >= 0 ? "↑" : "↓"}
-                      </span>
-                      <p
-                        className={`whitespace-nowrap text-4xl font-semibold sm:text-5xl ${
-                          medianGrowthMetrics.salaryGrowth >= 0 ? "text-emerald-700" : "text-red-700"
-                        }`}
-                      >
-                        {formatPercent(medianGrowthMetrics.salaryGrowth)}
-                      </p>
-                    </div>
-                    <p className="mt-3 text-xs font-medium leading-5 text-slate-600 sm:whitespace-nowrap">
-                      Lønnsvekst siste år ({medianGrowthMetrics.previousPeriodLabel}–{medianGrowthMetrics.latestPeriodLabel})
-                    </p>
-                  </div>
-                  <MetricInfoButton
-                    description={`Lønnsvekst siste år viser endringen i median månedslønn for begge kjønn fra ${medianGrowthMetrics.previousPeriodLabel.toLowerCase()} til ${medianGrowthMetrics.latestPeriodLabel.toLowerCase()}.`}
-                    label="Lønnsvekst siste år"
-                  />
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </section>
+      <OccupationSectionLinkNav
+        analytics={{
+          occupationCode: detail.detailPage.occupationCode,
+          occupationLabel: occupationText.titleLabel,
+          occupationSlug: detail.detailPage.slug,
+        }}
+        items={sectionNavItems}
+      />
 
       <section className="px-4 pb-6 pt-2 sm:px-6 lg:px-8">
-        <OccupationSectionLinkNav
-          analytics={{
-            occupationCode: detail.detailPage.occupationCode,
-            occupationLabel: occupationText.titleLabel,
-            occupationSlug: detail.detailPage.slug,
-          }}
-          items={sectionNavItems}
-        />
-
         <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           <div className="space-y-6">
             {topSummary || salaryCompositionCards.length > 0 ? (

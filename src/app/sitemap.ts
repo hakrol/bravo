@@ -112,6 +112,42 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/topp-50-lonnsniva",
+    filePath: "src/app/topp-50-lonnsniva/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/topp-50-lonnsvekst",
+    filePath: "src/app/topp-50-lonnsvekst/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/topp-50-gjennomsnittlig-bonus",
+    filePath: "src/app/topp-50-gjennomsnittlig-bonus/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/topp-50-eldste-snittalder",
+    filePath: "src/app/topp-50-eldste-snittalder/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/topp-50-yngste-snittalder",
+    filePath: "src/app/topp-50-yngste-snittalder/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/topp-50-arbeidstakere",
+    filePath: "src/app/topp-50-arbeidstakere/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/yrkesgrupper",
     filePath: "src/app/yrkesgrupper/page.tsx",
     priority: 0.7,
