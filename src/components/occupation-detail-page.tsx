@@ -8,7 +8,10 @@ import {
   type MonthlySalaryOverviewCardData,
 } from "@/components/monthly-salary-overview";
 import { OccupationSalaryTimeSeriesChart } from "@/components/occupation-salary-time-series";
-import { OccupationSectorSalaryLatest } from "@/components/occupation-sector-salary-latest";
+import {
+  buildOccupationSectorSalarySummary,
+  OccupationSectorSalaryLatest,
+} from "@/components/occupation-sector-salary-latest";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
 import { OccupationSectionLinkNav } from "@/components/occupation-section-link-nav";
 import { OccupationHero } from "@/components/occupation-hero";
@@ -148,6 +151,12 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     contractedDistribution,
     latestSalaryPeriodLabel,
   });
+  const sectorSalarySummary = detail.data.sectorSalarySeries
+    ? buildOccupationSectorSalarySummary({
+        occupationLabel: occupationText.seoLabel,
+        series: detail.data.sectorSalarySeries,
+      })
+    : null;
   const salarySupplementCards = buildSalarySupplementCards({
     median: detail.data.supplementMedian,
     average: detail.data.supplementAverage,
@@ -239,19 +248,18 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                         Median og gjennomsnittlig lønn
                       </h3>
                       <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                        Her kan du sammenligne median og gjennomsnitt for både samlet og avtalt
-                        lønn. Velg om tallene skal vises som årslønn, månedslønn eller timelønn.
-                        Års- og timelønn er omregnet fra SSBs månedstall. Samlet lønn inkluderer
-                        avtalt lønn, bonus og uregelmessige tillegg. Overtidsbetaling er ikke med.
+                        {buildMonthlySalaryOverviewSummary({
+                          cards: monthlySalaryOverviewCards,
+                          occupationLabel: occupationText.seoLabel,
+                        })}
                       </p>
                     </div>
-                    <AverageMedianInsight />
                     <MonthlySalaryOverview cards={monthlySalaryOverviewCards} />
                   </div>
                 ) : null}
 
                 {distribution ? (
-                  <div className="mt-10 border-t border-slate-200 pt-8">
+                  <div className="mt-10">
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
                         Lønnsfordeling
@@ -267,15 +275,16 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 ) : null}
 
                 {detail.data.sectorSalarySeries ? (
-                  <div className="mt-10 border-t border-slate-200 pt-8">
+                  <div className="mt-10">
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
                         Lønn etter sektor
                       </h3>
-                      <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                        Sammenlign siste tilgjengelige lønnstall for privat sektor,
-                        kommuneforvaltningen og statsforvaltningen.
-                      </p>
+                      {sectorSalarySummary ? (
+                        <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                          {sectorSalarySummary}
+                        </p>
+                      ) : null}
                     </div>
                     <div className="mt-6">
                       <OccupationSectorSalaryLatest series={detail.data.sectorSalarySeries} />
@@ -686,6 +695,69 @@ function buildMonthlySalaryOverviewCards({
   }
 
   return cards;
+}
+
+function buildMonthlySalaryOverviewSummary({
+  cards,
+  occupationLabel,
+}: {
+  cards: MonthlySalaryOverviewCardData[];
+  occupationLabel: string;
+}) {
+  const womenSalary = cards.find((card) => card.key === "women")?.totalMedian;
+  const menSalary = cards.find((card) => card.key === "men")?.totalMedian;
+  const womenContractedSalary = cards.find((card) => card.key === "women")?.contractedMedian;
+  const menContractedSalary = cards.find((card) => card.key === "men")?.contractedMedian;
+  const salaryDescriptions: string[] = [];
+
+  if (womenSalary !== undefined && menSalary !== undefined) {
+    const comparison =
+      womenSalary === menSalary
+        ? `Blant ${occupationLabel} har kvinner og menn lik månedslønn.`
+        : `Blant ${occupationLabel} tjener ${womenSalary > menSalary ? "kvinner" : "menn"} mest.`;
+    salaryDescriptions.push(
+      comparison,
+      `Månedslønnen er ${formatKr(womenSalary)} for kvinner og ${formatKr(menSalary)} for menn.`,
+    );
+  } else if (womenSalary !== undefined) {
+    salaryDescriptions.push(
+      `SSB har ikke publisert månedslønn for menn blant ${occupationLabel}.`,
+      `Månedslønnen er ${formatKr(womenSalary)} for kvinner.`,
+    );
+  } else if (menSalary !== undefined) {
+    salaryDescriptions.push(
+      `SSB har ikke publisert månedslønn for kvinner blant ${occupationLabel}.`,
+      `Månedslønnen er ${formatKr(menSalary)} for menn.`,
+    );
+  } else {
+    salaryDescriptions.push(
+      `SSB har ikke publisert månedslønn for kvinner eller menn blant ${occupationLabel}.`,
+    );
+  }
+
+  salaryDescriptions.push(
+    "Avtalt månedslønn er den faste lønnen uten bonus, uregelmessige tillegg og overtid.",
+  );
+
+  if (womenContractedSalary !== undefined && menContractedSalary !== undefined) {
+    salaryDescriptions.push(
+      `Den er ${formatKr(womenContractedSalary)} for kvinner og ${formatKr(menContractedSalary)} for menn.`,
+    );
+  } else if (womenContractedSalary !== undefined) {
+    salaryDescriptions.push(
+      `Den er ${formatKr(womenContractedSalary)} for kvinner. SSB har ikke publisert avtalt månedslønn for menn.`,
+    );
+  } else if (menContractedSalary !== undefined) {
+    salaryDescriptions.push(
+      `Den er ${formatKr(menContractedSalary)} for menn. SSB har ikke publisert avtalt månedslønn for kvinner.`,
+    );
+  } else {
+    salaryDescriptions.push(
+      "SSB har ikke publisert avtalt månedslønn for kvinner eller menn.",
+    );
+  }
+
+  return salaryDescriptions.join(" ");
 }
 
 function hasSalaryDistributionMetrics(metrics?: OccupationSalaryDistributionMetrics) {
