@@ -18,9 +18,9 @@ export type MonthlySalaryOverviewCardData = {
 };
 
 const periodOptions: Array<{ value: SalaryPeriod; label: string }> = [
-  { value: "annual", label: "Årslønn" },
-  { value: "monthly", label: "Månedslønn" },
-  { value: "hourly", label: "Timelønn" },
+  { value: "annual", label: "År" },
+  { value: "monthly", label: "Mnd" },
+  { value: "hourly", label: "Time" },
 ];
 
 export function MonthlySalaryOverview({
@@ -32,30 +32,29 @@ export function MonthlySalaryOverview({
 
   return (
     <>
-      <div
-        aria-label="Velg hvordan lønnen skal vises"
-        className="mt-6 inline-flex rounded-[6px] bg-slate-100 p-1"
-        role="group"
-      >
-        {periodOptions.map((option) => {
-          const active = option.value === activePeriod;
+      <div className="mt-6 flex flex-wrap items-center gap-2">
+        <span className="mr-1 text-sm text-slate-700">Bytt visning:</span>
+        <div aria-label="Velg hvordan lønnen skal vises" className="flex gap-2" role="group">
+          {periodOptions.map((option) => {
+            const active = option.value === activePeriod;
 
-          return (
-            <button
-              aria-pressed={active}
-              className={`rounded-[5px] px-3 py-2 text-sm font-semibold transition sm:px-4 ${
-                active
-                  ? "bg-white text-slate-950 shadow-sm"
-                  : "text-slate-600 hover:bg-white/70 hover:text-slate-950"
-              }`}
-              key={option.value}
-              onClick={() => setActivePeriod(option.value)}
-              type="button"
-            >
-              {option.label}
-            </button>
-          );
-        })}
+            return (
+              <button
+                aria-pressed={active}
+                className={`rounded-[5px] border px-2.5 py-1.5 text-sm font-semibold transition ${
+                  active
+                    ? "border-slate-900 bg-slate-900 text-white"
+                    : "border-slate-300 bg-white text-slate-700 hover:border-slate-500 hover:text-slate-950"
+                }`}
+                key={option.value}
+                onClick={() => setActivePeriod(option.value)}
+                type="button"
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       <div className="mt-5 grid gap-4 xl:grid-cols-2">
