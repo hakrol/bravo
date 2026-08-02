@@ -123,18 +123,6 @@ Det viktigste er derfor:
 - synk data
 - deploy oppdaterte filer
 
-## Hvordan sjekke om data virker gamle
-
-Prosjektet har allerede en enkel kontroll i admin-delen som varsler hvis:
-
-- kildedata virker gamle
-- manifestet ikke er nylig generert
-
-Relevante filer:
-
-- `src/lib/admin/audit.ts`
-- `src/lib/generated/manifest.json`
-
 ## Anbefalt rutine
 
 Ved nye kvartalstall:
