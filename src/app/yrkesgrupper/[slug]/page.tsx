@@ -85,7 +85,6 @@ export default async function OccupationGroupPage({
   const overview = buildOccupationMedianGrowthOverview(latestDataset, undefined, {
     occupationCodes: listOccupationCodesForGroup(group.code),
   });
-  const occupationLabelsByCode = getOccupationLabelsByCode(latestDataset);
   const firstSlugByOccupationCode = new Map<string, string>();
 
   for (const page of occupationIndex.pages) {
@@ -104,15 +103,12 @@ export default async function OccupationGroupPage({
       return {
         occupationCode: row.occupationCode,
         title,
-        familyCode: row.occupationCode.slice(0, 3),
-        familyLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
         monthlySalary: row.medianAll,
         cardStats: occupationCardStatsByCode.get(row.occupationCode),
         href: occupationSlug ? `/yrke/${occupationSlug}` : undefined,
         searchText: [
           title,
           row.occupationLabel,
-          occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
           row.occupationCode,
         ]
           .filter(Boolean)
@@ -164,7 +160,6 @@ export default async function OccupationGroupPage({
         <OccupationDirectory
           colorByOccupationGroup
           featuredControls
-          filterByOccupationFamily
           items={items}
           searchPlaceholder={`Søk etter yrke innen ${group.shortLabel.toLowerCase()}`}
           valueLabel="Median månedslønn"
@@ -198,27 +193,4 @@ function getOccupationGroupSeoTitle(group: OccupationGroup) {
 
 function getOccupationGroupHeroDescription(group: OccupationGroup) {
   return `Se alle yrker innen ${group.shortLabel.toLowerCase()} samlet på ett sted. Søk, filtrer og sammenlign lønn med oppdaterte lønnstall fra SSB.`;
-}
-
-function getOccupationLabelsByCode(
-  dataset: Awaited<ReturnType<typeof getLatestOccupationMedianMonthlySalaryDataset>>,
-) {
-  const occupationDimensionCode = dataset.dimensions.find((dimension) =>
-    dimension.toLocaleLowerCase("nb-NO").includes("yrke"),
-  );
-  const labelsByCode = new Map<string, string>();
-
-  if (!occupationDimensionCode) {
-    return labelsByCode;
-  }
-
-  for (const row of dataset.rows) {
-    const occupation = row.dimensions[occupationDimensionCode];
-
-    if (occupation && /^\d{1,3}$/.test(occupation.code)) {
-      labelsByCode.set(occupation.code, occupation.label);
-    }
-  }
-
-  return labelsByCode;
 }

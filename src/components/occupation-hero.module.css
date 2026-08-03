@@ -83,7 +83,8 @@
   align-items: flex-start;
   justify-content: center;
   margin-inline: auto;
-  padding: clamp(28px, 2.5vw, 42px) 50% clamp(30px, 2.7vw, 46px) clamp(28px, 3.4vw, 60px);
+  /* Behold en stabil tekstkolonne når viewporten blir bredere enn maksbredden. */
+  padding: clamp(28px, 2.5vw, 42px) min(50%, 830px) clamp(30px, 2.7vw, 46px) clamp(28px, 3.4vw, 60px);
 }
 
 .breadcrumbs {

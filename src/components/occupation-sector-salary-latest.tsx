@@ -156,6 +156,7 @@ export function OccupationSectorSalaryLatest({
               <MetricInfoButton
                 description={sector.description}
                 label={sector.label}
+                modalVariant="compact"
                 variant="muted"
               />
             </div>

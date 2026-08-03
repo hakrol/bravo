@@ -8,6 +8,7 @@ type MetricInfoButtonProps = {
   label: string;
   description: ReactNode;
   children?: ReactNode;
+  modalVariant?: "default" | "compact";
   variant?: "default" | "muted";
 };
 
@@ -15,6 +16,7 @@ export function MetricInfoButton({
   label,
   description,
   children,
+  modalVariant = "default",
   variant = "default",
 }: MetricInfoButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +27,14 @@ export function MetricInfoButton({
   const buttonClassName = children
     ? "inline-flex items-center justify-center gap-2 text-sm font-semibold text-[var(--primary-strong)] transition hover:text-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary-strong)]"
     : iconClassName;
+  const backdropClassName =
+    modalVariant === "compact"
+      ? "fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4"
+      : "fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/35 px-4 py-6 sm:py-10";
+  const dialogClassName =
+    modalVariant === "compact"
+      ? "w-full max-w-md rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
+      : "w-full max-w-2xl rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]";
 
   return (
     <>
@@ -48,12 +58,12 @@ export function MetricInfoButton({
 
       {isOpen ? createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-950/35 px-4 py-6 sm:py-10"
+          className={backdropClassName}
           onClick={() => setIsOpen(false)}
         >
           <div
             aria-modal="true"
-            className="w-full max-w-2xl rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
+            className={dialogClassName}
             onClick={(event) => event.stopPropagation()}
             role="dialog"
           >
