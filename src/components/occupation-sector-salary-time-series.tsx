@@ -159,6 +159,7 @@ export function OccupationSectorSalaryTimeSeriesChart({
               <MetricInfoButton
                 description={`Her ser du siste publiserte median månedslønn for ${resolvedGender === "women" ? "kvinner" : "menn"} i privat sektor, kommuneforvaltningen og statsforvaltningen. Tallene er hentet fra SSB tabell 11418.`}
                 label="Siste data"
+                modalVariant="compact"
                 variant="muted"
               />
             </div>
@@ -228,6 +229,7 @@ export function OccupationSectorSalaryTimeSeriesChart({
             <MetricInfoButton
               description={sector.description}
               label={sector.label}
+              modalVariant="compact"
               variant="muted"
             />
           </div>

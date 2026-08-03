@@ -46,7 +46,6 @@ export default async function YrkerPage() {
     getOccupationCardStatsByCode(),
   ]);
   const overview = buildOccupationMedianGrowthOverview(dataset);
-  const occupationLabelsByCode = getOccupationLabelsByCode(dataset);
   const firstSlugByOccupationCode = new Map<string, string>();
 
   for (const page of occupationIndex.pages) {
@@ -66,10 +65,6 @@ export default async function YrkerPage() {
       title: formatOccupationDisplayLabel(row.occupationLabel),
       groupCode: row.occupationCode.slice(0, 1),
       groupLabel: getOccupationGroupLabel(row.occupationCode),
-      areaCode: row.occupationCode.slice(0, 2),
-      areaLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 2)),
-      familyCode: row.occupationCode.slice(0, 3),
-      familyLabel: occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
       monthlySalary: row.medianAll,
       cardStats: occupationCardStatsByCode.get(row.occupationCode),
       href: slug ? `/yrke/${slug}` : undefined,
@@ -77,8 +72,6 @@ export default async function YrkerPage() {
         row.occupationLabel,
         formatOccupationDisplayLabel(row.occupationLabel),
         getOccupationGroupLabel(row.occupationCode),
-        occupationLabelsByCode.get(row.occupationCode.slice(0, 2)),
-        occupationLabelsByCode.get(row.occupationCode.slice(0, 3)),
         row.occupationCode,
       ]
         .filter(Boolean)
@@ -118,36 +111,13 @@ export default async function YrkerPage() {
         <OccupationDirectory
           colorByOccupationGroup
           featuredControls
-          filterByOccupationHierarchy
+          filterByOccupationGroup
           items={items}
           searchPlaceholder="Søk etter yrke, for eksempel flyger"
         />
       </div>
     </div>
   );
-}
-
-function getOccupationLabelsByCode(
-  dataset: Awaited<ReturnType<typeof getLatestOccupationMedianMonthlySalaryDataset>>,
-) {
-  const occupationDimensionCode = dataset.dimensions.find((dimension) =>
-    dimension.toLocaleLowerCase("nb-NO").includes("yrke"),
-  );
-  const labelsByCode = new Map<string, string>();
-
-  if (!occupationDimensionCode) {
-    return labelsByCode;
-  }
-
-  for (const row of dataset.rows) {
-    const occupation = row.dimensions[occupationDimensionCode];
-
-    if (occupation && /^\d{1,3}$/.test(occupation.code)) {
-      labelsByCode.set(occupation.code, occupation.label);
-    }
-  }
-
-  return labelsByCode;
 }
 
 function getOccupationGroupLabel(occupationCode: string) {

@@ -4,7 +4,6 @@ import {
 } from "@/components/blog-salary-development-chart";
 import { EditorialDivergingBarChart } from "@/components/editorial-diverging-bar-chart";
 import buildingWorkersSnapshot from "@/content/blog/data/bygningsarbeidere-lonn-2025.json";
-import { slugifyOccupationFamily } from "@/lib/occupation-families";
 
 type BuildingWorkerFamily = {
   label: string;
@@ -28,7 +27,6 @@ export function BuildingWorkerFamiliesSalaryChart() {
         label: family.label,
         value: family.medianAnnualSalary,
         highlight: family.label === "Bygningstekniske arbeidere",
-        href: `/yrkesfamilie/${slugifyOccupationFamily(family.label)}`,
       }))}
       format="currency"
       kicker="Årslønn i byggfag"
@@ -56,7 +54,7 @@ export function BuildingWorkerFamiliesSalaryDevelopmentChart() {
       note="Tallene viser median månedslønn for begge kjønn, alle sektorer og heltid og deltid samlet. Utviklingen er nominell og ikke justert for prisvekst."
       series={series}
       source="SSB tabell 11418"
-      subtitle="Median månedslønn fra 2021 til 2025 for de to yrkesfamiliene."
+      subtitle="Median månedslønn fra 2021 til 2025 for de to yrkesgruppene."
       title="Begge gruppene fikk over 20 prosent lønnsvekst på fem år"
       yAxisLabel="Median månedslønn"
     />

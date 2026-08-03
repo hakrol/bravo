@@ -18,6 +18,26 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/yrkesfamilier",
+        destination: "/yrker",
+        permanent: true,
+      },
+      {
+        source: "/yrkesfamilie/:slug",
+        destination: "/yrker",
+        permanent: true,
+      },
+      {
+        source: "/yrkesomrader",
+        destination: "/yrker",
+        permanent: true,
+      },
+      {
+        source: "/yrkesomrade/:slug",
+        destination: "/yrker",
+        permanent: true,
+      },
+      {
         source: "/timelonn",
         destination: "/yrker",
         permanent: true,

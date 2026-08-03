@@ -14,10 +14,6 @@ export type OccupationDirectoryItem = {
   title: string;
   groupCode?: string;
   groupLabel?: string;
-  areaCode?: string;
-  areaLabel?: string;
-  familyCode?: string;
-  familyLabel?: string;
   monthlySalary?: number;
   salaryValue?: number;
   cardStats?: {
@@ -42,8 +38,7 @@ type OccupationDirectoryProps = {
   resultsAriaLabel?: string;
   salaryFilters?: SalaryFilterOption[];
   colorByOccupationGroup?: boolean;
-  filterByOccupationHierarchy?: boolean;
-  filterByOccupationFamily?: boolean;
+  filterByOccupationGroup?: boolean;
   showSearch?: boolean;
   featuredControls?: boolean;
   cardStatMetrics?: CardStatMetric[];
@@ -76,8 +71,7 @@ export function OccupationDirectory({
   resultsAriaLabel,
   salaryFilters = defaultSalaryFilters,
   colorByOccupationGroup = false,
-  filterByOccupationHierarchy = false,
-  filterByOccupationFamily = false,
+  filterByOccupationGroup = false,
   showSearch = true,
   featuredControls = false,
   cardStatMetrics = ["salaryGrowth", "employeeGrowth", "averageAge", "genderPayGap"],
@@ -85,14 +79,10 @@ export function OccupationDirectory({
   const [query, setQuery] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("all");
   const [occupationGroupFilter, setOccupationGroupFilter] = useState("all");
-  const [occupationAreaFilter, setOccupationAreaFilter] = useState("all");
-  const [occupationFamilyFilter, setOccupationFamilyFilter] = useState("all");
   const [quickFilter, setQuickFilter] = useState<QuickFilter | null>(null);
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = normalizeText(deferredQuery);
   const occupationGroups = buildFilterOptions(items, "groupCode", "groupLabel");
-  const occupationAreas = buildFilterOptions(items, "areaCode", "areaLabel");
-  const occupationFamilies = buildFilterOptions(items, "familyCode", "familyLabel");
 
   const filteredItems = items.filter((item) => {
     const searchableText = featuredControls
@@ -100,66 +90,15 @@ export function OccupationDirectory({
       : (item.searchText ?? `${item.title} ${item.occupationCode}`);
     const matchesQuery =
       normalizedQuery.length === 0 || normalizeText(searchableText).includes(normalizedQuery);
-    const matchesSelectedFilter = filterByOccupationHierarchy
-      ? (occupationGroupFilter === "all" || item.groupCode === occupationGroupFilter) &&
-        (occupationAreaFilter === "all" || item.areaCode === occupationAreaFilter) &&
-        (occupationFamilyFilter === "all" || item.familyCode === occupationFamilyFilter)
-      : filterByOccupationFamily
-        ? occupationFamilyFilter === "all" || item.familyCode === occupationFamilyFilter
-        : matchesSalaryFilter(getSalaryValue(item), salaryFilter, salaryFilters);
+    const matchesSelectedFilter = filterByOccupationGroup
+      ? occupationGroupFilter === "all" || item.groupCode === occupationGroupFilter
+      : matchesSalaryFilter(getSalaryValue(item), salaryFilter, salaryFilters);
 
     return matchesQuery && matchesSelectedFilter;
   });
   const displayedItems = sortByQuickFilter(filteredItems, quickFilter);
   const resultListLabel =
     resultsAriaLabel ?? `Alle ${resultNoun} med ${valueLabel.toLocaleLowerCase("nb-NO")}`;
-  const handleOccupationGroupChange = (value: string) => {
-    setOccupationGroupFilter(value);
-
-    if (value === "all") {
-      return;
-    }
-
-    if (occupationAreaFilter !== "all" && !occupationAreaFilter.startsWith(value)) {
-      setOccupationAreaFilter("all");
-      setOccupationFamilyFilter("all");
-      return;
-    }
-
-    if (occupationFamilyFilter !== "all" && !occupationFamilyFilter.startsWith(value)) {
-      setOccupationFamilyFilter("all");
-    }
-  };
-  const handleOccupationAreaChange = (value: string) => {
-    setOccupationAreaFilter(value);
-
-    if (value === "all") {
-      return;
-    }
-
-    if (occupationGroupFilter !== "all" && !value.startsWith(occupationGroupFilter)) {
-      setOccupationGroupFilter("all");
-    }
-
-    if (occupationFamilyFilter !== "all" && !occupationFamilyFilter.startsWith(value)) {
-      setOccupationFamilyFilter("all");
-    }
-  };
-  const handleOccupationFamilyChange = (value: string) => {
-    setOccupationFamilyFilter(value);
-
-    if (value === "all") {
-      return;
-    }
-
-    if (occupationGroupFilter !== "all" && !value.startsWith(occupationGroupFilter)) {
-      setOccupationGroupFilter("all");
-    }
-
-    if (occupationAreaFilter !== "all" && !value.startsWith(occupationAreaFilter)) {
-      setOccupationAreaFilter("all");
-    }
-  };
 
   return (
     <section className="grid gap-5">
@@ -184,9 +123,9 @@ export function OccupationDirectory({
             </label>
           ) : null}
 
-          {filterByOccupationHierarchy ? (
-            <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="grid min-w-0 gap-2">
+          {filterByOccupationGroup ? (
+            <div className="mt-5 max-w-xl">
+              <div className="grid min-w-0 gap-2">
               <FilterLabel
                 description="Yrkesgruppe er det øverste og bredeste nivået i yrkesinndelingen. Den samler yrker med lignende hovedoppgaver, for eksempel ledere eller salgs- og serviceyrker."
                 htmlFor="occupation-group-filter"
@@ -199,7 +138,7 @@ export function OccupationDirectory({
                 <select
                   id="occupation-group-filter"
                   className="h-12 w-full min-w-0 appearance-none truncate rounded-[10px] border border-slate-300 bg-white py-2 pl-12 pr-11 text-base text-slate-800 outline-none transition hover:border-slate-400 focus:border-[#2d704c] focus:shadow-[0_0_0_4px_rgba(45,112,76,0.12)]"
-                  onChange={(event) => handleOccupationGroupChange(event.target.value)}
+                  onChange={(event) => setOccupationGroupFilter(event.target.value)}
                   value={occupationGroupFilter}
                 >
                   <option value="all">Alle yrkesgrupper</option>
@@ -213,95 +152,6 @@ export function OccupationDirectory({
                   <DirectoryIcon name="chevron" />
                 </span>
               </span>
-            </div>
-
-            <div className="grid min-w-0 gap-2">
-              <FilterLabel
-                description="Yrkesområde er nivået under yrkesgruppe. Det avgrenser yrkene til et mer spesifikt fag- eller arbeidsområde, men omfatter fortsatt flere yrkesfamilier."
-                htmlFor="occupation-area-filter"
-                label="Yrkesområde"
-              />
-              <span className="relative block min-w-0">
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-700">
-                  <DirectoryIcon name="grid" />
-                </span>
-                <select
-                  id="occupation-area-filter"
-                  className="h-12 w-full min-w-0 appearance-none truncate rounded-[10px] border border-slate-300 bg-white py-2 pl-12 pr-11 text-base text-slate-800 outline-none transition hover:border-slate-400 focus:border-[#2d704c] focus:shadow-[0_0_0_4px_rgba(45,112,76,0.12)]"
-                  onChange={(event) => handleOccupationAreaChange(event.target.value)}
-                  value={occupationAreaFilter}
-                >
-                  <option value="all">Alle yrkesområder</option>
-                  {occupationAreas.map((area) => (
-                    <option key={area.value} value={area.value}>
-                      {area.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-700">
-                  <DirectoryIcon name="chevron" />
-                </span>
-              </span>
-            </div>
-
-            <div className="grid min-w-0 gap-2 md:col-span-2 lg:col-span-1">
-              <FilterLabel
-                description="Yrkesfamilie er nivået under yrkesområde. Den samler nært beslektede yrker med lignende arbeidsoppgaver, før inndelingen går videre til det enkelte yrket."
-                htmlFor="occupation-family-filter"
-                label="Yrkesfamilie"
-              />
-              <span className="relative block min-w-0">
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-700">
-                  <DirectoryIcon name="folder" />
-                </span>
-                <select
-                  id="occupation-family-filter"
-                  className="h-12 w-full min-w-0 appearance-none truncate rounded-[10px] border border-slate-300 bg-white py-2 pl-12 pr-11 text-base text-slate-800 outline-none transition hover:border-slate-400 focus:border-[#2d704c] focus:shadow-[0_0_0_4px_rgba(45,112,76,0.12)]"
-                  onChange={(event) => handleOccupationFamilyChange(event.target.value)}
-                  value={occupationFamilyFilter}
-                >
-                  <option value="all">Alle yrkesfamilier</option>
-                  {occupationFamilies.map((family) => (
-                    <option key={family.value} value={family.value}>
-                      {family.label}
-                    </option>
-                  ))}
-                </select>
-                <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-700">
-                  <DirectoryIcon name="chevron" />
-                </span>
-              </span>
-            </div>
-            </div>
-          ) : filterByOccupationFamily ? (
-            <div className="mt-5 max-w-xl">
-              <div className="grid min-w-0 gap-2">
-                <FilterLabel
-                  description="Yrkesfamilie samler nært beslektede yrker med lignende arbeidsoppgaver innenfor denne yrkesgruppen."
-                  htmlFor="occupation-family-filter"
-                  label="Yrkesfamilie"
-                />
-                <span className="relative block min-w-0">
-                  <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-700">
-                    <DirectoryIcon name="folder" />
-                  </span>
-                  <select
-                    id="occupation-family-filter"
-                    className="h-12 w-full min-w-0 appearance-none truncate rounded-[10px] border border-slate-300 bg-white py-2 pl-12 pr-11 text-base text-slate-800 outline-none transition hover:border-slate-400 focus:border-[#2d704c] focus:shadow-[0_0_0_4px_rgba(45,112,76,0.12)]"
-                    onChange={(event) => setOccupationFamilyFilter(event.target.value)}
-                    value={occupationFamilyFilter}
-                  >
-                    <option value="all">Alle yrkesfamilier</option>
-                    {occupationFamilies.map((family) => (
-                      <option key={family.value} value={family.value}>
-                        {family.label}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-700">
-                    <DirectoryIcon name="chevron" />
-                  </span>
-                </span>
               </div>
             </div>
           ) : null}
@@ -368,73 +218,20 @@ export function OccupationDirectory({
         </div>
       ) : null}
 
-      {filterByOccupationHierarchy ? (
-        <div className="grid gap-4 rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] md:grid-cols-3">
+      {filterByOccupationGroup ? (
+        <div className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
           <label className="grid min-w-0 gap-2" htmlFor="occupation-group-filter">
             <span className="text-sm font-semibold text-slate-950">Velg yrkesgruppe</span>
             <select
               id="occupation-group-filter"
               className="h-11 min-w-0 w-full max-w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-              onChange={(event) => handleOccupationGroupChange(event.target.value)}
+              onChange={(event) => setOccupationGroupFilter(event.target.value)}
               value={occupationGroupFilter}
             >
               <option value="all">Alle yrkesgrupper</option>
               {occupationGroups.map((group) => (
                 <option key={group.value} value={group.value}>
                   {group.label}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="grid min-w-0 gap-2" htmlFor="occupation-area-filter">
-            <span className="text-sm font-semibold text-slate-950">Velg yrkesområde</span>
-            <select
-              id="occupation-area-filter"
-              className="h-11 min-w-0 w-full max-w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-              onChange={(event) => handleOccupationAreaChange(event.target.value)}
-              value={occupationAreaFilter}
-            >
-              <option value="all">Alle yrkesområder</option>
-              {occupationAreas.map((area) => (
-                <option key={area.value} value={area.value}>
-                  {area.label}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="grid min-w-0 gap-2" htmlFor="occupation-family-filter">
-            <span className="text-sm font-semibold text-slate-950">Velg yrkesfamilie</span>
-            <select
-              id="occupation-family-filter"
-              className="h-11 min-w-0 w-full max-w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-              onChange={(event) => handleOccupationFamilyChange(event.target.value)}
-              value={occupationFamilyFilter}
-            >
-              <option value="all">Alle yrkesfamilier</option>
-              {occupationFamilies.map((family) => (
-                <option key={family.value} value={family.value}>
-                  {family.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      ) : filterByOccupationFamily ? (
-        <div className="rounded-[5px] bg-white px-5 py-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
-          <label className="grid min-w-0 gap-2" htmlFor="occupation-family-filter">
-            <span className="text-sm font-semibold text-slate-950">Filtrer på yrkesfamilie</span>
-            <select
-              id="occupation-family-filter"
-              className="h-11 min-w-0 w-full max-w-full rounded-[5px] border border-black/8 bg-white px-4 text-base text-slate-950 outline-none transition-all duration-200 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]"
-              onChange={(event) => setOccupationFamilyFilter(event.target.value)}
-              value={occupationFamilyFilter}
-            >
-              <option value="all">Alle yrkesfamilier</option>
-              {occupationFamilies.map((family) => (
-                <option key={family.value} value={family.value}>
-                  {family.label}
                 </option>
               ))}
             </select>
@@ -534,9 +331,7 @@ export function OccupationDirectory({
           </p>
           <p className="mt-2 text-sm leading-6 text-slate-600">
             {showSearch ? "Prøv et annet søkeord eller velg " : "Velg "}
-            {filterByOccupationHierarchy || filterByOccupationFamily
-              ? "en annen yrkesinndeling"
-              : "et annet lønnsnivå"}
+            {filterByOccupationGroup ? "en annen yrkesgruppe" : "et annet lønnsnivå"}
             .
           </p>
         </div>
@@ -661,8 +456,6 @@ function QuickFilterButton({
 type DirectoryIconName =
   | "age"
   | "chevron"
-  | "folder"
-  | "grid"
   | "people"
   | "salary"
   | "search"
@@ -677,20 +470,6 @@ function DirectoryIcon({ name }: { name: DirectoryIconName }) {
       </>
     ),
     chevron: <path d="m7 10 5 5 5-5" />,
-    folder: (
-      <>
-        <path d="M3.5 7.5h6l2-2h3l2 2h4v10.25a1.75 1.75 0 0 1-1.75 1.75H5.25a1.75 1.75 0 0 1-1.75-1.75Z" />
-        <path d="M3.5 10h17" />
-      </>
-    ),
-    grid: (
-      <>
-        <rect height="5" rx="1" width="5" x="4" y="4" />
-        <rect height="5" rx="1" width="5" x="15" y="4" />
-        <rect height="5" rx="1" width="5" x="4" y="15" />
-        <rect height="5" rx="1" width="5" x="15" y="15" />
-      </>
-    ),
     people: (
       <>
         <path d="M15.5 20v-1.5a4 4 0 0 0-4-4h-4a4 4 0 0 0-4 4V20" />
@@ -736,8 +515,8 @@ function DirectoryIcon({ name }: { name: DirectoryIconName }) {
 
 function buildFilterOptions(
   items: OccupationDirectoryItem[],
-  codeKey: "groupCode" | "areaCode" | "familyCode",
-  labelKey: "groupLabel" | "areaLabel" | "familyLabel",
+  codeKey: "groupCode",
+  labelKey: "groupLabel",
 ) {
   return Array.from(
     new Map(

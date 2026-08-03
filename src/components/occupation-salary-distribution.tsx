@@ -1,7 +1,6 @@
 ﻿'use client'
 
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { MetricInfoButton } from "@/components/metric-info-button";
 import type {
   OccupationSalaryDistribution,
   OccupationSalaryDistributionMetrics,
@@ -279,7 +278,11 @@ function MobileDistributionPoint({
         <span aria-hidden="true" className={`h-3 w-3 shrink-0 rounded-full ${tone}`} />
         <span className="text-sm font-medium text-slate-700">{label}</span>
         {infoDescription ? (
-          <MarkerInfoButton description={infoDescription} label={label} />
+          <MetricInfoButton
+            description={infoDescription}
+            label={label}
+            modalVariant="compact"
+          />
         ) : null}
       </div>
       <span className="shrink-0 text-sm font-semibold tabular-nums text-slate-950">
@@ -413,7 +416,11 @@ function Marker({
           <span className="inline-flex items-center gap-1.5">
             <span>{label}</span>
             {infoDescription ? (
-              <MarkerInfoButton description={infoDescription} label={label} />
+              <MetricInfoButton
+                description={infoDescription}
+                label={label}
+                modalVariant="compact"
+              />
             ) : null}
           </span>
         </div>
@@ -645,63 +652,4 @@ function formatCurrency(value: number) {
   return `${value.toLocaleString("nb-NO", {
     maximumFractionDigits: 0,
   })} kr`;
-}
-
-type MarkerInfoButtonProps = {
-  label: string;
-  description: string;
-};
-
-function MarkerInfoButton({ label, description }: MarkerInfoButtonProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        aria-label={`Vis forklaring for ${label.toLowerCase()}`}
-        className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#d6e2d7] bg-white text-[11px] font-semibold normal-case text-[var(--primary-strong)] shadow-sm transition hover:bg-[#f5f8f5]"
-        onClick={() => setIsOpen(true)}
-        type="button"
-      >
-        i
-      </button>
-
-      {isOpen && typeof document !== "undefined"
-        ? createPortal(
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/35 px-4"
-              onClick={() => setIsOpen(false)}
-            >
-              <div
-                aria-modal="true"
-                className="w-full max-w-md rounded-md border bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
-                onClick={(event) => event.stopPropagation()}
-                role="dialog"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="pt-1">
-                    <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
-                      {label}
-                    </h3>
-                  </div>
-                  <button
-                    aria-label="Lukk forklaring"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border)] text-lg text-slate-600 transition hover:bg-slate-50"
-                    onClick={() => setIsOpen(false)}
-                    type="button"
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <p className="mt-5 text-base leading-7 text-slate-700 sm:text-lg sm:leading-8">
-                  {description}
-                </p>
-              </div>
-            </div>,
-            document.body,
-          )
-        : null}
-    </>
-  );
 }

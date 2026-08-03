@@ -1,666 +1,361 @@
-# AdSense: vurdering og tiltaksplan for Lønnsinnsikt
+# AdSense-tiltaksplan for Lønnsinnsikt
 
-Dato for vurderingen: 22. juli 2026  
-Sist oppdatert: 23. juli 2026
+Dato for kartleggingen: 3. august 2026
+Status: Klar for gjennomføring
 
-## Sammendrag
+## Hovedkonklusjon
 
-Google oppgir ikke et bestemt minstekrav til antall artikler, antall ord eller antall besøk. «Innhold av lav verdi» er en bred vurdering av nettstedet som helhet: originalitet, menneskelig bearbeiding, nytte, navigasjon, avsender og hvor stor del av de indeksérbare sidene som faktisk gir selvstendig verdi.
+Lønnsinnsikt har mye godt innhold, men Google møter et nettsted der omtrent 83 prosent av sitemapet består av programmatisk produserte yrkes-, lærling- og katalogsider. Flere av disse sidene lover lønnsinnhold uten å ha faktiske lønnstall.
 
-Lønnsinnsikt har et godt faglig fundament, men Google ser sannsynligvis et nettsted med svært mange malbaserte URL-er sammenlignet med mengden tydelig redaksjonell bearbeiding.
+Den mest sannsynlige årsaken til AdSense-avslaget er kombinasjonen av:
 
-De viktigste tiltakene er derfor ikke å produsere flest mulig nye artikler. Nettstedet bør i stedet:
+1. Et svært stort programmatisk sideunivers sammenlignet med mengden redaksjonelt innhold.
+2. Yrkesdetaljer med tomme eller mangelfulle lønnsseksjoner.
+3. AdSense-tillatelse på alle yrkessider, uavhengig av datadekning.
+4. Mange katalogsider som primært fungerer som navigasjon.
+5. Enkelte korte og generelle forklaringsartikler med begrenset selvstendig verdi.
 
-1. Rette tekniske og juridiske AdSense-problemer.
-2. Redusere mengden svakt eller overlappende indeksérbart malinnhold.
-3. Synliggjøre menneskelig kontroll, avsender og metode.
-4. Forbedre de viktigste eksisterende sidene.
-5. Gjennomføre en full kvalitetskontroll før det bes om ny gjennomgang.
+Løsningen er ikke å produsere flest mulig nye artikler. Lønnsinnsikt trenger en streng publiseringsgrense som hindrer at svake programmatisk produserte sider blir indeksert eller får annonser.
 
-Det er ikke mulig å garantere godkjenning, men tiltakene nedenfor retter seg direkte mot de sterkeste risikosignalene i Googles retningslinjer og dagens kodebase.
+Det er ikke mulig å garantere godkjenning, men tiltakene nedenfor retter seg mot de tydeligste risikosignalene i den nåværende kodebasen og på det publiserte nettstedet.
 
-## Fremdriftsstatus
+## Kartlagt sideomfang
 
-Følgende tiltak er gjennomført i kodebasen eller konfigurert i de tilhørende tjenestene:
+| Sidetype | Antall |
+| --- | ---: |
+| Statiske sider | 43 |
+| Yrkesgrupper | 8 |
+| Yrkesdetaljer | 407 URL-er |
+| Lærlingdetaljer | 51 |
+| Bloggartikler | 60 |
+| Forklarer-artikler | 24 |
+| Bloggkategorier | 2 |
+| Estimert totalt sitemap | **593 URL-er** |
 
-- Publisher-ID-en er avstemt mellom AdSense-scriptet og `public/ads.txt`.
-- E-postadressen `lonnsinnsikt@gmail.com` er opprettet.
-- Resend-konto og nytt API-oppsett er opprettet.
-- DNS-postene for Resend sitt avsenderdomene er verifisert.
-- En tidligere eksponert API-nøkkel er tilbakekalt og erstattet.
-- `RESEND_API_KEY`, `CONTACT_TO_EMAIL` og `CONTACT_FROM_EMAIL` er lagt inn som sensitive miljøvariabler for Production og Preview i Vercel.
-- Kontaktsiden `/kontakt` er implementert med ett enkelt, sentrert skjema.
-- Skjemaet samler inn navn, e-postadresse og melding.
-- Skjemaet bruker serverbasert validering, honeypot, tidskontroll og en enkel rate limit.
-- Resend-kallet skjer bare på serveren, og API-nøkkelen eksponeres ikke i nettleseren eller kildekoden.
-- Innsenderens e-postadresse brukes som `Reply-To`, slik at svar fra Gmail går direkte til innsenderen.
-- Kontakt er lagt til i footer og sitemap.
-- Personvernerklæringen er utvidet med behandling av kontakthenvendelser, Resend og Gmail.
-- Målrettet ESLint, TypeScript-kontroll og fullt Next.js-produksjonsbygg er bestått.
+466 av 593 URL-er er programmatisk produserte yrkes-, lærling- eller yrkesgruppesider. Bare 84 URL-er er redaksjonelle blogg- eller forklaringsartikler.
 
-Følgende gjenstår for kontaktløsningen:
+## Kritiske funn
 
-- Endringene må distribueres i en ny Vercel-utrulling.
-- Det publiserte skjemaet må testes med en reell melding til `lonnsinnsikt@gmail.com`.
-- Det må kontrolleres at svarfunksjonen i Gmail bruker innsenderens adresse.
-- Lokal e-postsending i dev-modus krever de tre miljøvariablene i `.env.local`. De er foreløpig bare konfigurert i Vercel for Production og Preview.
+### 1. AdSense tillates på alle yrkessider
 
-## Hva Google krever
+AdSense-konfigurasjonen godkjenner enhver URL som matcher `/yrke/[slug]`, uten å kontrollere om siden faktisk har tilstrekkelig lønnsinnhold.
 
-Google sier at et nettsted som skal godkjennes for AdSense, må ha unikt og relevant innhold og en god brukeropplevelse. Navigasjonen skal være tydelig, og innholdet skal være originalt og interessant.
+Dette inkluderer:
 
-Google tillater ikke annonser på sider:
+- 26 yrkessider uten både lønnstrend og lønnsfordeling
+- 45 sider uten lønnsfordeling
+- 38 sider uten median lønnsserie
+- 48 sider for yrker med færre enn 100 registrerte lønnstakere
+- 24 sider for yrker med færre enn 20 registrerte lønnstakere
 
-- uten publisistinnhold eller med innhold av lav verdi
-- som er under utvikling
-- som primært brukes til navigasjon eller andre handlinger
-- med automatisk generert innhold som ikke er manuelt gjennomgått eller kuratert
-- med kopiert eller omskrevet innhold uten selvstendig kommentar eller merverdi
-- hvor annonser eller betalt promotering utgjør mer enn hovedinnholdet
+Eksempler på utsatte sider er:
 
-Google definerer «scaled content abuse» som mange sider som er laget primært for å manipulere søkerangeringer og ikke for å hjelpe brukeren. Risikoen gjelder uavhengig av om sidene er laget med AI, kode, maler eller manuelt.
+- ystere i gårdsproduksjon
+- privatetterforskere
+- andre dyreoppdrettere og røktere
+- saftere og syltere
+- kodere
+- kunsthåndverkere i tre
+- birøktere
+- fangstfolk
+- gips- og sparklingsarbeidere
 
-Google anbefaler også at nettstedet tydelig svarer på:
+På disse sidene kan brukeren møte overskrifter som «Lønnsfordeling», «Lønnsutvikling» og «Reallønnsvekst» uten at det finnes faktiske lønnstall under seksjonene. Dette gir en tydelig risiko for at Google vurderer sidene som innhold av lav verdi.
 
-- Hvem har laget innholdet?
-- Hvordan ble innholdet laget og kontrollert?
-- Hvorfor ble innholdet laget?
+Relevant kode:
 
-### Offisielle Google-kilder
+- `src/lib/adsense-routes.ts`
+- `src/components/adsense-script.tsx`
+- `src/components/occupation-detail-page.tsx`
 
-- [Make sure your site's pages are ready for AdSense](https://support.google.com/adsense/answer/7299563?hl=en)
+### 2. Svært korte yrkesintroduksjoner
+
+Alle de 406 yrkesmodellene har unike introduksjoner, som er positivt. Introduksjonene er likevel svært korte:
+
+- median: 17 ord
+- korteste: 13 ord
+- lengste: 32 ord
+
+Resten av teksten produseres i stor grad fra samme komponent og de samme tekstmalene. Sidene inneholder unik statistikk og egne beregninger, men helheten kan likevel fremstå som skalert malinnhold med lite menneskelig, yrkesspesifikk bearbeiding.
+
+Relevant kode og data:
+
+- `src/components/occupation-detail-page.tsx`
+- `src/lib/occupation-detail-pages.ts`
+- `src/lib/generated/occupation-detail-view-models/`
+
+### 3. Yrkesfamilier og yrkesområder er fjernet
+
+Status 3. august 2026: Gjennomført i kodebasen.
+
+122 yrkesfamiliesider, 43 yrkesområdesider og de to tilhørende oversiktssidene er fjernet som egne brukerflater og tatt ut av sitemapet. Footerlenker og filtre for yrkesfamilie og yrkesområde er også fjernet. Gamle URL-er videresendes permanent til `/yrker`.
+
+Nettstedet beholder hovedoversikten `/yrker` og de åtte brede yrkesgruppene. Yrkesoversikten kan fortsatt søkes og filtreres på yrkesgruppe.
+
+Relevant kode:
+
+- `src/app/sitemap.ts`
+- `src/app/yrker/page.tsx`
+- `src/app/yrkesgrupper/[slug]/page.tsx`
+- `src/components/occupation-directory.tsx`
+- `next.config.ts`
+
+### 4. Enkelte forklaringsartikler er svært korte
+
+13 av 24 forklaringsartikler har under 500 ord. Korthet er ikke automatisk et kvalitetsproblem, og Google har ingen fast ordgrense. De svakeste artiklene er likevel generelle og har begrenset egen analyse, praktisk anvendelse og kildebruk.
+
+De korteste er:
+
+| Artikkel | Omtrentlig antall ord |
+| --- | ---: |
+| `lonnsfordeling.mdx` | 185 |
+| `gjennomsnittslonn.mdx` | 188 |
+| `grunnlonn.mdx` | 206 |
+| `disponibel-arbeidstid.mdx` | 220 |
+
+Bloggen er betydelig sterkere. Medianen er omtrent 819 ord, og mange innlegg har egne diagrammer, tabeller, beregninger og SSB-kilder.
+
+Relevant innhold:
+
+- `src/content/forklarer/`
+- `src/content/blog/`
+
+### 5. Tekniske oppryddingspunkter
+
+Kartleggingen avdekket også:
+
+- 407 yrke-URL-er for 406 modellfiler fordi regnskapsførere finnes med to slugs.
+- `/kvinner-vs-menn` og `/topp-jobber` er merket `noindex`, men ligger likevel i sitemapet.
+- To temasider finnes parallelt med og uten `ø` i URL-en. Canonical peker til foretrukket URL, men permanente videresendinger mangler.
+
+Disse punktene er neppe hovedårsaken til avslaget alene, men de bidrar til inntrykket av et stort og maskinelt sideunivers.
+
+## Det som allerede er bra
+
+Lønnsinnsikt har flere sterke tillitssignaler og innholdselementer som bør beholdes:
+
+- Håkon Rolfsen er identifisert som ansvarlig.
+- Organisasjonsnummer og kontaktmuligheter er oppgitt.
+- Metode, datakilder, AI-bruk og begrensninger forklares åpent.
+- Nettstedet har rettelsespolicy, redaksjonelle retningslinjer og personvernside.
+- Blogg- og forklaringsartikler bruker en tydelig forfatterbyline.
+- Yrkesdata viser periode og lenker til SSB.
+- 361 av 406 yrkessider har full lønnsfordeling.
+- 380 av 406 yrkessider har lønnstrend.
+- 368 av 406 yrkessider har sektordata.
+- 405 av 406 yrkessider har aldersdata.
+- Alle 51 lærlingdetaljer har lønnstrend og lønnsfordeling.
+- Flere blogginnlegg har egne analyser, diagrammer, tabeller og beregninger.
+
+Prosjektet trenger derfor ikke en total innholdsmessig ombygging. Det trenger konsolidering og en streng kvalitetsgrense for indeksering og annonser.
+
+## Prioritert tiltaksplan
+
+### Fase 1: Stopp annonser på svake sider
+
+Dette skal gjennomføres før det bes om en ny AdSense-gjennomgang.
+
+#### 1. Fjern generell AdSense-tillatelse for `/yrke/[slug]`
+
+- Fjern den generelle regulære uttrykksregelen som tillater annonser på alle yrkessider.
+- Erstatt den med en eksplisitt eller datadrevet tillatelsesliste.
+- Tillat bare AdSense på yrkessider som har komplett datadekning og er kvalitetskontrollert.
+- Sørg for at nye yrkessider ikke automatisk får annonser.
+- Kontroller tilsvarende sideunntak i AdSense-kontoens Auto Ads-innstillinger.
+
+#### 2. Definer en minimumsgrense for annonser
+
+En yrkesside skal ikke få AdSense før den minst har:
+
+- faktisk publisert lønnsnivå eller lønnsfordeling
+- en fungerende lønnsserie eller annen selvstendig lønnsanalyse
+- ingen tomme eller misvisende innholdsseksjoner
+- tydelig periode og kilde
+- en yrkesspesifikk introduksjon
+- tilstrekkelig datagrunnlag til å gi brukeren et meningsfullt svar
+- gjennomført redaksjonell kontroll
+
+Antall lønnstakere skal ikke være det eneste kriteriet. Små yrker kan beholdes dersom siden har god datadekning og tydelig forklarer begrensningene.
+
+### Fase 2: Reduser svakt innhold i Google-indeksen
+
+#### 1. Skjerm de 26 svakeste yrkessidene
+
+Yrkesdetaljer uten både lønnstrend og lønnsfordeling skal:
+
+- få `noindex`
+- fjernes fra sitemapet
+- ikke laste AdSense
+- fortsatt kunne beholdes for intern navigasjon hvis arbeidsmarkedsdataene er nyttige
+
+Sidene skal ikke blokkeres i `robots.txt`, fordi Google må kunne besøke dem og lese `noindex`-signalet.
+
+#### 2. Vurder de resterende sidene uten lønnsfordeling
+
+De 19 øvrige sidene uten lønnsfordeling skal vurderes manuelt. En side kan beholdes som indekserbar dersom den har en sterk lønnsserie, annen selvstendig analyse og et komplett svar. Sider med tomme lønnsseksjoner skal skjermes.
+
+#### 3. Fjern svake katalogsider
+
+Status 3. august 2026: Gjennomført i kodebasen.
+
+- Alle yrkesfamiliesider og yrkesområdesider er fjernet.
+- De to oversiktssidene er fjernet.
+- Alle tilhørende URL-er er tatt ut av sitemapet.
+- Footerlenker og filtre er fjernet.
+- Gamle URL-er videresendes permanent til `/yrker`.
+- Hovedoversikten `/yrker` og de åtte brede yrkesgruppene er beholdt.
+
+#### 4. Bruk Search Console i den endelige prioriteringen
+
+Før større grupper av sider skjermes, skal Search Console-data brukes til å kontrollere:
+
+- visninger og klikk de siste tre til seks månedene
+- hvilke sider som faktisk svarer på relevante søk
+- hvilke sider som er oppdaget, men ikke indeksert
+- hvilke sider Google vurderer som duplikater eller alternative canonical-sider
+- hvilke programmatisk produserte sider som allerede har dokumentert bruk
+
+Sider med god organisk bruk skal vurderes særskilt før `noindex` innføres.
+
+### Fase 3: Innfør en automatisk publiseringsgrense
+
+Indeksering, sitemap og AdSense skal styres av samme sentrale kvalitetsvurdering.
+
+En yrkesside skal ikke automatisk bli indekserbar bare fordi det finnes en generert modellfil.
+
+Kvalitetsvurderingen bør kontrollere:
+
+- om siden har faktisk lønnsdata
+- om lønnsfordeling finnes
+- om lønnsutvikling finnes
+- om relevante grafer har datapunkter
+- om tomme seksjoner skjules
+- om kilde og periode finnes
+- om yrkesbeskrivelsen finnes
+- om datagrunnlaget er stort nok eller begrensningene er tydelig forklart
+- om siden er manuelt godkjent der det kreves
+
+Den samme vurderingen skal brukes av:
+
+- `generateMetadata` for `index` eller `noindex`
+- `src/app/sitemap.ts`
+- `src/lib/adsense-routes.ts`
+- selve yrkeskomponenten når seksjoner skal vises eller skjules
+
+Dette hindrer at sitemap, metadata, annonser og synlig innhold kommer i konflikt med hverandre.
+
+### Fase 4: Styrk de viktigste yrkessidene
+
+Prioriter yrker med dokumentert søkeetterspørsel, komplett datadekning og høy brukerrelevans.
+
+De viktigste sidene bør få:
+
+- en mer utfyllende, manuelt kontrollert yrkesintroduksjon
+- en unik oppsummering av lønnsnivå og utvikling
+- forklaring av hva som særpreger akkurat dette yrket
+- relevant sammenligning med nærliggende yrker
+- tydelig tolkning av median, gjennomsnitt og lønnsspredning
+- forklaring av statistiske begrensninger
+- konkrete eksempler på hvordan tallene kan brukes i en lønnssamtale
+- lenke til metode, kilde og eventuell lærlinginformasjon
+- synlig dato for siste datakontroll
+- tydelig redaksjonelt ansvar
+
+Målet er ikke en bestemt ordmengde. Målet er at siden skal gi mer praktisk verdi enn en direkte oppslagsside i Statistikkbanken.
+
+### Fase 5: Forbedre eller slå sammen korte forklaringer
+
+Start med:
+
+- `src/content/forklarer/lonnsfordeling.mdx`
+- `src/content/forklarer/gjennomsnittslonn.mdx`
+- `src/content/forklarer/grunnlonn.mdx`
+- `src/content/forklarer/disponibel-arbeidstid.mdx`
+
+Artiklene bør utvides med relevante elementer som:
+
+- konkrete regneeksempler
+- praktisk anvendelse
+- vanlige misforståelser
+- forskjeller mellom beslektede begreper
+- lenker til relevante SSB-, NAV-, Arbeidstilsynet- eller lovkilder
+- kobling til aktuelle kalkulatorer og yrkessider
+
+Artikler med samme søkeintensjon skal vurderes slått sammen fremfor å bli utvidet kunstig.
+
+### Fase 6: Teknisk opprydding
+
+#### 1. Fjern duplikat for regnskapsførere
+
+- Velg én foretrukket slug for yrkeskode `3313`.
+- Videresend den alternative URL-en permanent.
+- Sørg for at bare den foretrukne URL-en finnes i sitemap og yrkesindeks.
+
+#### 2. Fjern `noindex`-sider fra sitemapet
+
+- Fjern `/kvinner-vs-menn` fra sitemapet.
+- Fjern `/topp-jobber` fra sitemapet.
+- Legg inn en kontroll som hindrer at fremtidige `noindex`-sider tas med.
+
+#### 3. Samle alternative norske URL-er
+
+- Velg URL-ene med norske bokstaver som foretrukket variant der dette allerede er canonical.
+- Legg inn permanente videresendinger fra variantene uten norske bokstaver.
+- Sørg for at interne lenker bare bruker foretrukket variant.
+
+#### 4. Kontroller produksjonssignaler
+
+Etter utrulling skal følgende kontrolleres på det publiserte domenet:
+
+- canonical-URL
+- `robots`-metadata
+- sitemap
+- videresendinger
+- `ads.txt`
+- AdSense-script på tillatte og blokkerte sider
+- Clickio CMP og samtykkeoppførsel
+- mobil- og desktopvisning
+
+## Kontrolliste før ny AdSense-søknad
+
+Det skal ikke bes om en ny gjennomgang før alle punktene nedenfor er bekreftet:
+
+- [ ] Den generelle AdSense-tillatelsen for alle yrkessider er fjernet.
+- [ ] De 26 svakeste yrkessidene har `noindex` og er fjernet fra sitemapet.
+- [ ] De øvrige sidene uten lønnsfordeling er manuelt vurdert.
+- [x] Yrkesfamilier og yrkesområder er fjernet fra brukergrensesnittet og sitemapet.
+- [ ] Tomme lønnsseksjoner vises ikke.
+- [ ] Sitemapet inneholder ingen kjente `noindex`-sider.
+- [ ] Duplikatsluggen for regnskapsførere er ryddet.
+- [ ] Alternative URL-er videresendes til foretrukket variant.
+- [ ] De korteste forklaringsartiklene er forbedret eller slått sammen.
+- [ ] Search Console-data er brukt til å kontrollere endelig sideutvalg.
+- [ ] Canonical, sitemap, robots og annonser er kontrollert i produksjon.
+- [ ] Representative sider er visuelt kontrollert på mobil og desktop.
+- [ ] AdSense Auto Ads har tilsvarende sideunntak som kodebasen.
+
+## Måling etter gjennomføring
+
+Følgende skal dokumenteres før ny søknad:
+
+- antall URL-er i sitemap før og etter oppryddingen
+- antall indekserbare yrkessider
+- antall yrkessider som kan laste AdSense
+- antall sider uten lønnsfordeling eller lønnstrend som fortsatt er indekserbare
+- utvikling i «Oppdaget – foreløpig ikke indeksert» i Search Console
+- utvikling i organiske visninger og klikk for sidene som beholdes
+- dato for produksjonsutrulling og siste kvalitetskontroll
+
+## Offisielle Google-kilder
+
+- [What to do when your site is not ready to show ads](https://support.google.com/adsense/answer/12176698?hl=en)
+- [Your AdSense account was not approved](https://support.google.com/adsense/answer/81904?hl=en)
 - [Eligibility requirements for AdSense](https://support.google.com/adsense/answer/9724?hl=en)
-- [AdSense Program policies](https://support.google.com/adsense/answer/48182?hl=en)
-- [Google-served ads on screens without publisher-content](https://support.google.com/publisherpolicies/answer/11112688?hl=en)
-- [Google-served ads on screens with replicated content](https://support.google.com/publisherpolicies/answer/11190248?hl=en)
-- [More ads or paid promotional material than publisher-content](https://support.google.com/publisherpolicies/answer/11169917?hl=en)
-- [Required content in the privacy policy](https://support.google.com/adsense/answer/1348695?hl=en)
-- [Google consent management requirements for publishers](https://support.google.com/adsense/answer/13554116?hl=en)
 - [Creating helpful, reliable, people-first content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content)
 - [Google Search spam policies: scaled content abuse](https://developers.google.com/search/docs/essentials/spam-policies#scaled-content)
 
-## Funn i Lønnsinnsikt
+## Anbefaling
 
-### 1. Et svært stort, skalert sideunivers
+Lønnsinnsikt bør ikke sende en ny AdSense-søknad før fase 1–3 og de tekniske oppryddingspunktene er gjennomført og kontrollert i produksjon.
 
-Kodebasen inneholder blant annet:
-
-- 407 genererte yrkesmodeller.
-- 52 genererte lærlingmodeller.
-- Egne URL-familier for yrker, timelønn, lønnsvekst, lærlinger, yrkesgrupper, yrkesfamilier og yrkesområder.
-- 59 blogginnlegg.
-- 24 forklaringsartikler.
-- 361 yrker på den publiserte yrkesoversikten.
-
-Mange yrkessider bruker samme standardtekst, eksempelvis:
-
-> «… er en yrkesgruppe i SSBs yrkesstatistikk som samler roller med lignende arbeidsoppgaver og kompetansekrav.»
-
-Sidene inneholder mye unik statistikk. Det er et godt utgangspunkt, men malstrukturen kan likevel få nettstedet til å fremstå automatisk generert. Risikoen oppstår når Google ikke tydelig kan se den redaksjonelle merverdien utover SSB-data og en felles mal.
-
-Relevant kode:
-
-- `src/lib/occupation-detail-pages.ts`
-- `src/lib/generated/occupation-detail-view-models/`
-- `src/lib/generated/apprenticeship-detail-view-models/`
-- `src/app/sitemap.ts`
-
-### 2. Svak avsenderidentitet
-
-Status 24. juli 2026: Gjennomført i kodebasen. Alle blogg- og forklaringsartikler bruker
-«Redaksjonen» som forfatter, og bylinen lenker til `/forfatter/redaksjonen`.
-Forfattersiden forklarer at Håkon Rolfsen eier, utvikler og har redaksjonelt ansvar for
-hobbyprosjektet, og viser organisasjonsnummer og kontaktinformasjon.
-
-Egne sider for metode og rettelser dokumenterer databehandling, beregninger, AI-bruk,
-begrensninger og hvordan feil meldes og håndteres. Sidene er lagt i footer og sitemap.
-Produksjonsutrulling og kontroll av de publiserte sidene gjenstår.
-
-Relevant kode:
-
-- `src/components/blog-post-header.tsx`
-- `src/app/forfatter/redaksjonen/page.tsx`
-- `src/app/metode/page.tsx`
-- `src/app/rettelser/page.tsx`
-- `src/lib/editorial-identity.ts`
-- `src/app/om/page.tsx`
-- `src/app/redaksjonelle-retningslinjer/page.tsx`
-
-### 3. Personvernerklæringens AdSense- og samtykkedel er ferdigstilt
-
-Personvernsiden identifiserer nå Håkon Rolfsen og enkeltpersonforetakets organisasjonsnummer som
-eier og behandlingsansvarlig. Den beskriver opplysningstyper, formål og behandlingsgrunnlag,
-kontaktskjemaet, Resend og Gmail, teknisk drift, Vercel Analytics og Speed Insights. Den forklarer
-også Google AdSense, personlig tilpassede og ikke-personlig tilpassede annonser, annonseformål,
-informasjonskapsler og lignende teknologier, aktuelle mottakere, internasjonale overføringer,
-lagring, samtykke, tilbaketrekking, brukerrettigheter og klageadgang.
-
-Erklæringen lenker til Googles forklaring av databruk, Mitt annonsesenter, informasjon om
-annonseteknologileverandører og Datatilsynet. Den dynamiske og fullstendige leverandørlisten med
-formål, behandlingsgrunnlag og lagringstid skal vises i CMP-en, slik at den følger det faktiske
-leverandørvalget i AdSense.
-
-Clickio CMP er integrert i kodebasen med TCF-stub, standardinnstillinger for Google Consent
-Mode v2 og Clickios hovedtagg før AdSense. En permanent lenke for å åpne personvernvalgene på
-nytt er lagt i bunnteksten. Personvernsiden er unntatt fra AdSense-scriptet, og Clickio-lenkene
-bruker `?showConsent=no` slik at siden kan åpnes uten ny samtykkedialog.
-
-For norsk trafikk bør nettstedet også bruke en Google-sertifisert samtykkeplattform, CMP, som støtter IAB TCF.
-
-Relevant kode:
-
-- `src/app/personvern/page.tsx`
-- `src/app/layout.tsx`
-
-### 4. Publisher-ID-en er rettet
-
-Publisher-ID-en er bekreftet mot AdSense-kontoen. Den globale AdSense-koden og `public/ads.txt` bruker nå samme konto-ID:
-
-```text
-ca-pub-3073306475357950
-pub-3073306475357950
-```
-
-Relevant kode:
-
-- `src/app/layout.tsx`
-- `public/ads.txt`
-
-### 5. AdSense-lastingen er begrenset med en tillatelsesliste
-
-AdSense-scriptet bruker nå en sentral tillatelsesliste. Forsiden, ferdige artikler, utvalgte
-ressurser og analyser, yrkesdetaljer samt kalkulator- og verktøysidene kan laste AdSense.
-Admin, innlogging, utviklingsruter, idésider, personvern, kontakt, feilsider, katalogsider og
-genererte URL-familier som fortsatt skal kvalitetsvurderes, er blokkert som standard.
-
-Nye ruter får ikke AdSense før de legges uttrykkelig til i tillatelseslisten. Dette reduserer
-risikoen for at Auto Ads forsøker å plassere annonser på sider uten tilstrekkelig
-publisistinnhold. Tilsvarende sideunntak må fortsatt konfigureres i AdSense-kontoen og
-kontrolleres etter produksjonsutrulling, særlig ved intern navigasjon uten full sidelasting.
-
-Relevant kode:
-
-- `src/app/layout.tsx`
-- `src/components/adsense-script.tsx`
-- `src/lib/adsense-routes.ts`
-
-### 6. Domenesignaler bør samordnes
-
-Status 24. juli 2026: `https://www.lonnsinnsikt.no` er valgt som canonical-domene.
-Rotdomenet `lonnsinnsikt.no` videresendes permanent med HTTP 308 til `www.lonnsinnsikt.no`,
-og DNS-posten for rotdomenet er oppdatert til Vercels anbefalte adresse.
-Fallback-verdien i nettstedskonfigurasjonen er endret til canonical-domenet.
-
-Metadata, sitemap, robots og interne absolutte URL-er henter domenet fra den sentrale
-nettstedskonfigurasjonen. Etter neste produksjonsutrulling må de publiserte verdiene kontrolleres.
-URL-ene i Clickio, AdSense og Google Search Console må også bruke det valgte domenet.
-Lokalt produksjonsbygg bekrefter canonical- og Open Graph-URL med `www`, sitemap-URL-er med
-`www` og robots-henvisning til `https://www.lonnsinnsikt.no/sitemap.xml`.
-
-Relevant kode:
-
-- `src/lib/site-config.ts`
-- `src/app/sitemap.ts`
-- `src/app/layout.tsx`
-
-### 7. Flere overlappende URL-familier
-
-Status 24. juli 2026: Gjennomført for timelønn og yrkesspesifikk lønnsvekst.
-406 separate timelønnssider og 367 separate lønnsvekstsider er fjernet fra App Router
-og sitemap. Gamle URL-er videresendes permanent til den tilsvarende hovedsiden for yrket.
-Timelønn, lønnsutvikling og reallønnsvekst vises fortsatt på hovedsidene for yrker.
-Den selvstendige lønnsvekstkalkulatoren på `/lonnsvekst` er beholdt som verktøy.
-
-Nettstedet har separate sider for blant annet:
-
-- hovedinformasjon om et yrke
-- lærlinglønn
-- yrkesfamilie
-- yrkesområde
-- yrkesgruppe
-
-Timelønn og lønnsvekst finnes allerede som naturlige deler av en fullstendig yrkesside. Separate URL-er kan derfor gi flere sider som svarer på nesten samme søkeintensjon.
-
-Det finnes også parallelle ruter med og uten norske bokstaver for enkelte temasider. Canonical reduserer problemet, men en permanent videresending til én valgt URL er ryddigere.
-
-### 8. Det eksisterende innholdet har flere sterke sider
-
-De nyere fagartiklene er betydelig bedre enn et typisk nettsted med lavverdiinnhold. Artiklene om blant annet betongarbeidere og bilmekanikere:
-
-- skiller mellom median, gjennomsnitt, årslønn og beregnet timelønn
-- oppgir SSB-tabell og periode
-- forklarer statistiske begrensninger
-- sammenligner relevante yrker
-- tilfører egen analyse, diagrammer og praktisk tolkning
-
-Kildesiden, redaksjonelle retningslinjer, kalkulatorene og de interaktive sammenligningene er også gode byggesteiner.
-
-Strategien bør derfor være konsolidering, menneskelig kvalitetskontroll og tydeligere redaksjonell verdi – ikke masseproduksjon av flere artikler.
-
-## Prioritert utviklingsplan
-
-### Fase 1: Rett tekniske og juridiske sperrer
-
-Dette bør gjennomføres før nytt innholdsarbeid og før ny AdSense-gjennomgang.
-
-#### 1. Bekreft riktig AdSense publisher-ID
-
-Status: Gjennomført i kodebasen. Publisert `ads.txt` bør kontrolleres etter neste utrulling.
-
-- Kontroller publisher-ID-en i den faktiske AdSense-kontoen.
-- Bruk samme ID i AdSense-scriptet og `public/ads.txt`.
-- Kontroller den publiserte `ads.txt`-filen etter utrulling.
-
-#### 2. Implementer en Google-sertifisert CMP
-
-Status: Implementert i kodebasen med Clickio CMP, TCF-stub og Google Consent Mode v2.
-Produksjonsutrulling og kontroll for norske og øvrige EØS-brukere gjenstår.
-
-- Velg Google sin egen CMP eller en annen Google-sertifisert CMP.
-- Sørg for støtte for gjeldende IAB TCF-versjon.
-- Ikke last personlig tilpassede annonser før gyldig samtykke foreligger.
-- Kontroller oppførselen for norske og øvrige EØS-brukere.
-
-#### 3. Skriv en fullstendig personvernerklæring
-
-Status: Innholdet er gjennomført, personvernsiden er unntatt fra AdSense-scriptet, og en
-permanent lenke for å åpne personvernvalgene på nytt er lagt i bunnteksten. Produksjonstest
-av personvernsiden og Clickio-dialogen gjenstår.
-
-Personvernerklæringen bør minst forklare:
-
-- hvem som er behandlingsansvarlig
-- kontaktinformasjon
-- hvilke data som samles inn
-- behandlingsgrunnlag og formål
-- bruk av Google AdSense, Vercel Analytics og Speed Insights
-- informasjonskapsler og lokal lagring
-- personlig tilpassede og ikke-personlig tilpassede annonser
-- relevante tredjepartsleverandører
-- hvordan samtykke kan endres eller trekkes tilbake
-- hvordan brukeren kan reservere seg mot personlig tilpassede annonser
-- lagringstid og brukerens rettigheter
-
-#### 4. Opprett en kontaktside
-
-Status: Implementert og teknisk validert. Utrulling og reell produksjonstest gjenstår.
-
-Kontaktsiden inneholder nå:
-
-- fungerende e-postadresse
-- kanal for feilretting og redaksjonelle henvendelser
-- sikkert kontaktskjema via Resend
-- servervalidering og grunnleggende spamvern
-- lenke til personvernerklæringen
-
-Følgende bør fortsatt legges til senere:
-
-- navn på ansvarlig person eller virksomhet
-- eventuelt organisasjonsnummer
-- tydelig forventning til svartid
-
-#### 5. Begrens hvor AdSense lastes
-
-- Ikke last AdSense på admin og innlogging.
-- Ikke last AdSense på utviklingsruter.
-- Ikke vis annonser på feil- eller tomtilstander.
-- Vurder katalog-, søke- og kalkulatorsider særskilt.
-- Bruk annonser bare der det finnes tilstrekkelig, selvstendig hovedinnhold.
-- Kontroller Auto Ads-innstillingene i AdSense.
-
-#### 6. Velg ett canonical-domene
-
-- [x] Velg `https://www.lonnsinnsikt.no` som canonical-domene.
-- [x] Bruk valgt domene som fallback for metadata, sitemap, robots og absolutte URL-er.
-- [x] Videresend rotdomenet permanent med HTTP 308 til canonical-domenet.
-- [ ] Bekreft `NEXT_PUBLIC_SITE_URL=https://www.lonnsinnsikt.no` i Vercel.
-- [ ] Kontroller publiserte canonical-, Open Graph-, robots- og sitemap-URL-er etter utrulling.
-- [ ] Oppdater AdSense, Clickio og Google Search Console til canonical-domenet.
-
-### Fase 2: Kartlegg og reduser indeksérbart malinnhold
-
-Lag en full URL-oversikt fra sitemap og Google Search Console, gruppert etter sidetype:
-
-- `/yrke/[slug]`
-- `/laerling/[slug]`
-- yrkesfamilier
-- yrkesområder
-- yrkesgrupper
-- blogg
-- Forklarer
-- kalkulatorer og verktøy
-
-Vurder følgende for hver URL:
-
-1. Har siden søkevisninger, klikk eller dokumentert bruk?
-2. Gir siden et selvstendig svar som ikke allerede finnes på en annen side?
-3. Har siden komplett og oppdatert datadekning?
-4. Har siden en manuelt kontrollert og yrkesspesifikk forklaring?
-5. Har siden synlig kilde, periode, metode og oppdateringsdato?
-6. Har siden nyttig analyse, ikke bare tall og grafikk?
-7. Fungerer alle grafer, tabeller og relaterte lenker?
-
-Sider som ikke består kontrollen bør:
-
-- tas ut av sitemap
-- få `noindex`
-- beholdes for brukere hvis de fortsatt har en nyttig intern funksjon
-- forbedres før de eventuelt åpnes for indeksering igjen
-
-For gjenværende sidefamilier skal sidene ikke nødvendigvis slettes.
-
-#### Konsolider overlappende innhold
-
-En anbefalt hovedstruktur er:
-
-- Én fullstendig hovedside per yrke.
-- Timelønn, lønnsvekst, lønnsspredning, kjøpekraft og kjønnsforskjeller samles på hovedsiden.
-- Separate undersider beholdes bare når de dekker en tydelig annen brukeroppgave og har selvstendig innhold.
-- Alternative URL-er videresendes permanent til foretrukket side.
-
-Status: Konsolideringen av timelønn og yrkesspesifikk lønnsvekst er gjennomført.
-
-### Fase 3: Innfør en publiseringsgrense for yrkessider
-
-En yrkesside bør ikke være indeksérbar før den har:
-
-- en manuelt gjennomgått yrkesbeskrivelse
-- en unik oppsummering av hva som kjennetegner akkurat dette yrket
-- tolkning av lønnsnivå, utvikling og spredning
-- forklaring på hva statistikken ikke kan fortelle
-- relevant sammenligning med nærliggende yrker
-- direkte lenker til aktuelle SSB-tabeller
-- tydelig periode og dato for siste kontroll
-- navngitt redaktør eller faglig kontrollør
-- forklaring av alle beregnede tall
-- fungerende grafer og tabeller
-- ingen tomme felt eller kunstige standardavsnitt
-
-Det bør ikke brukes en vilkårlig ordgrense. Kravet skal være et komplett, presist og nyttig svar på brukerens spørsmål.
-
-#### Forslag til redaksjonell kontrolliste for hver yrkesside
-
-- Er yrkesgruppen og STYRK-koden forklart korrekt?
-- Er siste tilgjengelige periode oppgitt?
-- Er median og gjennomsnitt brukt riktig?
-- Er årslønn og timelønn tydelig merket som beregninger?
-- Er kjønnstall tolket forsiktig når gruppene er små?
-- Er mulige brudd i tidsserien forklart?
-- Er sammenligningsyrkene faglig relevante?
-- Er alle påstander sporbare til en kilde?
-- Har et menneske kontrollert teksten og tallene?
-- Gir siden mer verdi enn det brukeren får direkte i Statistikkbanken?
-
-### Fase 4: Styrk tillit og redaksjonell transparens
-
-#### 1. Opprett en forfatterside
-
-Status: Implementert i kodebasen med «Redaksjonen» som felles byline og Håkon Rolfsen som
-navngitt eier og redaksjonelt ansvarlig.
-
-Forfattersiden bør vise:
-
-- fullt navn
-- bilde, hvis ønskelig
-- relevant arbeidserfaring og kompetanse
-- hvorfor personen arbeider med lønnsdata
-- redaksjonelt ansvarsområde
-- lenker til publiserte artikler
-- kontaktmulighet
-
-Navnet i artikkelens byline bør lenke til denne siden.
-
-#### 2. Utvid om-siden
-
-Status: Gjennomført. Om-siden identifiserer eier, organisasjonsnummer og hobbyprosjektets
-forhold til SSB, og lenker til Redaksjonen, metode, retningslinjer og rettelser.
-
-Om-siden bør forklare:
-
-- hvem som eier og driver Lønnsinnsikt
-- hvorfor nettstedet ble opprettet
-- hvilken praktisk brukeroppgave nettstedet løser
-- hvordan innholdet finansieres
-- forholdet mellom redaksjonelt innhold og annonser
-
-#### 3. Opprett en rettelsespolicy
-
-Status: Implementert på `/rettelser`.
-
-Forklar:
-
-- hvordan feil kan meldes
-- hvem som vurderer rettelser
-- hvordan vesentlige endringer synliggjøres
-- hvordan oppdateringsdatoer brukes
-
-#### 4. Lag en detaljert metodeside
-
-Status: Implementert på `/metode` med datakilder, arbeidsflyt, beregninger, AI-bruk,
-oppdateringer og begrensninger.
-
-Metodesiden bør dokumentere:
-
-- SSB-tabellene som brukes
-- valgte variabler og avgrensninger
-- forskjellen mellom månedslønn, avtalt lønn og årslønn
-- beregning av timelønn
-- beregning av kjøpekraft og reallønnsvekst
-- behandling av manglende data
-- oppdateringsfrekvens
-- manuell kvalitetskontroll
-- kjente begrensninger
-
-#### 5. Konkretiser AI-policyen
-
-Status: Implementert på metodesiden og støttet av de redaksjonelle retningslinjene.
-
-Forklar tydelig:
-
-- hvor AI brukes
-- hvorfor AI brukes
-- hvilke deler som alltid kontrolleres manuelt
-- at AI aldri brukes som kilde til lønnsdata
-- hvem som har redaksjonelt ansvar for sluttproduktet
-
-#### 6. Vis kontrollinformasjon på innholdet
-
-Artikler og viktige datasider bør vise:
-
-- skrevet av
-- eventuelt kontrollert av
-- publisert dato
-- sist oppdatert eller sist kontrollert
-- dataperiode
-- metode- og kildelenker
-
-### Fase 5: Forbedre eksisterende innhold før nye artikler
-
-Av de 59 blogginnleggene er 18 kortere enn omtrent 800 ord. Ordtallet er ikke et Google-krav, men disse artiklene bør gjennomgås først for å se om de mangler:
-
-- original analyse
-- konkrete eksempler
-- direkte kildelenker
-- forbehold og avgrensninger
-- praktiske handlinger leseren kan ta
-- en tydelig forskjell fra yrkessiden om samme tema
-
-Prioriter først eksisterende artikler som allerede får visninger eller klikk i Search Console.
-
-Ikke publiser mange svært like «Hva tjener X?»-artikler i rask rekkefølge. Bygg heller sterke hovedressurser om:
-
-- hvordan man leser og sammenligner lønnsstatistikk
-- hvordan median, kvartiler og kjøpekraft brukes i en lønnssamtale
-- hvorfor en SSB-gruppe kan avvike fra den konkrete stillingstittelen
-- hvordan arbeidstid, sektor, tillegg og ansvar påvirker sammenligningen
-- hvordan man sammenligner et jobbtilbud med markedet
-- hva lønnsdata kan og ikke kan si om lønnsforskjeller
-- egne analyser av utvikling som ikke kan leses direkte ut av én SSB-tabell
-
-#### Prioriter original merverdi
-
-Den tydeligste konkurransefordelen er ikke å gjengi SSB-tall. Den er å:
-
-- koble flere SSB-tabeller sammen
-- forklare databrudd og begrensninger
-- vise relevante sammenligninger
-- gjøre beregninger transparente
-- trekke nøkterne, etterprøvbare konklusjoner
-- gi leseren et konkret beslutningsgrunnlag
-
-### Fase 6: Navigasjon og intern struktur
-
-Navigasjonen er i hovedsak ryddig, men sidehierarkiet bør gjennomgås etter konsolideringen.
-
-Målet bør være:
-
-1. Brukeren finner raskt riktig yrke.
-2. Hovedsiden for yrket gir et fullstendig svar.
-3. Dypere guider forklarer metode og praktisk bruk.
-4. Relaterte yrker og artikler er faglig relevante.
-5. Ingen sider fungerer primært som mellomstasjoner for flere annonsevisninger.
-
-Katalogsider med mange lenker bør ha tydelig egenverdi gjennom filtrering, forklaring og sammenligning. De bør ikke fylles med annonser som gjør hovedfunksjonen vanskelig å bruke.
-
-### Fase 7: Kvalitetssikring før ny gjennomgang
-
-Før det klikkes «Be om gjennomgang», skal følgende være kontrollert:
-
-#### Teknisk
-
-- Publisher-ID er riktig og samsvarer med `ads.txt`.
-- Valgt canonical-domene brukes konsekvent.
-- Sitemap inneholder bare sider som skal indekseres.
-- Alle alternative URL-er videresendes riktig.
-- Admin, utvikling og andre interne sider har `noindex` og ingen annonser.
-- Ingen indeksérbare sider gir 404, 500 eller tomt innhold.
-- Alle viktige sider fungerer uten JavaScript-feil.
-- Mobilvisning og Core Web Vitals er akseptable.
-
-#### Innhold
-
-- Alle indeksérbare sidetyper er manuelt kontrollert.
-- Ingen sider har tomme dataseksjoner eller ødelagte grafer.
-- Ingen yrkessider består hovedsakelig av standardtekst.
-- Tall har kilde og periode.
-- Beregninger er tydelig merket.
-- Artikler har navngitt forfatter og oppdateringsdato.
-- Personvern, kontakt, metode, om-side og redaksjonelle retningslinjer er publisert.
-
-#### Annonser
-
-- Annonser vises bare på egnede innholdssider.
-- Annonser er tydelig skilt fra innhold og navigasjon.
-- Det er alltid mer hovedinnhold enn annonser og promotering.
-- Auto Ads er kontrollert på mobil og desktop.
-- CMP fungerer for norske og øvrige EØS-brukere.
-
-#### Google Search Console
-
-- Ingen manuelle tiltak er registrert.
-- Sitemap er lest uten kritiske feil.
-- De viktigste sidene er rekrypet etter endringene.
-- «Crawled – currently not indexed» er analysert per sidetype.
-- «Discovered – currently not indexed» er analysert per sidetype.
-- Svake URL-familier er fjernet fra sitemap og satt til `noindex`.
-- Google velger samme canonical som nettstedet oppgir.
-
-## Foreslått fremdriftsplan
-
-### Uke 1: Compliance og grunnmur
-
-- [x] Bekreft og rett publisher-ID.
-- [x] Implementer CMP i kodebasen.
-- [x] Utvid personvernerklæringen for kontaktskjema, Resend og Gmail.
-- [x] Ferdigstill AdSense- og samtykkedelen av personvernerklæringen.
-- [x] Opprett kontaktside og integrasjon mot Resend.
-- [x] Distribuer kontaktsiden og test reell e-postlevering.
-- [x] Velg canonical-domene og konfigurer permanent videresending.
-- [ ] Distribuer og kontroller canonical-metadata, robots og sitemap i produksjon.
-- [x] Begrens AdSense-lasting med en sentral tillatelsesliste i kodebasen.
-- Konfigurer tilsvarende sideunntak for Auto Ads i AdSense-kontoen.
-
-### Uke 2: URL- og indeksanalyse
-
-- Eksporter data fra Search Console.
-- Lag oversikt per URL-familie.
-- Identifiser overlappende, tomme og svake sider.
-- Bestem hvilke sider som skal beholdes, slås sammen eller få `noindex`.
-- Oppdater sitemap og redirects.
-
-### Uke 3 og 4: Redaksjonell kvalitet
-
-- [x] Opprett forfatter-, metode- og rettelsessider.
-- [x] Utvid om-siden og redaksjonelle retningslinjer.
-- [ ] Distribuer og kontroller tillitssidene og byline-lenkene i produksjon.
-- Innfør publiseringskrav for yrkessider.
-- Forbedre de viktigste eksisterende yrkessidene.
-- Forbedre eksisterende artikler med søkevisninger.
-
-### Uke 5: Produksjonskontroll
-
-- Test et representativt utvalg av alle sidetyper på mobil og desktop.
-- Kontroller annonser, CMP, navigasjon, grafer og datatilstander.
-- Kontroller Search Console, sitemap, canonical og indeksering.
-- Rett resterende feil.
-
-### Uke 6 eller når Google har rekrypet endringene
-
-- Kontroller at Google ser den nye strukturen og de nye tillitssidene.
-- Bekreft at svake sider ikke lenger ligger i sitemap eller indeksen.
-- Dokumenter internt at alle kontrollpunkter er bestått.
-- Be først da om en ny AdSense-gjennomgang.
-
-Det finnes ingen garanti for at Google rekryper eller godkjenner nettstedet innen en bestemt tidsperiode. Det bør derfor ikke søkes på nytt bare fordi et visst antall dager har gått. Den faktiske indeksprofilen og kvaliteten på den publiserte siden bør være avgjørende.
-
-## Kontrollpunkter før ny søknad
-
-Ny gjennomgang bør ikke bestilles før alle punktene nedenfor kan besvares med ja:
-
-- [x] Riktig publisher-ID brukes både i AdSense-scriptet og `ads.txt`.
-- [x] Google-sertifisert CMP er implementert og testet.
-- [x] Personvernerklæringen er ferdigstilt med AdSense, CMP, informasjonskapsler, kontaktdata og behandlingsansvarlig.
-- [x] Kontaktside og fungerende e-postadresse er publisert.
-- [x] Kontaktsiden er implementert og teknisk validert.
-- [x] Resend-domene og DNS-poster er verifisert.
-- [x] Resend-hemmeligheter er konfigurert som sensitive Vercel-variabler.
-- [x] En reell kontakthenvendelse er sendt og mottatt etter utrulling.
-- [x] Håkon Rolfsen er tydelig oppgitt som eier og redaksjonelt ansvarlig.
-- [x] Forfatterside, lenket byline, metodeside og rettelsespolicy er implementert i kodebasen.
-- [x] Forfatter-, metode- og rettelsessidene er distribuert og kontrollert i produksjon.
-- [x] Metodesiden forklarer databehandling, beregninger, begrensninger og AI-bruk konkret.
-- [x] AdSense-lasting styres av en sentral tillatelsesliste som utelukker admin-, utviklings-, feil- og tillitssider.
-- [x] `www.lonnsinnsikt.no` brukes i canonical, HTTP 308-redirect, metadata, robots og sitemap.
-- [x] Search Console-testen bekrefter at forsiden kan indekseres og oppgir riktig brukerdefinert canonical.
-- [x] Tynne timelønns- og yrkesspesifikke lønnsvekstsider er fjernet og videresendes permanent.
-- [ ] Gjenværende overlappende URL-er er slått sammen eller tatt ut av indeksen.
-- [ ] Sitemap inneholder bare sider som tilfredsstiller kvalitetskravene.
-- [ ] Alle indeksérbare yrkessider er manuelt gjennomgått.
-- [ ] Alle indeksérbare sider gir selvstendig verdi utover rå SSB-data.
-- [ ] Grafer, tabeller og kalkulatorer fungerer på mobil og desktop.
-- [ ] Ingen side har mer annonser eller promotering enn hovedinnhold.
-- [ ] De viktigste endringene er rekrypet av Google.
-- [ ] Google har valgt `https://www.lonnsinnsikt.no/` som canonical etter ny indeksering.
-- [ ] Search Console viser ingen manuelle tiltak eller kritiske indeksfeil.
-
-## Anbefalt rekkefølge
-
-Den mest effektive rekkefølgen er:
-
-1. Publisher-ID, personvern, CMP og kontakt.
-2. Kartlegging og `noindex` av svake eller overlappende URL-er.
-3. Avsender, metode og redaksjonell kontroll.
-4. Forbedring av de viktigste eksisterende yrkes- og bloggsidene.
-5. Produksjonskontroll og ny AdSense-gjennomgang.
-
-Det anbefales ikke å be om ny gjennomgang med dagens oppsett. Først bør nettstedet vise Google et mindre, tydeligere og mer menneskelig kuratert sett med sider.
-
-## Begrensning ved vurderingen
-
-Den innebygde visuelle nettleseren var ikke tilgjengelig under gjennomgangen. Vurderingen bygger derfor på:
-
-- offisielle Google-retningslinjer
-- publisert innhold som kunne leses via webindeksen
-- lokal gjennomgang av kodebase, innhold, sitemap og robots-oppsett
-
-En full visuell produksjonskontroll på mobil og desktop må derfor inngå før ny AdSense-søknad.
+Den viktigste endringen er ikke å skrive flere blogginnlegg. Den viktigste endringen er å hindre at Google vurderer de svakeste programmatisk produserte sidene som representative for hele nettstedet.

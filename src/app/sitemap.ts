@@ -5,12 +5,9 @@ import { getAllBlogPosts } from "@/lib/blog";
 import { blogCategories } from "@/lib/blog-taxonomy";
 import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-detail-view-models";
 import { getAllForklarerPosts } from "@/lib/forklarer";
-import { listOccupationAreas } from "@/lib/occupation-areas";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
-import { listOccupationFamilies } from "@/lib/occupation-families";
 import { listOccupationGroups } from "@/lib/occupation-groups";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
-import { getLatestOccupationMedianMonthlySalaryDataset } from "@/lib/ssb";
 import { getAbsoluteUrl } from "@/lib/site-config";
 
 const staticRoutes = [
@@ -154,18 +151,6 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
-    path: "/yrkesomrader",
-    filePath: "src/app/yrkesomrader/page.tsx",
-    priority: 0.7,
-    changeFrequency: "monthly" as const,
-  },
-  {
-    path: "/yrkesfamilier",
-    filePath: "src/app/yrkesfamilier/page.tsx",
-    priority: 0.7,
-    changeFrequency: "monthly" as const,
-  },
-  {
     path: "/yrker",
     filePath: "src/app/yrker/page.tsx",
     priority: 0.7,
@@ -276,14 +261,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     occupationPages,
     occupationIndex,
     apprenticeshipIndex,
-    occupationMedianDataset,
   ] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getAllForklarerPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
     getApprenticeshipDetailViewModelIndex().catch(() => null),
-    getLatestOccupationMedianMonthlySalaryDataset().catch(() => null),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
@@ -313,24 +296,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly",
     priority: 0.6,
   }));
-
-  const familyRoutes: MetadataRoute.Sitemap = occupationMedianDataset
-    ? listOccupationFamilies(occupationMedianDataset).map((family) => ({
-        url: getAbsoluteUrl(`/yrkesfamilie/${family.slug}`),
-        lastModified: occupationContentLastModified,
-        changeFrequency: "monthly",
-        priority: 0.6,
-      }))
-    : [];
-
-  const areaRoutes: MetadataRoute.Sitemap = occupationMedianDataset
-    ? listOccupationAreas(occupationMedianDataset).map((area) => ({
-        url: getAbsoluteUrl(`/yrkesomrade/${area.slug}`),
-        lastModified: occupationContentLastModified,
-        changeFrequency: "monthly",
-        priority: 0.6,
-      }))
-    : [];
 
   const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: getAbsoluteUrl(`/blogg/${post.slug}`),
@@ -375,8 +340,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...routes,
     ...groupRoutes,
-    ...areaRoutes,
-    ...familyRoutes,
     ...blogRoutes,
     ...blogCategoryRoutes,
     ...forklarerRoutes,
