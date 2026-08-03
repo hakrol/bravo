@@ -3,7 +3,6 @@ import path from "node:path";
 import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
 import { blogCategories } from "@/lib/blog-taxonomy";
-import { getApprenticeshipDetailViewModelIndex } from "@/lib/apprenticeship-detail-view-models";
 import { getAllForklarerPosts } from "@/lib/forklarer";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 import { listOccupationGroups } from "@/lib/occupation-groups";
@@ -157,12 +156,6 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
-    path: "/laerling",
-    filePath: "src/app/laerling/page.tsx",
-    priority: 0.7,
-    changeFrequency: "monthly" as const,
-  },
-  {
     path: "/blogg",
     filePath: "src/app/blogg/page.tsx",
     priority: 0.7,
@@ -260,22 +253,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     forklarerPosts,
     occupationPages,
     occupationIndex,
-    apprenticeshipIndex,
   ] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getAllForklarerPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
-    getApprenticeshipDetailViewModelIndex().catch(() => null),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
   const latestForklarerDate = getLatestDate(forklarerPosts.map((post) => post.publishedAt));
   const occupationContentLastModified = occupationIndex?.generatedAt
     ? new Date(occupationIndex.generatedAt)
-    : undefined;
-  const apprenticeshipContentLastModified = apprenticeshipIndex?.generatedAt
-    ? new Date(apprenticeshipIndex.generatedAt)
     : undefined;
 
   const routes: MetadataRoute.Sitemap = await Promise.all(staticRoutes.map(async (route) => ({
@@ -330,13 +318,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  const apprenticeshipRoutes: MetadataRoute.Sitemap = (apprenticeshipIndex?.pages ?? []).map((page) => ({
-    url: getAbsoluteUrl(`/laerling/${page.slug}`),
-    lastModified: apprenticeshipContentLastModified,
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
   return [
     ...routes,
     ...groupRoutes,
@@ -344,7 +325,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogCategoryRoutes,
     ...forklarerRoutes,
     ...occupationRoutes,
-    ...apprenticeshipRoutes,
   ];
 }
 

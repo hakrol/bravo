@@ -38,6 +38,10 @@ export async function generateMetadata({
     alternates: {
       canonical: detail.detailPage.href,
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 

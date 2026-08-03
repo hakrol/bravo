@@ -8,10 +8,7 @@ import { PageShareButton } from "@/components/page-share-button";
 import type { ApprenticeshipMedianSalaryRow } from "@/lib/apprenticeship-salary-overview";
 import type { ApprenticeshipDetailViewModel } from "@/lib/apprenticeship-detail-view-models";
 import type { OccupationDescription } from "@/lib/occupation-descriptions";
-import {
-  formatOccupationDisplayLabel,
-  getOccupationTextContext,
-} from "@/lib/occupation-detail-pages";
+import { getOccupationTextContext } from "@/lib/occupation-detail-pages";
 import type { OccupationSalaryDistribution, OccupationSalaryTimeSeries } from "@/lib/types";
 
 export type ApprenticeshipRelatedSalaryRow = {
@@ -69,15 +66,6 @@ const SPECIAL_LINKS = [
   { href: "/spesial/topp-10-yrker", title: "Topp 10 yrker med høyest lønn" },
 ];
 
-const POPULAR_APPRENTICESHIP_LINKS = [
-  { href: "/laerling/elektrikere-laerling-lonn", title: "Elektrikere" },
-  { href: "/laerling/automatikere-laerling-lonn", title: "Automatikere" },
-  { href: "/laerling/tomrere-og-snekkere-laerling-lonn", title: "Tømrere og snekkere" },
-  { href: "/laerling/rorleggere-og-vvs-montorer-laerling-lonn", title: "Rørleggere og VVS-montører" },
-  { href: "/laerling/bilmekanikere-laerling-lonn", title: "Bilmekanikere" },
-  { href: "/laerling/energimontorer-laerling-lonn", title: "Energimontører" },
-];
-
 const EXTERNAL_SOURCE_LINK = "https://www.ssb.no/arbeid-og-lonn/lonn-og-arbeidskraftkostnader";
 
 export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryDetailPageProps) {
@@ -88,7 +76,6 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
     displayLabel: detail.detailPage.displayLabel,
   });
   const distribution = detail.data.distribution;
-  const relatedRows = detail.data.relatedRows.slice(0, 6);
   const growthMetrics = buildGrowthMetrics(detail.data.timeSeries);
   const topSummary = buildTopSummary({
     label: occupationText.sentenceLabel,
@@ -143,9 +130,6 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
     distribution ? { href: "#lonnsfordeling", label: "Lønnsfordeling" } : null,
     { href: "#lonnsutvikling", label: "Lønnsutvikling" },
     { href: "#ordinaer-yrkeslonn", label: "Ordinær yrkeslønn" },
-    relatedRows.length > 0
-      ? { href: "#relaterte-laerlingyrker", label: "Relaterte lærlingyrker" }
-      : null,
   ].filter((item): item is { href: string; label: string } => Boolean(item));
 
   return (
@@ -315,55 +299,6 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
               </div>
             </section>
 
-            {relatedRows.length > 0 ? (
-              <section
-                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
-                id="relaterte-laerlingyrker"
-              >
-                <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
-                    Relaterte lærlingyrker for {occupationText.titleLabel}
-                  </h2>
-                  <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    Disse fagene er valgt ut fra nærhet i yrkeskode og tilgjengelige lærlingdata i SSB, slik at du kan sammenligne nivået med nærliggende fag.
-                  </p>
-                </div>
-                <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                    {relatedRows.map((row) => (
-                      <Link
-                        className="group flex h-full flex-col rounded-[5px] border border-slate-200 bg-slate-50 px-4 py-4 shadow-sm transition hover:border-emerald-700/25 hover:bg-white hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)]"
-                        href={row.href}
-                        key={row.occupationCode}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <span className="block text-base font-semibold text-slate-950">
-                            {formatOccupationDisplayLabel(row.occupationLabel)}
-                          </span>
-                          <span
-                            aria-hidden="true"
-                            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm transition group-hover:border-emerald-700/25 group-hover:text-emerald-800"
-                          >
-                            <OccupationGroupIcon groupCode={row.groupCode} />
-                          </span>
-                        </div>
-                        <dl className="mt-5 space-y-3 text-sm">
-                          {buildRelatedJobSalaryRows(row).map((salaryRow) => (
-                            <div
-                              className="flex items-center justify-between gap-4 border-t border-slate-200 pt-3"
-                              key={salaryRow.label}
-                            >
-                              <dt className="text-slate-600">{salaryRow.label}</dt>
-                              <dd className="font-semibold text-slate-950">
-                                {formatSalary(salaryRow.value)}
-                              </dd>
-                            </div>
-                          ))}
-                        </dl>
-                      </Link>
-                    ))}
-                </div>
-              </section>
-            ) : null}
           </div>
 
           <aside className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-4 shadow-[0_16px_44px_rgba(15,23,42,0.05)] lg:sticky lg:top-16">
@@ -398,18 +333,6 @@ export function ApprenticeshipSalaryDetailPage({ detail }: ApprenticeshipSalaryD
                 <SidebarLinkIcon className="text-slate-500" icon="list" />
                 <span>Alle lærlingyrker</span>
               </Link>
-            </section>
-
-            <section className="py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Populære lærlingyrker</p>
-              <nav aria-label="Populære lærlingyrker" className="mt-2.5 grid gap-2">
-                {POPULAR_APPRENTICESHIP_LINKS.map((occupation) => (
-                  <Link className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950" href={occupation.href} key={occupation.href}>
-                    <SidebarLinkIcon className="text-orange-600" icon="flame" />
-                    <span>{occupation.title}</span>
-                  </Link>
-                ))}
-              </nav>
             </section>
 
             <section className="py-3">
@@ -637,25 +560,6 @@ function buildSalaryMetricCards({
   }
 
   return cards;
-}
-
-function buildRelatedJobSalaryRows(row: ApprenticeshipRelatedSalaryRow) {
-  const salaryRows: Array<{ label: string; value?: number }> = [];
-  const hasBothGenderMetrics = row.medianWomen !== undefined && row.medianMen !== undefined;
-
-  if (row.medianWomen !== undefined) {
-    salaryRows.push({ label: "Kvinner", value: row.medianWomen });
-  }
-
-  if (row.medianMen !== undefined) {
-    salaryRows.push({ label: "Menn", value: row.medianMen });
-  }
-
-  if (!hasBothGenderMetrics && row.medianAll !== undefined) {
-    salaryRows.push({ label: "Alle", value: row.medianAll });
-  }
-
-  return salaryRows;
 }
 
 function buildGrowthMetrics(series: OccupationSalaryTimeSeries) {
@@ -889,79 +793,4 @@ function SidebarLinkIcon({ className, icon }: { className: string; icon: string 
   }
 
   return <svg {...props}><path d="M8 6h12M8 12h12M8 18h12" /><path d="M4 6h.01M4 12h.01M4 18h.01" /></svg>;
-}
-
-function OccupationGroupIcon({ groupCode }: { groupCode?: string }) {
-  const commonProps = {
-    className: "h-5 w-5",
-    fill: "none",
-    viewBox: "0 0 24 24",
-    xmlns: "http://www.w3.org/2000/svg",
-  } as const;
-
-  switch (groupCode) {
-    case "1":
-      return (
-        <svg {...commonProps}>
-          <path d="M6 18h12M8 15V9m4 6V6m4 9v-3" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-        </svg>
-      );
-    case "2":
-      return (
-        <svg {...commonProps}>
-          <path d="M4 9 12 5l8 4-8 4-8-4Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.8" />
-          <path d="M7 12v3.5c0 1 2.2 2.5 5 2.5s5-1.5 5-2.5V12" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-        </svg>
-      );
-    case "4":
-      return (
-        <svg {...commonProps}>
-          <rect x="5" y="6" width="14" height="12" rx="2" stroke="currentColor" strokeWidth="1.8" />
-          <path d="M5 10h14" stroke="currentColor" strokeWidth="1.8" />
-        </svg>
-      );
-    case "5":
-      return (
-        <svg {...commonProps}>
-          <path d="M7 7h10l-1 4H8L7 7Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.8" />
-          <circle cx="9" cy="16.5" r="1.5" fill="currentColor" />
-          <circle cx="15" cy="16.5" r="1.5" fill="currentColor" />
-        </svg>
-      );
-    case "6":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 19V8m0 0-3 3m3-3 3 3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
-          <path d="M6 19h12" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-        </svg>
-      );
-    case "7":
-      return (
-        <svg {...commonProps}>
-          <path d="m6 14 8-8 4 4-8 8H6v-4Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.8" />
-        </svg>
-      );
-    case "8":
-      return (
-        <svg {...commonProps}>
-          <rect x="4" y="9" width="13" height="6" rx="1.5" stroke="currentColor" strokeWidth="1.8" />
-          <path d="M17 11h2l1 2v2h-3" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
-          <circle cx="8" cy="16.5" r="1.5" fill="currentColor" />
-          <circle cx="17" cy="16.5" r="1.5" fill="currentColor" />
-        </svg>
-      );
-    case "9":
-      return (
-        <svg {...commonProps}>
-          <path d="M8 6h8M7 9h10M9 12h6M10 15h4" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-        </svg>
-      );
-    default:
-      return (
-        <svg {...commonProps}>
-          <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.8" />
-          <path d="M12 9v3l2 2" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-        </svg>
-      );
-  }
 }
