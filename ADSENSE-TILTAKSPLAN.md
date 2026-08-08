@@ -1,7 +1,7 @@
 # AdSense-tiltaksplan for Lønnsinnsikt
 
 Dato for kartleggingen: 3. august 2026
-Status: Klar for gjennomføring
+Status: Under gjennomføring
 
 ## Hovedkonklusjon
 
@@ -19,6 +19,8 @@ Løsningen er ikke å produsere flest mulig nye artikler. Lønnsinnsikt trenger 
 
 Det er ikke mulig å garantere godkjenning, men tiltakene nedenfor retter seg mot de tydeligste risikosignalene i den nåværende kodebasen og på det publiserte nettstedet.
 
+Status 3. august 2026: Yrkesfamilier, yrkesområder og hele lærlingområdet er nå skjermet eller fjernet fra sitemapet i kodebasen. Dette reduserer sitemapet med ytterligere 52 lærling-URL-er sammenlignet med kartleggingen. Produksjonssignalene er ikke kontrollert ennå.
+
 ## Kartlagt sideomfang
 
 | Sidetype | Antall |
@@ -33,6 +35,8 @@ Det er ikke mulig å garantere godkjenning, men tiltakene nedenfor retter seg mo
 | Estimert totalt sitemap | **593 URL-er** |
 
 466 av 593 URL-er er programmatisk produserte yrkes-, lærling- eller yrkesgruppesider. Bare 84 URL-er er redaksjonelle blogg- eller forklaringsartikler.
+
+Etter skjermingen av lærlingområdet er estimert sitemap redusert fra 593 til omtrent **541 URL-er**. De 51 lærlingdetaljene og oversikten `/laerling` finnes fortsatt for brukerne, men skal ikke lenger inngå i Google-indeksen eller sitemapet.
 
 ## Kritiske funn
 
@@ -100,7 +104,30 @@ Relevant kode:
 - `src/components/occupation-directory.tsx`
 - `next.config.ts`
 
-### 4. Enkelte forklaringsartikler er svært korte
+### 4. Lærlingområdet er skjermet
+
+Status 3. august 2026: Gjennomført i kodebasen.
+
+Oversikten `/laerling` og alle 51 lærlingdetaljer er beholdt som brukerfunksjonalitet, men skjermet fra Google-indeksen:
+
+- Oversikten og detaljsidene har `noindex, follow`.
+- Alle 52 lærling-URL-er er fjernet fra sitemapet.
+- AdSense-scriptet var allerede avgrenset slik at det ikke lastes på `/laerling` eller `/laerling/[slug]`.
+- Den søkbare oversikten er fortsatt tilgjengelig fra footer.
+- Automatiske blokker for «Relaterte lærlingyrker» og «Populære lærlingyrker» er fjernet fra detaljsidene.
+- Detaljsidene beholder lenke tilbake til lærlingoversikten og til relevant ordinær yrkeslønn.
+
+Sidene er ikke blokkert i `robots.txt`, slik at Google kan lese `noindex`-signalet.
+
+Relevant kode:
+
+- `src/app/laerling/page.tsx`
+- `src/app/laerling/[slug]/page.tsx`
+- `src/app/sitemap.ts`
+- `src/components/apprenticeship-salary-detail-page.tsx`
+- `src/lib/adsense-routes.ts`
+
+### 5. Enkelte forklaringsartikler er svært korte
 
 13 av 24 forklaringsartikler har under 500 ord. Korthet er ikke automatisk et kvalitetsproblem, og Google har ingen fast ordgrense. De svakeste artiklene er likevel generelle og har begrenset egen analyse, praktisk anvendelse og kildebruk.
 
@@ -120,7 +147,7 @@ Relevant innhold:
 - `src/content/forklarer/`
 - `src/content/blog/`
 
-### 5. Tekniske oppryddingspunkter
+### 6. Tekniske oppryddingspunkter
 
 Kartleggingen avdekket også:
 
@@ -205,7 +232,19 @@ Status 3. august 2026: Gjennomført i kodebasen.
 - Gamle URL-er videresendes permanent til `/yrker`.
 - Hovedoversikten `/yrker` og de åtte brede yrkesgruppene er beholdt.
 
-#### 4. Bruk Search Console i den endelige prioriteringen
+#### 4. Skjerm lærlingområdet
+
+Status 3. august 2026: Gjennomført i kodebasen.
+
+- `/laerling` og alle lærlingdetaljer har `noindex, follow`.
+- Oversikten og alle 51 detaljsider er fjernet fra sitemapet.
+- Sidene er fortsatt tilgjengelige gjennom den søkbare oversikten.
+- Footerlenken til «Lærlingfag» er beholdt som én tydelig brukerinngang.
+- Automatiske krysslenker mellom lærlingdetaljer er fjernet.
+- Lærlingrutene er ikke tillatt i AdSense-konfigurasjonen.
+- Produksjonskontroll gjenstår.
+
+#### 5. Bruk Search Console i den endelige prioriteringen
 
 Før større grupper av sider skjermes, skal Search Console-data brukes til å kontrollere:
 
@@ -324,6 +363,10 @@ Det skal ikke bes om en ny gjennomgang før alle punktene nedenfor er bekreftet:
 - [ ] De 26 svakeste yrkessidene har `noindex` og er fjernet fra sitemapet.
 - [ ] De øvrige sidene uten lønnsfordeling er manuelt vurdert.
 - [x] Yrkesfamilier og yrkesområder er fjernet fra brukergrensesnittet og sitemapet.
+- [x] Lærlingoversikten og lærlingdetaljene har `noindex, follow`.
+- [x] Alle lærling-URL-er er fjernet fra sitemapet.
+- [x] Lærlingrutene laster ikke AdSense-scriptet.
+- [x] Automatiske krysslenker mellom lærlingdetaljer er fjernet.
 - [ ] Tomme lønnsseksjoner vises ikke.
 - [ ] Sitemapet inneholder ingen kjente `noindex`-sider.
 - [ ] Duplikatsluggen for regnskapsførere er ryddet.
@@ -339,6 +382,7 @@ Det skal ikke bes om en ny gjennomgang før alle punktene nedenfor er bekreftet:
 Følgende skal dokumenteres før ny søknad:
 
 - antall URL-er i sitemap før og etter oppryddingen
+- dokumentert reduksjon fra omtrent 593 til 541 sitemap-URL-er etter skjerming av lærlingområdet
 - antall indekserbare yrkessider
 - antall yrkessider som kan laste AdSense
 - antall sider uten lønnsfordeling eller lønnstrend som fortsatt er indekserbare
