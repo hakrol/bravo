@@ -1,8 +1,17 @@
 ﻿'use client'
 
 import { useEffect, useMemo, useState } from "react";
+import {
+  OccupationChartDevelopmentCards,
+  OccupationChartReferenceControls,
+  getOccupationChartValueTone,
+} from "@/components/occupation-chart-reference-controls";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import type { OccupationSalaryTimeSeries } from "@/lib/ssb";
+import {
+  calculateEndpointDevelopment,
+  OCCUPATION_CHART_HORIZONS,
+} from "@/lib/occupation-chart-development";
 
 const currencyFormatter = new Intl.NumberFormat("nb-NO", {
   maximumFractionDigits: 0,
@@ -39,6 +48,8 @@ type OccupationSalaryTimeSeriesProps = {
   containerClassName?: string;
   variant?: "default" | "modern" | "classic-emphasis";
   mobileOptimized?: boolean;
+  showIntro?: boolean;
+  controlsVariant?: "default" | "reference";
 };
 
 export function OccupationSalaryTimeSeriesChart({
@@ -51,6 +62,8 @@ export function OccupationSalaryTimeSeriesChart({
   containerClassName,
   variant = "default",
   mobileOptimized = false,
+  showIntro = true,
+  controlsVariant = "default",
 }: OccupationSalaryTimeSeriesProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("valueAll");
   const [isMobileViewport, setIsMobileViewport] = useState(false);
@@ -165,6 +178,34 @@ export function OccupationSalaryTimeSeriesChart({
     ];
   });
   const latestPeriodLabel = latestValues[0]?.periodLabel;
+  const referenceDevelopmentGroups = OCCUPATION_CHART_HORIZONS.flatMap((horizon) => {
+    const items = seriesDefinitions
+      .filter((definition) => definition.key === "valueWomen" || definition.key === "valueMen")
+      .flatMap((definition) => {
+        const development = calculateEndpointDevelopment(
+          series.points.map((point) => ({
+            periodCode: point.periodCode,
+            periodLabel: point.periodLabel,
+            value: point[definition.key],
+          })),
+          horizon.years,
+          "percent",
+        );
+
+        return development
+          ? [{
+              key: `${horizon.key}-${definition.key}`,
+              label: definition.label,
+              period: `${formatPeriodLabel(development.startPeriodLabel)}–${formatPeriodLabel(development.endPeriodLabel)}`,
+              tone: getSeriesTone(definition.key),
+              value: formatGrowthPercent(development.value),
+              valueTone: getOccupationChartValueTone(development.value),
+            }]
+          : [];
+      });
+
+    return items.length > 0 ? [{ ...horizon, items }] : [];
+  });
   const valueFormatter = valueDisplay === "hourly" ? formatHourlyValue : formatCurrency;
   const axisValueFormatter = valueDisplay === "hourly" ? formatHourlyAxisValue : formatAxisCurrency;
   const endLabelFormatter = valueDisplay === "hourly" ? formatHourlyEndLabel : formatEndLabel;
@@ -202,17 +243,48 @@ export function OccupationSalaryTimeSeriesChart({
     <section className="grid gap-6">
       <section className={containerClasses} style={isModern ? { border: "2px solid #000" } : undefined}>
         <div className="flex flex-col gap-4">
-          <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
-              {title ?? `Utvikling i månedslønn for ${series.occupationLabel}`}
-            </h3>
-            <p className="text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-              {description ??
-                `${series.occupationLabel} lønnsutvikling i Norge. Se median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
-            </p>
-          </div>
+          {showIntro ? (
+            <div className="space-y-2">
+              <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                {title ?? `Utvikling i månedslønn for ${series.occupationLabel}`}
+              </h3>
+              <p className="text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+                {description ??
+                  `${series.occupationLabel} lønnsutvikling i Norge. Se median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige SSB-tall.`}
+              </p>
+            </div>
+          ) : null}
 
-          {latestValues.length > 0 ? (
+          {controlsVariant === "reference" ? (
+            <OccupationChartReferenceControls
+              activeFilter={resolvedFilter}
+              filters={filterOptions.map((option) => ({
+                available: availableFilters[option.key],
+                key: option.key,
+                label: option.label,
+                tone: getSeriesTone(option.key),
+              }))}
+              latestDataDescription={
+                latestDataDescription ??
+                `Her ser du siste registrerte månedslønn for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB.`
+              }
+              latestItems={latestValues.map((entry) => ({
+                key: entry.key,
+                label: entry.label,
+                tone: getSeriesTone(entry.key),
+                value: valueFormatter(entry.value),
+              }))}
+              legends={activeSeries.map((definition) => ({
+                color: definition.color,
+                key: definition.key,
+                label: definition.label,
+              }))}
+              onFilterChange={(key) => setActiveFilter(key as FilterKey)}
+              periodLabel={latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel) : undefined}
+            />
+          ) : null}
+
+          {controlsVariant !== "reference" && latestValues.length > 0 ? (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
@@ -309,6 +381,7 @@ export function OccupationSalaryTimeSeriesChart({
             </div>
           ) : null}
 
+          {controlsVariant !== "reference" ? (
           <div
             className={
               mobileOptimized
@@ -349,7 +422,9 @@ export function OccupationSalaryTimeSeriesChart({
               );
             })}
           </div>
+          ) : null}
 
+          {controlsVariant !== "reference" ? (
           <div className={`flex flex-wrap gap-3 ${mobileOptimized ? "hidden sm:flex" : ""}`}>
             {activeSeries.map((definition) => (
               <div
@@ -369,8 +444,9 @@ export function OccupationSalaryTimeSeriesChart({
               </div>
             ))}
           </div>
+          ) : null}
 
-          {growthValues.length > 0 ? (
+          {controlsVariant !== "reference" && growthValues.length > 0 ? (
             <div className={`flex flex-wrap gap-2 ${mobileOptimized ? "hidden sm:flex" : ""}`}>
               {growthValues.map((entry) => (
                 <div
@@ -393,7 +469,7 @@ export function OccupationSalaryTimeSeriesChart({
         </div>
 
         <div className={chartFrameClasses}>
-          {mobileOptimized ? (
+          {mobileOptimized && controlsVariant !== "reference" ? (
             <div className="mb-3 flex flex-wrap justify-center gap-5 text-sm text-slate-600 sm:hidden">
               {activeSeries.map((definition) => (
                 <div className="flex items-center gap-2" key={`mobile-legend-${definition.key}`}>
@@ -648,7 +724,11 @@ export function OccupationSalaryTimeSeriesChart({
           ) : null}
         </div>
 
-        {mobileOptimized && growthValues.length > 0 ? (
+        {controlsVariant === "reference" ? (
+          <OccupationChartDevelopmentCards groups={referenceDevelopmentGroups} />
+        ) : null}
+
+        {mobileOptimized && controlsVariant !== "reference" && growthValues.length > 0 ? (
           <div className="mt-4 grid grid-cols-2 gap-4 sm:hidden">
             {growthValues.map((entry) => {
               const definition = seriesDefinitions.find((item) => item.key === entry.key);
@@ -703,6 +783,18 @@ function formatGrowthPercent(value: number) {
     maximumFractionDigits: 1,
     minimumFractionDigits: 1,
   })} %`;
+}
+
+function getSeriesTone(key: SeriesKey) {
+  if (key === "valueWomen") {
+    return "women" as const;
+  }
+
+  if (key === "valueMen") {
+    return "men" as const;
+  }
+
+  return "neutral" as const;
 }
 
 function formatAxisCurrency(value: number) {

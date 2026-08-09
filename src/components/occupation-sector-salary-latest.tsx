@@ -2,7 +2,10 @@ import type {
   OccupationSectorSalaryTimeSeries,
   OccupationSectorSalaryTimeSeriesPoint,
 } from "@/lib/ssb";
-import { MetricInfoButton } from "@/components/metric-info-button";
+import {
+  OccupationSectorSalaryCards,
+  type OccupationSectorSalaryCardData,
+} from "@/components/occupation-sector-salary-cards";
 
 type SectorDefinition = {
   key: "private" | "municipal" | "state";
@@ -132,73 +135,22 @@ export function OccupationSectorSalaryLatest({
     return null;
   }
 
-  const gridColumns =
-    availableSectors.length === 1
-      ? "grid-cols-1"
-      : availableSectors.length === 2
-        ? "xl:grid-cols-2"
-        : "xl:grid-cols-3";
+  const cards: OccupationSectorSalaryCardData[] = availableSectors.map((sector) => ({
+    description: sector.description,
+    key: sector.key,
+    label: sector.label,
+    rows: genderLabels.map((label, index) => ({
+      average: getPointValue(latestPoint, sector.averageFields[index]),
+      label,
+      median: getPointValue(latestPoint, sector.medianFields[index]),
+    })),
+  }));
 
   return (
-    <div>
-      <p className="text-sm font-semibold text-slate-600">
-        Siste tilgjengelige år: {formatPeriodLabel(latestPoint.periodLabel)}
-      </p>
-
-      <div className={`mt-5 grid gap-4 ${gridColumns}`}>
-        {availableSectors.map((sector) => (
-          <article
-            className="overflow-hidden rounded-[6px] border border-slate-200 bg-white"
-            key={sector.key}
-          >
-            <div className="flex min-h-[57px] items-center gap-2 border-b border-slate-200 px-4 py-4">
-              <h4 className="text-base font-semibold text-slate-950">{sector.label}</h4>
-              <MetricInfoButton
-                description={sector.description}
-                label={sector.label}
-                modalVariant="compact"
-                variant="muted"
-              />
-            </div>
-            <table className="w-full table-fixed border-collapse text-left">
-              <thead>
-                <tr className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-                  <th className="w-[32%] px-4 py-3" scope="col">
-                    Kjønn
-                  </th>
-                  <th className="w-[30%] px-2 py-3 text-right" scope="col">
-                    Median
-                  </th>
-                  <th className="w-[38%] px-4 py-3 text-right" scope="col">
-                    Snitt
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {genderLabels.map((label, index) => (
-                  <tr className="border-t border-slate-200" key={label}>
-                    <th className="px-4 py-3 text-sm font-medium text-slate-700" scope="row">
-                      {label}
-                    </th>
-                    <td className="whitespace-nowrap px-2 py-3 text-right text-sm font-semibold tabular-nums text-slate-950">
-                      {formatKr(getPointValue(latestPoint, sector.medianFields[index]))}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold tabular-nums text-slate-950">
-                      {formatKr(getPointValue(latestPoint, sector.averageFields[index]))}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </article>
-        ))}
-      </div>
-
-      <p className="mt-4 text-sm leading-6 text-slate-600">
-        Tallene viser månedslønn for heltid og deltid samlet. Manglende tall betyr at SSB ikke har
-        publisert verdien for yrket og sektoren.
-      </p>
-    </div>
+    <OccupationSectorSalaryCards
+      cards={cards}
+      periodLabel={formatPeriodLabel(latestPoint.periodLabel)}
+    />
   );
 }
 

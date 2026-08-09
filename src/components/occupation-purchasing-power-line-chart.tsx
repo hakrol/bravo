@@ -1,12 +1,21 @@
 'use client'
 
 import { useMemo, useState } from "react";
+import {
+  OccupationChartDevelopmentCards,
+  OccupationChartReferenceControls,
+  getOccupationChartValueTone,
+} from "@/components/occupation-chart-reference-controls";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import {
   formatCompactChartYear,
   useOccupationChartMobileLayout,
 } from "@/components/occupation-chart-mobile";
 import type { OccupationPurchasingPowerTimeSeries } from "@/lib/ssb";
+import {
+  calculateCumulativeAnnualDevelopment,
+  OCCUPATION_CHART_HORIZONS,
+} from "@/lib/occupation-chart-development";
 
 const percentFormatter = new Intl.NumberFormat("nb-NO", {
   maximumFractionDigits: 1,
@@ -25,6 +34,8 @@ type OccupationPurchasingPowerLineChartProps = {
   initialFilter?: FilterKey;
   mobileOptimized?: boolean;
   series: OccupationPurchasingPowerTimeSeries;
+  showTitle?: boolean;
+  controlsVariant?: "default" | "reference";
 };
 
 type ChartPoint = {
@@ -43,6 +54,8 @@ export function OccupationPurchasingPowerLineChart({
   initialFilter = "realGrowthAll",
   mobileOptimized = false,
   series,
+  showTitle = true,
+  controlsVariant = "default",
 }: OccupationPurchasingPowerLineChartProps) {
   const [activeFilter, setActiveFilter] = useState<FilterKey>(initialFilter);
   const useMobileChartLayout = useOccupationChartMobileLayout(mobileOptimized);
@@ -120,17 +133,68 @@ export function OccupationPurchasingPowerLineChart({
     : [];
   const latestPeriodLabel = latestValues[0]?.periodLabel;
   const fiveYearGrowth = calculateFiveYearRealWageGrowth(series.points, resolvedFilter);
+  const developmentGroups = OCCUPATION_CHART_HORIZONS.flatMap((horizon) => {
+    const items = filterOptions
+      .filter((option) => option.key === "realGrowthWomen" || option.key === "realGrowthMen")
+      .flatMap((option) => {
+        const development = calculateCumulativeAnnualDevelopment(
+          series.points.map((point) => ({
+            periodCode: point.periodCode,
+            periodLabel: point.periodLabel,
+            value: point[option.key],
+          })),
+          horizon.years,
+        );
+
+        return development
+          ? [{
+              key: `${horizon.key}-${option.key}`,
+              label: option.label,
+              period: `${formatPeriodLabel(development.startPeriodLabel)}–${formatPeriodLabel(development.endPeriodLabel)}`,
+              tone: getSeriesTone(option.key),
+              value: formatSignedPercent(development.value),
+              valueTone: getOccupationChartValueTone(development.value),
+            }]
+          : [];
+      });
+
+    return items.length > 0 ? [{ ...horizon, items }] : [];
+  });
 
   return (
     <section className="bg-transparent">
       <div className="space-y-4">
-        <h3 className={`text-xl font-semibold text-slate-950 sm:text-2xl ${
-          mobileOptimized ? "text-left" : "text-center"
-        }`}>
-          {`Utvikling i reallønnsvekst for ${series.occupationLabel}`}
-        </h3>
+        {showTitle ? (
+          <h3 className={`text-xl font-semibold text-slate-950 sm:text-2xl ${
+            mobileOptimized ? "text-left" : "text-center"
+          }`}>
+            {`Utvikling i reallønnsvekst for ${series.occupationLabel}`}
+          </h3>
+        ) : null}
 
-        {latestValues.length > 0 ? (
+        {controlsVariant === "reference" ? (
+          <OccupationChartReferenceControls
+            activeFilter={resolvedFilter}
+            filters={filterOptions.map((option) => ({
+              available: availableFilters[option.key],
+              key: option.key,
+              label: option.label,
+              tone: getSeriesTone(option.key),
+            }))}
+            latestDataDescription={`Her ser du siste registrerte reallønnsvekst for valgt visning. Tallet gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og viser lønnsvekst justert for prisvekst.`}
+            latestItems={latestValues.map((entry) => ({
+              key: entry.key,
+              label: entry.label,
+              tone: getSeriesTone(entry.key),
+              value: formatSignedPercent(entry.value),
+            }))}
+            legends={[]}
+            onFilterChange={(key) => setActiveFilter(key as FilterKey)}
+            periodLabel={latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel) : undefined}
+          />
+        ) : null}
+
+        {controlsVariant !== "reference" && latestValues.length > 0 ? (
           <div className={`space-y-2 ${mobileOptimized ? "text-left" : "text-center"}`}>
             <div className={`flex items-center gap-2 ${mobileOptimized ? "" : "justify-center"}`}>
               <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -169,6 +233,7 @@ export function OccupationPurchasingPowerLineChart({
           </div>
         ) : null}
 
+        {controlsVariant !== "reference" ? (
         <div className={`grid grid-cols-3 overflow-hidden rounded-[6px] border border-slate-200 sm:flex sm:flex-wrap sm:gap-2 sm:overflow-visible sm:border-0 ${
           mobileOptimized ? "" : "sm:justify-center"
         }`}>
@@ -199,6 +264,7 @@ export function OccupationPurchasingPowerLineChart({
           );
         })}
         </div>
+        ) : null}
         {latestSeriesPoint && fiveYearGrowth !== null && activeOption ? (
           <p className={`max-w-3xl text-sm leading-7 text-slate-700 sm:text-base ${
             mobileOptimized ? "text-left" : "mx-auto text-center"
@@ -291,6 +357,10 @@ export function OccupationPurchasingPowerLineChart({
           })}
         </svg>
       </div>
+
+      {controlsVariant === "reference" ? (
+        <OccupationChartDevelopmentCards groups={developmentGroups} />
+      ) : null}
     </section>
   );
 }
@@ -482,4 +552,21 @@ function getGrowthDescription(value: number) {
 
   const formattedValue = `${percentFormatter.format(Math.abs(value))} %`;
   return value > 0 ? `økte med ${formattedValue}` : `gikk ned med ${formattedValue}`;
+}
+
+function formatSignedPercent(value: number) {
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${percentFormatter.format(value)} %`;
+}
+
+function getSeriesTone(key: FilterKey) {
+  if (key === "realGrowthWomen") {
+    return "women" as const;
+  }
+
+  if (key === "realGrowthMen") {
+    return "men" as const;
+  }
+
+  return "neutral" as const;
 }

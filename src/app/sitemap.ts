@@ -120,6 +120,12 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/topp-50-reallonnsvekst",
+    filePath: "src/app/topp-50-reallonnsvekst/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/topp-50-gjennomsnittlig-bonus",
     filePath: "src/app/topp-50-gjennomsnittlig-bonus/page.tsx",
     priority: 0.7,

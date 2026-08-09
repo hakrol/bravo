@@ -19,6 +19,7 @@ import {
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
 import { OccupationSectionLinkNav } from "@/components/occupation-section-link-nav";
 import { OccupationHero } from "@/components/occupation-hero";
+import { OccupationFaq, type OccupationFaqItem } from "@/components/occupation-faq";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
 import {
   getOccupationFiveYearGrowthComparison,
@@ -33,11 +34,6 @@ import type { OccupationSalaryDistributionMetrics } from "@/lib/ssb";
 
 type OccupationDetailPageProps = {
   detail: OccupationDetailViewModel;
-};
-
-const FEATURED_BLOG_POST = {
-  href: "/blogg/hvordan-be-om-mer-lonn",
-  title: "Hvordan be om mer lønn?",
 };
 
 const SIDEBAR_BLOG_LINKS = [
@@ -73,17 +69,6 @@ const TOOL_LINKS = [
     href: "/sammenlign-lonn",
     icon: "compare",
     title: "Sammenlign lønn",
-  },
-];
-
-const SPECIAL_LINKS = [
-  {
-    href: "/spesial/i-disse-yrkene-oker-kvinneandelen-raskest",
-    title: "I disse yrkene øker kvinneandelen raskest",
-  },
-  {
-    href: "/spesial/topp-10-yrker",
-    title: "Topp 10 yrker med høyest lønn",
   },
 ];
 
@@ -187,6 +172,12 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     currentMedian: estimateMonthlySalary,
     rows: relatedRows,
   });
+  const faqItems = buildOccupationFaqItems({
+    distribution,
+    laborMarket,
+    occupationLabel: occupationText.sentenceLabel,
+    purchasingPowerSeries: detail.data.trendData.purchasingPowerSeries,
+  });
   const apprenticeshipPage = await getApprenticeshipDetailPageByOccupationCode(
     detail.detailPage.occupationCode,
   );
@@ -198,8 +189,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     { href: "#lonnsutvikling", label: "Lønnsutvikling" },
     { href: "#reallonn", label: "Reallønn" },
     hasEstimate ? { href: "#lonnsestimat", label: "Lønnsestimat" } : null,
-    relatedRows.length > 0 ? { href: "#relaterte-jobber", label: "Relaterte jobber" } : null,
     laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarked" } : null,
+    relatedRows.length > 0 ? { href: "#relaterte-jobber", label: "Relaterte jobber" } : null,
+    { href: "#vanlige-sporsmal", label: "Vanlige spørsmål" },
   ].filter((item): item is { href: string; label: string } => Boolean(item));
 
   return (
@@ -210,12 +202,14 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
         backgroundImage={heroImages.desktop}
         contentDescription={`Her finner du lønn, lønnsutvikling og arbeidsmarkedsdata for ${occupationText.seoLabel}, basert på tall fra Statistisk sentralbyrå.`}
         description={buildHeroIntro(occupationText.seoLabel, intro)}
+        employeeCount={laborMarket?.latest?.employees}
         employeeGrowthPercent={laborMarket?.growth?.yearOverYearChange}
         employeeCountRank={heroRankings.employeeCountRank}
         occupationName={occupationText.titleLabel}
         medianMonthlySalary={estimateMonthlySalary}
         mobileBackgroundImage={heroImages.mobile}
         oldestAverageAgeRank={heroRankings.oldestAverageAgeRank}
+        realSalaryGrowthRank={heroRankings.realSalaryGrowthRank}
         salaryGrowthRank={heroRankings.salaryGrowthRank}
         salaryGrowthPercent={medianGrowthMetrics?.salaryGrowth}
         salaryRank={heroRankings.salaryRank}
@@ -259,6 +253,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       </p>
                     </div>
                     <MonthlySalaryOverview cards={monthlySalaryOverviewCards} />
+                    <p className="mt-5 max-w-4xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+                      Når gjennomsnittet er høyere enn medianen, tyder det ofte på at noen høye
+                      lønninger trekker gjennomsnittet opp. Når gjennomsnittet er lavere, kan noen
+                      lave lønninger trekke det ned.
+                    </p>
                   </div>
                 ) : null}
 
@@ -327,45 +326,38 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
                   Lønnsutvikling for {occupationText.titleLabel}
                 </h2>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    {salaryDevelopmentSummary}{" "}
-                  <Link
-                    className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
-                    href={FEATURED_BLOG_POST.href}
-                  >
-                    Les også {FEATURED_BLOG_POST.title.toLowerCase()}.
-                  </Link>
+                <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  {salaryDevelopmentSummary}
                 </p>
               </div>
               <div className="mt-8">
                 <OccupationSalaryTimeSeriesChart
-                  description="Se utviklingen i månedslønn per år. Grafen viser median månedslønn for begge kjønn, kvinner og menn basert på tilgjengelige tall fra SSB."
+                  controlsVariant="reference"
                   mobileOptimized
                   series={detail.data.medianBasicSalarySeries}
+                  showIntro={false}
                   variant="classic-emphasis"
-                  title={`Utvikling i månedslønn for ${occupationText.titleLabel}`}
                 />
               </div>
-            </section>
 
-            <section
-              className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
-              id="reallonn"
-            >
-              <div className="space-y-3">
-                <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
-                  Reallønnsvekst for {occupationText.titleLabel}
-                </h2>
-                <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                  {purchasingPowerSummary}
-                </p>
-              </div>
-              <div className="mt-8">
-                <OccupationPurchasingPowerLineChart
-                  mobileOptimized
-                  series={detail.data.trendData.purchasingPowerSeries}
-                />
-              </div>
+              <section className="mt-10" id="reallonn">
+                <div className="space-y-3">
+                  <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                    Reallønnsvekst og kjøpekraft for {occupationText.titleLabel}
+                  </h3>
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    {purchasingPowerSummary}
+                  </p>
+                </div>
+                <div className="mt-8">
+                  <OccupationPurchasingPowerLineChart
+                    controlsVariant="reference"
+                    mobileOptimized
+                    series={detail.data.trendData.purchasingPowerSeries}
+                    showTitle={false}
+                  />
+                </div>
+              </section>
             </section>
 
             {hasEstimate ? (
@@ -401,6 +393,32 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                     monthlySalaryMen={estimateMonthlySalaryMen}
                     monthlySalaryWomen={estimateMonthlySalaryWomen}
                     occupationLabel={detail.detailPage.label}
+                  />
+                </div>
+              </section>
+            ) : null}
+
+            {laborMarket ? (
+              <section
+                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
+                id="arbeidsmarked"
+              >
+                <div className="space-y-3">
+                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                    Arbeidsmarkedet for {occupationText.titleLabel}
+                  </h2>
+                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    {laborMarketSummary}
+                  </p>
+                </div>
+                <div className="mt-8 space-y-5">
+                  <OccupationWorkforceTimeSeriesChart
+                    description="Se utviklingen i antall lønnstakere per kvartal, fordelt på kvinner og menn."
+                    points={laborMarket.workforcePoints}
+                  />
+                  <OccupationAgeTimeSeriesChart
+                    occupationLabel={occupationText.titleLabel}
+                    points={laborMarket.ageSeries}
                   />
                 </div>
               </section>
@@ -456,31 +474,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            {laborMarket ? (
-              <section
-                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
-                id="arbeidsmarked"
-              >
-                <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
-                    Arbeidsmarkedet for {occupationText.titleLabel}
-                  </h2>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    {laborMarketSummary}
-                  </p>
-                </div>
-                <div className="mt-8 space-y-5">
-                  <OccupationWorkforceTimeSeriesChart
-                    description="Se utviklingen i antall lønnstakere per kvartal, fordelt på kvinner og menn."
-                    points={laborMarket.workforcePoints}
-                  />
-                  <OccupationAgeTimeSeriesChart
-                    occupationLabel={occupationText.titleLabel}
-                    points={laborMarket.ageSeries}
-                  />
-                </div>
-              </section>
-            ) : null}
+            <OccupationFaq items={faqItems} occupationLabel={occupationText.titleLabel} />
 
           </div>
 
@@ -518,28 +512,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             <section className="py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Spesial
-              </p>
-              <div className="mt-2.5 grid gap-2">
-                {SPECIAL_LINKS.map((link) => (
-                  <Link
-                    className="text-sm font-medium leading-5 text-slate-700 transition hover:text-slate-950 hover:underline hover:decoration-slate-300 hover:underline-offset-4"
-                    href={link.href}
-                    key={link.href}
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-              </div>
-            </section>
-
-            <section className="py-3">
               <Link
-                className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                className="flex w-full items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(20,83,45,0.18)] transition hover:bg-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
                 href="/yrker"
               >
-                <SidebarLinkIcon className="text-slate-500" icon="list" />
                 <span>Alle yrker</span>
               </Link>
             </section>
@@ -1216,6 +1192,122 @@ function buildPurchasingPowerSummary(
   const genderInsight = buildPurchasingPowerGenderInsight(series);
 
   return `De siste 5 årene har reallønnsveksten i yrket vært positiv i ${positiveCount} av ${fiveYearPoints.length} kvartaler. I snitt har reallønnsveksten vært ${formatPercent(averageRealGrowth)} per kvartal, og i ${formatQuarterCodeLabel(latestPoint.periodLabel).toLowerCase()} var den ${formatPercent(latestPoint.realGrowthAll)}.${genderInsight ? ` ${genderInsight}` : ""}`;
+}
+
+function buildOccupationFaqItems({
+  distribution,
+  laborMarket,
+  occupationLabel,
+  purchasingPowerSeries,
+}: {
+  distribution: OccupationDetailViewModel["data"]["distribution"];
+  laborMarket: OccupationDetailViewModel["data"]["laborMarketStats"];
+  occupationLabel: string;
+  purchasingPowerSeries: OccupationDetailViewModel["data"]["trendData"]["purchasingPowerSeries"];
+}): OccupationFaqItem[] {
+  const label = occupationLabel.toLowerCase();
+  const employeeCount = laborMarket?.latest?.employees;
+  const employeePeriod = laborMarket?.latest?.periodLabel
+    ? formatQuarterCodeLabel(laborMarket.latest.periodLabel).toLowerCase()
+    : null;
+  const womenMedian = distribution?.women?.median;
+  const menMedian = distribution?.men?.median;
+  const salaryPeriod = distribution?.periodLabel
+    ? formatQuarterCodeLabel(distribution.periodLabel).toLowerCase()
+    : null;
+  const latestRealGrowthPoint = [...purchasingPowerSeries.points]
+    .reverse()
+    .find((point) => point.realGrowthAll !== undefined);
+  const averageAge = laborMarket?.age?.averageAll;
+  const agePeriod = laborMarket?.age?.periodLabel
+    ? formatQuarterCodeLabel(laborMarket.age.periodLabel).toLowerCase()
+    : null;
+  const medianMonthlySalary = distribution?.total?.median;
+
+  return [
+    {
+      question: `Hvor mange arbeider som ${label} i Norge?`,
+      answer:
+        employeeCount !== undefined
+          ? `Det var ${formatNumber(employeeCount)} lønnstakere i yrket${employeePeriod ? ` i ${employeePeriod}` : ""}, ifølge SSB. Tallet omfatter personer som er registrert som lønnstakere i denne yrkesgruppen.`
+          : "SSB har ikke publisert et tilgjengelig tall for antall lønnstakere i denne yrkesgruppen.",
+    },
+    {
+      question: `Tjener kvinnelige eller mannlige ${label} mest?`,
+      answer: buildGenderSalaryFaqAnswer({ menMedian, salaryPeriod, womenMedian }),
+    },
+    {
+      question: `Har ${label} hatt reallønnsvekst?`,
+      answer: buildRealWageFaqAnswer(latestRealGrowthPoint),
+    },
+    {
+      question: `Hva er gjennomsnittsalderen blant ${label}?`,
+      answer:
+        averageAge !== undefined
+          ? `Gjennomsnittsalderen var ${averageAge.toLocaleString("nb-NO", {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })} år${agePeriod ? ` i ${agePeriod}` : ""}, ifølge SSB.`
+          : "SSB har ikke publisert en tilgjengelig gjennomsnittsalder for denne yrkesgruppen.",
+    },
+    {
+      question: `Hva er årslønnen for ${label}?`,
+      answer:
+        medianMonthlySalary !== undefined
+          ? `Beregnet median årslønn er ${formatKr(medianMonthlySalary * 12)} før skatt${salaryPeriod ? `, basert på median månedslønn i ${salaryPeriod}` : ""}. Årslønnen er et estimat der månedslønnen er ganget med 12.`
+          : "Det finnes ikke et tilgjengelig tall for median månedslønn som kan brukes til å beregne årslønn for denne yrkesgruppen.",
+    },
+  ];
+}
+
+function buildGenderSalaryFaqAnswer({
+  menMedian,
+  salaryPeriod,
+  womenMedian,
+}: {
+  menMedian?: number;
+  salaryPeriod: string | null;
+  womenMedian?: number;
+}) {
+  if (womenMedian === undefined || menMedian === undefined) {
+    return "SSB har ikke publisert sammenlignbare medianlønnstall for både kvinner og menn i denne yrkesgruppen.";
+  }
+
+  const periodSuffix = salaryPeriod ? ` i ${salaryPeriod}` : "";
+
+  if (womenMedian === menMedian) {
+    return `Kvinner og menn hadde samme median månedslønn på ${formatKr(womenMedian)}${periodSuffix}.`;
+  }
+
+  const highestGroup = womenMedian > menMedian ? "Kvinner" : "Menn";
+  const highestSalary = Math.max(womenMedian, menMedian);
+  const lowestGroup = womenMedian > menMedian ? "menn" : "kvinner";
+  const lowestSalary = Math.min(womenMedian, menMedian);
+
+  return `${highestGroup} hadde høyest median månedslønn${periodSuffix}, med ${formatKr(highestSalary)} mot ${formatKr(lowestSalary)} for ${lowestGroup}. Forskjellen var ${formatKr(highestSalary - lowestSalary)} per måned.`;
+}
+
+function buildRealWageFaqAnswer(
+  point:
+    | OccupationDetailViewModel["data"]["trendData"]["purchasingPowerSeries"]["points"][number]
+    | undefined,
+) {
+  if (point?.realGrowthAll === undefined) {
+    return "Det finnes ikke nok tilgjengelige data til å beregne reallønnsveksten for denne yrkesgruppen.";
+  }
+
+  const period = formatQuarterCodeLabel(point.periodLabel).toLowerCase();
+  const growth = point.realGrowthAll;
+
+  if (growth > 0) {
+    return `Ja. Reallønnen økte med ${formatPercent(growth)} i den siste sammenlignbare perioden, ${period}. Det betyr at lønnen økte mer enn prisene.`;
+  }
+
+  if (growth < 0) {
+    return `Nei, ikke i den siste sammenlignbare perioden. Reallønnen falt med ${formatPercent(Math.abs(growth))} i ${period}, noe som betyr at prisene økte mer enn lønnen.`;
+  }
+
+  return `Reallønnen var uendret i den siste sammenlignbare perioden, ${period}. Lønnen og prisene økte da omtrent like mye.`;
 }
 
 function buildLaborMarketSummary(laborMarket: OccupationDetailViewModel["data"]["laborMarketStats"]) {

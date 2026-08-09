@@ -14,9 +14,11 @@ type OccupationHeroProps = {
   medianMonthlySalary?: number | null;
   averageAge?: number | null;
   salaryGrowthPercent?: number | null;
+  employeeCount?: number | null;
   employeeGrowthPercent?: number | null;
   salaryRank?: number | null;
   salaryGrowthRank?: number | null;
+  realSalaryGrowthRank?: number | null;
   averageBonusRank?: number | null;
   oldestAverageAgeRank?: number | null;
   youngestAverageAgeRank?: number | null;
@@ -36,6 +38,8 @@ type RankingCardData = {
 type MetricCardData = {
   icon: "salary" | "age" | "growth" | "workforce";
   label: string;
+  secondaryTone?: "positive" | "negative";
+  secondaryValue?: string;
   tone?: "positive" | "negative";
   value: string;
 };
@@ -47,9 +51,11 @@ export function OccupationHero({
   medianMonthlySalary,
   averageAge,
   salaryGrowthPercent,
+  employeeCount,
   employeeGrowthPercent,
   salaryRank,
   salaryGrowthRank,
+  realSalaryGrowthRank,
   averageBonusRank,
   oldestAverageAgeRank,
   youngestAverageAgeRank,
@@ -64,6 +70,7 @@ export function OccupationHero({
 }: OccupationHeroProps) {
   const metricCards = buildMetricCards({
     averageAge,
+    employeeCount,
     employeeGrowthPercent,
     medianMonthlySalary,
     salaryGrowthPercent,
@@ -80,6 +87,12 @@ export function OccupationHero({
       icon: "growth",
       label: "Lønnsvekst",
       rank: salaryGrowthRank,
+    },
+    {
+      href: "/topp-50-reallonnsvekst",
+      icon: "growth",
+      label: "Reallønnsvekst",
+      rank: realSalaryGrowthRank,
     },
     {
       href: "/topp-50-gjennomsnittlig-bonus",
@@ -149,7 +162,10 @@ function MetricCards({ cards }: { cards: MetricCardData[] }) {
   return (
     <div aria-label="Nøkkeltall for yrket" className={styles.metricCards}>
       {cards.map((card) => (
-        <div className={styles.metricCard} key={card.label}>
+        <div
+          className={`${styles.metricCard} ${card.secondaryValue ? styles.metricCardWithSecondary : ""}`}
+          key={card.label}
+        >
           <span aria-hidden="true" className={styles.metricIcon}>
             <MetricIcon icon={card.icon} />
           </span>
@@ -165,6 +181,23 @@ function MetricCards({ cards }: { cards: MetricCardData[] }) {
                 .join(" ")}
             >
               {card.value}
+              {card.secondaryValue ? (
+                <span className={styles.metricSecondaryValue}>
+                  (
+                  <span
+                    className={
+                      card.secondaryTone === "positive"
+                        ? styles.metricValuePositive
+                        : card.secondaryTone === "negative"
+                          ? styles.metricValueNegative
+                          : ""
+                    }
+                  >
+                    {card.secondaryValue}
+                  </span>
+                  )
+                </span>
+              ) : null}
             </strong>
           </span>
         </div>
@@ -253,11 +286,13 @@ function RankingCards({ cards }: { cards: RankingCardData[] }) {
 
 function buildMetricCards({
   averageAge,
+  employeeCount,
   employeeGrowthPercent,
   medianMonthlySalary,
   salaryGrowthPercent,
 }: {
   averageAge?: number | null;
+  employeeCount?: number | null;
   employeeGrowthPercent?: number | null;
   medianMonthlySalary?: number | null;
   salaryGrowthPercent?: number | null;
@@ -285,12 +320,17 @@ function buildMetricCards({
           value: `${salaryGrowthPercent > 0 ? "+" : ""}${salaryGrowthPercent.toLocaleString("nb-NO", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} %`,
         }
       : null,
-    isFiniteNumber(employeeGrowthPercent)
+    isFiniteNumber(employeeCount)
       ? {
           icon: "workforce",
-          label: "Arbeidstaker",
-          tone: getGrowthTone(employeeGrowthPercent),
-          value: `${employeeGrowthPercent > 0 ? "+" : ""}${employeeGrowthPercent.toLocaleString("nb-NO", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} %`,
+          label: "Arbeidstakere",
+          secondaryTone: isFiniteNumber(employeeGrowthPercent)
+            ? getGrowthTone(employeeGrowthPercent)
+            : undefined,
+          secondaryValue: isFiniteNumber(employeeGrowthPercent)
+            ? `${employeeGrowthPercent > 0 ? "+" : ""}${employeeGrowthPercent.toLocaleString("nb-NO", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} %`
+            : undefined,
+          value: employeeCount.toLocaleString("nb-NO", { maximumFractionDigits: 0 }),
         }
       : null,
   ];
