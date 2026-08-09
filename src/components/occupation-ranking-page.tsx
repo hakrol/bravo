@@ -12,6 +12,7 @@ type OccupationRankingPageProps = {
 export type OccupationRankingVariant =
   | "salary"
   | "growth"
+  | "real-growth"
   | "bonus"
   | "oldest-age"
   | "youngest-age"
@@ -33,6 +34,14 @@ const rankingPages = {
     title: "Yrker med størst lønnsvekst siste år",
     description:
       "Se de 50 yrkene med størst prosentvis vekst i median månedslønn fra siste tilgjengelige år til året før.",
+  },
+  "real-growth": {
+    href: "/topp-50-reallonnsvekst",
+    navLabel: "Reallønnsvekst",
+    eyebrow: "Topp 50 · Reallønnsvekst",
+    title: "Yrker med størst reallønnsvekst siste år",
+    description:
+      "Se de 50 yrkene med størst lønnsvekst etter at prisveksten er trukket fra, basert på siste tilgjengelige kvartalstall fra SSB.",
   },
   bonus: {
     href: "/topp-50-gjennomsnittlig-bonus",
@@ -203,6 +212,11 @@ function RankingRow({
               {formatCurrency(row.previousSalary)} → {formatCurrency(row.latestSalary)}
             </span>
           ) : null}
+          {variant === "real-growth" ? (
+            <span className="mt-1 block text-xs text-slate-500">
+              Nominell vekst {formatPercent(row.nominalSalaryGrowthPercent)} · Prisvekst {formatPercent(row.inflationGrowthPercent)}
+            </span>
+          ) : null}
         </span>
       </Link>
     </li>
@@ -215,6 +229,8 @@ function getRankingRows(data: OccupationRankingData, variant: OccupationRankingV
       return data.salaryRows;
     case "growth":
       return data.growthRows;
+    case "real-growth":
+      return data.realGrowthRows;
     case "bonus":
       return data.bonusRows;
     case "oldest-age":
@@ -232,6 +248,8 @@ function getPeriodLabel(data: OccupationRankingData, variant: OccupationRankingV
       return data.salaryPeriodLabel;
     case "growth":
       return `${data.growthPreviousPeriodLabel}–${data.growthLatestPeriodLabel}`;
+    case "real-growth":
+      return data.realGrowthPeriodLabel;
     case "bonus":
       return data.bonusPeriodLabel;
     case "oldest-age":
@@ -248,6 +266,8 @@ function getValueHeading(variant: OccupationRankingVariant) {
       return "Median månedslønn";
     case "growth":
       return "Vekst siste år";
+    case "real-growth":
+      return "Reallønnsvekst";
     case "bonus":
       return "Gjennomsnittlig bonus";
     case "oldest-age":
@@ -264,6 +284,8 @@ function formatRankingValue(row: OccupationRankingRow, variant: OccupationRankin
       return formatCurrency(row.medianMonthlySalary);
     case "growth":
       return formatPercent(row.salaryGrowthPercent);
+    case "real-growth":
+      return formatPercent(row.realSalaryGrowthPercent);
     case "bonus":
       return formatCurrency(row.averageMonthlyBonus);
     case "oldest-age":
@@ -280,6 +302,8 @@ function getMethodDescription(data: OccupationRankingData, variant: OccupationRa
       return `Listen rangerer firesifrede yrkeskoder etter median månedslønn for begge kjønn i ${data.salaryPeriodLabel}. Medianen er lønnen i midten når alle observasjonene sorteres, og påvirkes mindre av svært høye enkeltlønninger enn gjennomsnittet.`;
     case "growth":
       return `Listen sammenligner median månedslønn i ${data.growthLatestPeriodLabel} med ${data.growthPreviousPeriodLabel} for samme firesifrede yrkeskode. Endringen er nominell og ikke justert for prisvekst. Yrker som mangler et gyldig lønnstall i én av periodene, er ikke med i rangeringen.`;
+    case "real-growth":
+      return `Listen rangerer firesifrede yrkeskoder etter reallønnsvekst for begge kjønn i ${data.realGrowthPeriodLabel}, sammenlignet med samme kvartal året før. Reallønnsveksten er beregnet fra gjennomsnittlig avtalt månedslønn i SSB tabell 11658 og konsumprisindeksen i SSB tabell 14700. Yrker som mangler et gyldig tall i perioden, er ikke med i rangeringen.`;
     case "bonus":
       return `Listen rangerer firesifrede yrkeskoder etter gjennomsnittlig bonus per måned for begge kjønn i ${data.bonusPeriodLabel}. Yrker uten en positiv, rapportert bonus er ikke med i rangeringen.`;
     case "oldest-age":

@@ -1,12 +1,20 @@
 'use client'
 
 import { useState } from "react";
-import { MetricInfoButton } from "@/components/metric-info-button";
+import {
+  OccupationChartDevelopmentCards,
+  OccupationChartReferenceControls,
+  getOccupationChartValueTone,
+} from "@/components/occupation-chart-reference-controls";
 import {
   formatCompactChartYear,
   useOccupationChartMobileLayout,
 } from "@/components/occupation-chart-mobile";
 import type { OccupationWorkforceTimeSeriesPoint } from "@/lib/ssb";
+import {
+  calculateEndpointDevelopment,
+  OCCUPATION_CHART_HORIZONS,
+} from "@/lib/occupation-chart-development";
 
 const seriesDefinitions = [
   { key: "employeesAll", label: "Begge kjønn", color: "#14532d" },
@@ -116,6 +124,37 @@ export function OccupationWorkforceTimeSeriesChart({
   const latestPeriodLabel = latestValues[0]?.periodLabel;
   const latestOverallPoint = getLatestSeriesPoint(relevantPoints, "employeesAll");
   const latestTotal = latestOverallPoint?.value;
+  const developmentGroups = OCCUPATION_CHART_HORIZONS.flatMap((horizon) => {
+    const items = seriesDefinitions
+      .filter(
+        (definition) =>
+          definition.key === "employeesWomen" || definition.key === "employeesMen",
+      )
+      .flatMap((definition) => {
+        const development = calculateEndpointDevelopment(
+          relevantPoints.map((point) => ({
+            periodCode: point.periodCode,
+            periodLabel: point.periodLabel,
+            value: point[definition.key],
+          })),
+          horizon.years,
+          "percent",
+        );
+
+        return development
+          ? [{
+              key: `${horizon.key}-${definition.key}`,
+              label: definition.label,
+              period: `${formatPeriodLabel(development.startPeriodLabel)}–${formatPeriodLabel(development.endPeriodLabel)}`,
+              tone: getSeriesTone(definition.key),
+              value: formatGrowthPercentage(development.value),
+              valueTone: getOccupationChartValueTone(development.value),
+            }]
+          : [];
+      });
+
+    return items.length > 0 ? [{ ...horizon, items }] : [];
+  });
 
   return (
     <section className="bg-transparent">
@@ -128,84 +167,30 @@ export function OccupationWorkforceTimeSeriesChart({
         </p>
       </div>
 
-      {latestValues.length > 0 ? (
-        <div className="mt-5 space-y-2">
-          <div className="flex items-center gap-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-              Siste data
-            </p>
-            <MetricInfoButton
-              description={`Her ser du siste registrerte antall lønnstakere for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`}
-              label="Siste data"
-              variant="muted"
-            />
-          </div>
-          <div className="grid grid-cols-3 divide-x divide-slate-200 border-y border-slate-200 sm:flex sm:flex-wrap sm:items-center sm:gap-2 sm:divide-x-0 sm:border-y-0">
-            {latestPeriodLabel ? (
-              <span className="flex flex-col px-2 py-3 sm:block sm:rounded-[5px] sm:border sm:border-slate-200 sm:bg-white sm:px-3 sm:py-2 sm:text-sm sm:font-semibold sm:text-slate-800 sm:shadow-sm">
-                <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-slate-500 sm:hidden">
-                  Periode
-                </span>
-                <strong className="mt-1 text-sm font-semibold text-slate-950 sm:mt-0 sm:text-inherit">
-                  {formatPeriodLabel(latestPeriodLabel)}
-                </strong>
-              </span>
-            ) : null}
-            {latestValues.map((entry) => (
-              <div
-                key={`latest-${entry.key}`}
-                className="min-w-0 px-2 py-3 text-xs leading-5 text-slate-600 sm:rounded-[5px] sm:border sm:border-slate-200 sm:bg-white sm:px-3 sm:py-2 sm:text-sm sm:leading-none sm:text-slate-700 sm:shadow-sm"
-              >
-                <span className="block truncate sm:inline sm:text-[15px]">{entry.label}<span className="hidden sm:inline">: </span></span>
-                <span className="block whitespace-nowrap text-[13px] font-semibold text-slate-950 sm:inline sm:text-[15px]">
-                  {formatLatestWorkforceValue(entry.value, latestTotal)}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : null}
-
-      <div className="mt-4 grid grid-cols-3 overflow-hidden rounded-[6px] border border-slate-200 sm:flex sm:flex-wrap sm:gap-2 sm:overflow-visible sm:border-0">
-        {filterOptions.map((option) => {
-          const isActive = option.key === resolvedFilter;
-          const isAvailable = availableFilters[option.key];
-
-          return (
-            <button
-              key={option.key}
-              disabled={!isAvailable}
-              className={`min-w-0 border-0 border-r border-slate-200 px-2 py-3 text-sm transition last:border-r-0 sm:rounded-full sm:border sm:px-3 sm:py-1.5 ${
-                !isAvailable
-                  ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
-                  : isActive
-                    ? "border-emerald-900 bg-emerald-900 text-white shadow-[0_10px_24px_rgba(6,78,59,0.18)]"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-950/30"
-              }`}
-              onClick={() => {
-                if (isAvailable) {
-                  setActiveFilter(option.key);
-                }
-              }}
-              type="button"
-            >
-              {option.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="mt-3 flex flex-wrap gap-4 text-sm text-slate-700">
-        {activeSeries.map((series) => (
-          <div key={series.key} className="flex items-center gap-2">
-            <span
-              aria-hidden="true"
-              className="h-0.5 w-8 rounded-full sm:h-3 sm:w-3"
-              style={{ backgroundColor: series.color }}
-            />
-            <span>{series.label}</span>
-          </div>
-        ))}
+      <div className="mt-5">
+        <OccupationChartReferenceControls
+          activeFilter={resolvedFilter}
+          filters={filterOptions.map((option) => ({
+            available: availableFilters[option.key],
+            key: option.key,
+            label: option.label,
+            tone: getSeriesTone(option.key),
+          }))}
+          latestDataDescription={`Her ser du siste registrerte antall lønnstakere for kvinner og menn. Tallene gjelder ${latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel).toLowerCase() : "siste tilgjengelige periode"} og er hentet fra SSB tabell 11658.`}
+          latestItems={latestValues.map((entry) => ({
+            key: entry.key,
+            label: entry.label,
+            tone: getSeriesTone(entry.key),
+            value: formatLatestWorkforceValue(entry.value, latestTotal),
+          }))}
+          legends={activeSeries.map((series) => ({
+            color: series.color,
+            key: series.key,
+            label: series.label,
+          }))}
+          onFilterChange={(key) => setActiveFilter(key as FilterKey)}
+          periodLabel={latestPeriodLabel ? formatPeriodLabel(latestPeriodLabel) : undefined}
+        />
       </div>
 
       <div className="mt-4 overflow-x-auto pb-2">
@@ -343,6 +328,8 @@ export function OccupationWorkforceTimeSeriesChart({
         </svg>
       </div>
 
+      <OccupationChartDevelopmentCards groups={developmentGroups} />
+
       <p className="mt-2 text-xs leading-5 text-slate-500">
         Viser alle tilgjengelige kvartaler fra SSB tabell 11658.
       </p>
@@ -384,6 +371,11 @@ function formatPercentage(value?: number) {
     minimumFractionDigits: 1,
     maximumFractionDigits: 1,
   })} %`;
+}
+
+function formatGrowthPercentage(value: number) {
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${formatPercentage(value)}`;
 }
 
 function formatQuarterCodeLabel(value: string) {
@@ -459,4 +451,16 @@ function getLatestSeriesPoint(
   }
 
   return null;
+}
+
+function getSeriesTone(key: SeriesKey) {
+  if (key === "employeesWomen") {
+    return "women" as const;
+  }
+
+  if (key === "employeesMen") {
+    return "men" as const;
+  }
+
+  return "neutral" as const;
 }

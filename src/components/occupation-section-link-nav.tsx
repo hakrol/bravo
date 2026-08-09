@@ -1,7 +1,7 @@
 "use client";
 
 import { track } from "@vercel/analytics";
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 type OccupationSectionLinkNavItem = {
   href: string;
@@ -26,35 +26,80 @@ export function OccupationSectionLinkNav({
   items,
 }: OccupationSectionLinkNavProps) {
   const [activeHref, setActiveHref] = useState(items[0]?.href ?? "");
+  const navScrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sectionElements = items
-      .map((item) => document.getElementById(item.href.replace(/^#/, "")))
-      .filter((section): section is HTMLElement => Boolean(section));
+      .map((item) => ({
+        element: document.getElementById(item.href.replace(/^#/, "")),
+        href: item.href,
+      }))
+      .filter(
+        (section): section is { element: HTMLElement; href: string } => Boolean(section.element),
+      );
 
     if (sectionElements.length === 0) {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleSection = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((left, right) => left.boundingClientRect.top - right.boundingClientRect.top)[0];
+    let animationFrame = 0;
 
-        if (visibleSection?.target.id) {
-          setActiveHref(`#${visibleSection.target.id}`);
+    const updateActiveSection = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(() => {
+        const activationLine = 72;
+        let nextActiveHref = sectionElements[0].href;
+
+        for (const section of sectionElements) {
+          if (section.element.getBoundingClientRect().top <= activationLine) {
+            nextActiveHref = section.href;
+          } else {
+            break;
+          }
         }
-      },
-      {
-        rootMargin: "-56px 0px -62% 0px",
-        threshold: 0,
-      },
+
+        const isAtPageBottom =
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+
+        if (isAtPageBottom) {
+          nextActiveHref = sectionElements[sectionElements.length - 1].href;
+        }
+
+        setActiveHref((currentHref) =>
+          currentHref === nextActiveHref ? currentHref : nextActiveHref,
+        );
+      });
+    };
+
+    updateActiveSection();
+    window.addEventListener("resize", updateActiveSection);
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", updateActiveSection);
+      window.removeEventListener("scroll", updateActiveSection);
+    };
+  }, [items]);
+
+  useEffect(() => {
+    const scroller = navScrollerRef.current;
+    const activeLink = scroller?.querySelector<HTMLElement>(
+      `[data-section-href="${activeHref}"]`,
     );
 
-    sectionElements.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [items]);
+    if (!scroller || !activeLink) {
+      return;
+    }
+
+    const targetLeft = activeLink.offsetLeft - (scroller.clientWidth - activeLink.offsetWidth) / 2;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    scroller.scrollTo({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      left: Math.max(0, targetLeft),
+    });
+  }, [activeHref]);
 
   if (items.length === 0) {
     return null;
@@ -91,7 +136,10 @@ export function OccupationSectionLinkNav({
       aria-label={ariaLabel}
       className="sticky top-0 z-[60] mb-3 w-full border-y border-slate-200/80 bg-white/94 px-2 py-1.5 shadow-[0_8px_22px_rgba(15,47,34,0.09)] backdrop-blur-xl sm:px-4 lg:px-6"
     >
-      <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div
+        className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        ref={navScrollerRef}
+      >
         <div className="mx-auto flex w-max min-w-full justify-center gap-1">
           {items.map((item) => {
             const isActive = activeHref === item.href;
@@ -105,6 +153,7 @@ export function OccupationSectionLinkNav({
                     ? "border-emerald-700 bg-emerald-700 text-white shadow-[0_5px_14px_rgba(4,120,64,0.24)]"
                     : "border-slate-200/80 bg-white/80 text-slate-700 shadow-sm hover:border-emerald-700/20 hover:bg-emerald-50/45 hover:text-emerald-900",
                 ].join(" ")}
+                data-section-href={item.href}
                 href={item.href}
                 key={item.href}
                 onClick={(event) => handleSectionClick(event, item)}

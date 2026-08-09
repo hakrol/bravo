@@ -9,6 +9,10 @@ const DEFAULT_OCCUPATION_HERO_IMAGES: OccupationHeroImages = {
 };
 
 const OCCUPATION_HERO_IMAGE_OVERRIDES: Record<string, OccupationHeroImages> = {
+  "1111": {
+    desktop: "/images/hero-occupations/politikere-desktop-v1.png",
+    mobile: "/images/hero-occupations/politikere-mobile-v1.png",
+  },
   "7411": {
     desktop: "/images/hero-occupations/elektrikere-desktop-v4.png",
     mobile: "/images/hero-occupations/elektrikere-mobile-v4.png",

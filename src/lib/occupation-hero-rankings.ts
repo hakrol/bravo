@@ -3,7 +3,10 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
-import type { OccupationSalaryTimeSeries } from "@/lib/types";
+import type {
+  OccupationPurchasingPowerTimeSeries,
+  OccupationSalaryTimeSeries,
+} from "@/lib/types";
 
 const VIEW_MODELS_DIR = path.join(
   process.cwd(),
@@ -29,6 +32,9 @@ type RankingViewModel = {
     href: string;
   };
   data: {
+    trendData: {
+      purchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
+    };
     distribution?: {
       periodLabel?: string;
       updated?: string;
@@ -66,6 +72,9 @@ export type OccupationRankingRow = {
   href: string;
   medianMonthlySalary?: number;
   salaryGrowthPercent?: number;
+  realSalaryGrowthPercent?: number;
+  nominalSalaryGrowthPercent?: number;
+  inflationGrowthPercent?: number;
   latestSalary?: number;
   previousSalary?: number;
   averageMonthlyBonus?: number;
@@ -76,6 +85,7 @@ export type OccupationRankingRow = {
 export type OccupationRankingData = {
   salaryRows: OccupationRankingRow[];
   growthRows: OccupationRankingRow[];
+  realGrowthRows: OccupationRankingRow[];
   bonusRows: OccupationRankingRow[];
   oldestAgeRows: OccupationRankingRow[];
   youngestAgeRows: OccupationRankingRow[];
@@ -83,6 +93,7 @@ export type OccupationRankingData = {
   salaryPeriodLabel: string;
   growthLatestPeriodLabel: string;
   growthPreviousPeriodLabel: string;
+  realGrowthPeriodLabel: string;
   bonusPeriodLabel: string;
   agePeriodLabel: string;
   employeePeriodLabel: string;
@@ -93,6 +104,7 @@ export type OccupationRankingData = {
 export type OccupationHeroRankings = {
   salaryRank?: number;
   salaryGrowthRank?: number;
+  realSalaryGrowthRank?: number;
   averageBonusRank?: number;
   oldestAverageAgeRank?: number;
   youngestAverageAgeRank?: number;
@@ -169,6 +181,34 @@ export const getOccupationRankingData = cache(async (): Promise<OccupationRankin
     }),
     (row) => row.salaryGrowthPercent,
   );
+  const latestRealGrowthPeriodCode = findLatestRealGrowthPeriodCode(viewModels);
+  const realGrowthRows = rankRows(
+    viewModels.flatMap((viewModel) => {
+      if (!latestRealGrowthPeriodCode ||
+          !isFourDigitOccupationCode(viewModel.detailPage.occupationCode)) {
+        return [];
+      }
+
+      const latestPoint = viewModel.data.trendData.purchasingPowerSeries.points.find(
+        (point) => normalizePeriodCode(point.periodCode, point.periodLabel) === latestRealGrowthPeriodCode,
+      );
+
+      if (!isFiniteNumber(latestPoint?.realGrowthAll)) {
+        return [];
+      }
+
+      return [{
+        rank: 0,
+        occupationCode: viewModel.detailPage.occupationCode,
+        occupationLabel: viewModel.detailPage.label,
+        href: viewModel.detailPage.href || `/yrke/${viewModel.detailPage.slug}`,
+        realSalaryGrowthPercent: latestPoint.realGrowthAll,
+        nominalSalaryGrowthPercent: latestPoint.salaryGrowthAll,
+        inflationGrowthPercent: latestPoint.inflationGrowth,
+      }];
+    }),
+    (row) => row.realSalaryGrowthPercent,
+  );
   const bonusRows = rankRows(
     viewModels.flatMap((viewModel) => {
       const averageMonthlyBonus = viewModel.data.supplementAverage?.total?.bonus;
@@ -238,6 +278,7 @@ export const getOccupationRankingData = cache(async (): Promise<OccupationRankin
   return {
     salaryRows,
     growthRows,
+    realGrowthRows,
     bonusRows,
     oldestAgeRows,
     youngestAgeRows,
@@ -245,6 +286,7 @@ export const getOccupationRankingData = cache(async (): Promise<OccupationRankin
     salaryPeriodLabel: firstDistribution?.periodLabel ?? "siste tilgjengelige periode",
     growthLatestPeriodLabel: formatPeriodLabel(latestGrowthPeriodCode),
     growthPreviousPeriodLabel: formatPeriodLabel(previousGrowthPeriodCode),
+    realGrowthPeriodLabel: formatPeriodLabel(latestRealGrowthPeriodCode),
     bonusPeriodLabel: viewModels.find((viewModel) => viewModel.data.supplementAverage?.periodLabel)
       ?.data.supplementAverage?.periodLabel ?? "siste tilgjengelige periode",
     agePeriodLabel: formatPeriodLabel(latestAgePeriodCode),
@@ -262,6 +304,9 @@ export async function getOccupationHeroRankings(
   return {
     salaryRank: rankings.salaryRows.find((row) => row.occupationCode === occupationCode)?.rank,
     salaryGrowthRank: rankings.growthRows.find((row) => row.occupationCode === occupationCode)?.rank,
+    realSalaryGrowthRank: rankings.realGrowthRows.find(
+      (row) => row.occupationCode === occupationCode,
+    )?.rank,
     averageBonusRank: rankings.bonusRows.find((row) => row.occupationCode === occupationCode)?.rank,
     oldestAverageAgeRank: rankings.oldestAgeRows.find(
       (row) => row.occupationCode === occupationCode,
@@ -322,6 +367,16 @@ function findLatestPeriodCode(viewModels: RankingViewModel[]) {
     .at(-1);
 }
 
+function findLatestRealGrowthPeriodCode(viewModels: RankingViewModel[]) {
+  return viewModels
+    .flatMap((viewModel) => viewModel.data.trendData.purchasingPowerSeries.points)
+    .filter((point) => isFiniteNumber(point.realGrowthAll))
+    .map((point) => normalizePeriodCode(point.periodCode, point.periodLabel))
+    .filter((value): value is string => Boolean(value))
+    .sort((left, right) => left.localeCompare(right, "nb-NO", { numeric: true }))
+    .at(-1);
+}
+
 function normalizePeriodCode(periodCode: string, periodLabel: string) {
   const value = periodCode || periodLabel;
   const annualMatch = value.match(/^(\d{4})$/);
@@ -360,4 +415,8 @@ function isFourDigitOccupationCode(code: string) {
 
 function isPositiveNumber(value?: number): value is number {
   return typeof value === "number" && Number.isFinite(value) && value > 0;
+}
+
+function isFiniteNumber(value?: number): value is number {
+  return typeof value === "number" && Number.isFinite(value);
 }
