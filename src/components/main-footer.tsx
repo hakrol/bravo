@@ -34,6 +34,7 @@ const footerGroups = [
       { href: "/spesial", label: "Spesial" },
       { href: "/forklarer", label: "Forklarer" },
       { href: "/ordbok", label: "Ordbok" },
+      { href: "/nyheter", label: "Nyheter" },
       { href: "/blogg", label: "Blogg" },
       { href: "/blogg/kategori/lonnsforhandling", label: "Lønnsforhandling" },
     ],

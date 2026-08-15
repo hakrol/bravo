@@ -4,6 +4,7 @@ import type { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blog";
 import { blogCategories } from "@/lib/blog-taxonomy";
 import { getAllForklarerPosts } from "@/lib/forklarer";
+import { getAllNewsPosts } from "@/lib/nyheter";
 import { getDynamicOccupationPageEntries } from "@/lib/occupation-detail-page-resolver";
 import { listOccupationGroups } from "@/lib/occupation-groups";
 import { getOccupationDetailViewModelIndex } from "@/lib/occupation-detail-view-models";
@@ -257,17 +258,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [
     blogPosts,
     forklarerPosts,
+    newsPosts,
     occupationPages,
     occupationIndex,
   ] = await Promise.all([
     getAllBlogPosts().catch(() => []),
     getAllForklarerPosts().catch(() => []),
+    getAllNewsPosts().catch(() => []),
     getDynamicOccupationPageEntries().catch(() => []),
     getOccupationDetailViewModelIndex().catch(() => null),
   ]);
 
   const latestBlogDate = getLatestDate(blogPosts.map((post) => post.publishedAt));
   const latestForklarerDate = getLatestDate(forklarerPosts.map((post) => post.publishedAt));
+  const publishedNewsPosts = newsPosts.filter((post) => !post.isTest);
+  const latestNewsDate = getLatestDate(publishedNewsPosts.map((post) => post.publishedAt));
   const occupationContentLastModified = occupationIndex?.generatedAt
     ? new Date(occupationIndex.generatedAt)
     : undefined;
@@ -317,6 +322,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  const newsOverviewRoute: MetadataRoute.Sitemap = publishedNewsPosts.length > 0
+    ? [{
+        url: getAbsoluteUrl("/nyheter"),
+        lastModified: latestNewsDate,
+        changeFrequency: "daily",
+        priority: 0.8,
+      }]
+    : [];
+
+  const newsRoutes: MetadataRoute.Sitemap = publishedNewsPosts.map((post) => ({
+    url: getAbsoluteUrl(`/nyheter/${post.slug}`),
+    lastModified: new Date(post.updatedAt ?? post.publishedAt),
+    changeFrequency: "weekly",
+    priority: 0.8,
+    images: [getAbsoluteUrl(post.coverImage)],
+  }));
+
   const occupationRoutes: MetadataRoute.Sitemap = occupationPages.map((entry) => ({
     url: getAbsoluteUrl(entry.page.href),
     lastModified: occupationContentLastModified,
@@ -330,6 +352,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogRoutes,
     ...blogCategoryRoutes,
     ...forklarerRoutes,
+    ...newsOverviewRoute,
+    ...newsRoutes,
     ...occupationRoutes,
   ];
 }

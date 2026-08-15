@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatBlogDate, getAllBlogPosts } from "@/lib/blog";
 import { editorialIdentity } from "@/lib/editorial-identity";
+import { getAllNewsPosts } from "@/lib/nyheter";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site-config";
 
 const description =
@@ -34,8 +35,24 @@ function serializeJsonLd(value: unknown) {
 }
 
 export default async function RedaksjonenPage() {
-  const blogPosts = await getAllBlogPosts();
-  const latestBlogPosts = blogPosts.slice(0, 6);
+  const [blogPosts, newsPosts] = await Promise.all([getAllBlogPosts(), getAllNewsPosts()]);
+  const latestPublished = [
+    ...blogPosts.map((post) => ({
+      ...post,
+      contentType: "Blogginnlegg",
+      href: `/blogg/${post.slug}`,
+    })),
+    ...newsPosts.map((post) => ({
+      ...post,
+      contentType: "Nyhetsartikkel",
+      href: `/nyheter/${post.slug}`,
+    })),
+  ]
+    .sort(
+      (left, right) =>
+        new Date(right.publishedAt).getTime() - new Date(left.publishedAt).getTime(),
+    )
+    .slice(0, 6);
   const authorUrl = getAbsoluteUrl(editorialIdentity.authorPath);
   const jsonLd = {
     "@context": "https://schema.org",
@@ -103,14 +120,6 @@ export default async function RedaksjonenPage() {
               </h2>
               <dl className="mt-6 grid gap-3 text-sm leading-7 text-slate-700 sm:text-base">
                 <div>
-                  <dt className="font-extrabold text-slate-950">Rolle</dt>
-                  <dd>Eier, utvikler og redaksjonelt ansvarlig</dd>
-                </div>
-                <div>
-                  <dt className="font-extrabold text-slate-950">Organisasjonsnummer</dt>
-                  <dd>{editorialIdentity.organizationNumber}</dd>
-                </div>
-                <div>
                   <dt className="font-extrabold text-slate-950">Kontakt</dt>
                   <dd>
                     <a
@@ -152,15 +161,15 @@ export default async function RedaksjonenPage() {
             </p>
 
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {latestBlogPosts.map((post) => (
+              {latestPublished.map((post) => (
                 <article
                   className="group flex h-full flex-col overflow-hidden rounded-[5px] bg-white shadow-[0_16px_38px_rgba(27,36,48,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_52px_rgba(27,36,48,0.11)]"
-                  key={post.slug}
+                  key={post.href}
                 >
                   <Link
                     aria-label={`Les ${post.title}`}
                     className="relative block aspect-[16/10] overflow-hidden bg-[#eef6ef]"
-                    href={`/blogg/${post.slug}`}
+                    href={post.href}
                   >
                     <Image
                       alt={post.coverImageAlt ?? post.title}
@@ -171,16 +180,16 @@ export default async function RedaksjonenPage() {
                     />
                   </Link>
                   <div className="flex flex-1 flex-col p-5">
-                    <time
-                      className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500"
-                      dateTime={post.publishedAt}
-                    >
-                      {formatBlogDate(post.publishedAt)}
-                    </time>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.14em]">
+                      <span className="text-[var(--primary-strong)]">{post.contentType}</span>
+                      <time className="text-slate-500" dateTime={post.publishedAt}>
+                        {formatBlogDate(post.publishedAt)}
+                      </time>
+                    </div>
                     <h3 className="mt-3 text-xl font-extrabold leading-snug text-slate-950">
                       <Link
                         className="transition group-hover:text-[var(--primary-strong)]"
-                        href={`/blogg/${post.slug}`}
+                        href={post.href}
                       >
                         {post.title}
                       </Link>
@@ -190,13 +199,22 @@ export default async function RedaksjonenPage() {
               ))}
             </div>
 
-            <Link
-              className="mt-6 inline-flex items-center gap-3 font-extrabold text-[var(--primary-strong)] transition hover:text-[var(--primary)]"
-              href="/blogg"
-            >
-              Se alle artikler
-              <span aria-hidden="true">→</span>
-            </Link>
+            <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+              <Link
+                className="inline-flex items-center gap-3 font-extrabold text-[var(--primary-strong)] transition hover:text-[var(--primary)]"
+                href="/blogg"
+              >
+                Se alle blogginnlegg
+                <span aria-hidden="true">→</span>
+              </Link>
+              <Link
+                className="inline-flex items-center gap-3 font-extrabold text-[var(--primary-strong)] transition hover:text-[var(--primary)]"
+                href="/nyheter"
+              >
+                Se alle nyheter
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
           </div>
 
           <div className="grid gap-5 rounded-[5px] border border-[rgba(27,36,48,0.1)] bg-white p-6 shadow-[0_14px_36px_rgba(27,36,48,0.05)] sm:p-8">
@@ -233,7 +251,7 @@ export default async function RedaksjonenPage() {
             </div>
           </div>
 
-          <p className="text-sm leading-7 text-slate-500">Sist oppdatert 25. juli 2026.</p>
+          <p className="text-sm leading-7 text-slate-500">Sist oppdatert 15. august 2026.</p>
         </div>
       </section>
     </main>
