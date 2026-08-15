@@ -18,6 +18,7 @@ import {
 } from "@/components/occupation-sector-salary-latest";
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
 import { OccupationSectionLinkNav } from "@/components/occupation-section-link-nav";
+import { OccupationNewsSection } from "@/components/occupation-news-section";
 import { OccupationHero } from "@/components/occupation-hero";
 import { OccupationFaq, type OccupationFaqItem } from "@/components/occupation-faq";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
@@ -29,6 +30,7 @@ import type { OccupationDetailViewModel } from "@/lib/occupation-detail-view-mod
 import type { OccupationSupplementMetrics } from "@/lib/occupation-detail-view-model-types";
 import { getOccupationHeroImages } from "@/lib/occupation-hero-images";
 import { getOccupationHeroRankings } from "@/lib/occupation-hero-rankings";
+import { getNewsPostsByOccupationSlug } from "@/lib/nyheter";
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
 import type { OccupationSalaryDistributionMetrics } from "@/lib/ssb";
 
@@ -181,6 +183,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const apprenticeshipPage = await getApprenticeshipDetailPageByOccupationCode(
     detail.detailPage.occupationCode,
   );
+  const newsPosts = await getNewsPostsByOccupationSlug(detail.detailPage.slug);
   const sectionNavItems = [
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }
@@ -189,6 +192,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     { href: "#lonnsutvikling", label: "Lønnsutvikling" },
     { href: "#reallonn", label: "Reallønn" },
     hasEstimate ? { href: "#lonnsestimat", label: "Lønnsestimat" } : null,
+    newsPosts.length > 0 ? { href: "#nyheter", label: "Nyheter" } : null,
     laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarked" } : null,
     relatedRows.length > 0 ? { href: "#relaterte-jobber", label: "Relaterte jobber" } : null,
     { href: "#vanlige-sporsmal", label: "Vanlige spørsmål" },
@@ -397,6 +401,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 </div>
               </section>
             ) : null}
+
+            <OccupationNewsSection
+              occupationLabel={occupationText.titleLabel}
+              posts={newsPosts}
+            />
 
             {laborMarket ? (
               <section
