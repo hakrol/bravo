@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nyhetsartikler"
+  short_description: "Opprett kildekontrollerte lønnsnyheter"
+  default_prompt: "Bruk $nyhetsartikler til å opprette en ny kildekontrollert lønnsnyhet i prosjektet."
