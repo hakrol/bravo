@@ -33,6 +33,17 @@ const correctionProcess = [
   },
 ];
 
+const informationPages = [
+  { href: "/om", label: "Om" },
+  { href: "/kilder", label: "Kilder" },
+  { href: "/forfatter/redaksjonen", label: "Redaksjonen" },
+  { href: "/metode", label: "Metode" },
+  {
+    href: "/redaksjonelle-retningslinjer",
+    label: "Redaksjonelle retningslinjer",
+  },
+];
+
 export const metadata: Metadata = {
   title: "Rettelser",
   description,
@@ -119,50 +130,20 @@ export default function RettelserPage() {
             </div>
           </div>
 
-          <div className="grid gap-10 border-t border-[rgba(27,36,48,0.12)] pt-12 lg:grid-cols-2">
-            <div>
-              <h2 className="text-2xl font-extrabold text-slate-950">Mindre endringer</h2>
-              <p className="mt-4 text-base leading-8 text-slate-700">
-                Retting av skrivefeil, tegnsetting, formatering og andre små språklige
-                forbedringer blir normalt ikke forklart særskilt når meningsinnholdet er
-                uendret.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-2xl font-extrabold text-slate-950">Vesentlige rettelser</h2>
-              <p className="mt-4 text-base leading-8 text-slate-700">
-                Feil i tall, kildebruk, beregninger eller konklusjoner som kan påvirke
-                leserens forståelse, skal rettes tydelig. Den aktuelle siden får oppdatert
-                dato og ved behov en kort forklaring av hva som er endret.
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-[5px] border border-[rgba(20,83,45,0.18)] bg-[#f4f7f1] p-6 sm:p-8">
-            <h2 className="text-2xl font-extrabold text-slate-950">Ansvar og behandlingstid</h2>
-            <p className="mt-4 max-w-4xl text-base leading-8 text-slate-700">
-              {editorialIdentity.responsibleName} er ansvarlig for å vurdere
-              rettelseshendelser. Lønnsinnsikt er et hobbyprosjekt, og det gis derfor ingen
-              garanti for en bestemt svartid. Dokumenterte feil prioriteres etter hvor stor
-              betydning de kan ha for leseren.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+          <nav
+            aria-label="Andre informasjonssider"
+            className="flex flex-wrap gap-3 border-t border-[rgba(27,36,48,0.12)] pt-12"
+          >
+            {informationPages.map((page) => (
               <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href={editorialIdentity.authorPath}
+                className="inline-flex min-h-11 items-center justify-center rounded-[5px] border border-[rgba(20,83,45,0.24)] bg-white px-5 py-2.5 text-sm font-extrabold text-[var(--primary-strong)] transition-colors hover:border-[var(--primary-strong)] hover:bg-[var(--primary-strong)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+                href={page.href}
+                key={page.href}
               >
-                Om Redaksjonen
+                {page.label}
               </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/metode"
-              >
-                Les om metoden
-              </Link>
-            </div>
-          </div>
-
-          <p className="text-sm leading-7 text-slate-500">Sist oppdatert 24. juli 2026.</p>
+            ))}
+          </nav>
         </div>
       </section>
     </main>

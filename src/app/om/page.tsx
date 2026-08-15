@@ -39,6 +39,17 @@ const productLinks = [
   },
 ] as const;
 
+const informationPages = [
+  { href: "/om", label: "Om" },
+  { href: "/kilder", label: "Kilder" },
+  { href: "/forfatter/redaksjonen", label: "Redaksjonen" },
+  { href: "/metode", label: "Metode" },
+  {
+    href: "/redaksjonelle-retningslinjer",
+    label: "Redaksjonelle retningslinjer",
+  },
+] as const;
+
 export const metadata: Metadata = {
   title: "Om",
   description,
@@ -198,8 +209,6 @@ export default function OmPage() {
           <div className="grid gap-5 text-base leading-8 text-slate-700 sm:text-lg">
             <p>
               Lønnsinnsikt utvikles og drives av Håkon Rolfsen som et norsk hobbyprosjekt.
-              Virksomheten er registrert som enkeltpersonforetak med organisasjonsnummer
-              920 850 324.
             </p>
             <p>
               Prosjektet er ikke en del av Statistisk sentralbyrå eller en offentlig
@@ -211,38 +220,6 @@ export default function OmPage() {
               nettstedet videreutvikles. Feil kan forekomme, og konkrete tilbakemeldinger om
               tall, forklaringer og brukeropplevelse er velkomne.
             </p>
-            <div className="flex flex-wrap gap-x-6 gap-y-3 pt-1 text-base">
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/forfatter/redaksjonen"
-              >
-                Om Redaksjonen
-              </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/metode"
-              >
-                Metode
-              </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/redaksjonelle-retningslinjer"
-              >
-                Redaksjonelle retningslinjer
-              </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/rettelser"
-              >
-                Rettelser
-              </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/kontakt"
-              >
-                Kontakt Lønnsinnsikt
-              </Link>
-            </div>
           </div>
         </div>
       </section>
@@ -254,6 +231,17 @@ export default function OmPage() {
             økonomisk eller karrieremessig rådgivning. Bruk statistikken som ett av flere
             grunnlag, og vurder alltid egen rolle, erfaring, arbeidsavtale og situasjon.
           </p>
+          <nav aria-label="Andre informasjonssider" className="mt-6 flex flex-wrap gap-3">
+            {informationPages.map((page) => (
+              <Link
+                className="inline-flex min-h-11 items-center justify-center rounded-[5px] border border-[rgba(20,83,45,0.24)] bg-white px-5 py-2.5 text-sm font-extrabold text-[var(--primary-strong)] transition-colors hover:border-[var(--primary-strong)] hover:bg-[var(--primary-strong)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+                href={page.href}
+                key={page.href}
+              >
+                {page.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </section>
     </main>

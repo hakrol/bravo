@@ -25,6 +25,17 @@ const principles = [
   },
 ];
 
+const informationPages = [
+  { href: "/om", label: "Om" },
+  { href: "/kilder", label: "Kilder" },
+  { href: "/forfatter/redaksjonen", label: "Redaksjonen" },
+  { href: "/metode", label: "Metode" },
+  {
+    href: "/redaksjonelle-retningslinjer",
+    label: "Redaksjonelle retningslinjer",
+  },
+] as const;
+
 export const metadata: Metadata = {
   title: "Redaksjonelle retningslinjer",
   description,
@@ -96,46 +107,20 @@ export default function RedaksjonelleRetningslinjerPage() {
             </ul>
           </div>
 
-          <div className="rounded-[5px] border border-[rgba(20,83,45,0.18)] bg-[#f4f7f1] p-6 sm:p-8">
-            <h2 className="text-2xl font-extrabold text-slate-950">
-              Ansvar, metode og rettelser
-            </h2>
-            <p className="mt-4 max-w-4xl text-base leading-8 text-slate-700">
-              Redaksjonen er den felles bylinen for artikler og forklaringer. Håkon Rolfsen
-              driver nettstedet og har redaksjonelt ansvar. Metodesiden forklarer
-              databehandling og AI-bruk, mens rettelsessiden viser hvordan feil kan meldes
-              og håndteres.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+          <nav
+            aria-label="Andre informasjonssider"
+            className="flex flex-wrap gap-3 border-t border-[rgba(27,36,48,0.12)] pt-12"
+          >
+            {informationPages.map((page) => (
               <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/forfatter/redaksjonen"
+                className="inline-flex min-h-11 items-center justify-center rounded-[5px] border border-[rgba(20,83,45,0.24)] bg-white px-5 py-2.5 text-sm font-extrabold text-[var(--primary-strong)] transition-colors hover:border-[var(--primary-strong)] hover:bg-[var(--primary-strong)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+                href={page.href}
+                key={page.href}
               >
-                Om Redaksjonen
+                {page.label}
               </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/metode"
-              >
-                Metode
-              </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/rettelser"
-              >
-                Rettelser
-              </Link>
-            </div>
-          </div>
-
-          <div className="max-w-5xl border-t border-[rgba(27,36,48,0.12)] pt-8">
-            <p className="text-sm leading-7 text-slate-600 sm:text-base">
-              Informasjonen på Lønnsinnsikt er ment som generell informasjon og utgjør ikke
-              juridisk, økonomisk eller personlig karriererådgivning. Bruk tallene som et
-              beslutningsgrunnlag, og vurder dem sammen med egen situasjon, arbeidsavtale,
-              ansvar, erfaring og relevante råd fra fagpersoner der det er nødvendig.
-            </p>
-          </div>
+            ))}
+          </nav>
         </div>
       </section>
     </main>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { InfoPageHero } from "@/components/info-page-hero";
-import { editorialIdentity } from "@/lib/editorial-identity";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
@@ -29,6 +28,17 @@ const workflow = [
     text: "Siden skal vise hvilken periode tallene gjelder for. Innhold oppdateres når nye data er tilgjengelige eller når en dokumentert feil blir oppdaget.",
   },
 ];
+
+const informationPages = [
+  { href: "/om", label: "Om" },
+  { href: "/kilder", label: "Kilder" },
+  { href: "/forfatter/redaksjonen", label: "Redaksjonen" },
+  { href: "/metode", label: "Metode" },
+  {
+    href: "/redaksjonelle-retningslinjer",
+    label: "Redaksjonelle retningslinjer",
+  },
+] as const;
 
 export const metadata: Metadata = {
   title: "Metode",
@@ -157,33 +167,20 @@ export default function MetodePage() {
             </div>
           </div>
 
-          <div className="grid gap-5 border-t border-[rgba(27,36,48,0.12)] pt-10">
-            <h2 className="text-3xl font-extrabold leading-tight text-slate-950">
-              Oppdateringer og feil
-            </h2>
-            <p className="max-w-4xl text-base leading-8 text-slate-700">
-              Metoden reduserer risikoen for feil, men kan ikke fjerne den. Hvis du finner
-              et tall, en beregning eller en forklaring som virker feil, kan du kontakte
-              Redaksjonen. Vesentlige rettelser skal håndteres åpent og så raskt som
-              kapasiteten i hobbyprosjektet tillater.
-            </p>
-            <div className="flex flex-wrap gap-x-6 gap-y-3">
+          <nav
+            aria-label="Andre informasjonssider"
+            className="flex flex-wrap gap-3 border-t border-[rgba(27,36,48,0.12)] pt-12"
+          >
+            {informationPages.map((page) => (
               <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href="/rettelser"
+                className="inline-flex min-h-11 items-center justify-center rounded-[5px] border border-[rgba(20,83,45,0.24)] bg-white px-5 py-2.5 text-sm font-extrabold text-[var(--primary-strong)] transition-colors hover:border-[var(--primary-strong)] hover:bg-[var(--primary-strong)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+                href={page.href}
+                key={page.href}
               >
-                Meld fra om en feil
+                {page.label}
               </Link>
-              <Link
-                className="font-extrabold text-[var(--primary-strong)] underline decoration-[rgba(20,83,45,0.24)] underline-offset-4 transition hover:decoration-[var(--primary-strong)]"
-                href={editorialIdentity.authorPath}
-              >
-                Om Redaksjonen
-              </Link>
-            </div>
-          </div>
-
-          <p className="text-sm leading-7 text-slate-500">Sist oppdatert 24. juli 2026.</p>
+            ))}
+          </nav>
         </div>
       </section>
     </main>

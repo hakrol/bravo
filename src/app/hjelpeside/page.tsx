@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { InfoPageHero } from "@/components/info-page-hero";
 import { siteConfig } from "@/lib/site-config";
 
@@ -102,6 +103,14 @@ export default function HjelpesidePage() {
               <p className="mt-4 max-w-3xl text-base leading-8 text-slate-700">{faq.answer}</p>
             </details>
           ))}
+          <div className="mt-6 border-t border-[rgba(27,36,48,0.12)] pt-10">
+            <Link
+              className="inline-flex min-h-11 items-center justify-center rounded-[5px] border border-[rgba(20,83,45,0.24)] bg-white px-5 py-2.5 text-sm font-extrabold text-[var(--primary-strong)] transition-colors hover:border-[var(--primary-strong)] hover:bg-[var(--primary-strong)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+              href="/kontakt"
+            >
+              Kontakt Lønnsinnsikt
+            </Link>
+          </div>
         </div>
       </section>
     </main>
