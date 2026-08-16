@@ -96,16 +96,25 @@ seoDescription: "Presis beskrivelse av nyheten"
 
 - Lag ett unikt rasterbilde for hver artikkel og lagre det som `public/nyheter/<slug>/cover.png`.
 - Bruk bildegenereringsverktøyet når brukeren ikke har levert et egnet bilde.
-- Lag et relevant, redaksjonelt motiv fra bransjen eller arbeidsmiljøet.
 - Vis nøyaktig én gjenstand eller ett samlet objekt som tydelig representerer yrket eller saken.
-- Bruk en enkel fargebakgrunn eller et rolig, diskret mønster.
-- Ikke bygg en scene med arbeidsplass, miljø eller flere rekvisitter. Bildet skal være luftig og umiddelbart forståelig.
+- Plasser gjenstanden mot en enkel, ensfarget bakgrunn med et rolig, diskret mønster. Bakgrunnen skal alltid ha både en tydelig grunnfarge og et mønster.
+- Vis aldri mennesker, kroppsdeler eller menneskesilhuetter i nyhetsbilder, med mindre brukeren uttrykkelig overstyrer denne regelen for et konkret bilde.
+- Ikke bygg en scene med arbeidsplass, rom, landskap eller flere rekvisitter. Bildet skal være luftig og umiddelbart forståelig.
 - Bruk liggende 16:9-format som tåler beskjæring i nyhetskort.
-- Ikke vis mennesker med mindre brukeren uttrykkelig ber om det.
 - Ikke ha tekst, lønnstall, diagrammer, logoer, varemerker eller vannmerker i bildet.
 - Unngå annonsepreg og generiske, iscenesatte stockfoto.
 - Skriv presis `coverImageAlt` og merk genererte bilder som «Illustrasjonsbilde: Lønnsinnsikt» i `imageCaption`.
 - Ikke bruk SVG-kode som ferdig nyhetsbilde når artikkelen skal ha et redaksjonelt bilde.
+
+Bruk disse kravene eksplisitt i prompten til bildegenereringsverktøyet:
+
+- én navngitt hovedgjenstand, ingen andre rekvisitter
+- enkel ensfarget bakgrunn med et diskret, relevant mønster
+- ingen mennesker, kroppsdeler, ansikter eller silhuetter
+- ingen scene eller synlig arbeidsmiljø
+- ingen tekst, tall, logoer eller vannmerker
+
+Kontroller det ferdige bildet visuelt før det lagres i prosjektet. Generer bildet på nytt hvis ett av kravene ikke er oppfylt.
 
 ## Tabeller og tall
 
