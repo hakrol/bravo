@@ -1,0 +1,640 @@
+KUNNSKAPSGRUNNLAG FOR FORKLARINGSINNLEGG I LØNNSINNSIKT
+
+Formålet med denne filen
+========================
+
+Denne filen skal brukes som kunnskapsgrunnlag for en Custom GPT som skal lage en
+presis arbeidsinstruks til Codex. Instruksen skal brukes når Codex skal opprette
+nye forklaringsinnlegg i dette prosjektet.
+
+Custom GPT-en skal ikke skrive selve forklaringsinnlegget med mindre brukeren ber
+om det. Den skal først og fremst lage en komplett og gjennomførbar instruks som
+Codex kan følge i repoet.
+
+
+1. Hva et forklaringsinnlegg er
+===============================
+
+Et forklaringsinnlegg er en egen innholdstype for korte og tydelige forklaringer
+av ord og begreper innen lønn, lønnsstatistikk og norsk arbeidsliv.
+
+Forklaringsinnlegg er ikke vanlige blogginnlegg, nyhetsartikler, yrkessider eller
+generiske SEO-artikler. De fungerer som en praktisk begrepsordbok på nettstedet.
+
+Et godt forklaringsinnlegg skal:
+
+- svare direkte på hva begrepet betyr
+- hjelpe en smart leser som ikke kan fagterminologien fra før
+- forklare hvordan begrepet brukes i praksis
+- knytte begrepet til lønn, statistikk eller norsk arbeidsliv
+- skille begrepet fra nærliggende begreper
+- bruke enkle eksempler når det gjør forklaringen lettere å forstå
+- rydde opp i vanlige misforståelser
+- oppgi tydelige og pålitelige kilder når teksten inneholder fakta, satser,
+  juridiske påstander eller andre etterprøvbare opplysninger
+
+Forklaringsuniverset ligger på:
+
+- oversikt: /forklarer
+- enkeltinnlegg: /forklarer/<slug>
+
+
+2. Produktet og målgruppen
+==========================
+
+Lønnsinnsikt er en datadrevet norsk plattform som gjør lønnsdata mer
+tilgjengelige, forståelige og nyttige. Hovedkilden for lønnsdata er SSB.
+
+Primærmålgruppen er norske arbeidstakere og jobbsøkere som vil forstå lønn,
+markedsverdi, jobbtilbud og lønnsforhandlinger. Ledere, HR, rekrutterere og
+virksomheter er en sekundær målgruppe.
+
+Forklaringsinnleggene skal støtte produktets kjerneløfte: Leseren skal forstå hva
+lønnstall og lønnsbegreper betyr, og hva leseren realistisk kan gjøre med denne
+innsikten.
+
+Tonen skal være trygg, saklig, nøktern og praktisk. Innholdet skal ikke presse
+leseren mot aggressive eller bastante konklusjoner.
+
+
+3. Hvor innleggene og koden ligger
+===================================
+
+Nye forklaringsinnlegg skal opprettes som MDX-filer her:
+
+src/content/forklarer/<slug>.mdx
+
+Viktige prosjektfiler:
+
+- PROJECT.MD
+  Kilden til produktets målgruppe, formål, posisjonering og innholdsprinsipper.
+
+- AGENTS.md
+  Overordnede regler for arbeid i repoet.
+
+- skills/blogginnlegg/SKILL.md
+  Har en egen del med regler for forklaringsinnlegg. I filen brukes enkelte
+  steder skriveformen «forklareringsinnlegg», men innholdstypen omtales ellers
+  som forklaringsinnlegg.
+
+- src/content/forklarer/
+  Alle eksisterende forklaringsinnlegg og de viktigste stilreferansene.
+
+- src/lib/forklarer.ts
+  Leser filene, validerer frontmatter, beregner lesetid, lager
+  innholdsfortegnelse og finner relaterte innlegg.
+
+- src/components/forklarer-mdx-components.tsx
+  Definerer MDX-komponentene som kan brukes i forklaringsinnlegg.
+
+- src/app/forklarer/page.tsx
+  Oversiktssiden som sorterer publiserte begreper alfabetisk etter «term».
+
+- src/app/forklarer/[slug]/page.tsx
+  Malen for en enkelt forklaringsside, metadata, strukturert data og sidefelt.
+
+En instruks til Codex bør be Codex lese PROJECT.MD, den relevante delen av
+bloggskillen og noen nærliggende eksisterende forklaringsinnlegg før et nytt
+innlegg skrives. Hvis oppgaven krever endringer i App Router, metadata, routing,
+server actions, caching eller datahenting, må Codex også lese relevant Next.js-
+dokumentasjon i node_modules/next/dist/docs/ før kode endres.
+
+
+4. Påkrevd filformat og frontmatter
+====================================
+
+Filen skal være en .mdx-fil med YAML-frontmatter øverst.
+
+Standardmal:
+
+---
+title: "Hva er <begrep>?"
+description: "<Kort og konkret forklaring på hva begrepet betyr og hva leseren lærer.>"
+slug: "<kort-slug-uten-norske-tegn>"
+publishedAt: "ÅÅÅÅ-MM-DD"
+author: "Redaksjonen"
+term: "<Begrepet med korrekt skrivemåte>"
+seoTitle: "Hva er <begrep>? Enkelt forklart"
+seoDescription: "<Konkret beskrivelse som samsvarer med sidens søkeintensjon.>"
+relatedTerms:
+  - "<Eksisterende begrep>"
+  - "<Eksisterende begrep>"
+---
+
+Felt og regler:
+
+- title er obligatorisk og er sidens synlige hovedtittel.
+- description er obligatorisk og skal være konkret og nyttig.
+- slug er obligatorisk. Bruk små bokstaver og bindestreker. Unngå æ, ø, å,
+  mellomrom, parenteser og tilfeldige tegn.
+- Filnavnet må være identisk med slug: <slug>.mdx.
+- publishedAt er obligatorisk og skal bruke formatet ÅÅÅÅ-MM-DD.
+- author er obligatorisk og må være nøyaktig «Redaksjonen». Koden avviser andre
+  forfatternavn.
+- term er obligatorisk. Det brukes som begrepsnavn på oversiktssiden og til
+  alfabetisk sortering.
+- seoTitle og seoDescription skal tas med i nye innlegg, selv om kodebasen
+  teknisk kan falle tilbake til title og description dersom de mangler.
+- relatedTerms er valgfritt. Bruk feltet når det finnes naturlige relasjoner.
+- relatedTerms skal inneholde term-navn til forklaringssider som faktisk finnes.
+  Oppslag er ikke følsomt for store og små bokstaver, men korrekt skrivemåte skal
+  likevel brukes. Systemet viser maksimalt fem treff.
+- draft: true kan brukes for å skjule en side fra oversikten og statisk
+  generering. Bruk det bare når brukeren eller arbeidsflyten krever et utkast.
+- Ikke legg inn coverImage eller coverImageAlt.
+- Ikke anta at forklaringsinnlegg støtter updatedAt. Feltet finnes ikke i den
+  nåværende ForklarerFrontmatter-typen.
+
+Forklaringsinnlegg har ikke artikkelspesifikt coverbilde. Det skal derfor heller
+ikke opprettes en mappe under public/blogg/ for denne innholdstypen.
+
+
+5. Søkeintensjon, tittel og metadata
+====================================
+
+Hver side skal dekke ett tydelig begrep og én tydelig søkeintensjon. Den vanligste
+intensjonen er «Hva er X?» eller «Hva betyr X?».
+
+Tittel, første avsnitt, mellomtitler, description, seoTitle og seoDescription
+skal svare på samme hovedspørsmål.
+
+Gode prinsipper:
+
+- Gi leseren svaret med én gang.
+- Bruk begrepet naturlig i tittel og tekst.
+- Hold slug kort og beskrivende.
+- La description forklare både betydningen og nytten.
+- La seoDescription beskrive hva leseren faktisk får svar på.
+- Sjekk eksisterende forklaringssider og blogginnlegg for overlapp før et nytt
+  tema opprettes.
+- Unngå to sider med nesten identisk søkeintensjon.
+
+Unngå:
+
+- «komplett guide»-språk
+- keyword stuffing
+- lange introduksjoner før svaret
+- generiske avsnitt om at temaet «er viktig i dagens samfunn»
+- mellomtitler som bare gjentar søkeordet uten å tilføre et nytt spørsmål
+- innhold som er skrevet for søkemotorer fremfor leseren
+
+
+6. Anbefalt struktur
+=====================
+
+Brukerens oppgitte overskrifter er styrende og skal brukes som hovedstruktur i
+samme naturlige rekkefølge. Legg bare til seksjoner som er nødvendige for å
+forklare begrepet godt.
+
+En vanlig struktur er:
+
+1. To korte innledende avsnitt uten overskrift.
+   Første setning skal gi en direkte definisjon. Andre avsnitt kan forklare når
+   begrepet er relevant for leseren.
+
+2. «## Hva er <begrep> enkelt forklart?»
+   Forklar kjernen med enkelt språk og gjerne et konkret eksempel.
+
+3. Praktisk bruk eller beregning.
+   Vis hvordan begrepet opptrer på lønnsslipp, i statistikk, arbeidsavtale,
+   tariffavtale, skatt eller annen relevant sammenheng.
+
+4. Forskjellen mot nærliggende begreper.
+   Eksempel: bruttolønn mot nettolønn, minstelønn mot vanlig lønn eller
+   årsgodtgjørelse mot årslønn.
+
+5. Vanlige misforståelser, regler eller forbehold.
+   Ta bare med dette når det hjelper leseren og kan dokumenteres.
+
+Det finnes ingen fast plikt til å bruke alle disse seksjonene. Strukturen skal
+tilpasses begrepet og brukerens brief. Eksisterende innlegg varierer fra tre
+korte hovedseksjoner til lengre forklaringer med historikk, tabeller og flere
+praktiske spørsmål.
+
+Bruk ## og eventuelt ###. Sidekoden lager automatisk innholdsfortegnelse av disse
+overskriftene og viser den før den første H2-overskriften.
+
+Det er vanligvis ikke nødvendig med en egen «Oppsummering» når innlegget allerede
+er kort og tydelig. Ikke legg inn en seksjon bare for å gjøre siden lengre.
+
+
+7. Språk og redaksjonell stil
+==============================
+
+Skriv alltid på naturlig Norsk Bokmål og bruk Æ, Ø og Å korrekt.
+
+Stilen skal være:
+
+- konkret
+- rolig
+- forklarende
+- nøktern
+- praktisk
+- presis
+- lett å lese for personer uten fagbakgrunn
+
+Skriv direkte til leseren med «du» når det er naturlig. Bruk aktive setninger og
+konkrete subjekter, for eksempel «Arbeidsgiveren trekker skatt» eller «SSB viser
+medianlønn». Forklar tekniske ord når de er nødvendige, og unngå dem når vanlig
+språk er mer presist.
+
+Skill tydelig mellom:
+
+- fakta: det en kilde eller et datasett faktisk viser
+- tolkning: hva opplysningen kan bety
+- råd: hva leseren kan gjøre i praksis
+
+Unngå:
+
+- fluff og fylltekst
+- salgspreg
+- overdrivelser og uklare løfter
+- udokumenterte årsaksforklaringer
+- unødvendige adverb
+- tungt fagspråk
+- amerikanske arbeidslivsråd som ikke passer norske forhold
+- fet skrift bare for å fremheve vanlige poenger
+- tre setninger på rad med omtrent samme rytme og lengde
+
+Sikt mot svært god lesbarhet. Bloggskillen angir en Flesch-score på 80 eller
+høyere som mål. Dette bør oppnås med korte ord, tydelige setninger og god rytme,
+ikke ved å gjøre innholdet unøyaktig.
+
+
+8. Fakta, kilder og datoer
+===========================
+
+Finn aldri opp statistikk, satser, regelverk, datoer eller kilder.
+
+Når innlegget inneholder tall, satser, regler, juridiske påstander eller
+historiske opplysninger, skal Codex kontrollere dem mot oppdaterte og pålitelige
+primærkilder. Tidsfølsomme opplysninger skal ha tydelig periode, dato eller
+virkningsdato.
+
+Foretrekk kilder som:
+
+- SSB for lønn, statistikk og definisjoner i statistikken
+- Arbeidstilsynet for arbeidslivsregler, ferie, lønn og minstelønn
+- Skatteetaten for skatt, frikort, personinntekt og skatteregler
+- NAV for folketrygd, grunnbeløp og ytelser
+- Regjeringen.no, Lovdata og offentlige utredninger for regelverk og modeller
+- partenes egne organisasjoner når temaet er tariff og lønnsoppgjør
+
+Hvis SSB-data brukes, skal Codex følge src/lib/ssb/docs.md, bruke eksisterende
+funksjoner i src/lib/ssb/queries.ts og holde all SSB-API-logikk i /lib. Rå API-
+kall skal aldri bygges direkte i en MDX-fil eller komponent.
+
+Kildelenker skal bygges inn naturlig i avsnittet der opplysningen brukes. Et
+forklaringsinnlegg skal normalt ikke avsluttes med et separat «Kilder:»-avsnitt.
+
+Skriv presist om hva kilden sier. Ikke la en lenke dekke en sterkere påstand enn
+kilden faktisk støtter. Når kilden bare viser en sammenheng eller et gruppetall,
+skal teksten ikke fremstille dette som en sikker årsak eller individuell fasit.
+
+Ved tidsfølsomme opplysninger:
+
+- bruk siste tilgjengelige og verifiserte opplysning
+- oppgi hvilken dato eller periode den gjelder
+- skill mellom publiseringsdato, oppdateringsdato og virkningsdato
+- unngå ord som «nå» og «i dag» uten en konkret dato når siden kan bli stående
+  lenge
+- forklar om et beløp gjelder deler av et kalenderår
+
+
+9. Eksempler, beregninger og sammenligninger
+==============================================
+
+Bruk et eksempel når definisjonen blir lettere å forstå med konkrete tall eller
+en realistisk situasjon.
+
+Eksemplet skal:
+
+- være enkelt nok til å kontrollere manuelt
+- bruke realistiske, tydelig merkede eksempelverdier
+- vise alle nødvendige trinn i en beregning
+- skille et illustrerende eksempel fra faktiske satser
+- bruke samme enhet gjennom hele sammenligningen
+
+Vanlig Markdown kan brukes til punktlister og kodeblokker. MDX-komponenten
+<Example> kan brukes når et tydelig innrammet eksempel passer bedre.
+
+Sammenlign bare størrelser som faktisk er sammenlignbare. Ikke bland månedslønn,
+årslønn, timelønn, godtgjørelse, median og gjennomsnitt uten å forklare forskjellen
+og eventuelt regne om på en ryddig måte.
+
+
+10. Interne og eksterne lenker
+==============================
+
+Interne lenker skal hjelpe leseren videre, ikke bare oppfylle et SEO-krav.
+
+Aktuelle interne mål er:
+
+- andre forklaringsinnlegg: /forklarer/<slug>
+- relevante yrkessider: /yrke/<slug>
+- yrkesoversikten: /yrker
+- relevante verktøy og kalkulatorer
+- relevante blogginnlegg
+
+Lenk naturlig på beskrivende ord i setningen. Unngå «klikk her».
+
+Kontroller at interne lenker finnes. relatedTerms skal aldri brukes som en
+ønskeliste over sider som kanskje opprettes senere. Et begrep i relatedTerms må
+ha en eksisterende forklaringsside med samsvarende term-felt.
+
+Eksterne lenker åpnes automatisk i ny fane av MDX-oppsettet. Interne lenker
+behandles som Next.js-lenker.
+
+
+11. Tabeller, bilder, FAQ og MDX-komponenter
+=============================================
+
+Følgende MDX-mønstre støttes av forklaringssidene:
+
+- vanlige interne og eksterne lenker
+- automatiske H2- og H3-ankere
+- automatisk innholdsfortegnelse
+- vanlige Markdown-bilder
+- <Example>
+- <Table>, <TableHead>, <TableBody>, <TableRow>, <TableHeader> og <TableCell>
+- <FAQ> og <FAQItem>
+
+Bruk tabell bare når den gjør en faktisk sammenligning, historisk serie eller
+regeloversikt lettere å lese. Ikke lag en generisk nøkkeltallstabell som bare
+gjentar brødteksten.
+
+Forklaringsinnlegg skal ikke ha blogg-coverbilde. Et bilde inne i brødteksten kan
+teknisk brukes, men bør bare tas med når det tilfører forklaringsverdi og brukeren
+eller oppgaven gir et klart behov.
+
+Ikke bruk FAQ og FAQItem med mindre brukeren uttrykkelig ber om en FAQ. Når FAQ
+er bestilt, skal spørsmålene være konkrete og svarene bygge på innleggets
+datagrunnlag. Ikke legg inn en egen Markdown-overskrift «FAQ» dersom komponenten
+selv viser overskriften.
+
+Ikke overfør kravene om minst to diagrammer fra datadrevne blogginnlegg til
+forklaringsinnlegg. Forklaringsinnlegg har ikke et generelt diagramkrav.
+
+
+12. Hvordan siden bruker innholdet
+===================================
+
+Alle ikke-utkast i src/content/forklarer/ blir vist alfabetisk på /forklarer.
+Sorteringen bruker term-feltet med norsk sortering.
+
+En enkelt forklaringsside får automatisk:
+
+- brødsmuler
+- synlig tittel og beskrivelse
+- forfatter og lesetid
+- innholdsfortegnelse fra H2 og H3
+- SEO-metadata og canonical-URL
+- Open Graph- og Twitter-metadata
+- strukturert data av typen DefinedTerm
+- et minimalistisk sidefelt med inntil 25 andre eksisterende begreper
+- relaterte begreper basert på relatedTerms, med maksimalt fem treff
+
+Dette betyr at MDX-filen ikke skal gjenskape sidetittel, lesetid,
+innholdsfortegnelse, sidefelt eller metadata i selve brødteksten.
+
+
+13. Eksisterende begreper
+==========================
+
+Følgende forklaringssider finnes i repoet når denne filen opprettes:
+
+- Ansiennitet
+- Brutto årsverk
+- Bruttolønn
+- Disponibel arbeidstid
+- Fagforening
+- Feriepengegrunnlag
+- Frikort
+- Frontfagsmodellen
+- Frynsegoder
+- Gjennomsnittslønn
+- Grunnbeløp
+- Grunnlønn
+- Helgetillegg
+- Kilometergodtgjørelse
+- Lønnsansiennitet
+- Lønnsfordeling
+- Lønnsoppgjør
+- Lønnsslipp
+- Lønnstrekk
+- Medianlønn
+- Minstelønn
+- Nettolønn
+- Personinntekt
+- Tariffavtale
+- Årsgodtgjørelse
+- Årsverk
+
+Listen kan endre seg. En instruks til Codex skal derfor be Codex kontrollere den
+faktiske mappen src/content/forklarer/ før nye relatedTerms eller interne lenker
+velges.
+
+
+14. Gode eksisterende stilreferanser
+=====================================
+
+Velg referanser som ligner på det nye begrepet:
+
+- src/content/forklarer/bruttolonn.mdx
+  God referanse for direkte definisjon, enkelt regneeksempel og forskjellen mot
+  et nærliggende begrep.
+
+- src/content/forklarer/medianlonn.mdx
+  God referanse for statistiske begreper, praktiske eksempler og misforståelser.
+
+- src/content/forklarer/minstelonn.mdx
+  God referanse for norske arbeidslivsregler, avgrensninger og offentlige kilder.
+
+- src/content/forklarer/frontfagsmodellen.mdx
+  God referanse for en modell som krever bakgrunn, historikk og presise
+  forbehold.
+
+- src/content/forklarer/arsgodtgjorelse.mdx
+  God referanse for et avgrenset begrep og sammenligning med vanlig lønn.
+
+Referansene skal brukes til struktur, tone og presisjonsnivå. Tekst skal ikke
+kopieres ordrett.
+
+
+15. Arbeidsflyt instruksen til Codex bør kreve
+================================================
+
+En god instruks fra Custom GPT-en bør be Codex gjøre dette:
+
+1. Les brukerens tema, ønskede overskrifter, kilder og eventuelle avgrensninger.
+2. Les PROJECT.MD, AGENTS.md og delen om forklaringsinnlegg i
+   skills/blogginnlegg/SKILL.md.
+3. Les noen eksisterende forklaringsinnlegg som ligner på det nye temaet.
+4. Kontroller om begrepet eller samme søkeintensjon allerede finnes.
+5. Kartlegg hva leseren faktisk må få svar på.
+6. Finn og kontroller nødvendige primærkilder. Bruk nettlesing når opplysninger
+   kan ha endret seg eller når presis kildeverifisering er nødvendig.
+7. Skill tydelig mellom stabile definisjoner og tidsfølsomme satser eller regler.
+8. Opprett én ny fil i src/content/forklarer/<slug>.mdx.
+9. Bruk full og korrekt frontmatter.
+10. Skriv det direkte svaret først og bygg resten rundt praktisk forståelse.
+11. Legg inn naturlige interne og eksterne lenker.
+12. Bruk bare relatedTerms som faktisk finnes.
+13. Ikke opprett coverbilde eller public/blogg-mappe.
+14. Ikke endre felles komponenter, routing eller stiler med mindre oppgaven
+    faktisk krever det.
+15. Ikke refaktorer urelatert kode.
+16. Valider MDX, metadata, interne lenker, fakta, datoer og beregninger.
+17. Rapporter hvilken fil som ble opprettet eller endret, hvilke kilder som ble
+    brukt, og hvilke kontroller som ble utført.
+18. Ikke publiser innholdet eksternt eller automatisk.
+
+Codex kan gjøre nødvendige inspeksjons-, format- og valideringskommandoer når
+oppgaven uttrykkelig er en innholdsautomatisering, men skal begrense kommandoene
+til det oppgaven trenger.
+
+
+16. Opplysninger Custom GPT-en bør be brukeren om
+==================================================
+
+Hvis de ikke allerede er oppgitt, er dette nyttige felter i briefen:
+
+- Begrep
+- Arbeidstittel eller ønsket title
+- Hovedspørsmål eller søkeintensjon
+- Kort beskrivelse av hva siden skal forklare
+- Påkrevde overskrifter i ønsket rekkefølge
+- Spørsmål siden må besvare
+- Avgrensninger og ting som ikke skal tas med
+- Interne lenker som skal vurderes
+- Eksterne primærkilder som skal brukes
+- Om teksten trenger et eksempel, en beregning eller en tabell
+- Om brukeren uttrykkelig ønsker FAQ
+- Ønsket publiseringsdato
+
+Custom GPT-en bør ikke stille spørsmål om opplysninger Codex enkelt kan finne i
+repoet, for eksempel riktig mappe, forfatternavn, URL-mønster eller hvilke
+relatedTerms som allerede finnes.
+
+Hvis briefen mangler mindre detaljer, kan instruksen be Codex bruke nærmeste
+eksisterende mønster. Hvis mangelen kan endre tema, faglig avgrensning eller
+konklusjon vesentlig, bør Custom GPT-en be brukeren avklare dette.
+
+
+17. Mal for briefen Custom GPT-en kan motta
+==============================================
+
+Begrep:
+<navnet på begrepet>
+
+Tittel:
+<ønsket tittel, hvis bestemt>
+
+Beskrivelse:
+<hva forklaringsinnlegget skal gjøre for leseren>
+
+Søkeintensjon:
+<hovedspørsmålet siden skal besvare>
+
+Overskrifter:
+
+- <overskrift 1>
+- <overskrift 2>
+- <overskrift 3>
+
+Spørsmål som må besvares:
+
+- <spørsmål 1>
+- <spørsmål 2>
+
+Interne lenker:
+
+- <eksisterende intern URL eller relevant sidetype>
+
+Eksterne kilder:
+
+- <primærkilde>
+
+Avgrensninger:
+
+- <hva som ikke skal overtolkes eller tas med>
+
+Elementer:
+
+- <eksempel, beregning, tabell eller uttrykkelig bestilt FAQ>
+
+
+18. Kvalitetssjekk før instruksen regnes som ferdig
+=====================================================
+
+Custom GPT-en bør sørge for at instruksen den lager gir Codex et tydelig svar på
+alle disse kontrollpunktene:
+
+- Er dette behandlet som et forklaringsinnlegg og ikke et blogginnlegg?
+- Er målgruppen og den praktiske nytten tydelig?
+- Er én søkeintensjon definert?
+- Er riktig mappe, filtype og URL-struktur oppgitt?
+- Er komplett frontmatter spesifisert?
+- Er author satt til nøyaktig «Redaksjonen»?
+- Er coverbilde og public/blogg-mappe utelatt?
+- Skal svaret på begrepet komme helt først?
+- Er brukerens overskrifter og rekkefølge bevart?
+- Er det klart hvilke fakta som må kildeverifiseres?
+- Er tidsfølsomme tall knyttet til dato eller periode?
+- Er forskjellen mellom fakta, tolkning og råd tydelig?
+- Er interne lenker og relatedTerms begrenset til eksisterende sider?
+- Er FAQ bare med dersom brukeren uttrykkelig ba om det?
+- Er unødvendige diagrammer, tabeller og SEO-fyll utelatt?
+- Skal Codex validere fakta, beregninger, MDX og lenker?
+- Skal Codex la være å publisere automatisk?
+- Skal Codex rapportere full filsti og en kort oppsummering av arbeidet?
+
+
+19. Viktige feil Custom GPT-en må forhindre
+=============================================
+
+- Å legge filen i src/content/blog/ i stedet for src/content/forklarer/.
+- Å kalle forklaringsinnlegget et vanlig blogginnlegg.
+- Å legge til coverImage, coverImageAlt eller en public/blogg-mappe.
+- Å bruke et annet forfatternavn enn «Redaksjonen».
+- Å skrive en lang introduksjon før definisjonen.
+- Å bruke relatedTerms som ikke har egne forklaringssider.
+- Å avslutte med en kunstig kildeliste når kildene kan lenkes der de brukes.
+- Å legge inn FAQ uten at brukeren har bedt om det.
+- Å overføre bloggens generelle krav om flere diagrammer til forklaringssiden.
+- Å finne opp eller gjette satser, regler, historikk eller statistikk.
+- Å omtale median, gjennomsnitt, minstelønn eller godtgjørelse som om begrepene
+  betyr det samme.
+- Å skrive udokumenterte årsaksforklaringer.
+- Å glemme periode eller virkningsdato for tidsfølsomme tall.
+- Å endre komponenter eller routing når én MDX-fil er nok.
+- Å publisere innhold automatisk.
+
+
+20. Hva den ferdige instruksen fra Custom GPT-en bør inneholde
+===============================================================
+
+Den ferdige instruksen til Codex bør være konkret og handlingsrettet. Den bør
+minst inneholde:
+
+- oppgaven og ønsket resultat
+- begrepet og den ene søkeintensjonen
+- målgruppen
+- påkrevd filsti og slug
+- komplett frontmatter eller tydelige verdier Codex skal bruke
+- ønsket overskriftsstruktur
+- spørsmål som må besvares
+- kilder og krav til verifisering
+- interne lenker og relevante eksisterende begreper
+- eventuelle eksempler, beregninger eller tabeller
+- eksplisitte avgrensninger
+- språk- og stilkrav
+- tekniske forbud, særlig coverbilde og automatisk publisering
+- valideringskrav
+- forventet sluttrapport fra Codex
+
+Instruksen skal være detaljert nok til at Codex kan opprette et ferdig innlegg
+uten å gjette på viktige redaksjonelle valg. Samtidig skal den ikke dikte opp
+kilder, tall, URL-er eller eksisterende komponenter. Når noe må undersøkes i
+repoet eller verifiseres mot en oppdatert primærkilde, skal instruksen si det
+tydelig.
