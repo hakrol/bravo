@@ -1,14 +1,12 @@
-import createMDX from "@next/mdx";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
 const workspaceRoot = path.dirname(fileURLToPath(import.meta.url));
-const withMDX = createMDX({});
 const servitorBlogPath = "/blogg/hva-er-lonnen-til-en-servitor";
 
 const nextConfig: NextConfig = {
-  pageExtensions: ["ts", "tsx", "md", "mdx"],
+  pageExtensions: ["ts", "tsx"],
   reactStrictMode: true,
   async redirects() {
     return [
@@ -89,4 +87,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withMDX(nextConfig);
+export default nextConfig;

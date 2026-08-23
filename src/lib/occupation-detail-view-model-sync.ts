@@ -132,6 +132,7 @@ export async function syncOccupationDetailViewModels() {
           laborMarketStats: buildLaborMarketStats({
             workforceDataset: datasets.occupationWorkforceTimeSeries,
             ageDataset: datasets.occupationAgeTimeSeries,
+            contractDataset: datasets.occupationContractLatest,
             occupationCode: entry.page.occupationCode,
           }),
           sectorSalarySeries: buildSectorSalaryTimeSeries(
@@ -756,15 +757,18 @@ function buildPurchasingPowerTimeSeriesPoints(
 function buildLaborMarketStats(options: {
   workforceDataset: SsbDataset;
   ageDataset: SsbDataset;
+  contractDataset: SsbDataset;
   occupationCode: string;
 }) {
   const workforcePoints = buildWorkforcePoints(options.workforceDataset, options.occupationCode);
   const ageSeries = buildAgeSeries(options.ageDataset, options.occupationCode);
+  const contractType = buildContractType(options.contractDataset, options.occupationCode);
   const latestWorkforce = workforcePoints.at(-1);
   const latestAge = ageSeries.at(-1);
   const occupationLabel =
     latestWorkforce?.occupationLabel ??
     latestAge?.occupationLabel ??
+    contractType?.occupationLabel ??
     options.occupationCode;
   const latestTotal = latestWorkforce?.employeesAll;
   const latestWomen = latestWorkforce?.employeesWomen;
@@ -828,7 +832,19 @@ function buildLaborMarketStats(options: {
             changeSinceBaseline: calculateYearOverYearGrowth(latestTotal, baselinePoint?.employeesAll),
           }
         : null,
-    contractType: null,
+    contractType: contractType
+      ? {
+          periodCode: contractType.periodCode,
+          periodLabel: contractType.periodLabel,
+          total: contractType.total,
+          permanent: contractType.permanent,
+          temporary: contractType.temporary,
+          unspecified: contractType.unspecified,
+          permanentShare: calculateShare(contractType.permanent, contractType.total),
+          temporaryShare: calculateShare(contractType.temporary, contractType.total),
+          unspecifiedShare: calculateShare(contractType.unspecified, contractType.total),
+        }
+      : null,
     age: latestAge
       ? {
           occupationCode: options.occupationCode,
@@ -843,6 +859,69 @@ function buildLaborMarketStats(options: {
       : null,
     ageSeries: ageSeries.map(removeOccupationLabel),
   };
+}
+
+function buildContractType(dataset: SsbDataset, occupationCode: string) {
+  type ContractTypePoint = {
+    occupationLabel: string;
+    periodCode: string;
+    periodLabel: string;
+    total?: number;
+    permanent?: number;
+    temporary?: number;
+    unspecified?: number;
+  };
+
+  let contractType: ContractTypePoint | null = null;
+
+  for (const row of dataset.rows) {
+    const occupation = row.dimensions.Yrke;
+    const contract = row.dimensions.Ansettelsesforhold;
+    const age = row.dimensions.Alder;
+    const metric = row.dimensions.ContentsCode;
+    const period = row.dimensions.Tid;
+
+    if (
+      !occupation ||
+      occupation.code !== occupationCode ||
+      !contract ||
+      !age ||
+      age.code !== "20-66" ||
+      !metric ||
+      metric.code !== "Sysselsatte" ||
+      !period ||
+      row.value === null
+    ) {
+      continue;
+    }
+
+    const existing: ContractTypePoint = contractType ?? {
+      occupationLabel: occupation.label,
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+
+    switch (contract.code) {
+      case "0":
+        existing.total = row.value;
+        break;
+      case "F":
+        existing.permanent = row.value;
+        break;
+      case "M":
+        existing.temporary = row.value;
+        break;
+      case "U":
+        existing.unspecified = row.value;
+        break;
+      default:
+        continue;
+    }
+
+    contractType = existing;
+  }
+
+  return contractType;
 }
 
 function buildWorkforcePoints(dataset: SsbDataset, occupationCode: string) {
@@ -1021,6 +1100,18 @@ function getGenderFieldSuffix(genderCode: string) {
     default:
       return null;
   }
+}
+
+function calculateShare(value?: number, total?: number) {
+  if (
+    value === undefined ||
+    total === undefined ||
+    total <= 0
+  ) {
+    return undefined;
+  }
+
+  return (value / total) * 100;
 }
 
 function removeOccupationLabel<T extends { occupationLabel: string }>(row: T): Omit<T, "occupationLabel"> {

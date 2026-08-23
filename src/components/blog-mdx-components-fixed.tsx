@@ -107,6 +107,7 @@ import {
 import { LegalSalaryDevelopmentChart } from "@/components/blog-legal-salary-chart";
 import { BlogOccupationSalaryTable } from "@/components/blog-occupation-salary-table";
 import { TopOvertimePay2025Chart } from "@/components/blog-overtime-ranking-chart";
+import { PoliticalLeadershipCompensationChart } from "@/components/blog-political-leadership-compensation-chart";
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
 import { BlogSalaryDevelopmentChart } from "@/components/blog-salary-development-chart";
 import { TopSalaryGrowth2024To2025Chart } from "@/components/blog-salary-growth-ranking-chart";
@@ -338,6 +339,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     NorwayCommonOccupationsSalaryGrowthChart,
     PoliceSalaryBubbleChart,
     PoliceSalaryEditorialChart,
+    PoliticalLeadershipCompensationChart,
     PilotSalaryDevelopmentChart,
     PilotSalaryEditorialChart,
     RorleggerGenderSalaryCards,

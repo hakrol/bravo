@@ -1,6 +1,10 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
+import {
+  ParliamentRoleCompensationChart,
+  ParliamentSalaryComparisonChart,
+} from "@/components/news-parliament-compensation-chart";
 
 function slugifyHeading(value: string) {
   return value
@@ -92,5 +96,7 @@ export function buildNewsMdxComponents(): MDXComponents {
         {children}
       </td>
     ),
+    ParliamentRoleCompensationChart,
+    ParliamentSalaryComparisonChart,
   };
 }

@@ -27,6 +27,7 @@ type EditorialVerticalBarChartProps = {
   data: EditorialDivergingBarChartDatum[];
   format?: "currency" | "number" | "percent";
   axisMax?: number;
+  leftPadding?: number;
   ticks?: number[];
 };
 
@@ -250,6 +251,7 @@ export function EditorialVerticalBarChart({
   data,
   format = "currency",
   axisMax = 420,
+  leftPadding = 78,
   ticks = [0, 100, 200, 300, 400],
 }: EditorialVerticalBarChartProps) {
   const chartWidth = 920;
@@ -258,7 +260,7 @@ export function EditorialVerticalBarChart({
     top: 262,
     right: 58,
     bottom: 150,
-    left: 78,
+    left: leftPadding,
   };
   const innerWidth = chartWidth - padding.left - padding.right;
   const innerHeight = chartHeight - padding.top - padding.bottom;

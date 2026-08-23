@@ -1,0 +1,118 @@
+{
+  "period": {
+    "compensationEffectiveFrom": "2026-05-01",
+    "salaryReferenceYear": "2025"
+  },
+  "roleCompensation": [
+    {
+      "label": "Stortingsrepresentant",
+      "annual": 1272209,
+      "monthlyEquivalent": 106017
+    },
+    {
+      "label": "Regjeringsmedlem",
+      "annual": 1815703,
+      "monthlyEquivalent": 151309
+    },
+    {
+      "label": "Statsminister/stortingspresident",
+      "annual": 2234978,
+      "monthlyEquivalent": 186248
+    }
+  ],
+  "annualChanges": [
+    {
+      "label": "Stortingsrepresentant",
+      "annual2025": 1214977,
+      "annual2026": 1272209,
+      "increase": 57232
+    },
+    {
+      "label": "Regjeringsmedlem",
+      "annual2025": 1734020,
+      "annual2026": 1815703,
+      "increase": 81683
+    },
+    {
+      "label": "Statsminister",
+      "annual2025": 2134434,
+      "annual2026": 2234978,
+      "increase": 100544
+    }
+  ],
+  "roleSupplements": [
+    {
+      "label": "Første visepresident",
+      "ratePercent": 14,
+      "supplement": 178109,
+      "annualTotal": 1450318
+    },
+    {
+      "label": "Øvrige visepresidenter og komitéledere",
+      "ratePercent": 7,
+      "supplement": 89055,
+      "annualTotal": 1361264
+    }
+  ],
+  "monthlyComparisons": [
+    {
+      "label": "Toppledere i offentlig administrasjon",
+      "value": 123580,
+      "period": "2025",
+      "measure": "Gjennomsnittlig månedslønn",
+      "href": "/yrke/toppledere-i-offentlig-administrasjon-lonn"
+    },
+    {
+      "label": "Administrerende direktører",
+      "value": 108510,
+      "period": "2025",
+      "measure": "Gjennomsnittlig månedslønn",
+      "href": "/yrke/administrerende-direktorer-lonn"
+    },
+    {
+      "label": "Stortingsrepresentant",
+      "value": 106017,
+      "period": "Fra 1. mai 2026",
+      "measure": "Fast årsgodtgjøring delt på 12"
+    },
+    {
+      "label": "Dommere",
+      "value": 104630,
+      "period": "2025",
+      "measure": "Gjennomsnittlig månedslønn",
+      "href": "/yrke/dommere-lonn"
+    },
+    {
+      "label": "Politikere",
+      "value": 88200,
+      "period": "2025",
+      "measure": "Gjennomsnittlig månedslønn",
+      "href": "/yrke/politikere-lonn"
+    },
+    {
+      "label": "Alle yrker",
+      "value": 62070,
+      "period": "2025",
+      "measure": "Gjennomsnittlig månedslønn"
+    }
+  ],
+  "salaryReference": {
+    "averageAllOccupations": 62070,
+    "medianAllOccupations": 55800,
+    "averageSalaryGrowthPercent": 4.5
+  },
+  "sources": [
+    {
+      "name": "Stortinget – Vedtak 1050",
+      "url": "https://www.stortinget.no/no/Saker-og-publikasjoner/Vedtak/Vedtak/Sak/?p=109130"
+    },
+    {
+      "name": "Stortinget – Lønnsutvikling",
+      "url": "https://www.stortinget.no/no/Stortinget-og-demokratiet/Representantene/Okonomiske-rettigheter/Lonnsutvikling/"
+    },
+    {
+      "name": "SSB – Lønn 2025",
+      "url": "https://www.ssb.no/arbeid-og-lonn/lonn-og-arbeidskraftkostnader/statistikk/lonn"
+    }
+  ]
+}

@@ -32,7 +32,7 @@ import { getOccupationHeroImages } from "@/lib/occupation-hero-images";
 import { getOccupationHeroRankings } from "@/lib/occupation-hero-rankings";
 import { getNewsPostsByOccupationSlug } from "@/lib/nyheter";
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
-import type { OccupationSalaryDistributionMetrics } from "@/lib/ssb";
+import type { OccupationEmploymentContractType, OccupationSalaryDistributionMetrics } from "@/lib/ssb";
 
 type OccupationDetailPageProps = {
   detail: OccupationDetailViewModel;
@@ -168,7 +168,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const purchasingPowerSummary = buildPurchasingPowerSummary(
     detail.data.trendData.purchasingPowerSeries,
   );
+  const hasPurchasingPowerData = detail.data.trendData.purchasingPowerSeries.points.length > 0;
   const laborMarketSummary = buildLaborMarketSummary(laborMarket);
+  const contractTypeSummary = buildContractTypeSummary(laborMarket?.contractType);
   const relatedRows = detail.data.relatedRows.slice(0, 6);
   const relatedJobsSummary = buildRelatedJobsSummary({
     currentMedian: estimateMonthlySalary,
@@ -190,7 +192,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
       : null,
     salarySupplementCards.length > 0 ? { href: "#tillegg", label: "Overtid" } : null,
     { href: "#lonnsutvikling", label: "Lønnsutvikling" },
-    { href: "#reallonn", label: "Reallønn" },
+    hasPurchasingPowerData ? { href: "#reallonn", label: "Reallønn" } : null,
     hasEstimate ? { href: "#lonnsestimat", label: "Lønnsestimat" } : null,
     newsPosts.length > 0 ? { href: "#nyheter", label: "Nyheter" } : null,
     laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarked" } : null,
@@ -344,24 +346,26 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 />
               </div>
 
-              <section className="mt-10" id="reallonn">
-                <div className="space-y-3">
-                  <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
-                    Reallønnsvekst og kjøpekraft for {occupationText.titleLabel}
-                  </h3>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    {purchasingPowerSummary}
-                  </p>
-                </div>
-                <div className="mt-8">
-                  <OccupationPurchasingPowerLineChart
-                    controlsVariant="reference"
-                    mobileOptimized
-                    series={detail.data.trendData.purchasingPowerSeries}
-                    showTitle={false}
-                  />
-                </div>
-              </section>
+              {hasPurchasingPowerData ? (
+                <section className="mt-10" id="reallonn">
+                  <div className="space-y-3">
+                    <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                      Reallønnsvekst og kjøpekraft for {occupationText.titleLabel}
+                    </h3>
+                    <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                      {purchasingPowerSummary}
+                    </p>
+                  </div>
+                  <div className="mt-8">
+                    <OccupationPurchasingPowerLineChart
+                      controlsVariant="reference"
+                      mobileOptimized
+                      series={detail.data.trendData.purchasingPowerSeries}
+                      showTitle={false}
+                    />
+                  </div>
+                </section>
+              ) : null}
             </section>
 
             {hasEstimate ? (
@@ -421,6 +425,36 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                   </p>
                 </div>
                 <div className="mt-8 space-y-5">
+                  {laborMarket.contractType ? (
+                    <section className="rounded-[5px] border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                      <div className="space-y-2">
+                        <h3 className="text-lg font-semibold text-slate-950 sm:text-xl">
+                          Fast og midlertidig ansettelse
+                        </h3>
+                        {contractTypeSummary ? (
+                          <p className="max-w-4xl text-sm leading-6 text-slate-700 sm:text-base">
+                            {contractTypeSummary}
+                          </p>
+                        ) : null}
+                      </div>
+                      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                        {buildContractTypeCards(laborMarket.contractType).map((card) => (
+                          <div
+                            className="rounded-[5px] border border-slate-200 bg-white px-4 py-3 shadow-sm"
+                            key={card.label}
+                          >
+                            <p className="text-sm font-medium text-slate-600">{card.label}</p>
+                            <p className="mt-1 text-2xl font-semibold text-slate-950">
+                              {formatPercent(card.share)}
+                            </p>
+                            <p className="mt-1 text-sm text-slate-600">
+                              {formatNumber(card.value)} personer
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  ) : null}
                   <OccupationWorkforceTimeSeriesChart
                     description="Se utviklingen i antall lønnstakere per kvartal, fordelt på kvinner og menn."
                     points={laborMarket.workforcePoints}
@@ -1351,6 +1385,53 @@ function buildLaborMarketSummary(laborMarket: OccupationDetailViewModel["data"][
   }
 
   return sentences.join(" ");
+}
+
+function buildContractTypeSummary(contractType: OccupationEmploymentContractType | null | undefined) {
+  if (!contractType) {
+    return null;
+  }
+
+  const periodLabel = contractType.periodLabel
+    ? formatQuarterCodeLabel(contractType.periodLabel).toLowerCase()
+    : null;
+  const periodSuffix = periodLabel ? ` i ${periodLabel}` : "";
+
+  const sentences = [
+    contractType.permanentShare !== undefined
+      ? `${formatPercent(contractType.permanentShare)} jobbet fast${periodSuffix}.`
+      : null,
+    contractType.temporaryShare !== undefined
+      ? `${formatPercent(contractType.temporaryShare)} jobbet midlertidig.`
+      : null,
+    contractType.unspecifiedShare !== undefined && contractType.unspecifiedShare >= 1
+      ? `${formatPercent(contractType.unspecifiedShare)} var registrert med uoppgitt ansettelsesform.`
+      : null,
+  ].filter((sentence): sentence is string => Boolean(sentence));
+
+  return sentences.length > 0 ? sentences.join(" ") : null;
+}
+
+function buildContractTypeCards(
+  contractType: NonNullable<OccupationDetailViewModel["data"]["laborMarketStats"]>["contractType"],
+) {
+  return [
+    {
+      label: "Fast",
+      share: contractType?.permanentShare,
+      value: contractType?.permanent,
+    },
+    {
+      label: "Midlertidig",
+      share: contractType?.temporaryShare,
+      value: contractType?.temporary,
+    },
+    {
+      label: "Uoppgitt",
+      share: contractType?.unspecifiedShare,
+      value: contractType?.unspecified,
+    },
+  ].filter((card) => card.share !== undefined || card.value !== undefined);
 }
 
 function buildPurchasingPowerGenderInsight(
