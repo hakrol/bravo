@@ -1,0 +1,11 @@
+{
+  "effectiveFrom": "2026-05-01",
+  "parliamentRepresentativeAnnual": 1272209,
+  "source": "Lovdata og Stortinget",
+  "rows": [
+    { "label": "Ordfører", "percentage": 110, "annual": 1399430 },
+    { "label": "Byrådsleder", "percentage": 110, "annual": 1399430 },
+    { "label": "Byråd", "percentage": 92, "annual": 1170432 },
+    { "label": "Varaordfører", "percentage": 55, "annual": 699715 }
+  ]
+}

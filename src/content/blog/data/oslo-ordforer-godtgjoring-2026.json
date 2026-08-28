@@ -1,0 +1,10 @@
+{
+  "effectiveFrom": "2026-05-01",
+  "source": "Oslo kommune og Lovdata",
+  "rows": [
+    { "label": "Ordfører", "annual": 1815703 },
+    { "label": "Byrådsleder", "annual": 1815703 },
+    { "label": "Byrådsmedlem", "annual": 1634133 },
+    { "label": "Varaordfører", "annual": 1248495 }
+  ]
+}

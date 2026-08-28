@@ -1,0 +1,9 @@
+{
+  "effectiveFrom": "2026-01-01",
+  "source": "Stavanger kommune",
+  "rows": [
+    { "label": "Beregningsgrunnlag B", "annual": 1734020 },
+    { "label": "Ordfører", "annual": 1634020 },
+    { "label": "Varaordfører", "annual": 1388917 }
+  ]
+}

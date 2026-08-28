@@ -61,6 +61,7 @@ import {
 } from "@/components/blog-ergoterapeut-fysioterapeut-salary-chart";
 import { FirefighterSalaryBubbleChart, FirefighterSalaryEditorialChart } from "@/components/blog-firefighter-salary-chart";
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
+import { FredrikstadMayorCompensationChart } from "@/components/blog-fredrikstad-mayor-compensation-chart";
 import {
   FortrykkereGenderSalaryCards,
   FortrykkereSalaryDevelopmentChart,
@@ -93,6 +94,7 @@ import {
 import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { LowestPaidOccupationsBubbleChart } from "@/components/blog-lowest-paid-occupations-chart";
 import { MillionSalaryGrowthChart } from "@/components/blog-million-salary-chart";
+import { OsloMayorCompensationChart } from "@/components/blog-oslo-mayor-compensation-chart";
 import {
   NorwayCommonOccupationsChart,
   NorwayCommonOccupationsSalaryGrowthChart,
@@ -124,6 +126,7 @@ import {
   RorleggerSalaryEditorialChart,
 } from "@/components/blog-rorlegger-salary-chart";
 import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/components/blog-snekker-salary-chart";
+import { StavangerMayorCompensationChart } from "@/components/blog-stavanger-mayor-compensation-chart";
 import {
   StoreManagerAgeEditorialChart,
   StoreManagerGenderGapEditorialChart,
@@ -138,6 +141,7 @@ import {
   TopHandverkerGenderSalaryCards,
   TopHandverkerSalaryEditorialChart,
 } from "@/components/blog-top-handverker-salary-chart";
+import { TrondheimMayorCompensationChart } from "@/components/blog-trondheim-mayor-compensation-chart";
 import {
   TopApprenticeGenderSalaryCards,
   TopApprenticeSalaryEditorialChart,
@@ -305,6 +309,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     FysioterapeutGenderSalaryCards,
     FirefighterSalaryBubbleChart,
     FirefighterSalaryEditorialChart,
+    FredrikstadMayorCompensationChart,
     FortrykkereGenderSalaryCards,
     FortrykkereSalaryDevelopmentChart,
     FortrykkereSalaryEditorialChart,
@@ -334,6 +339,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     OccupationMedianAverageComparison,
     SimpleSalarySequenceGraphic,
     MillionSalaryGrowthChart,
+    OsloMayorCompensationChart,
     LowestPaidOccupationsBubbleChart,
     NorwayCommonOccupationsChart,
     NorwayCommonOccupationsSalaryGrowthChart,
@@ -351,6 +357,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ServitorSalaryDevelopmentChart,
     SnekkerSalaryBubbleChart,
     SnekkerSalaryEditorialChart,
+    StavangerMayorCompensationChart,
     StoreManagerAgeEditorialChart,
     StoreManagerGenderGapEditorialChart,
     StoreManagerGenderSalaryCards,
@@ -363,6 +370,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     SurgeonSalaryEditorialChart,
     TopHandverkerGenderSalaryCards,
     TopHandverkerSalaryEditorialChart,
+    TrondheimMayorCompensationChart,
     TopApprenticeGenderSalaryCards,
     TopApprenticeSalaryEditorialChart,
     NorwayAverageSalaryDevelopmentChart,
