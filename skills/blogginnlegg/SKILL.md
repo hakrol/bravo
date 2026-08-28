@@ -187,7 +187,7 @@ Gyldige diagramtyper i `daily-brief.md`:
 
 Alle blogginnlegg som handler om lønn for ett konkret yrke skal ha `BlogGenderSalaryCards` der det passer naturlig tidlig i innlegget, vanligvis etter første hovedtabell eller etter avsnittet som forklarer hovedtallet. Komponenten skal vise medianlønn for kvinner og menn, med veksling mellom årslønn, månedslønn og timelønn. Bruk samme periode og kilde som innleggets hovedtall. Kjønnsdelte lønnstall skal ligge i et frosset snapshot under src/content/blog/data/ før innlegget regnes som ferdig. Hvis SSB ikke publiserer kjønnsdelte tall for yrket, skal innlegget forklare hvorfor komponenten ikke brukes.
 
-Datadrevne blogginnlegg skal som hovedregel inneholde minst 2 visuelle dataelementer. Velg blant disse produksjonsklare typene:
+Datadrevne blogginnlegg skal som hovedregel inneholde minst 1 visuelle dataelementer. Velg blant disse produksjonsklare typene:
 
 - `BlogChart` med `type="bubble"`
   Brukes når innlegget skal vise sammenheng mellom lønnsnivå og størrelse på yrkesgruppe. Lag en egen wrapper-komponent i `src/components/` og la `value` komme fra et frosset snapshot når innlegget handler om en bestemt periode. `size` er antall lønnstakere og kan komme fra samme snapshot hvis det finnes der, eller fra en tydelig navngitt tilleggsmap når tallet kommer fra en annen SSB-tabell. Bruk datafeltene `lane`, `labelOffset`, `showLabel`, `color` og `opacity` hvis bobleplasseringen må finjusteres. Ikke legg nye yrkesnavn-spesialtilfeller inn i selve `BlogChart`.

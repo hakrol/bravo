@@ -1,0 +1,10 @@
+{
+  "effectiveFrom": "2026-05-01",
+  "parliamentRepresentativeAnnual": 1272209,
+  "source": "Lovdata og Stortinget",
+  "rows": [
+    { "label": "Ordfører", "annual": 1526651 },
+    { "label": "Stortingsgodtgjøring", "annual": 1272209 },
+    { "label": "Varaordfører (90 %)", "annual": 1144988 }
+  ]
+}
