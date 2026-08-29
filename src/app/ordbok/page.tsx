@@ -205,6 +205,81 @@ const baseDictionaryEntries: DictionaryEntry[] = [
     definition:
       "En samling beslektede yrker. Yrkesgrupper gjør det mulig å se lønn i bredere kategorier før man går ned på enkeltyrker.",
   },
+  {
+    term: "Arbeidsgiverperioden",
+    definition:
+      "Den første delen av et sykefravær der arbeidsgiveren normalt har ansvar for å betale sykepenger. For ansatte er dette vanligvis de første 16 kalenderdagene.",
+  },
+  {
+    term: "Avkorting",
+    definition:
+      "At en godtgjøring eller annen ytelse reduseres fordi mottakeren har annen inntekt eller mottar en annen ytelse.",
+  },
+  {
+    term: "Beregningsgrunnlag",
+    definition:
+      "Beløpet eller satsen som brukes som utgangspunkt når lønn, godtgjøring eller en annen ytelse skal beregnes.",
+  },
+  {
+    term: "Ettergodtgjøring",
+    definition:
+      "Godtgjøring som kan utbetales i en begrenset periode etter at et politisk verv eller annet oppdrag er avsluttet.",
+  },
+  {
+    term: "Fast godtgjøring",
+    definition:
+      "Et fast beløp som betales for et verv, uavhengig av antall møter eller registrerte arbeidstimer.",
+  },
+  {
+    term: "Folkevalgt",
+    definition:
+      "En person som er valgt av innbyggerne, eller valgt inn i et politisk organ etter reglene i kommuneloven.",
+  },
+  {
+    term: "Frikjøp",
+    definition:
+      "En ordning der en folkevalgt får godtgjøring for å ta helt eller delvis fri fra sitt vanlige arbeid for å utføre politiske verv.",
+  },
+  {
+    term: "Godtgjøring",
+    definition:
+      "Betaling for et verv, oppdrag eller bestemte utgifter. Godtgjøring er ikke nødvendigvis lønn fra et ansettelsesforhold.",
+  },
+  {
+    term: "Godtgjøringstak",
+    definition:
+      "En øvre grense for hvor mye en person samlet kan motta i godtgjøring og bestemte tilknyttede ytelser.",
+  },
+  {
+    term: "Honorar",
+    definition:
+      "Betaling for et oppdrag eller verv, ofte utenfor et ordinært ansettelsesforhold.",
+  },
+  {
+    term: "Møtegodtgjøring",
+    definition:
+      "Betaling en folkevalgt eller et utvalgsmedlem får for å delta i et møte.",
+  },
+  {
+    term: "Politisk verv",
+    definition:
+      "En offentlig politisk rolle eller oppgave som en person er valgt eller oppnevnt til.",
+  },
+  {
+    term: "Tapt arbeidsfortjeneste",
+    definition:
+      "Erstatning for arbeidsinntekt en person faktisk mister på grunn av et verv, møte eller annet godkjent fravær. Omtales også som tapt arbeidsinntekt.",
+  },
+  {
+    term: "Tjenestepensjon",
+    definition:
+      "Pensjon som opptjenes gjennom en arbeidsgiver eller en særskilt pensjonsordning knyttet til arbeid eller verv.",
+  },
+  {
+    term: "Utgiftsgodtgjøring",
+    definition:
+      "Betaling eller refusjon som skal dekke bestemte utgifter, for eksempel reise, kost eller overnatting.",
+  },
 ].sort((left, right) => left.term.localeCompare(right.term, "nb-NO"));
 
 export const metadata: Metadata = {

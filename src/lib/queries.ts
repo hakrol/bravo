@@ -18,7 +18,6 @@ import type {
   OccupationAgeLatest,
   OccupationDetailTrendData,
   OccupationAgeTimeSeriesPoint,
-  OccupationEmploymentContractType,
   OccupationEmploymentGenderBreakdown,
   OccupationEmploymentLatest,
   OccupationEmploymentGrowth,
@@ -26,6 +25,7 @@ import type {
   OccupationLaborMarketStats,
   OccupationWorkforceRanking,
   OccupationWorkforceTimeSeriesPoint,
+  OccupationWorkingHoursTimeSeriesPoint,
   OccupationPurchasingPowerDetail,
   OccupationPurchasingPowerOverview,
   OccupationPurchasingPowerTimeSeries,
@@ -86,6 +86,11 @@ export const OCCUPATION_AVERAGE_AGE_FILTERS: SsbSalaryFilters = {
   ContentsCode: "GjsnAlder",
 };
 
+export const OCCUPATION_AVERAGE_WORKING_HOURS_FILTERS: SsbSalaryFilters = {
+  Alder: "999D",
+  ContentsCode: "GjAvtArbtid",
+};
+
 export const OCCUPATION_SUPPLEMENT_FILTERS: SsbSalaryFilters = {
   MaaleMetode: "02",
   Sektor: "ALLE",
@@ -117,7 +122,6 @@ export const ACCOUNTANT_OCCUPATION_CODE = "3313";
 export const SSB_INFLATION_TABLE_ID = "14700";
 export const SSB_OCCUPATION_DISTRIBUTION_TABLE_ID = "11418";
 export const SSB_OCCUPATION_EMPLOYMENT_TABLE_ID = "09792";
-export const SSB_OCCUPATION_CONTRACT_TABLE_ID = "14437";
 export const SSB_APPRENTICESHIP_SALARY_TABLE_ID = "12851";
 
 export const SSB_SALARY_TABLES: Record<SsbSalaryTableKey, SsbSalaryTableDefinition> = {
@@ -1025,10 +1029,7 @@ const getOccupationLaborMarketStatsCached = unstable_cache(
     lang: SsbLanguage = "no",
   ): Promise<OccupationLaborMarketStats | null> => {
     const salaryTable = getSalaryTableDefinition("occupationDetailed");
-    const [salaryMetadata, contractMetadata] = await Promise.all([
-      getTableMetadata(salaryTable.id, lang),
-      getTableMetadata(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
-    ]);
+    const salaryMetadata = await getTableMetadata(salaryTable.id, lang);
     const workforceQuery = buildOccupationTimeSeriesQuery(
       salaryMetadata,
       occupationCode,
@@ -1037,19 +1038,22 @@ const getOccupationLaborMarketStatsCached = unstable_cache(
         Kjonn: ["0", "1", "2"],
       },
     );
-    const contractQuery = buildOccupationContractTypeQuery(contractMetadata, occupationCode);
     const ageQuery = buildOccupationTimeSeriesQuery(
       salaryMetadata,
       occupationCode,
       OCCUPATION_AVERAGE_AGE_FILTERS,
     );
-    const [salaryInfo, contractInfo, workforceDataset, contractDataset, ageDataset] =
+    const workingHoursQuery = buildOccupationTimeSeriesQuery(
+      salaryMetadata,
+      occupationCode,
+      OCCUPATION_AVERAGE_WORKING_HOURS_FILTERS,
+    );
+    const [salaryInfo, workforceDataset, ageDataset, workingHoursDataset] =
       await Promise.all([
         getTableInfo(salaryTable.id, lang),
-        getTableInfo(SSB_OCCUPATION_CONTRACT_TABLE_ID, lang),
         getTableData(salaryTable.id, workforceQuery, lang),
-        getTableData(SSB_OCCUPATION_CONTRACT_TABLE_ID, contractQuery, lang),
         getTableData(salaryTable.id, ageQuery, lang),
+        getTableData(salaryTable.id, workingHoursQuery, lang),
       ]);
 
     const normalizedWorkforce = normalizeDataset(workforceDataset, {
@@ -1057,11 +1061,12 @@ const getOccupationLaborMarketStatsCached = unstable_cache(
       tableKey: salaryTable.key,
       title: salaryInfo.label,
     });
-    const normalizedContract = normalizeDataset(contractDataset, {
-      tableId: SSB_OCCUPATION_CONTRACT_TABLE_ID,
-      title: contractInfo.label,
-    });
     const normalizedAge = normalizeDataset(ageDataset, {
+      tableId: salaryTable.id,
+      tableKey: salaryTable.key,
+      title: salaryInfo.label,
+    });
+    const normalizedWorkingHours = normalizeDataset(workingHoursDataset, {
       tableId: salaryTable.id,
       tableKey: salaryTable.key,
       title: salaryInfo.label,
@@ -1069,8 +1074,8 @@ const getOccupationLaborMarketStatsCached = unstable_cache(
 
     return buildOccupationLaborMarketStats(
       normalizedWorkforce,
-      normalizedContract,
       normalizedAge,
+      normalizedWorkingHours,
       occupationCode,
       {
         employeeUnit: "personer",
@@ -1087,16 +1092,16 @@ export async function getOccupationLaborMarketStats(
   lang: SsbLanguage = "no",
 ): Promise<OccupationLaborMarketStats | null> {
   if (shouldUseLocalSsbStore()) {
-    const [workforceDataset, contractDataset, ageDataset] = await Promise.all([
+    const [workforceDataset, ageDataset, workingHoursDataset] = await Promise.all([
       getStoredDataset("occupationWorkforceTimeSeries"),
-      getStoredDataset("occupationContractLatest"),
       getStoredDataset("occupationAgeTimeSeries"),
+      getStoredDataset("occupationWorkingHoursTimeSeries"),
     ]);
 
     return buildOccupationLaborMarketStats(
       workforceDataset,
-      contractDataset,
       ageDataset,
+      workingHoursDataset,
       occupationCode,
       {
         employeeUnit: "personer",
@@ -1781,89 +1786,6 @@ function buildOccupationEmploymentTimeSeriesQuery(
   return query;
 }
 
-export function buildOccupationContractTypeQuery(
-  metadata: SsbTableMetadata,
-  occupationCode: string,
-): SsbQueryParams {
-  const dimensions = metadata.id ?? Object.keys(metadata.dimension);
-  const timeDimensions = new Set(metadata.role?.time ?? []);
-  const metricDimensions = new Set(metadata.role?.metric ?? []);
-  const geoDimensions = new Set(metadata.role?.geo ?? []);
-  const occupationDimensionCode = findDimensionCode(
-    dimensions,
-    metadata.dimension,
-    ["yrke", "occupation"],
-  );
-  const ageDimensionCode = findDimensionCode(
-    dimensions,
-    metadata.dimension,
-    ["alder", "age"],
-  );
-  const contractDimensionCode = findDimensionCode(
-    dimensions,
-    metadata.dimension,
-    ["ansettelsesform", "ansettelsesforhold", "employment"],
-  );
-  const query: SsbQueryParams = {};
-
-  if (!occupationDimensionCode) {
-    throw new Error(`Fant ikke yrkesdimensjon i metadata for tabell ${SSB_OCCUPATION_CONTRACT_TABLE_ID}.`);
-  }
-
-  for (const dimension of dimensions) {
-    const metadataDimension = metadata.dimension[dimension];
-
-    if (dimension === occupationDimensionCode) {
-      query[`valueCodes[${dimension}]`] = occupationCode;
-      continue;
-    }
-
-    if (timeDimensions.has(dimension)) {
-      query[`valueCodes[${dimension}]`] = "top(1)";
-      continue;
-    }
-
-    if (geoDimensions.has(dimension)) {
-      query[`valueCodes[${dimension}]`] =
-        findCategoryCodeByLabel(
-          metadataDimension.category.label,
-          ["hele landet"],
-          [],
-        ) ?? "0";
-      continue;
-    }
-
-    if (ageDimensionCode && dimension === ageDimensionCode) {
-      query[`valueCodes[${dimension}]`] =
-        findCategoryCodeByLabel(
-          metadataDimension.category.label,
-          ["15-74"],
-          [],
-        ) ?? Object.keys(metadataDimension.category.index)[0];
-      continue;
-    }
-
-    if (contractDimensionCode && dimension === contractDimensionCode) {
-      query[`valueCodes[${dimension}]`] = ["0", "F", "M", "09"];
-      continue;
-    }
-
-    if (metricDimensions.has(dimension)) {
-      query[`valueCodes[${dimension}]`] =
-        findCategoryCodeByLabel(
-          metadataDimension.category.label,
-          ["sysselsatte"],
-          [],
-        ) ?? Object.keys(metadataDimension.category.index)[0];
-      continue;
-    }
-
-    query[`valueCodes[${dimension}]`] = "*";
-  }
-
-  return query;
-}
-
 function buildOccupationSalaryTimeSeries(
   dataset: SsbNormalizedDataset,
   occupationCode: string,
@@ -2115,13 +2037,17 @@ function buildOccupationEmploymentLatest(
 
 function buildOccupationLaborMarketStats(
   workforceDataset: SsbNormalizedDataset,
-  contractDataset: SsbNormalizedDataset,
   ageDataset: SsbNormalizedDataset,
+  workingHoursDataset: SsbNormalizedDataset,
   occupationCode: string,
   options: { employeeUnit: string; jobUnit: string },
 ): OccupationLaborMarketStats | null {
   const workforcePoints = buildOccupationWorkforceTimeSeries(workforceDataset, occupationCode);
   const ageSeries = buildOccupationAgeTimeSeries(ageDataset, occupationCode);
+  const workingHoursSeries = buildOccupationWorkingHoursTimeSeries(
+    workingHoursDataset,
+    occupationCode,
+  );
 
   if (workforcePoints.length === 0) {
     return null;
@@ -2154,9 +2080,9 @@ function buildOccupationLaborMarketStats(
     latest,
     genderBreakdown: buildOccupationEmployeeGenderBreakdown(workforcePoints),
     growth: buildOccupationEmployeeGrowth(workforcePoints),
-    contractType: buildOccupationEmploymentContractType(contractDataset, occupationCode),
     age: buildOccupationAgeLatest(ageSeries, occupationCode, occupationLabel, ageDataset.updated),
     ageSeries,
+    workingHoursSeries,
   };
 }
 
@@ -2421,6 +2347,70 @@ function buildOccupationAgeLatest(
   };
 }
 
+function buildOccupationWorkingHoursTimeSeries(
+  dataset: SsbNormalizedDataset,
+  occupationCode: string,
+): OccupationWorkingHoursTimeSeriesPoint[] {
+  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "yrke",
+    "occupation",
+  ]);
+  const genderDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "kjonn",
+    "kjønn",
+    "sex",
+  ]);
+  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
+    "tid",
+    "year",
+    "time",
+  ]);
+
+  if (!occupationDimensionCode || !genderDimensionCode || !periodDimensionCode) {
+    return [];
+  }
+
+  const pointsByPeriod = dataset.rows.reduce((map, row) => {
+    if (
+      row.dimensions[occupationDimensionCode]?.code !== occupationCode ||
+      row.value === null
+    ) {
+      return map;
+    }
+
+    const period = row.dimensions[periodDimensionCode];
+    const gender = row.dimensions[genderDimensionCode];
+
+    if (!period || !gender) {
+      return map;
+    }
+
+    const point = map.get(period.code) ?? {
+      periodCode: period.code,
+      periodLabel: period.label,
+    };
+
+    if (gender.code === "0") {
+      point.hoursAll = row.value ?? undefined;
+    }
+
+    if (gender.code === "2") {
+      point.hoursWomen = row.value ?? undefined;
+    }
+
+    if (gender.code === "1") {
+      point.hoursMen = row.value ?? undefined;
+    }
+
+    map.set(period.code, point);
+    return map;
+  }, new Map<string, OccupationWorkingHoursTimeSeriesPoint>());
+
+  return Array.from(pointsByPeriod.values()).sort((left, right) =>
+    left.periodCode.localeCompare(right.periodCode, "nb-NO"),
+  );
+}
+
 function buildOccupationEmploymentTimeSeries(
   dataset: SsbNormalizedDataset,
   occupationCode: string,
@@ -2549,97 +2539,6 @@ function buildOccupationEmployeeGrowth(
     changeSinceBaseline:
       baselinePoint?.total && baselinePoint.total !== 0
         ? ((latestPoint.total - baselinePoint.total) / baselinePoint.total) * 100
-        : undefined,
-  };
-}
-
-function buildOccupationEmploymentContractType(
-  dataset: SsbNormalizedDataset,
-  occupationCode: string,
-): OccupationEmploymentContractType | null {
-  const occupationDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
-    "yrke",
-    "occupation",
-  ]);
-  const contractDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
-    "ansettelsesform",
-    "ansettelsesforhold",
-    "employment",
-  ]);
-  const periodDimensionCode = findDimensionCodeInRows(dataset.dimensions, dataset.rows, [
-    "tid",
-    "year",
-    "time",
-  ]);
-
-  if (!occupationDimensionCode || !contractDimensionCode || !periodDimensionCode) {
-    return null;
-  }
-
-  const relevantRows = dataset.rows.filter(
-    (row) =>
-      row.dimensions[occupationDimensionCode]?.code === occupationCode &&
-      row.value !== null,
-  );
-
-  if (relevantRows.length === 0) {
-    return null;
-  }
-
-  const period = relevantRows[0].dimensions[periodDimensionCode];
-  const contract = relevantRows.reduce(
-    (result, row) => {
-      const contractCode = row.dimensions[contractDimensionCode]?.code;
-
-      if (contractCode === "0") {
-        result.total = row.value ?? undefined;
-      }
-
-      if (contractCode === "F") {
-        result.permanent = row.value ?? undefined;
-      }
-
-      if (contractCode === "M") {
-        result.temporary = row.value ?? undefined;
-      }
-
-      if (contractCode === "09") {
-        result.unspecified = row.value ?? undefined;
-      }
-
-      return result;
-    },
-    {
-      total: undefined as number | undefined,
-      permanent: undefined as number | undefined,
-      temporary: undefined as number | undefined,
-      unspecified: undefined as number | undefined,
-    },
-  );
-
-  const denominator =
-    contract.total ??
-    (contract.permanent ?? 0) + (contract.temporary ?? 0) + (contract.unspecified ?? 0);
-  const safeDenominator = denominator ?? 0;
-
-  return {
-    periodCode: period.code,
-    periodLabel: period.label,
-    total: contract.total,
-    permanent: contract.permanent,
-    temporary: contract.temporary,
-    unspecified: contract.unspecified,
-    permanentShare:
-      contract.permanent !== undefined && safeDenominator > 0
-        ? (contract.permanent / safeDenominator) * 100
-        : undefined,
-    temporaryShare:
-      contract.temporary !== undefined && safeDenominator > 0
-        ? (contract.temporary / safeDenominator) * 100
-        : undefined,
-    unspecifiedShare:
-      contract.unspecified !== undefined && safeDenominator > 0
-        ? (contract.unspecified / safeDenominator) * 100
         : undefined,
   };
 }

@@ -128,6 +128,17 @@ export default function PersonvernPage() {
                   bruker ikke disse verktøyene til å lage egne markedsføringsprofiler.
                 </p>
                 <p>
+                  Vi bruker også Google Analytics 4 for å forstå hvordan nettstedet brukes og
+                  forbedre innhold, navigasjon og funksjoner. Målingen kan omfatte sideadresse,
+                  tidspunkt, henvisende side, nettleser, enhetstype, omtrentlig geografisk
+                  område og interaksjoner på nettstedet. Google Analytics styres gjennom
+                  Google Consent Mode v2 og samtykkeplattformen vår. Lagring for analyse er
+                  avslått som standard. Før du eventuelt samtykker, blir det ikke skrevet
+                  informasjonskapsler for analyse, men Google-taggen kan sende begrensede
+                  signaler uten informasjonskapsler. Når du samtykker til analyse, kan Google
+                  Analytics bruke førsteparts informasjonskapsler og samle inn målingsdata.
+                </p>
+                <p>
                   Kontaktskjemaet bruker en midlertidig, kryptografisk verdi basert på
                   IP-adressen for å begrense spam og gjentatte innsendinger. Selve IP-adressen
                   lagres ikke i denne begrensningen, og verdien slettes når
@@ -207,12 +218,12 @@ export default function PersonvernPage() {
                   Informasjonskapsler er små tekstfiler som lagres i nettleseren. Nettstedet
                   kan også bruke lignende lokal lagring. Strengt nødvendige teknologier kan
                   brukes for sikkerhet, grunnleggende funksjonalitet og for å huske
-                  personvernvalgene dine. Valgfrie annonse- og sporingsteknologier skal ikke
-                  aktiveres før det foreligger gyldig samtykke når dette er påkrevd.
+                  personvernvalgene dine. Valgfrie annonse- og analyseteknologier styres av
+                  samtykkevalgene dine når dette er påkrevd.
                 </p>
                 <p>
-                  For besøkende i Norge, EØS, Storbritannia og Sveits skal samtykke til
-                  annonser håndteres gjennom en Google-sertifisert samtykkeplattform som
+                  For besøkende i Norge, EØS, Storbritannia og Sveits skal samtykke til analyse
+                  og annonser håndteres gjennom en Google-sertifisert samtykkeplattform som
                   støtter IAB Transparency and Consent Framework. Der får du informasjon om
                   formålene og leverandørene før du velger. Du skal kunne godta, avvise eller
                   velge enkelte formål og leverandører. Det skal være like enkelt å trekke
@@ -241,11 +252,11 @@ export default function PersonvernPage() {
               </h2>
               <div className="mt-4 grid gap-4">
                 <p>
-                  Vi bruker Vercel til drift, besøksstatistikk og ytelsesmåling, Resend til
-                  levering av kontakthenvendelser, Gmail til mottak og oppfølging av e-post,
-                  og Google AdSense til annonsering. Leverandørene behandler opplysninger etter
-                  egne personvernvilkår og, der de er databehandlere for oss, etter avtale og
-                  våre instrukser.
+                  Vi bruker Vercel til drift, besøksstatistikk og ytelsesmåling, Google
+                  Analytics til bruksanalyse, Resend til levering av kontakthenvendelser,
+                  Gmail til mottak og oppfølging av e-post, og Google AdSense til annonsering.
+                  Leverandørene behandler opplysninger etter egne personvernvilkår og, der de
+                  er databehandlere for oss, etter avtale og våre instrukser.
                 </p>
                 <p>
                   Ved annonsering kan Google og andre valgte annonseteknologileverandører motta
@@ -337,7 +348,7 @@ export default function PersonvernPage() {
                   tjenestene våre endres. Vesentlige endringer vil bli gjort tydelige på
                   nettstedet og kan kreve at du tar et nytt samtykkevalg.
                 </p>
-                <p>Sist oppdatert 24. juli 2026.</p>
+                <p>Sist oppdatert 29. august 2026.</p>
               </div>
             </section>
           </div>

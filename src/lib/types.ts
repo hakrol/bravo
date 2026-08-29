@@ -192,7 +192,7 @@ export type GeneratedSsbDatasetKey =
   | "occupationSupplementMedianLatest"
   | "occupationWorkforceTimeSeries"
   | "occupationAgeTimeSeries"
-  | "occupationContractLatest"
+  | "occupationWorkingHoursTimeSeries"
   | "apprenticeshipLatestMedian"
   | "apprenticeshipPreviousMedian"
   | "apprenticeshipMedianTimeSeries"
@@ -374,24 +374,20 @@ export type OccupationWorkforceRanking = {
   periodLabel: string;
 };
 
-export type OccupationEmploymentContractType = {
-  periodCode: string;
-  periodLabel: string;
-  total?: number;
-  permanent?: number;
-  temporary?: number;
-  unspecified?: number;
-  permanentShare?: number;
-  temporaryShare?: number;
-  unspecifiedShare?: number;
-};
-
 export type OccupationAgeTimeSeriesPoint = {
   periodCode: string;
   periodLabel: string;
   averageAll?: number;
   averageWomen?: number;
   averageMen?: number;
+};
+
+export type OccupationWorkingHoursTimeSeriesPoint = {
+  periodCode: string;
+  periodLabel: string;
+  hoursAll?: number;
+  hoursWomen?: number;
+  hoursMen?: number;
 };
 
 export type OccupationAgeLatest = {
@@ -415,9 +411,9 @@ export type OccupationLaborMarketStats = {
   latest: OccupationWorkforceLatest | null;
   genderBreakdown: OccupationEmploymentGenderBreakdown | null;
   growth: OccupationEmploymentGrowth | null;
-  contractType: OccupationEmploymentContractType | null;
   age: OccupationAgeLatest | null;
   ageSeries: OccupationAgeTimeSeriesPoint[];
+  workingHoursSeries: OccupationWorkingHoursTimeSeriesPoint[];
 };
 
 export type InflationQuarterPoint = {

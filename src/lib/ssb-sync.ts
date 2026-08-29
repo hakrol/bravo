@@ -237,10 +237,16 @@ async function main() {
         ),
     },
     {
-      key: "occupationContractLatest",
-      fileName: "occupation-contract-latest.json",
-      tableId: queries.SSB_OCCUPATION_CONTRACT_TABLE_ID,
-      buildQuery: (metadata) => queries.buildOccupationContractTypeQuery(metadata, "*"),
+      key: "occupationWorkingHoursTimeSeries",
+      fileName: "occupation-working-hours-timeseries.json",
+      tableId: queries.SSB_SALARY_TABLES.occupationDetailed.id,
+      tableKey: "occupationDetailed",
+      buildQuery: (metadata) =>
+        queries.buildOccupationTimeSeriesQuery(
+          metadata,
+          "*",
+          queries.OCCUPATION_AVERAGE_WORKING_HOURS_FILTERS,
+        ),
     },
     {
       key: "apprenticeshipLatestMedian",
@@ -610,6 +616,10 @@ function buildSsbSyncHelpers() {
     Alder: "999D",
     ContentsCode: "GjsnAlder",
   };
+  const OCCUPATION_AVERAGE_WORKING_HOURS_FILTERS: SsbSalaryFilters = {
+    Alder: "999D",
+    ContentsCode: "GjAvtArbtid",
+  };
   const OCCUPATION_SUPPLEMENT_FILTERS: SsbSalaryFilters = {
     MaaleMetode: "02",
     Sektor: "ALLE",
@@ -635,7 +645,6 @@ function buildSsbSyncHelpers() {
   };
   const SSB_INFLATION_TABLE_ID = "14700";
   const SSB_OCCUPATION_DISTRIBUTION_TABLE_ID = "11418";
-  const SSB_OCCUPATION_CONTRACT_TABLE_ID = "14437";
   const SSB_SALARY_TABLES = {
     occupationDetailed: {
       id: "11658",
@@ -753,71 +762,6 @@ function buildSsbSyncHelpers() {
     return query;
   }
 
-  function buildOccupationContractTypeQuery(
-    metadata: SsbTableMetadata,
-    occupationCode: string,
-  ): SsbQueryParams {
-    const dimensions = metadata.id ?? Object.keys(metadata.dimension);
-    const timeDimensions = new Set(metadata.role?.time ?? []);
-    const metricDimensions = new Set(metadata.role?.metric ?? []);
-    const geoDimensions = new Set(metadata.role?.geo ?? []);
-    const occupationDimensionCode = findDimensionCode(dimensions, metadata.dimension, [
-      "yrke",
-      "occupation",
-    ]);
-    const genderDimensionCode = findDimensionCode(dimensions, metadata.dimension, [
-      "kjonn",
-      "kjønn",
-      "sex",
-    ]);
-
-    if (!occupationDimensionCode) {
-      throw new Error("Fant ikke yrkesdimensjon i metadata for kontrakt.");
-    }
-
-    const query: SsbQueryParams = {};
-
-    for (const dimension of dimensions) {
-      const metadataDimension = metadata.dimension[dimension];
-
-      if (dimension === occupationDimensionCode) {
-        query[`valueCodes[${dimension}]`] = occupationCode;
-        continue;
-      }
-
-      if (timeDimensions.has(dimension)) {
-        query[`valueCodes[${dimension}]`] = "top(1)";
-        continue;
-      }
-
-      if (genderDimensionCode && dimension === genderDimensionCode) {
-        query[`valueCodes[${dimension}]`] = ["0", "F", "M", "09"];
-        continue;
-      }
-
-      if (metricDimensions.has(dimension)) {
-        query[`valueCodes[${dimension}]`] =
-          findCategoryCodeByLabel(
-            metadataDimension.category.label,
-            ["arbeidsforhold", "jobber", "jobs", "employment"],
-            [],
-          ) ?? Object.keys(metadataDimension.category.index)[0];
-        continue;
-      }
-
-      if (geoDimensions.has(dimension)) {
-        query[`valueCodes[${dimension}]`] =
-          findCategoryCodeByLabel(metadataDimension.category.label, ["hele landet", "landet"], []) ??
-          Object.keys(metadataDimension.category.index)[0];
-        continue;
-      }
-
-      query[`valueCodes[${dimension}]`] = "*";
-    }
-
-    return query;
-  }
-
   function buildPostBodyFromQueryParams(query: SsbQueryParams): SsbPostBody {
     return {
       selection: Object.entries(query).flatMap(([key, value]) => {
@@ -904,18 +848,17 @@ function buildSsbSyncHelpers() {
     OCCUPATION_MONTHLY_SALARY_FILTERS,
     OCCUPATION_MEDIAN_BASIC_MONTHLY_EARNINGS_FILTERS,
     OCCUPATION_AVERAGE_AGE_FILTERS,
+    OCCUPATION_AVERAGE_WORKING_HOURS_FILTERS,
     OCCUPATION_SUPPLEMENT_FILTERS,
     OCCUPATION_WORKFORCE_FILTERS,
     APPRENTICESHIP_MEDIAN_MONTHLY_SALARY_FILTERS,
     APPRENTICESHIP_DISTRIBUTION_FILTERS,
     SSB_INFLATION_TABLE_ID,
     SSB_OCCUPATION_DISTRIBUTION_TABLE_ID,
-    SSB_OCCUPATION_CONTRACT_TABLE_ID,
     SSB_SALARY_TABLES,
     buildLatestQueryFromMetadata,
     buildOccupationTimeSeriesQuery,
     buildInflationQuarterQuery,
-    buildOccupationContractTypeQuery,
     buildPostBodyFromQueryParams,
     normalizeDataset,
   };

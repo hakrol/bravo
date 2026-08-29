@@ -8,6 +8,7 @@ const servitorBlogPath = "/blogg/hva-er-lonnen-til-en-servitor";
 const nextConfig: NextConfig = {
   pageExtensions: ["ts", "tsx"],
   reactStrictMode: true,
+  staticPageGenerationTimeout: 180,
   async redirects() {
     return [
       {
