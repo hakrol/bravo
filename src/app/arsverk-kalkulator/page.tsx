@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { WorkYearCalculatorDashboard } from "@/components/work-year-calculator-dashboard";
 import { getPublicHolidaySummary, workYearProfiles } from "@/lib/arsverk";
@@ -35,6 +36,7 @@ export default function ArsverkKalkulatorPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <CalculatorCrossLinks currentHref="/arsverk-kalkulator" />
         <WorkYearCalculatorDashboard />
+        <AdSlot placement="arsverk-after-tool" />
         <WorkYearGuide />
       </div>
     </div>

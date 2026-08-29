@@ -1,5 +1,4 @@
 const ADSENSE_ALLOWED_EXACT_PATHS = new Set([
-  "/",
   "/arsverk-kalkulator",
   "/bruttolonn-kalkulator",
   "/feriedager-norge",

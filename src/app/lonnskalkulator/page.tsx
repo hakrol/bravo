@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdSlot } from "@/components/ad-slot";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { SalaryCalculatorDashboard } from "@/components/salary-calculator-dashboard";
@@ -34,6 +35,7 @@ export default function LonnskalkulatorPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <CalculatorCrossLinks currentHref="/lonnskalkulator" />
         <SalaryCalculatorDashboard />
+        <AdSlot placement="lonnskalkulator-after-tool" />
         <SalaryCalculatorGuide />
       </div>
     </div>

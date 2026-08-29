@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 import { OccupationComparisonCalculator } from "@/components/occupation-comparison-calculator";
 import { buildLonnsjekkPageData } from "@/lib/lonnsjekk";
 import { buildOccupationComparisonPageData } from "@/lib/occupation-comparison";
@@ -62,6 +63,7 @@ export default async function SammenlignLonnPage() {
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <OccupationComparisonCalculator data={comparisonData} />
+        <AdSlot placement="sammenlign-lonn-after-tool" />
         <SammenlignLonnGuide />
       </div>
     </div>
