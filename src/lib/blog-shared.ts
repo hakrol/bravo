@@ -17,7 +17,7 @@ export type BlogFrontmatter = {
   seoDescription?: string;
 };
 
-export type BlogCategorySlug = "lonn" | "lonnsforhandling";
+export type BlogCategorySlug = "lonn" | "lonnsforhandling" | "politikere";
 
 export type BlogPostPreview = BlogFrontmatter & {
   readingTimeMinutes: number;

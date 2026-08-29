@@ -19,6 +19,7 @@ import {
 import { OccupationWorkforceTimeSeriesChart } from "@/components/occupation-workforce-time-series";
 import { OccupationWorkingHoursTimeSeriesChart } from "@/components/occupation-working-hours-time-series";
 import { OccupationSectionLinkNav } from "@/components/occupation-section-link-nav";
+import { OccupationBlogArticlesSection } from "@/components/occupation-blog-articles-section";
 import { OccupationNewsSection } from "@/components/occupation-news-section";
 import { OccupationHero } from "@/components/occupation-hero";
 import { OccupationFaq, type OccupationFaqItem } from "@/components/occupation-faq";
@@ -32,6 +33,8 @@ import type { OccupationSupplementMetrics } from "@/lib/occupation-detail-view-m
 import { getOccupationHeroImages } from "@/lib/occupation-hero-images";
 import { getOccupationHeroRankings } from "@/lib/occupation-hero-rankings";
 import { getNewsPostsByOccupationSlug } from "@/lib/nyheter";
+import { getBlogPostsByCategory } from "@/lib/blog";
+import { getBlogCategoryByOccupationSlug } from "@/lib/blog-taxonomy";
 import { formatOccupationDisplayLabel, getOccupationTextContext } from "@/lib/occupation-detail-pages";
 import type { OccupationSalaryDistributionMetrics } from "@/lib/ssb";
 
@@ -186,6 +189,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     detail.detailPage.occupationCode,
   );
   const newsPosts = await getNewsPostsByOccupationSlug(detail.detailPage.slug);
+  const blogCategory = getBlogCategoryByOccupationSlug(detail.detailPage.slug);
+  const blogPosts = blogCategory
+    ? (await getBlogPostsByCategory(blogCategory.slug)).slice(0, 5)
+    : [];
   const sectionNavItems = [
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }
@@ -198,6 +205,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarked" } : null,
     relatedRows.length > 0 ? { href: "#relaterte-jobber", label: "Relaterte jobber" } : null,
     { href: "#vanlige-sporsmal", label: "Vanlige spørsmål" },
+    blogPosts.length > 0 ? { href: "#artikler", label: "Artikler" } : null,
   ].filter((item): item is { href: string; label: string } => Boolean(item));
 
   return (
@@ -492,6 +500,14 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             <OccupationFaq items={faqItems} occupationLabel={occupationText.titleLabel} />
+
+            {blogCategory ? (
+              <OccupationBlogArticlesSection
+                categoryHref={blogCategory.href}
+                occupationLabel={occupationText.titleLabel}
+                posts={blogPosts}
+              />
+            ) : null}
 
           </div>
 

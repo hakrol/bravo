@@ -74,7 +74,12 @@ export default async function BlogCategoryPage({ params }: BlogCategoryPageProps
           ← Tilbake til blogg
         </Link>
 
-        <section className="blog-category-hero fade-up">
+        <section
+          className={[
+            "blog-category-hero fade-up",
+            heroIcon ? "" : "blog-category-hero-without-icon",
+          ].join(" ")}
+        >
           <div className="blog-category-hero-copy">
             <p className="blog-category-kicker">Bloggkategori</p>
             <h1>{category.title}</h1>

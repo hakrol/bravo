@@ -38,7 +38,7 @@ export function BlogCard({ post, featured = false, variant = "default" }: BlogCa
           />
         </Link>
 
-        <div className={["flex flex-1 flex-col", featured ? "p-7 sm:p-9 lg:justify-center lg:p-10" : "p-6"].join(" ")}>
+        <div className={["flex min-w-0 flex-1 flex-col", featured ? "p-7 sm:p-9 lg:justify-center lg:p-10" : "p-6"].join(" ")}>
           <div className="flex flex-wrap items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--primary-strong)]">
             {category ? <span>{category.label}</span> : null}
             <span>Artikkel · {post.readingTimeMinutes} min lesetid</span>
@@ -46,7 +46,7 @@ export function BlogCard({ post, featured = false, variant = "default" }: BlogCa
 
           <h2
             className={[
-              "mt-5 font-extrabold leading-[1.02] tracking-[-0.055em] text-slate-950",
+              "blog-title-fit mt-5 font-extrabold leading-[1.02] tracking-[-0.055em] text-slate-950",
               featured ? "text-4xl sm:text-5xl" : "text-3xl",
             ].join(" ")}
             lang="nb"
