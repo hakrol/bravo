@@ -240,6 +240,13 @@ function SectionIcon({ href }: { href: string }) {
           <path d="M3.5 19c.5-3.4 2.5-5.2 5.5-5.2s5 1.8 5.5 5.2M14.5 14.2c3.3-.8 5.5.8 6 3.8" stroke="currentColor" strokeLinecap="round" strokeWidth="1.7" />
         </svg>
       );
+    case "#artikler":
+      return (
+        <svg {...commonProps}>
+          <path d="M6 3.5h9l3 3V20.5H6v-17Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.7" />
+          <path d="M15 3.5v3h3M9 11h6M9 15h6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7" />
+        </svg>
+      );
     default:
       return (
         <svg {...commonProps}>

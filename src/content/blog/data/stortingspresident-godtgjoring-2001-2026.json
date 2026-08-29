@@ -1,0 +1,15 @@
+{
+  "source": "Stortingets oversikt over lønnsutvikling, sist oppdatert 18. juni 2026",
+  "note": "Diagrammet viser utvalgte satser med virkningsdato. Beløpene er nominelle og ikke inflasjonsjustert.",
+  "chartPoints": [
+    { "label": "1. okt. 2001", "value": 617980 },
+    { "label": "1. jan. 2004", "value": 975000 },
+    { "label": "1. okt. 2008", "value": 1266000 },
+    { "label": "1. mai 2012", "value": 1425352 },
+    { "label": "1. mai 2016", "value": 1593242 },
+    { "label": "1. mai 2019", "value": 1735682 },
+    { "label": "1. mai 2022", "value": 1869761 },
+    { "label": "1. mai 2024", "value": 2057177 },
+    { "label": "1. mai 2026", "value": 2234978 }
+  ]
+}
