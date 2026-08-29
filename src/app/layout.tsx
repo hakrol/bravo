@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AdsenseScript } from "@/components/adsense-script";
@@ -15,6 +16,8 @@ import "./globals.css";
 const manrope = Manrope({
   subsets: ["latin"],
 });
+
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -86,6 +89,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Analytics />
         <SpeedInsights />
       </body>
+      {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
     </html>
   );
 }

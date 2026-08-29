@@ -11,6 +11,7 @@
     "ssb:sync": "node src/lib/ssb-sync.ts"
   },
   "dependencies": {
+    "@next/third-parties": "^16.3.3",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "gray-matter": "^4.0.3",

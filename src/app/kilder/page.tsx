@@ -15,7 +15,7 @@ const sourceLinks = [
   {
     title: "SSB tabell 11658",
     href: "https://www.ssb.no/statbank/table/11658",
-    text: "Detaljerte lønnstall per yrke. Brukes der yrkesnivå og lønnsmål skal forklares mer presist.",
+    text: "Kvartalstall for lønnstakere, alder, avtalt arbeidstid og lønn etter yrke og kjønn. Brukes i arbeidsmarkedsoversiktene på yrkessidene.",
   },
   {
     title: "SSB tabell 09792",
@@ -26,11 +26,6 @@ const sourceLinks = [
     title: "SSB tabell 12851",
     href: "https://www.ssb.no/statbank/table/12851",
     text: "Lærlinglønn etter yrke. Brukes på sider som handler om lærlingfag og lønn for lærlinger.",
-  },
-  {
-    title: "SSB tabell 14437",
-    href: "https://www.ssb.no/statbank/table/14437",
-    text: "Arbeidsforhold etter yrke og avtalt arbeidstid. Brukes som støtte for å forstå arbeidsforhold og kontraktstyper.",
   },
   {
     title: "SSB konsumprisindeksen",
