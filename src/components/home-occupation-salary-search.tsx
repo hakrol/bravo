@@ -15,16 +15,20 @@ import type { OccupationCardStats } from "@/lib/occupation-card-stats";
 import type { OccupationPurchasingPowerTimeSeries, OccupationSalaryTimeSeries } from "@/lib/types";
 
 type HomeOccupationSalarySearchProps = {
+  afterOccupationsAd?: React.ReactNode;
   allOccupationsPurchasingPowerSeries: OccupationPurchasingPowerTimeSeries;
   allOccupationsSalarySeries: OccupationSalaryTimeSeries;
+  beforeAboutAd?: React.ReactNode;
   occupationCardStatsByCode: Record<string, OccupationCardStats>;
   periodLabel?: string;
   rows: OccupationSalaryRow[];
 };
 
 export function HomeOccupationSalarySearch({
+  afterOccupationsAd,
   allOccupationsPurchasingPowerSeries,
   allOccupationsSalarySeries,
+  beforeAboutAd,
   occupationCardStatsByCode,
   periodLabel,
   rows,
@@ -69,12 +73,15 @@ export function HomeOccupationSalarySearch({
         </div>
       </section>
 
+      {afterOccupationsAd}
+
       <AllOccupationsSalaryChart
         purchasingPowerSeries={allOccupationsPurchasingPowerSeries}
         series={allOccupationsSalarySeries}
       />
       <HomeExploreOccupationsSection />
       <HomeSalaryCheckSection />
+      {beforeAboutAd}
       <HomeAboutInsightSection />
     </>
   );

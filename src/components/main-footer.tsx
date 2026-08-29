@@ -5,6 +5,7 @@ const footerGroups = [
   {
     title: "Verktøy",
     links: [
+      { href: "/jobbtilbud", label: "Vurder jobbtilbud" },
       { href: "/lonnsjekk", label: "Lønnssjekk" },
       { href: "/lonnskalkulator", label: "Lønnskalkulator" },
       { href: "/sammenlign-lonn", label: "Sammenlign lønn" },

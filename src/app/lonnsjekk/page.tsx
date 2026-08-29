@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdSlot } from "@/components/ad-slot";
 import { LonnsjekkTool } from "@/components/lonnsjekk-tool";
 import { buildLonnsjekkPageData } from "@/lib/lonnsjekk";
 import { buildOccupationSalaryOverview } from "@/lib/occupation-salary-overview";
@@ -63,6 +64,7 @@ export default async function LonnsjekkPage() {
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <LonnsjekkTool data={data} />
+        <AdSlot placement="lonnsjekk-after-tool" />
       </div>
     </div>
   );

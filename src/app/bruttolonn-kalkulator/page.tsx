@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { GrossSalaryCalculatorDashboard } from "@/components/gross-salary-calculator-dashboard";
 import { siteConfig } from "@/lib/site-config";
@@ -34,6 +35,7 @@ export default function BruttolonnKalkulatorPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <CalculatorCrossLinks currentHref="/bruttolonn-kalkulator" />
         <GrossSalaryCalculatorDashboard />
+        <AdSlot placement="bruttolonn-after-tool" />
         <GrossSalaryCalculatorGuide />
       </div>
     </div>

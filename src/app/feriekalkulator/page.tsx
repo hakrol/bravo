@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdSlot } from "@/components/ad-slot";
 import { VacationCalculator } from "@/components/vacation-calculator";
 import { siteConfig } from "@/lib/site-config";
 
@@ -33,6 +34,7 @@ export default function FeriekalkulatorPage() {
     <main className="min-h-screen px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto w-full max-w-7xl">
         <VacationCalculator referenceDate={new Date().toISOString()} />
+        <AdSlot className="mt-8" placement="feriekalkulator-after-tool" />
       </div>
     </main>
   );

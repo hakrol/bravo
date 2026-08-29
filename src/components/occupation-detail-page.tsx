@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 import { OccupationAgeTimeSeriesChart } from "@/components/occupation-age-time-series";
 import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
@@ -311,6 +312,8 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
+            <AdSlot placement="occupation-after-salary-overview" />
+
             {salarySupplementCards.length > 0 ? (
               <section
                 className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
@@ -418,6 +421,8 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               occupationLabel={occupationText.titleLabel}
               posts={newsPosts}
             />
+
+            <AdSlot placement="occupation-mid-content" />
 
             {laborMarket ? (
               <section
@@ -607,6 +612,8 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 </div>
               </section>
             ) : null}
+
+            <AdSlot className="mx-auto mt-4" format="sidebar" placement="occupation-sidebar" />
           </aside>
         </div>
       </section>

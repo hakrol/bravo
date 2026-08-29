@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { MileageAllowanceCalculatorDashboard } from "@/components/mileage-allowance-calculator-dashboard";
 import {
@@ -40,6 +41,7 @@ export default function MileageAllowanceCalculatorPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <CalculatorCrossLinks currentHref="/kilometergodtgjorelse-kalkulator" />
         <MileageAllowanceCalculatorDashboard />
+        <AdSlot placement="kilometergodtgjorelse-after-tool" />
         <MileageAllowanceRates />
       </div>
     </div>

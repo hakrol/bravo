@@ -51,6 +51,12 @@ export const calculators = [
 
 export const otherTools = [
   {
+    href: "/jobbtilbud",
+    label: "Vurder jobbtilbud",
+    description:
+      "Sammenlign lønnen i et jobbtilbud med SSB-tall og få et anslag basert på erfaring og lederansvar.",
+  },
+  {
     href: "/feriedager-norge",
     label: "Feriedager i Norge",
     description:

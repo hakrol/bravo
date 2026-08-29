@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdSlot } from "@/components/ad-slot";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { LoanPaymentCalculatorDashboard } from "@/components/loan-payment-calculator-dashboard";
@@ -34,6 +35,7 @@ export default function RenteOgAvdragKalkulatorPage() {
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <CalculatorCrossLinks currentHref="/rente-og-avdrag-kalkulator" />
         <LoanPaymentCalculatorDashboard />
+        <AdSlot placement="rente-og-avdrag-after-tool" />
         <LoanPaymentCalculatorGuide />
       </div>
     </div>

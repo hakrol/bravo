@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdSlot } from "@/components/ad-slot";
 import { InfoPageHero } from "@/components/info-page-hero";
 import { calculators } from "@/lib/tool-catalog";
 import { siteConfig } from "@/lib/site-config";
@@ -40,6 +41,8 @@ export default function KalkulatorerPage() {
 
       <section className="px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+          <AdSlot placement="kalkulatorer-between-sections" />
+
           <section className="fade-up-delay grid gap-5 md:grid-cols-2">
             {calculators.map((calculator) => (
               <ToolCard
