@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 import { track } from "@vercel/analytics";
 
 export type AdPlacement =
@@ -31,19 +33,85 @@ type AdSlotProps = Readonly<{
 }>;
 
 const INVESTORKURS_URL = "https://investorkurs.no";
+const ADVERTISER = "investorkurs";
+const VISIBILITY_THRESHOLD = 0.5;
+const VISIBILITY_DURATION_MS = 1_000;
 
 export function AdSlot({ placement, format = "horizontal", className = "" }: AdSlotProps) {
+  const adRef = useRef<HTMLElement>(null);
+  const hasTrackedImpressionRef = useRef(false);
+
+  useEffect(() => {
+    const ad = adRef.current;
+
+    if (!ad || hasTrackedImpressionRef.current) {
+      return;
+    }
+
+    let visibilityTimer: number | null = null;
+
+    const clearVisibilityTimer = () => {
+      if (visibilityTimer !== null) {
+        window.clearTimeout(visibilityTimer);
+        visibilityTimer = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible =
+          entry.isIntersecting && entry.intersectionRatio >= VISIBILITY_THRESHOLD;
+
+        if (!isVisible) {
+          clearVisibilityTimer();
+          return;
+        }
+
+        if (visibilityTimer !== null) {
+          return;
+        }
+
+        visibilityTimer = window.setTimeout(() => {
+          hasTrackedImpressionRef.current = true;
+
+          const eventData = {
+            advertiser: ADVERTISER,
+            format,
+            placement,
+          };
+
+          track("Investorkurs Ad Impression", eventData);
+          sendGAEvent("event", "sponsor_ad_impression", eventData);
+          observer.disconnect();
+        }, VISIBILITY_DURATION_MS);
+      },
+      { threshold: VISIBILITY_THRESHOLD },
+    );
+
+    observer.observe(ad);
+
+    return () => {
+      clearVisibilityTimer();
+      observer.disconnect();
+    };
+  }, [format, placement]);
+
   const handleClick = () => {
-    track("Investorkurs Ad Click", {
+    const eventData = {
+      advertiser: ADVERTISER,
       destination: INVESTORKURS_URL,
       format,
       placement,
-    });
+    };
+
+    track("Investorkurs Ad Click", eventData);
+    sendGAEvent("event", "sponsor_ad_click", eventData);
   };
 
   if (format === "sidebar") {
     return (
       <aside
+        ref={adRef}
         aria-label="Annonse fra Investorkurs"
         className={`hidden w-full max-w-[300px] overflow-hidden rounded-[6px] bg-[#0758c7] text-white shadow-[0_18px_48px_rgba(7,88,199,0.2)] lg:block ${className}`}
         data-ad-format={format}
@@ -88,6 +156,7 @@ export function AdSlot({ placement, format = "horizontal", className = "" }: AdS
 
   return (
     <aside
+      ref={adRef}
       aria-label="Annonse fra Investorkurs"
       className={`w-full min-w-0 overflow-hidden rounded-[6px] bg-[#0758c7] text-white shadow-[0_20px_60px_rgba(7,88,199,0.18)] ${className}`}
       data-ad-format={format}

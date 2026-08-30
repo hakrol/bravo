@@ -20,6 +20,7 @@ type BlogSalaryDevelopmentChartProps = {
   source: string;
   note?: string;
   series: BlogSalaryDevelopmentSeries[];
+  xAxisLabelFormat?: "full" | "two-digit-year";
   yAxisLabel?: string;
 };
 
@@ -28,7 +29,7 @@ const width = 1180;
 const height = 560;
 const plot = {
   top: 52,
-  right: 190,
+  right: 240,
   bottom: 82,
   left: 108,
 };
@@ -43,6 +44,7 @@ export function BlogSalaryDevelopmentChart({
   source,
   note,
   series,
+  xAxisLabelFormat = "full",
   yAxisLabel = "Median månedslønn",
 }: BlogSalaryDevelopmentChartProps) {
   const normalizedSeries = series.filter((entry) => entry.points.length > 0);
@@ -134,7 +136,7 @@ export function BlogSalaryDevelopmentChart({
             return (
               <g key={label}>
                 <text className="blog-salary-development-x-tick" textAnchor="middle" x={x} y={plot.top + plotHeight + 50}>
-                  {label}
+                  {formatXAxisLabel(label, xAxisLabelFormat)}
                 </text>
               </g>
             );
@@ -247,14 +249,15 @@ function ValueCallout({
   x: number;
   y: number;
 }) {
-  const width = getCalloutWidth(text, 24);
+  const width = getCalloutWidth(text, 42);
   const height = 46;
   const isEnd = variant === "end";
-  const boxX = isEnd ? x - width + 112 : x - 18;
-  const boxY = isEnd ? y - 86 : y - 88;
+  const pointerCenterX = isEnd ? x + 10 : x + 7;
+  const boxX = isEnd ? pointerCenterX - width / 2 : x - 18;
+  const boxY = Math.max(8, isEnd ? y - 86 : y - 88);
   const pointerTipY = y - 8;
   const pointer = isEnd
-    ? `${x + 10},${boxY + height - 1} ${x + 10},${pointerTipY} ${x + 28},${boxY + height - 1}`
+    ? `${pointerCenterX - 9},${boxY + height - 1} ${pointerCenterX},${pointerTipY} ${pointerCenterX + 9},${boxY + height - 1}`
     : `${x + 7},${boxY + height - 1} ${x + 7},${pointerTipY} ${x + 25},${boxY + height - 1}`;
 
   return (
@@ -285,9 +288,9 @@ function ValueCallout({
 
 function GrowthCallout({ color, text, x, y }: { color: string; text: string; x: number; y: number }) {
   const [value, percent] = text.split("\n");
-  const width = 138;
+  const width = 196;
   const height = 76;
-  const boxX = x + 36;
+  const boxX = x + 28;
   const boxY = y - 18;
   const pointer = `${boxX},${boxY + 18} ${boxX - 16},${boxY + 28} ${boxX},${boxY + 38}`;
 
@@ -344,6 +347,16 @@ function formatSignedPercent(value: number) {
 
 function formatAxisCurrency(value: number) {
   return Math.round(value).toLocaleString("nb-NO");
+}
+
+function formatXAxisLabel(label: string, format: "full" | "two-digit-year") {
+  if (format === "full") {
+    return label;
+  }
+
+  const year = label.match(/\b\d{4}\b/)?.[0];
+
+  return year?.slice(-2) ?? label;
 }
 
 function getCalloutWidth(text: string, padding: number) {

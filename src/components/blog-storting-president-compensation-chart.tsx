@@ -26,6 +26,7 @@ export function StortingPresidentCompensationChart() {
       source={data.source}
       subtitle="Utvalgte satser etter datoen de fikk virkning"
       title="Godtgjørelsen har økt nominelt over tid"
+      xAxisLabelFormat="two-digit-year"
       yAxisLabel="Årlig godtgjørelse"
     />
   );
