@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const calculatorLinks = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
+  { href: "/sykepleier-lonn-kalkulator", label: "Sykepleierlønn" },
   { href: "/bruttolonn-kalkulator", label: "Brutto/netto" },
   { href: "/lonnsvekst", label: "Lønnsvekst" },
   { href: "/arsverk-kalkulator", label: "Årsverk" },

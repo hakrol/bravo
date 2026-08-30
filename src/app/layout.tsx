@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -67,23 +66,22 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
-      <body suppressHydrationWarning className="flex min-h-screen flex-col">
-        <Script
+      <head suppressHydrationWarning>
+        <script
           id="clickio-tcf-stub"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: clickioTcfStub }}
         />
-        <Script
+        <script
           id="clickio-default-consent-mode"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: clickioDefaultConsentMode }}
         />
-        <Script
+        <script
           id="clickio-consent"
           async
-          strategy="beforeInteractive"
           src="https://clickiocmp.com/t/consent_249773.js"
         />
+      </head>
+      <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <AdsenseScript />
         <AppShell>{children}</AppShell>
         <Analytics />

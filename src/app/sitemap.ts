@@ -31,6 +31,12 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/sykepleier-lonn-kalkulator",
+    filePath: "src/app/sykepleier-lonn-kalkulator/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/bruttolonn-kalkulator",
     filePath: "src/app/bruttolonn-kalkulator/page.tsx",
     priority: 0.8,

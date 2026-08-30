@@ -1,5 +1,11 @@
 export const calculators = [
   {
+    href: "/sykepleier-lonn-kalkulator",
+    label: "Lønnskalkulator for sykepleiere",
+    description:
+      "Finn tariffestet grunnlønn for sykepleiere i KS, Spekter og Oslo kommune etter stilling og ansiennitet.",
+  },
+  {
     href: "/lonnskalkulator",
     label: "Lønnskalkulator",
     description:
