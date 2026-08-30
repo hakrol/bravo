@@ -1,26 +1,13 @@
+import type {
+  TariffAgreementModel,
+  TariffPosition,
+} from "./tariff-model";
+
 export type TariffAreaId = "ks" | "spekter" | "oslo";
 export type NursingPositionId = "nurse" | "specialist";
-export type RateType = "garantilønn" | "minstelønn" | "tariffestet grunnlønn";
-
-export type TariffStep = Readonly<{ seniorityYears: number; annualSalary: number }>;
-
-export type NursingPosition = Readonly<{
-  id: NursingPositionId;
-  label: string;
-  comparisonGroup: NursingPositionId;
-  steps: readonly TariffStep[];
-}>;
-
-export type TariffAgreement = Readonly<{
-  id: TariffAreaId;
-  shortLabel: string;
-  label: string;
-  validFrom: string;
-  lastUpdated: string;
-  rateType: RateType;
-  source: Readonly<{ id: string; label: string; href?: string }>;
-  positions: readonly NursingPosition[];
-}>;
+export type NursingPosition = TariffPosition<NursingPositionId>;
+export type TariffAgreement = TariffAgreementModel<TariffAreaId, NursingPositionId>;
+export type { RateType, TariffStep } from "./tariff-model";
 
 export const TARIFF_YEAR = 2026;
 
@@ -29,6 +16,7 @@ const tariffs2026: Readonly<Record<TariffAreaId, TariffAgreement>> = {
     id: "ks",
     shortLabel: "KS",
     label: "Kommune – KS",
+    year: 2026,
     validFrom: "2026-05-01",
     lastUpdated: "2026-08-30",
     rateType: "garantilønn",
@@ -68,6 +56,7 @@ const tariffs2026: Readonly<Record<TariffAreaId, TariffAgreement>> = {
     id: "spekter",
     shortLabel: "Spekter",
     label: "Sykehus – Spekter",
+    year: 2026,
     validFrom: "2026-05-01",
     lastUpdated: "2026-08-30",
     rateType: "minstelønn",
@@ -107,6 +96,7 @@ const tariffs2026: Readonly<Record<TariffAreaId, TariffAgreement>> = {
     id: "oslo",
     shortLabel: "Oslo kommune",
     label: "Oslo kommune",
+    year: 2026,
     validFrom: "2026-05-01",
     lastUpdated: "2026-08-30",
     rateType: "tariffestet grunnlønn",
