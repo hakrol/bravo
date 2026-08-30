@@ -2586,7 +2586,7 @@ function buildOccupationSalaryDistribution(
   ]);
 
   if (!occupationDimensionCode || !genderDimensionCode || !measureDimensionCode) {
-    throw new Error("Fant ikke forventede dimensjoner for lÃ¸nnsfordeling i tabell 11658.");
+    throw new Error("Fant ikke forventede dimensjoner for lÃ¸nnsfordeling i tabell 11418.");
   }
 
   const relevantRows = dataset.rows.filter(
