@@ -1,0 +1,18 @@
+{
+  "id": "kongen-dronningen-apanasje-2017-2026",
+  "title": "Apanasje til Kongen og Dronningen 2017-2026",
+  "source": "Statsbudsjettene for 2017-2026, kapittel 1 post 01",
+  "note": "Beløpene er årlige, nominelle bevilgninger. Serien er ikke inflasjonsjustert.",
+  "series": [
+    { "year": 2017, "kingAndQueen": 11466000, "crownPrinceCouple": 9543000 },
+    { "year": 2018, "kingAndQueen": 11730000, "crownPrinceCouple": 9763000 },
+    { "year": 2019, "kingAndQueen": 12093000, "crownPrinceCouple": 10065000 },
+    { "year": 2020, "kingAndQueen": 12528000, "crownPrinceCouple": 10427000 },
+    { "year": 2021, "kingAndQueen": 12967000, "crownPrinceCouple": 10792000 },
+    { "year": 2022, "kingAndQueen": 13434000, "crownPrinceCouple": 11181000 },
+    { "year": 2023, "kingAndQueen": 13904000, "crownPrinceCouple": 11572000 },
+    { "year": 2024, "kingAndQueen": 14768000, "crownPrinceCouple": 12292000 },
+    { "year": 2025, "kingAndQueen": 15565000, "crownPrinceCouple": 12956000 },
+    { "year": 2026, "kingAndQueen": 16234000, "crownPrinceCouple": 13513000 }
+  ]
+}
