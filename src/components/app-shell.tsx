@@ -15,7 +15,7 @@ function isImmersiveSpecialPath(pathname: string | null) {
 
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
-  const headerRegionRef = useRef<HTMLDivElement>(null);
+  const headerRegionRef = useRef<HTMLElement>(null);
   const mainRegionRef = useRef<HTMLElement>(null);
   const footerRegionRef = useRef<HTMLDivElement>(null);
 
@@ -65,9 +65,7 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <>
-      <div ref={headerRegionRef} className="print:hidden">
-        <MainHeader />
-      </div>
+      <MainHeader regionRef={headerRegionRef} />
       <main ref={mainRegionRef} className="flex-1">
         {children}
       </main>
