@@ -1,5 +1,11 @@
 export const calculators = [
   {
+    href: "/laerer-lonn-kalkulator",
+    label: "Lønnskalkulator for lærere",
+    description:
+      "Finn sentral garantilønn for lærere, adjunkter og lektorer i KS etter stillingsgruppe og ansiennitet.",
+  },
+  {
     href: "/sykepleier-lonn-kalkulator",
     label: "Lønnskalkulator for sykepleiere",
     description:

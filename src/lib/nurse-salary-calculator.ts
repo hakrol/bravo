@@ -5,8 +5,14 @@ import {
   type NursingPositionId,
   type RateType,
   type TariffAreaId,
-  type TariffStep,
 } from "./nurse-tariffs";
+import {
+  calculateMonthlySalary,
+  findApplicableTariffStep,
+  normalizeSeniority,
+} from "./tariff-calculator";
+
+export { formatNok, formatNorwegianDate } from "./tariff-calculator";
 
 export type BaseSalaryCalculation = Readonly<{
   tariffAreaId: TariffAreaId;
@@ -58,7 +64,7 @@ export function calculateBaseSalary(
     appliedStepYears: step.seniorityYears,
     rateType: agreement.rateType,
     annualSalary: step.annualSalary,
-    monthlySalary: Math.round(step.annualSalary / 12),
+    monthlySalary: calculateMonthlySalary(step.annualSalary),
     supplements: null,
     estimatedTotalAnnualSalary: null,
   };
@@ -89,29 +95,4 @@ export function compareTariffAreas(position: NursingPosition, seniorityYears: nu
   });
 }
 
-export function findApplicableStep(steps: readonly TariffStep[], seniorityYears: number): TariffStep | null {
-  const normalizedSeniority = normalizeSeniority(seniorityYears);
-  if (normalizedSeniority === null) return null;
-
-  return [...steps]
-    .sort((a, b) => b.seniorityYears - a.seniorityYears)
-    .find((step) => step.seniorityYears <= normalizedSeniority) ?? null;
-}
-
-export function formatNok(amount: number) {
-  return `${amount.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr`;
-}
-
-export function formatNorwegianDate(date: string) {
-  return new Intl.DateTimeFormat("nb-NO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "Europe/Oslo",
-  }).format(new Date(`${date}T12:00:00+02:00`));
-}
-
-function normalizeSeniority(value: number) {
-  if (!Number.isFinite(value) || value < 0) return null;
-  return Math.floor(value);
-}
+export const findApplicableStep = findApplicableTariffStep;
