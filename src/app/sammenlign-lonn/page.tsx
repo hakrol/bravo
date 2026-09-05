@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdSlot } from "@/components/ad-slot";
+import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { OccupationComparisonCalculator } from "@/components/occupation-comparison-calculator";
 import { buildLonnsjekkPageData } from "@/lib/lonnsjekk";
 import { buildOccupationComparisonPageData } from "@/lib/occupation-comparison";
@@ -65,6 +66,7 @@ export default async function SammenlignLonnPage() {
         <OccupationComparisonCalculator data={comparisonData} />
         <AdSlot placement="sammenlign-lonn-after-tool" />
         <SammenlignLonnGuide />
+        <CalculatorCrossLinks currentHref="/sammenlign-lonn" />
       </div>
     </div>
   );

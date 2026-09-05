@@ -1,7 +1,6 @@
 "use client";
 
 import { type Dispatch, type ReactNode, type SetStateAction, useState } from "react";
-import { CalculatorPageVisual } from "@/components/calculator-page-visual";
 
 const STANDARD_WEEKLY_HOUR_OPTIONS = ["35,5", "36", "37,5", "40"] as const;
 const DAY_HOURS = 7.5;
@@ -120,30 +119,23 @@ export function SalaryCalculatorDashboard() {
       : undefined;
 
   return (
-    <section className="fade-up grid gap-6 lg:gap-8">
-      <div className="relative overflow-hidden rounded-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(247,249,251,0.96))] px-6 py-7 shadow-[0_22px_70px_rgba(15,23,42,0.07)] sm:px-8 sm:py-8 lg:px-10">
-        <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(20,83,45,0.22),transparent)]" />
-        <div className="relative space-y-5">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-            <CalculatorPageVisual variant="salary" />
-            <div className="max-w-4xl space-y-3">
-              <h1 className="max-w-3xl text-4xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-5xl lg:text-6xl">
-                Lønnskalkulator
-              </h1>
-              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Beregn lønn, skatt, timelønn, feriepenger og netto utbetaling med en enkel
-                lønnskalkulator.
-              </p>
+    <section className="fade-up grid gap-6 sm:gap-7">
+      <div className="grid overflow-hidden rounded-[14px] border border-slate-200 bg-white shadow-[0_16px_45px_rgba(15,23,42,0.07)] lg:grid-cols-[1.08fr_1fr]">
+        <div className="p-5 sm:p-7 lg:p-8">
+          <div className="mb-6 flex items-start gap-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#14532d] text-sm font-bold text-white">1</span>
+            <div>
+              <h2 className="text-xl font-semibold tracking-[-0.03em] text-slate-950">Legg inn lønnen din</h2>
+              <p className="mt-1 text-sm leading-6 text-slate-600">Velg arbeidstid og fyll inn årslønn, månedslønn eller timelønn.</p>
             </div>
           </div>
-
           <section
             className="scroll-mt-8"
             id="lonnskalkulator-kontrollpanel"
           >
             <div className="grid gap-3">
               <PanelRow>
-                <div className="grid gap-3 md:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2">
                   <FieldRow
                     label="Timer per uke i 100 %"
                   >
@@ -172,9 +164,7 @@ export function SalaryCalculatorDashboard() {
                     />
                   </FieldRow>
 
-                  <FieldRow
-                    label="Stillingsprosent"
-                  >
+                  <FieldRow label="Stillingsprosent">
                     <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
                       <NumericInput
                         onChange={setEmploymentPercentInput}
@@ -186,7 +176,7 @@ export function SalaryCalculatorDashboard() {
                         value={employmentPercentInput}
                       />
                       <button
-                        className="inline-flex h-12 items-center justify-center rounded-[5px] bg-slate-100 px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-200 hover:text-slate-950"
+                        className="inline-flex h-11 items-center justify-center rounded-[7px] bg-slate-100 px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-200 hover:text-slate-950"
                         onClick={() => setEmploymentPercentInput("")}
                         type="button"
                       >
@@ -198,7 +188,7 @@ export function SalaryCalculatorDashboard() {
               </PanelRow>
 
               <PanelRow>
-                <div className="grid gap-3 lg:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-3">
                   <SalaryInlineField
                     active={salarySource === "annual"}
                     label="Årslønn"
@@ -248,7 +238,7 @@ export function SalaryCalculatorDashboard() {
               </PanelRow>
 
               <PanelRow>
-                <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-[minmax(160px,220px)_minmax(160px,220px)_minmax(160px,220px)] lg:items-end">
+                <div className="grid gap-3 sm:grid-cols-3">
                   <FieldRow
                     info="Dette er en enkel estimert skatteprosent. Kalkulatoren bruker ikke skattekort, fradrag eller trinnskatt."
                     label="Skattesats"
@@ -288,29 +278,33 @@ export function SalaryCalculatorDashboard() {
             </div>
           </section>
         </div>
-      </div>
+        <section aria-live="polite" className="relative flex flex-col justify-between bg-[linear-gradient(145deg,#174f32_0%,#0e3f27_100%)] p-6 text-white sm:p-8">
+          <span className="absolute -left-5 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-[#e95d0f] shadow-[0_8px_24px_rgba(15,23,42,0.12)] lg:flex" aria-hidden="true">
+            <ArrowRightIcon />
+          </span>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-emerald-100">Estimert netto månedslønn</p>
+            <p className="mt-3 text-[clamp(2.5rem,6vw,4rem)] font-semibold leading-none tracking-[-0.055em] tabular-nums">
+              {formatCurrency(actualMonthlyNet)}
+            </p>
+            <p className="mt-3 text-lg font-medium text-emerald-50 tabular-nums">
+              {formatCurrency(actualAnnualNet)} <span className="text-sm font-normal text-emerald-200">netto per år</span>
+            </p>
+          </div>
 
-      <section className="grid gap-4 lg:grid-cols-[1.35fr_1fr_1fr]">
-        <HeroMetricCard
-          detail="Det viktigste tallet for hva som faktisk kommer inn på konto hver måned."
-          label="Netto månedslønn"
-          prominent
-          tone="net"
-          value={formatCurrency(actualMonthlyNet)}
-        />
-        <HeroMetricCard
-          detail="Brutto månedslønn i faktisk stillingsprosent."
-          label="Brutto månedslønn"
-          tone="gross"
-          value={formatCurrency(actualMonthlyGross)}
-        />
-        <HeroMetricCard
-          detail="Estimert månedlig skatt med enkel prosentmodell."
-          label="Månedlig skatt"
-          tone="tax"
-          value={formatCurrency(monthlyTax)}
-        />
-      </section>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <ResultSummary label="Brutto per måned" value={formatCurrency(actualMonthlyGross)} />
+            <ResultSummary label="Skatt per måned" value={formatCurrency(monthlyTax)} />
+            <ResultSummary label="Stillingsprosent" value={employmentPercent !== undefined ? `${formatNumber(employmentPercent)} %` : "—"} />
+            <ResultSummary label="Netto per time" value={formatCurrency(actualHourlyNet)} />
+          </div>
+
+          <p className="mt-6 flex gap-3 rounded-[7px] bg-white/8 p-4 text-sm leading-6 text-emerald-50">
+            <InfoIcon />
+            <span>Beregningen er et overslag. Faktisk skatt avhenger blant annet av skattekort, fradrag og tabelltrekk.</span>
+          </p>
+        </section>
+      </div>
 
       <section className="grid gap-5 xl:grid-cols-3">
         <MetricSection
@@ -382,7 +376,7 @@ export function SalaryCalculatorDashboard() {
         />
       </section>
 
-      <section className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+      <section className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_12px_36px_rgba(15,23,42,0.05)] sm:p-6">
         <div>
           <h2 className="mt-1 text-2xl font-semibold tracking-[-0.04em] text-slate-950">
             Feriejustering
@@ -433,7 +427,7 @@ type PanelRowProps = {
 
 function PanelRow({ children }: PanelRowProps) {
   return (
-    <section className="border-b border-black/6 pb-4 last:border-b-0 last:pb-0">
+    <section className="border-b border-slate-200 pb-5 pt-5 first:pt-0 last:border-b-0 last:pb-0">
       {children}
     </section>
   );
@@ -533,37 +527,29 @@ function SalaryInlineField({
   );
 }
 
-type HeroMetricCardProps = {
-  label: string;
-  value: string;
-  detail: string;
-  tone: MetricTone;
-  prominent?: boolean;
-};
-
-function HeroMetricCard({
-  label,
-  value,
-  detail,
-  tone,
-  prominent = false,
-}: HeroMetricCardProps) {
+function ResultSummary({ label, value }: { label: string; value: string }) {
   return (
-    <article
-      className={`rounded-[5px] p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] transition-all duration-300 ${getSurfaceClassName(tone)} ${
-        prominent ? "lg:p-6" : ""
-      }`}
-    >
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
-      <p
-        className={`mt-3 font-semibold tracking-[-0.05em] tabular-nums transition-all duration-300 ${getValueClassName(tone)} ${
-          prominent ? "text-4xl sm:text-5xl" : "text-3xl"
-        }`}
-      >
-        {value}
-      </p>
-      <p className="mt-3 text-sm leading-6 text-slate-600">{detail}</p>
-    </article>
+    <div className="rounded-[7px] border border-white/10 bg-white/8 px-4 py-3">
+      <p className="text-xs font-medium text-emerald-200">{label}</p>
+      <p className="mt-1 text-lg font-semibold text-white tabular-nums">{value}</p>
+    </div>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="20" viewBox="0 0 24 24" width="20">
+      <path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function InfoIcon() {
+  return (
+    <svg aria-hidden="true" className="mt-0.5 shrink-0 text-[#f97316]" fill="none" height="19" viewBox="0 0 24 24" width="19">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <path d="M12 11v6m0-10v.5" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+    </svg>
   );
 }
 
@@ -575,7 +561,7 @@ type MetricSectionProps = {
 
 function MetricSection({ title, description, children }: MetricSectionProps) {
   return (
-    <section className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+    <section className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_12px_36px_rgba(15,23,42,0.05)] sm:p-6">
       <div className="mb-5">
         <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950">{title}</h2>
         <p className="mt-1 text-sm leading-6 text-slate-600">{description}</p>
@@ -594,7 +580,7 @@ type MetricRowProps = {
 
 function MetricRow({ label, value, tone = "default", info }: MetricRowProps) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-[5px] bg-slate-50 px-4 py-3 transition-all duration-300">
+    <div className="flex items-center justify-between gap-4 rounded-[7px] bg-slate-50 px-4 py-3 transition-all duration-300">
       <div className="flex min-w-0 items-center gap-2">
         <span className="truncate text-sm text-slate-700">{label}</span>
         {info ? <InfoTip text={info} /> : null}
@@ -617,7 +603,7 @@ type MetricCardProps = {
 function MetricCard({ label, value, detail, info, tone = "default" }: MetricCardProps) {
   return (
     <article
-      className={`rounded-[5px] p-4 shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-all duration-300 ${getSurfaceClassName(tone)}`}
+      className={`rounded-[8px] p-4 shadow-[0_12px_30px_rgba(15,23,42,0.04)] transition-all duration-300 ${getSurfaceClassName(tone)}`}
     >
       <div className="flex items-center gap-2">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
@@ -647,13 +633,13 @@ function InsightCard({
   detail,
 }: InsightCardProps) {
   return (
-    <article className="rounded-[5px] bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)]">
+    <article className="rounded-[14px] border border-slate-200 bg-white p-5 shadow-[0_12px_36px_rgba(15,23,42,0.05)] sm:p-6">
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{label}</p>
       <p className="mt-3 text-3xl font-semibold tracking-[-0.05em] text-slate-950 tabular-nums">
         {primaryValue}
       </p>
       <p className="mt-3 text-sm leading-6 text-slate-600">{detail}</p>
-      <div className="mt-4 flex items-center justify-between rounded-[5px] bg-slate-50 px-4 py-3">
+      <div className="mt-4 flex items-center justify-between rounded-[7px] bg-slate-50 px-4 py-3">
         <span className="text-sm text-slate-600">{secondaryLabel}</span>
         <span className="text-sm font-semibold text-slate-950 tabular-nums">{secondaryValue}</span>
       </div>
@@ -664,7 +650,7 @@ function InsightCard({
 function InfoTip({ text }: { text: string }) {
   return (
     <details className="group relative">
-      <summary className="flex h-5 w-5 cursor-pointer list-none items-center justify-center rounded-full bg-slate-200 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-300 hover:text-slate-950">
+      <summary aria-label="Vis forklaring" className="flex h-5 w-5 cursor-pointer list-none items-center justify-center rounded-full bg-slate-200 text-[11px] font-semibold text-slate-600 transition hover:bg-slate-300 hover:text-slate-950">
         i
       </summary>
       <div className="absolute left-1/2 top-[calc(100%+0.5rem)] z-20 w-64 -translate-x-1/2 rounded-[5px] bg-slate-950 px-3 py-2 text-xs leading-5 text-white shadow-[0_16px_40px_rgba(15,23,42,0.20)]">
@@ -675,7 +661,7 @@ function InfoTip({ text }: { text: string }) {
 }
 
 const inputClassName =
-  "h-11 w-full rounded-[5px] border border-black/8 px-4 text-base outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-black/14 focus:border-[rgba(20,83,45,0.32)] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]";
+  "h-11 w-full rounded-[7px] border border-slate-200 px-4 text-base outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-[#2f6c49] focus:ring-4 focus:ring-[rgba(20,83,45,0.10)]";
 
 function handleSalaryInputChange(
   field: SalarySource,

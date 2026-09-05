@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { AdSlot } from "@/components/ad-slot";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -31,20 +32,40 @@ export const metadata: Metadata = {
 
 export default function LonnskalkulatorPage() {
   return (
-    <div className="min-h-screen px-5 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
-        <CalculatorCrossLinks currentHref="/lonnskalkulator" />
+    <main className="min-h-screen bg-[linear-gradient(180deg,#fbfaf7_0%,#f8f7f3_100%)] px-4 py-7 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-7 sm:gap-9">
+        <header className="relative max-w-6xl pb-1 sm:pb-3">
+          <div className="relative z-10 max-w-3xl sm:pr-52 md:pr-64 lg:pr-0">
+            <h1 className="text-[clamp(2.3rem,6vw,4rem)] font-semibold leading-[1.05] tracking-[-0.055em] text-[#111714]">
+              Lønnskalkulator
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+              Beregn brutto og netto lønn, skatt, timelønn og feriepenger. Legg inn én
+              lønnstype, så regner kalkulatoren ut resten for deg.
+            </p>
+          </div>
+          <Image
+            alt="Illustrasjon av kalkulator og lønnsoversikt"
+            className="pointer-events-none absolute right-0 top-1/2 hidden h-auto w-52 -translate-y-1/2 object-contain opacity-95 drop-shadow-[0_18px_20px_rgba(20,83,45,0.10)] sm:block md:right-2 md:w-64 lg:right-4 lg:w-72"
+            height={1024}
+            priority
+            src="/images/hero-kalkulatorer.png"
+            width={1536}
+          />
+        </header>
+
         <SalaryCalculatorDashboard />
         <AdSlot placement="lonnskalkulator-after-tool" />
         <SalaryCalculatorGuide />
+        <CalculatorCrossLinks currentHref="/lonnskalkulator" />
       </div>
-    </div>
+    </main>
   );
 }
 
 function SalaryCalculatorGuide() {
   return (
-    <article className="px-1 py-4 sm:px-2 sm:py-6 lg:py-8">
+    <article className="rounded-[14px] border border-slate-200 bg-white px-5 py-7 shadow-[0_12px_36px_rgba(15,23,42,0.05)] sm:px-8 sm:py-9 lg:py-10">
       <div className="mx-auto max-w-3xl">
         <h2 className="text-3xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-4xl">
           Slik bruker du lønnskalkulatoren
