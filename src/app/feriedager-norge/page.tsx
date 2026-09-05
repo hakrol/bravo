@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AdSlot } from "@/components/ad-slot";
+import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { HolidayCalendar } from "@/components/holiday-calendar";
 import { siteConfig } from "@/lib/site-config";
 
@@ -32,9 +33,10 @@ export const metadata: Metadata = {
 export default function FeriedagerNorgePage() {
   return (
     <main className="min-h-screen px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-      <div className="mx-auto w-full max-w-7xl">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <HolidayCalendar referenceDate={new Date().toISOString()} />
-        <AdSlot className="mt-8" placement="feriedager-after-tool" />
+        <AdSlot placement="feriedager-after-tool" />
+        <CalculatorCrossLinks currentHref="/feriedager-norge" />
       </div>
     </main>
   );

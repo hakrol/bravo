@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { TeacherSalaryCalculator } from "@/components/teacher-salary-calculator-dashboard";
 import { siteConfig } from "@/lib/site-config";
 
@@ -54,7 +55,7 @@ export default function TeacherSalaryCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
         type="application/ld+json"
       />
-      <div className="mx-auto w-full max-w-6xl">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-7">
         <header className="relative max-w-6xl pb-8 sm:pb-10">
           <div className="relative z-10 max-w-3xl sm:pr-40 md:pr-52 lg:pr-0">
             <p className="inline-flex rounded-full border border-[#3e7855] bg-[#f3f8f4] px-5 py-2 text-xs font-bold uppercase tracking-[0.14em] text-[#184d31]">Oppdaterte KS-satser · 2026</p>
@@ -76,6 +77,7 @@ export default function TeacherSalaryCalculatorPage() {
         </header>
 
         <TeacherSalaryCalculator />
+        <CalculatorCrossLinks currentHref="/laerer-lonn-kalkulator" />
       </div>
     </main>
   );

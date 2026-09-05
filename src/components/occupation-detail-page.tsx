@@ -113,6 +113,25 @@ const EXTERNAL_SOURCE_LINKS = [
   },
 ];
 
+const NURSE_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2222", "2223"]);
+const TEACHER_CALCULATOR_OCCUPATION_CODES = new Set(["2320", "2330", "2341", "2352"]);
+
+type OccupationSalaryCalculatorKind = "nurse" | "teacher";
+
+function getOccupationSalaryCalculatorKind(
+  occupationCode: string,
+): OccupationSalaryCalculatorKind | null {
+  if (NURSE_CALCULATOR_OCCUPATION_CODES.has(occupationCode)) {
+    return "nurse";
+  }
+
+  if (TEACHER_CALCULATOR_OCCUPATION_CODES.has(occupationCode)) {
+    return "teacher";
+  }
+
+  return null;
+}
+
 export async function OccupationDetailPage({ detail }: OccupationDetailPageProps) {
   const occupationText = getOccupationTextContext({
     occupationCode: detail.detailPage.occupationCode,
@@ -194,6 +213,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const blogPosts = blogCategory
     ? (await getBlogPostsByCategory(blogCategory.slug)).slice(0, 5)
     : [];
+  const salaryCalculatorKind = getOccupationSalaryCalculatorKind(
+    detail.detailPage.occupationCode,
+  );
   const sectionNavItems = [
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }
@@ -273,6 +295,21 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       lønninger trekker gjennomsnittet opp. Når gjennomsnittet er lavere, kan noen
                       lave lønninger trekke det ned.
                     </p>
+
+                    {salaryCalculatorKind ? (
+                      <Link
+                        className="mt-8 inline-flex min-h-11 items-center justify-center rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                        href={
+                          salaryCalculatorKind === "teacher"
+                            ? "/laerer-lonn-kalkulator"
+                            : "/sykepleier-lonn-kalkulator"
+                        }
+                      >
+                        {salaryCalculatorKind === "teacher"
+                          ? "Lønnskalkulator for lærere"
+                          : "Lønnskalkulator for sykepleiere"}
+                      </Link>
+                    ) : null}
                   </div>
                 ) : null}
 

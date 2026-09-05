@@ -3,6 +3,15 @@
 import { track } from "@vercel/analytics";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 
+const DESKTOP_QUERY = "(min-width: 64rem)";
+const SECTION_NAV_OFFSET = 56;
+const DESKTOP_HEADER_OFFSET = 80;
+
+function getStickyOffset() {
+  return SECTION_NAV_OFFSET +
+    (window.matchMedia(DESKTOP_QUERY).matches ? DESKTOP_HEADER_OFFSET : 0);
+}
+
 type OccupationSectionLinkNavItem = {
   href: string;
   label: string;
@@ -47,7 +56,7 @@ export function OccupationSectionLinkNav({
     const updateActiveSection = () => {
       window.cancelAnimationFrame(animationFrame);
       animationFrame = window.requestAnimationFrame(() => {
-        const activationLine = 72;
+        const activationLine = getStickyOffset();
         let nextActiveHref = sectionElements[0].href;
 
         for (const section of sectionElements) {
@@ -113,7 +122,7 @@ export function OccupationSectionLinkNav({
 
     if (target) {
       event.preventDefault();
-      const stickyOffset = 56;
+      const stickyOffset = getStickyOffset();
       const targetTop = target.getBoundingClientRect().top + window.scrollY - stickyOffset;
 
       window.history.pushState(null, "", item.href);
@@ -134,7 +143,7 @@ export function OccupationSectionLinkNav({
   return (
     <nav
       aria-label={ariaLabel}
-      className="sticky top-0 z-[60] mb-3 w-full border-y border-slate-200/80 bg-white/94 px-2 py-1.5 shadow-[0_8px_22px_rgba(15,47,34,0.09)] backdrop-blur-xl sm:px-4 lg:px-6"
+      className="sticky top-0 z-40 mb-3 w-full border-y border-slate-200/80 bg-white/94 px-2 py-1.5 shadow-[0_8px_22px_rgba(15,47,34,0.09)] backdrop-blur-xl sm:px-4 lg:top-20 lg:px-6"
     >
       <div
         className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
