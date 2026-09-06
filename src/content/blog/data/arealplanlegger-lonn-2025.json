@@ -1,0 +1,68 @@
+{
+  "id": "arealplanlegger-lonn-2025",
+  "title": "Arealplanleggere og nærliggende yrker i 2025",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Tallene viser median månedslønn for heltids- og deltidsansatte samlet, omregnet til heltidsekvivalenter. Yrkesinndelingen følger STYRK-08.",
+  "occupationMapping": {
+    "styrk08Code": "2164",
+    "styrk08Title": "Arealplanleggere"
+  },
+  "genderMedian": {
+    "occupationLabel": "Arealplanleggere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 67420,
+    "menMonthlyMedian": 69010
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Arealplanleggere",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 55030 },
+      { "label": "2022", "value": 58270 },
+      { "label": "2023", "value": 61480 },
+      { "label": "2024", "value": 64580 },
+      { "label": "2025", "value": 68140 }
+    ]
+  },
+  "rows": [
+    {
+      "code": "2142",
+      "label": "Sivilingeniører (bygg og anlegg)",
+      "href": "/yrke/sivilingeniorer-bygg-og-anlegg-lonn",
+      "value": 75990
+    },
+    {
+      "code": "2161",
+      "label": "Sivilarkitekter",
+      "href": "/yrke/sivilarkitekter-lonn",
+      "value": 75010
+    },
+    {
+      "code": "2162",
+      "label": "Landskapsarkitekter",
+      "href": "/yrke/landskapsarkitekter-lonn",
+      "value": 72500
+    },
+    {
+      "code": "2164",
+      "label": "Arealplanleggere",
+      "href": "/yrke/arealplanleggere-lonn",
+      "value": 68140
+    },
+    {
+      "code": "2133",
+      "label": "Miljøvernrådgivere",
+      "href": "/yrke/miljovernradgivere-lonn",
+      "value": 66430
+    },
+    {
+      "code": "2165",
+      "label": "Landmålere, kartografer mv.",
+      "href": "/yrke/landmalere-kartografer-mv-lonn",
+      "value": 63810
+    }
+  ]
+}

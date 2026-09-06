@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { SalaryCalculatorSsbBenchmark } from "@/components/salary-calculator-ssb-benchmark";
 import {
   calculateTeacherSalary,
   compareTeacherPositions,
@@ -15,10 +16,22 @@ import {
   formatNok,
   formatNorwegianDate,
 } from "@/lib/tariff-calculator";
+import type {
+  TeacherSsbBenchmark,
+  TeacherSsbBenchmarkId,
+} from "@/lib/teacher-ssb-benchmarks";
 
-export function TeacherSalaryCalculator() {
+const ssbChoices = [
+  { id: "primary-school", label: "Grunnskolelærere" },
+  { id: "upper-secondary", label: "Lektorer mv. (videregående skole)" },
+] as const;
+
+export function TeacherSalaryCalculator({ ssbBenchmarks }: {
+  ssbBenchmarks: Partial<Record<TeacherSsbBenchmarkId, TeacherSsbBenchmark>>;
+}) {
   const [positionId, setPositionId] = useState<TeacherPositionId>("teacher");
   const [seniorityYears, setSeniorityYears] = useState(6);
+  const [ssbBenchmarkId, setSsbBenchmarkId] = useState<TeacherSsbBenchmarkId>("primary-school");
 
   const selectedPosition = teacherTariffAgreement.positions.find(
     (position) => position.id === positionId,
@@ -30,6 +43,9 @@ export function TeacherSalaryCalculator() {
   const nextStep = appliedStepIndex >= 0
     ? selectedPosition.steps[appliedStepIndex + 1]
     : undefined;
+  const ssbBenchmark = ssbBenchmarks[ssbBenchmarkId]
+    ?? ssbBenchmarks["primary-school"]
+    ?? ssbBenchmarks["upper-secondary"];
 
   return (
     <section className="grid gap-5">
@@ -131,6 +147,16 @@ export function TeacherSalaryCalculator() {
           comparisons={compareTeacherPositions(seniorityYears)}
           selectedAnnualSalary={result.annualSalary}
           selectedPositionId={selectedPosition.id}
+        />
+      ) : null}
+
+      {result && ssbBenchmark ? (
+        <SalaryCalculatorSsbBenchmark
+          benchmark={ssbBenchmark}
+          choices={ssbChoices}
+          onChoiceChange={(id) => setSsbBenchmarkId(id as TeacherSsbBenchmarkId)}
+          selectedAnnualSalary={result.annualSalary}
+          selectedChoiceId={ssbBenchmarkId}
         />
       ) : null}
 

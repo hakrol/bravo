@@ -3,6 +3,7 @@ import Image from "next/image";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { TeacherSalaryCalculator } from "@/components/teacher-salary-calculator-dashboard";
 import { siteConfig } from "@/lib/site-config";
+import { getTeacherSsbBenchmarks } from "@/lib/teacher-ssb-benchmarks";
 
 const pathname = "/laerer-lonn-kalkulator";
 const title = "Lærer lønn 2026 – lønnskalkulator for KS";
@@ -48,7 +49,9 @@ const structuredData = {
   url: `${siteConfig.siteUrl}${pathname}`,
 };
 
-export default function TeacherSalaryCalculatorPage() {
+export default async function TeacherSalaryCalculatorPage() {
+  const ssbBenchmarks = await getTeacherSsbBenchmarks();
+
   return (
     <main className="min-h-screen bg-[linear-gradient(180deg,#fbfaf7_0%,#f8f7f3_100%)] px-4 py-7 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <script
@@ -76,7 +79,7 @@ export default function TeacherSalaryCalculatorPage() {
           />
         </header>
 
-        <TeacherSalaryCalculator />
+        <TeacherSalaryCalculator ssbBenchmarks={ssbBenchmarks} />
         <CalculatorCrossLinks currentHref="/laerer-lonn-kalkulator" />
       </div>
     </main>

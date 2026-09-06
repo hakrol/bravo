@@ -176,6 +176,7 @@ Produksjonsklare visuelle dataelementer:
 - Søkbar yrkesliste: `<BlogOccupationSalaryTable snapshotId="..." />`
 - Kjønnsdelt lønnskort: `<BlogGenderSalaryCards />`
 - Lønnsutviklingsdiagram: `<BlogSalaryDevelopmentChart />`, slik advokatinnlegget bruker via `<LegalSalaryDevelopmentChart />`
+- Lønnsfordeling utvikling: `<BlogSalaryDistributionDevelopmentChart />`
 
 Gyldige diagramtyper i `daily-brief.md`:
 - `Kjønnsdelt lønnskort`
@@ -184,6 +185,7 @@ Gyldige diagramtyper i `daily-brief.md`:
 - `Søkbar yrkesliste`
 - `Lønnsutviklingsdiagram`
 - `Femårs lønnsutvikling`
+- `Lønnsfordeling utvikling`
 
 Alle blogginnlegg som handler om lønn for ett konkret yrke skal ha `BlogGenderSalaryCards` der det passer naturlig tidlig i innlegget, vanligvis etter første hovedtabell eller etter avsnittet som forklarer hovedtallet. Komponenten skal vise medianlønn for kvinner og menn, med veksling mellom årslønn, månedslønn og timelønn. Bruk samme periode og kilde som innleggets hovedtall. Kjønnsdelte lønnstall skal ligge i et frosset snapshot under src/content/blog/data/ før innlegget regnes som ferdig. Hvis SSB ikke publiserer kjønnsdelte tall for yrket, skal innlegget forklare hvorfor komponenten ikke brukes.
 
@@ -197,6 +199,9 @@ Datadrevne blogginnlegg skal som hovedregel inneholde minst 1 visuell dataelemen
 
 - `BlogSalaryDevelopmentChart`
   Brukes når innlegget skal vise faktisk femårsutvikling i median samlet månedslønn for ett yrke eller en liten gruppe sammenlignbare yrker. Diagrammet skal vise kroner på y-aksen, år på x-aksen og samlet vekst fra start til slutt både i kroner og prosent. Ikke indeksér verdiene. Bruk en wrapper-komponent når dataene kommer fra et artikkelspesifikt snapshot, slik at MDX-en kan bruke en kort komponent som `<LegalSalaryDevelopmentChart />`.
+
+- `BlogSalaryDistributionDevelopmentChart`
+  Brukes når innlegget skal vise hvordan P25, median og P75 utvikler seg over tid for ett yrke. Bruk «Begge kjønn», alle sektorer og arbeidstid i alt med mindre en mer spesifikk brief sier noe annet. Vis maksimalt de ti nyeste årene med komplette verdier. År som mangler P25, median eller P75 skal hoppes over helt, uten tom plass, nullverdi eller omtale i diagrammet. Punktene skal vise år, mål og beløp ved hover eller tastaturfokus. På mobil skal trykk feste informasjonsboksen til brukeren lukker den. P25, median og P75 skal ha korte forklaringer ved egne info-ikoner. Dataene skal ligge i et frosset snapshot, og MDX-en skal bruke en artikkelspesifikk wrapper-komponent.
 
 - `BlogOccupationSalaryTable`
   Brukes som søkbar liste/tabell over yrker fra et frosset snapshot under `src/content/blog/data/`. Tabellen passer når innlegget har flere relevante yrker enn det som bør vises i et diagram.

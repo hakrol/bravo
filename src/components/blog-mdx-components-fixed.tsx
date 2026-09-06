@@ -3,6 +3,10 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BlogChart } from "@/components/blog-chart";
 import {
+  ArealPlannerGenderSalaryCards,
+  ArealPlannerSalaryDevelopmentChart,
+} from "@/components/blog-areal-planner-salary-chart";
+import {
   AutomatikerGenderSalaryCards,
   AutomatikerSalaryBubbleChart,
   AutomatikerSalaryDevelopmentChart,
@@ -114,6 +118,8 @@ import { RoyalApanageDevelopmentChart } from "@/components/blog-royal-apanage-ch
 import { StortingPresidentCompensationChart } from "@/components/blog-storting-president-compensation-chart";
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
 import { BlogSalaryDevelopmentChart } from "@/components/blog-salary-development-chart";
+import { BlogSalaryDistributionDevelopmentChart } from "@/components/blog-salary-distribution-development-chart";
+import { ProgramvareutviklereSalaryDistributionDevelopmentChart } from "@/components/blog-programvareutviklere-salary-distribution-development-chart";
 import { TopSalaryGrowth2024To2025Chart } from "@/components/blog-salary-growth-ranking-chart";
 import {
   ServitorGenderSalaryCards,
@@ -277,6 +283,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       </td>
     ),
     BlogChart,
+    ArealPlannerGenderSalaryCards,
+    ArealPlannerSalaryDevelopmentChart,
     AutomatikerGenderSalaryCards,
     AutomatikerSalaryBubbleChart,
     AutomatikerSalaryDevelopmentChart,
@@ -325,6 +333,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogHandverkerSalaryChart,
     LegalSalaryDevelopmentChart,
     BlogSalaryDevelopmentChart,
+    BlogSalaryDistributionDevelopmentChart,
+    ProgramvareutviklereSalaryDistributionDevelopmentChart,
     TopSalaryGrowth2024To2025Chart,
     HealthSalaryBubbleChart,
     IntensivsykepleierGenderSalaryCards,

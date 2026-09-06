@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import advokaterJuristerLonn2025Snapshot from "@/content/blog/data/advokater-jurister-lonn-2025.json";
+import arealplanleggerLonn2025Snapshot from "@/content/blog/data/arealplanlegger-lonn-2025.json";
 import automatikerLonn2025Snapshot from "@/content/blog/data/automatiker-lonn-2025.json";
 import bartenderLonn2025Snapshot from "@/content/blog/data/bartender-lonn-2025.json";
 import bestBetalteLaerlingyrker2025Snapshot from "@/content/blog/data/best-betalte-laerlingyrker-2025.json";
@@ -65,6 +66,7 @@ const rowsPerPage = 25;
 
 const snapshots = {
   "advokater-jurister-lonn-2025": advokaterJuristerLonn2025Snapshot as OccupationSalarySnapshot,
+  "arealplanlegger-lonn-2025": arealplanleggerLonn2025Snapshot as OccupationSalarySnapshot,
   "automatiker-lonn-2025": automatikerLonn2025Snapshot as OccupationSalarySnapshot,
   "bartender-lonn-2025": bartenderLonn2025Snapshot as OccupationSalarySnapshot,
   "best-betalte-laerlingyrker-2025": bestBetalteLaerlingyrker2025Snapshot as OccupationSalarySnapshot,
