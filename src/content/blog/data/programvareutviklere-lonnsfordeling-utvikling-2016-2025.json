@@ -1,0 +1,25 @@
+{
+  "id": "programvareutviklere-lonnsfordeling-utvikling-2016-2025",
+  "tableId": "11418",
+  "source": "Statistisk sentralbyrå, tabell 11418",
+  "sourceUrl": "https://www.ssb.no/statbank/table/11418",
+  "updated": "2026-08-28T06:00:00Z",
+  "occupationCode": "2512",
+  "occupationLabel": "Programvareutviklere",
+  "sector": "Sum alle sektorer",
+  "gender": "Begge kjønn",
+  "workingHours": "I alt",
+  "measure": "Samlet månedslønn",
+  "rows": [
+    { "year": "2016", "p25": 42670, "median": 52230, "p75": 63610 },
+    { "year": "2017", "p25": 43820, "median": 53540, "p75": 65250 },
+    { "year": "2018", "p25": 45470, "median": 55530, "p75": 67450 },
+    { "year": "2019", "p25": 47000, "median": 58000, "p75": 69170 },
+    { "year": "2020", "p25": 48360, "median": 59170, "p75": 71300 },
+    { "year": "2021", "p25": 50000, "median": 61300, "p75": 75000 },
+    { "year": "2022", "p25": 52920, "median": 65000, "p75": 79170 },
+    { "year": "2023", "p25": 56000, "median": 68800, "p75": 83330 },
+    { "year": "2024", "p25": 59580, "median": 72500, "p75": 87750 },
+    { "year": "2025", "p25": 63330, "median": 77420, "p75": 93820 }
+  ]
+}

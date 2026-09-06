@@ -1288,6 +1288,13 @@ a.blog-meta-chip:focus-visible {
   padding: clamp(2.3rem, 5vw, 4.3rem) clamp(1.1rem, 5vw, 3.2rem) 1.35rem;
 }
 
+.blog-salary-distribution-development-figure {
+  border-top: 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  background: #fffaf5;
+  padding: clamp(2.3rem, 5vw, 4.3rem) clamp(1.1rem, 5vw, 3.2rem) 1.35rem;
+}
+
 .blog-editorial-bar-figure {
   border-top: 0;
   border-bottom: 1px solid rgba(17, 17, 17, 0.08);
@@ -1307,6 +1314,11 @@ a.blog-meta-chip:focus-visible {
 }
 
 .blog-salary-development-figure .blog-chart-header {
+  justify-items: start;
+  text-align: left;
+}
+
+.blog-salary-distribution-development-figure .blog-chart-header {
   justify-items: start;
   text-align: left;
 }
@@ -1361,6 +1373,14 @@ a.blog-meta-chip:focus-visible {
   line-height: 1.08;
 }
 
+.blog-prose .blog-salary-distribution-development-figure .blog-chart-title,
+.blog-salary-distribution-development-figure .blog-chart-title {
+  max-width: 22ch;
+  font-size: clamp(1.9rem, 5vw, 3.125rem);
+  font-weight: 820;
+  line-height: 1.08;
+}
+
 .blog-prose .blog-editorial-bar-figure .blog-chart-title,
 .blog-editorial-bar-figure .blog-chart-title {
   max-width: 18ch;
@@ -1390,6 +1410,13 @@ a.blog-meta-chip:focus-visible {
   color: #4b5563;
   font-size: clamp(1.08rem, 2vw, 1.45rem);
   line-height: 1.35;
+}
+
+.blog-salary-distribution-development-figure .blog-chart-subtitle {
+  max-width: 68rem;
+  color: #4b5563;
+  font-size: clamp(1.08rem, 2vw, 1.35rem);
+  line-height: 1.45;
 }
 
 .blog-editorial-bar-figure .blog-chart-subtitle {
@@ -1882,6 +1909,281 @@ a.blog-meta-chip:focus-visible {
 .blog-salary-development-growth text {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
+}
+
+.blog-salary-distribution-development-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.15rem;
+  margin-top: 1.6rem;
+  color: #374151;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.blog-salary-distribution-development-legend span {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.blog-salary-distribution-development-info-button {
+  display: inline-grid;
+  width: 1.15rem;
+  height: 1.15rem;
+  place-items: center;
+  border: 1px solid rgba(20, 83, 45, 0.45);
+  border-radius: 999px;
+  background: #ffffff;
+  padding: 0;
+  color: #14532d;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.blog-salary-distribution-development-info-button:hover,
+.blog-salary-distribution-development-info-button:focus-visible,
+.blog-salary-distribution-development-info-button[aria-expanded="true"] {
+  border-color: #14532d;
+  background: #14532d;
+  color: #ffffff;
+}
+
+.blog-salary-distribution-development-info-button:focus-visible {
+  outline: 2px solid rgba(20, 83, 45, 0.28);
+  outline-offset: 2px;
+}
+
+.blog-salary-distribution-development-legend i {
+  display: inline-block;
+  width: 1.6rem;
+  height: 0;
+  border-top: 3px solid;
+}
+
+.blog-salary-distribution-development-legend i.is-p25 {
+  border-color: #b45309;
+  border-top-style: dashed;
+}
+
+.blog-salary-distribution-development-legend i.is-median {
+  border-color: #14532d;
+  border-top-width: 4px;
+}
+
+.blog-salary-distribution-development-legend i.is-p75 {
+  border-color: #2563eb;
+  border-top-style: dashed;
+}
+
+.blog-salary-distribution-development-legend i.is-band {
+  height: 0.75rem;
+  border: 1px solid rgba(20, 83, 45, 0.22);
+  border-radius: 2px;
+  background: rgba(74, 222, 128, 0.18);
+}
+
+.blog-salary-distribution-development-info {
+  display: flex;
+  max-width: 38rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.9rem;
+  border: 1px solid rgba(20, 83, 45, 0.2);
+  border-radius: 0.5rem;
+  background: #f4f8f2;
+  padding: 0.85rem 0.9rem;
+  color: #26352b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.blog-salary-distribution-development-info strong,
+.blog-salary-distribution-development-info p {
+  margin: 0;
+}
+
+.blog-salary-distribution-development-info p {
+  margin-top: 0.18rem;
+}
+
+.blog-salary-distribution-development-info > button {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  padding: 0 0.15rem;
+  color: #14532d;
+  font: inherit;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.blog-salary-distribution-development-wrap {
+  margin-top: 0.8rem;
+  overflow-x: auto;
+  padding-bottom: 0.45rem;
+  scrollbar-color: rgba(20, 83, 45, 0.35) transparent;
+  scrollbar-width: thin;
+}
+
+.blog-salary-distribution-development-wrap svg {
+  display: block;
+  min-width: 700px;
+  width: 100%;
+}
+
+.blog-salary-distribution-development-gridline {
+  stroke: rgba(95, 81, 69, 0.2);
+  stroke-dasharray: 7 7;
+  stroke-width: 1.35;
+}
+
+.blog-salary-distribution-development-year-line {
+  stroke: rgba(95, 81, 69, 0.08);
+  stroke-width: 1;
+}
+
+.blog-salary-distribution-development-axis {
+  stroke: #101820;
+  stroke-width: 2.2;
+}
+
+.blog-salary-distribution-development-y-tick,
+.blog-salary-distribution-development-x-tick {
+  fill: #374151;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.blog-salary-distribution-development-x-tick {
+  fill: #101820;
+  font-weight: 780;
+}
+
+.blog-salary-distribution-development-band {
+  fill: rgba(74, 222, 128, 0.18);
+  stroke: none;
+}
+
+.blog-salary-distribution-development-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.blog-salary-distribution-development-line.is-p25 {
+  stroke: #b45309;
+  stroke-dasharray: 9 8;
+  stroke-width: 3.5;
+}
+
+.blog-salary-distribution-development-line.is-median {
+  stroke: #14532d;
+  stroke-width: 5.5;
+}
+
+.blog-salary-distribution-development-line.is-p75 {
+  stroke: #2563eb;
+  stroke-dasharray: 9 8;
+  stroke-width: 3.5;
+}
+
+.blog-salary-distribution-development-point {
+  fill: #fffaf5;
+  stroke-width: 3;
+  cursor: pointer;
+  transition: r 120ms ease, filter 120ms ease;
+}
+
+.blog-salary-distribution-development-point.is-p25 {
+  stroke: #b45309;
+}
+
+.blog-salary-distribution-development-point.is-median {
+  stroke: #14532d;
+  stroke-width: 4;
+}
+
+.blog-salary-distribution-development-point.is-p75 {
+  stroke: #2563eb;
+}
+
+.blog-salary-distribution-development-point:hover,
+.blog-salary-distribution-development-point:focus-visible,
+.blog-salary-distribution-development-point[data-active="true"] {
+  filter: drop-shadow(0 0.2rem 0.35rem rgba(15, 23, 42, 0.2));
+  outline: none;
+  r: 10px;
+}
+
+.blog-salary-distribution-development-tooltip-object {
+  overflow: visible;
+}
+
+.blog-salary-distribution-development-tooltip {
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 0.8rem 2rem rgba(15, 23, 42, 0.16);
+  padding: 0.8rem 0.9rem;
+  color: #26313d;
+  font-family: inherit;
+  line-height: 1.35;
+}
+
+.blog-salary-distribution-development-tooltip-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #4b5563;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.blog-salary-distribution-development-tooltip-heading button {
+  display: grid;
+  width: 1.45rem;
+  height: 1.45rem;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: #eef3ed;
+  padding: 0;
+  color: #14532d;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.blog-salary-distribution-development-tooltip > strong {
+  display: block;
+  margin-top: 0.12rem;
+  color: #101820;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.blog-salary-distribution-development-tooltip p {
+  margin: 0.3rem 0 0;
+  color: #4b5563;
+  font-size: 0.78rem;
+}
+
+.blog-salary-distribution-development-footer {
+  display: grid;
+  gap: 0.3rem;
 }
 
 .blog-editorial-bar-axis-heading {
@@ -2470,6 +2772,10 @@ a.blog-meta-chip:focus-visible {
     padding: 1.9rem 1rem 1.1rem;
   }
 
+  .blog-salary-distribution-development-figure {
+    padding: 1.9rem 1rem 1.1rem;
+  }
+
   .blog-editorial-bar-figure {
     padding: 1.9rem 1rem 1.1rem;
   }
@@ -2486,6 +2792,26 @@ a.blog-meta-chip:focus-visible {
   .blog-salary-development-figure .blog-chart-subtitle {
     font-size: 1rem;
     line-height: 1.45;
+  }
+
+  .blog-prose .blog-salary-distribution-development-figure .blog-chart-title,
+  .blog-salary-distribution-development-figure .blog-chart-title {
+    max-width: 100%;
+    font-size: clamp(1.58rem, 7.1vw, 2.05rem);
+    line-height: 1.1;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .blog-salary-distribution-development-figure .blog-chart-subtitle {
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .blog-salary-distribution-development-legend {
+    gap: 0.6rem 0.9rem;
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
   }
 
   .blog-prose .blog-editorial-bar-figure .blog-chart-title,

@@ -67,7 +67,7 @@ type RootLayoutProps = Readonly<{
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="no" className={manrope.className}>
-      <head suppressHydrationWarning>
+      <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <Script
           id="clickio-tcf-stub"
           strategy="beforeInteractive"
@@ -83,14 +83,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           src="https://clickiocmp.com/t/consent_249773.js"
           strategy="beforeInteractive"
         />
-      </head>
-      <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <AdsenseScript />
         <AppShell>{children}</AppShell>
         <Analytics />
         <SpeedInsights />
+        {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
       </body>
-      {googleAnalyticsId ? <GoogleAnalytics gaId={googleAnalyticsId} /> : null}
     </html>
   );
 }

@@ -5,6 +5,7 @@ const calculatorLinks = [
   { href: "/lonnskalkulator", label: "Lønnskalkulator" },
   { href: "/laerer-lonn-kalkulator", label: "Lærerlønn" },
   { href: "/sykepleier-lonn-kalkulator", label: "Sykepleierlønn" },
+  { href: "/vernepleier-lonn-kalkulator", label: "Vernepleierlønn" },
   { href: "/bruttolonn-kalkulator", label: "Brutto/netto" },
   { href: "/lonnsvekst", label: "Lønnsvekst" },
   { href: "/arsverk-kalkulator", label: "Årsverk" },
