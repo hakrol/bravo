@@ -193,7 +193,7 @@ function OrdsnokAd({ adRef, className, format, placement, trackingData }: Readon
               className="h-full w-full object-contain"
               height={190}
               sizes="112px"
-              src="/images/ordsnok-ad-phone.png"
+              src="/images/ordsnok-ad-phone.webp"
               width={135}
             />
           </a>
