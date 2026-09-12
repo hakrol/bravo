@@ -660,7 +660,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </div>
 
             {hasEstimate ? (
-              <AdsenseAd className="mx-auto mt-4 xl:sticky xl:top-20" placement="occupation-sidebar" />
+              <AdsenseAd className="mx-auto mt-4 xl:sticky xl:top-[var(--occupation-sidebar-ad-top,152px)]" placement="occupation-sidebar" />
             ) : null}
           </aside>
         </div>
