@@ -1,5 +1,5 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import Link from "next/link";
-import { AdSlot } from "@/components/ad-slot";
 import { OccupationAgeTimeSeriesChart } from "@/components/occupation-age-time-series";
 import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
 import { OccupationSalaryDistributionSection } from "@/components/occupation-salary-distribution";
@@ -349,7 +349,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            <AdSlot placement="occupation-after-salary-overview" />
+            {hasEstimate ? <AdsenseAd placement="occupation-after-salary-overview" /> : null}
 
             {salarySupplementCards.length > 0 ? (
               <section
@@ -458,8 +458,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               occupationLabel={occupationText.titleLabel}
               posts={newsPosts}
             />
-
-            <AdSlot placement="occupation-mid-content" />
 
             {laborMarket ? (
               <section
@@ -650,7 +648,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            <AdSlot className="mx-auto mt-4" format="sidebar" placement="occupation-sidebar" />
+            {hasEstimate ? (
+              <AdsenseAd className="mx-auto mt-4" placement="occupation-sidebar" />
+            ) : null}
           </aside>
         </div>
       </section>

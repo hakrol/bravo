@@ -1,0 +1,13 @@
+export const ADSENSE_CLIENT_ID = "ca-pub-3073306475357950";
+
+export const ADSENSE_SLOTS = {
+  "blog-after-content": "2721562873",
+  "blog-sidebar": "2607233991",
+  "occupation-after-salary-overview": "1294152328",
+  "occupation-sidebar": "9387043575",
+  "calculator-after-tool": "2663074318",
+  "overview-between-sections": "5886782261",
+  "statistics-after-content": "7723829309",
+} as const;
+
+export type AdsensePlacement = keyof typeof ADSENSE_SLOTS;

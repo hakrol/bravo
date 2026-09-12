@@ -1,6 +1,6 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AdSlot } from "@/components/ad-slot";
 import { calculators, otherTools } from "@/lib/tool-catalog";
 import { siteConfig } from "@/lib/site-config";
 
@@ -94,7 +94,7 @@ export default function VerktoyPage() {
           </div>
         </section>
 
-        <AdSlot placement="verktoy-between-sections" />
+        <AdsenseAd placement="overview-between-sections" />
 
         <section className="grid gap-6">
           <div className="grid gap-3">

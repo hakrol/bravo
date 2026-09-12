@@ -1,5 +1,5 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
-import { AdSlot } from "@/components/ad-slot";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { LoanPaymentCalculatorDashboard } from "@/components/loan-payment-calculator-dashboard";
@@ -34,7 +34,7 @@ export default function RenteOgAvdragKalkulatorPage() {
     <div className="min-h-screen px-5 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <LoanPaymentCalculatorDashboard />
-        <AdSlot placement="rente-og-avdrag-after-tool" />
+        <AdsenseAd placement="calculator-after-tool" />
         <LoanPaymentCalculatorGuide />
         <CalculatorCrossLinks currentHref="/rente-og-avdrag-kalkulator" />
       </div>

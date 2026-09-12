@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { JobOfferTool } from "@/components/job-offer-tool";
@@ -63,6 +64,7 @@ export default async function JobOfferPage() {
     <main className="job-offer-page min-h-screen bg-[radial-gradient(circle_at_50%_0%,rgba(16,185,129,0.08),transparent_32%),#f8fafc] px-5 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <JobOfferTool data={data} />
+        <AdsenseAd placement="calculator-after-tool" className="my-4" />
         <CalculatorCrossLinks currentHref="/jobbtilbud" />
       </div>
     </main>

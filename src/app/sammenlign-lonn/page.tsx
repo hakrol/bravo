@@ -1,6 +1,6 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AdSlot } from "@/components/ad-slot";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { OccupationComparisonCalculator } from "@/components/occupation-comparison-calculator";
 import { buildLonnsjekkPageData } from "@/lib/lonnsjekk";
@@ -64,7 +64,7 @@ export default async function SammenlignLonnPage() {
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <OccupationComparisonCalculator data={comparisonData} />
-        <AdSlot placement="sammenlign-lonn-after-tool" />
+        <AdsenseAd placement="calculator-after-tool" />
         <SammenlignLonnGuide />
         <CalculatorCrossLinks currentHref="/sammenlign-lonn" />
       </div>

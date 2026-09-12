@@ -1,6 +1,6 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
-import { AdSlot } from "@/components/ad-slot";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { SalaryCalculatorDashboard } from "@/components/salary-calculator-dashboard";
@@ -55,7 +55,7 @@ export default function LonnskalkulatorPage() {
         </header>
 
         <SalaryCalculatorDashboard />
-        <AdSlot placement="lonnskalkulator-after-tool" />
+        <AdsenseAd placement="calculator-after-tool" />
         <SalaryCalculatorGuide />
         <CalculatorCrossLinks currentHref="/lonnskalkulator" />
       </div>

@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PrintButton } from "@/components/print-button";
@@ -158,6 +159,7 @@ export default function SjekklisteVurdereMerLonnPage() {
             ))}
           </div>
         </section>
+        <AdsenseAd placement="calculator-after-tool" className="mt-10" />
       </article>
     </div>
   );

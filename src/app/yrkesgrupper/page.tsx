@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 ﻿import type { Metadata } from "next";
 import { OccupationLinkGrid } from "@/components/occupation-link-grid";
 import { listOccupationGroups } from "@/lib/occupation-groups";
@@ -24,18 +25,21 @@ export default async function OccupationGroupsOverviewPage() {
   );
 
   return (
-    <OccupationLinkGrid
-      colorByOccupationGroup
-      description={description}
-      items={groups.map((group) => ({
-        title: group.label,
-        description: group.description,
-        href: `/yrkesgrupper/${group.slug}`,
-        occupationGroupCode: group.code,
-        salaryValue: salaryByGroupCode.get(group.code),
-      }))}
-      plainCenteredHeader
-      title="Alle yrkesgrupper"
-    />
+    <>
+      <OccupationLinkGrid
+        colorByOccupationGroup
+        description={description}
+        items={groups.map((group) => ({
+          title: group.label,
+          description: group.description,
+          href: `/yrkesgrupper/${group.slug}`,
+          occupationGroupCode: group.code,
+          salaryValue: salaryByGroupCode.get(group.code),
+        }))}
+        plainCenteredHeader
+        title="Alle yrkesgrupper"
+      />
+      <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+    </>
   );
 }
