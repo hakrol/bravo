@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { notFound } from "next/navigation";
 import { AdsenseAd } from "@/components/adsense-ad";
 import { BlogPostHeader } from "@/components/blog-post-header";
@@ -148,9 +148,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         }}
       />
       <div className="blog-post-shell mx-auto flex w-full flex-col">
-        <Link className="blog-post-back-link" href="/blogg">
-          ← Tilbake til blogg
-        </Link>
+        <div className="mb-4 sm:mb-6">
+          <ArticleBreadcrumbs section="Blogg" href="/blogg" title={post.title} />
+        </div>
 
         <article>
           <BlogPostHeader post={post} />
