@@ -88,9 +88,7 @@ export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = tru
         { href: "/blogg/kategori/lonnsforhandling", title: "Se alle lønnstips", emphasis: true },
       ]} />
       {showAd ? (
-        <div className="hidden xl:block">
-          <AdsenseAd placement="blog-sidebar" />
-        </div>
+        <AdsenseAd className="xl:sticky xl:top-20" placement="blog-sidebar" />
       ) : null}
     </aside>
   );

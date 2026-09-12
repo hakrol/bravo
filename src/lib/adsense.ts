@@ -4,6 +4,7 @@ export const ADSENSE_SLOTS = {
   "blog-after-content": "2721562873",
   "blog-sidebar": "2607233991",
   "occupation-after-salary-overview": "1294152328",
+  "occupation-before-faq": "1294152328",
   "occupation-sidebar": "9387043575",
   "calculator-after-tool": "2663074318",
   "overview-between-sections": "5886782261",

@@ -45,6 +45,22 @@ type OccupationDetailPageProps = {
 
 const SIDEBAR_BLOG_LINKS = [
   {
+    href: "/blogg/5-ting-du-bor-ha-klart-for-lonnssamtalen",
+    title: "5 ting du bør ha klart før lønnssamtalen",
+  },
+  {
+    href: "/blogg/hvordan-be-om-mer-lonn",
+    title: "Hvordan be om mer lønn",
+  },
+  {
+    href: "/blogg/hvor-mye-mer-kan-man-be-om-i-lonn",
+    title: "Hvor mye mer kan man be om i lønn?",
+  },
+  {
+    href: "/blogg/nar-bor-man-be-om-hoyere-lonn",
+    title: "Når bør man be om høyere lønn?",
+  },
+  {
     href: "/blogg/dette-er-norges-vanligste-yrker",
     title: "Dette er Norges vanligste yrker",
   },
@@ -59,24 +75,12 @@ const SIDEBAR_BLOG_LINKS = [
 ];
 
 const TOOL_LINKS = [
-  {
-    colorClassName: "text-sky-700",
-    href: "/kalkulatorer",
-    icon: "calculator",
-    title: "Kalkulatorer",
-  },
-  {
-    colorClassName: "text-emerald-700",
-    href: "/lonnsjekk",
-    icon: "check",
-    title: "Lønnssjekk",
-  },
-  {
-    colorClassName: "text-indigo-700",
-    href: "/sammenlign-lonn",
-    icon: "compare",
-    title: "Sammenlign lønn",
-  },
+  { href: "/jobbtilbud", icon: "check", title: "Vurder jobbtilbud" },
+  { href: "/lonnsjekk", icon: "search", title: "Vurder din lønn" },
+  { href: "/bruttolonn-kalkulator", icon: "calculator", title: "Bruttolønnskalkulator" },
+  { href: "/feriekalkulator", icon: "calendar", title: "Feriekalkulator" },
+  { href: "/arsverk-kalkulator", icon: "chart", title: "Årsverkskalkulator" },
+  { href: "/sammenlign-lonn", icon: "compare", title: "Sammenlign lønn" },
 ];
 
 const POPULAR_OCCUPATION_LINKS = [
@@ -539,6 +543,8 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
+            {hasEstimate ? <AdsenseAd placement="occupation-before-faq" /> : null}
+
             <OccupationFaq items={faqItems} occupationLabel={occupationText.titleLabel} />
 
             {blogCategory ? (
@@ -551,105 +557,110 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
           </div>
 
-          <aside
-            className="self-start rounded-[5px] border border-slate-200 bg-white px-5 py-4 shadow-[0_16px_44px_rgba(15,23,42,0.05)] lg:sticky lg:top-16"
-          >
-            <section className="pb-3">
-              <p className="text-sm leading-6 text-slate-600">
-                Data fra{" "}
-                <a
-                  className="font-semibold text-slate-800 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-950"
-                  href={EXTERNAL_SOURCE_LINKS[0].href}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Statistisk sentralbyrå (SSB)
-                </a>
-                .
-              </p>
-            </section>
-
-            {apprenticeshipPage ? (
-              <Link
-                className="flex items-center gap-2.5 py-3 text-sm font-medium text-slate-700 transition hover:text-slate-950"
-                href={apprenticeshipPage.href}
-              >
-                <span
-                  aria-hidden="true"
-                  className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-slate-400"
-                >
-                  <ApprenticeshipIcon />
-                </span>
-                <span className="min-w-0">{buildApprenticeshipSidebarLabel(occupationText.titleLabel)}</span>
-              </Link>
-            ) : null}
-
-            <section className="py-3">
-              <Link
-                className="flex w-full items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(20,83,45,0.18)] transition hover:bg-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
-                href="/yrker"
-              >
-                <span>Alle yrker</span>
-              </Link>
-            </section>
-
-            <section className="py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Populære yrker
-              </p>
-              <nav aria-label="Populære yrker" className="mt-2.5 grid gap-2">
-                {POPULAR_OCCUPATION_LINKS.map((occupation) => (
-                  <Link
-                    className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
-                    href={occupation.href}
-                    key={occupation.href}
+          <aside className="min-w-0 self-stretch">
+            <div className="occupation-sidebar-card">
+              <section className="occupation-sidebar-source">
+                <span className="occupation-sidebar-icon"><SidebarLinkIcon className="text-emerald-800" icon="chart" /></span>
+                <p className="text-sm leading-6 text-slate-600">
+                  Data fra{" "}
+                  <a
+                    className="font-semibold text-slate-800 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-950"
+                    href={EXTERNAL_SOURCE_LINKS[0].href}
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <SidebarLinkIcon className="text-orange-600" icon="flame" />
-                    <span>{occupation.title}</span>
-                  </Link>
-                ))}
-              </nav>
-            </section>
-
-            <section className="py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Verktøy
-              </p>
-              <nav aria-label="Verktøy" className="mt-2.5 grid gap-2">
-                {TOOL_LINKS.map((tool) => (
-                  <Link
-                    className="flex items-center gap-2.5 rounded-[5px] text-sm font-medium text-slate-700 transition hover:text-slate-950"
-                    href={tool.href}
-                    key={tool.href}
-                  >
-                    <SidebarLinkIcon className={tool.colorClassName} icon={tool.icon} />
-                    <span>{tool.title}</span>
-                  </Link>
-                ))}
-              </nav>
-            </section>
-
-            {SIDEBAR_BLOG_LINKS.length > 0 ? (
-              <section className="pt-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                  Fra bloggen
+                    Statistisk sentralbyrå (SSB)
+                  </a>
+                  .
                 </p>
-                <div className="mt-2.5 grid gap-2">
-                  {SIDEBAR_BLOG_LINKS.map((post) => (
+              </section>
+
+              {apprenticeshipPage ? (
+                <Link
+                  className="flex items-center gap-2.5 py-3 text-sm font-medium text-slate-700 transition hover:text-slate-950"
+                  href={apprenticeshipPage.href}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-slate-400"
+                  >
+                    <ApprenticeshipIcon />
+                  </span>
+                  <span className="min-w-0">{buildApprenticeshipSidebarLabel(occupationText.titleLabel)}</span>
+                </Link>
+              ) : null}
+
+              <section className="occupation-sidebar-section">
+                <Link
+                  className="occupation-sidebar-all-occupations"
+                  href="/yrker"
+                >
+                  <span>Alle yrker</span>
+                </Link>
+              </section>
+
+              <section className="occupation-sidebar-section">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Populære yrker
+                </p>
+                <nav aria-label="Populære yrker" className="occupation-sidebar-links">
+                  {POPULAR_OCCUPATION_LINKS.map((occupation) => (
                     <Link
-                      className="text-sm font-medium leading-5 text-slate-700 transition hover:text-slate-950 hover:underline hover:decoration-slate-300 hover:underline-offset-4"
-                      href={post.href}
-                      key={post.href}
+                      className="occupation-sidebar-link"
+                      href={occupation.href}
+                      key={occupation.href}
                     >
-                      {post.title}
+                      <span className="occupation-sidebar-icon"><SidebarLinkIcon className="text-orange-600" icon="flame" /></span>
+                      <span>{occupation.title}</span>
                     </Link>
                   ))}
-                </div>
+                </nav>
               </section>
-            ) : null}
+
+              <section className="occupation-sidebar-section">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Verktøy
+                </p>
+                <nav aria-label="Verktøy" className="occupation-sidebar-links">
+                  {TOOL_LINKS.map((tool) => (
+                    <Link
+                      className="occupation-sidebar-link"
+                      href={tool.href}
+                      key={tool.href}
+                    >
+                      <span className="occupation-sidebar-icon"><SidebarLinkIcon className="text-emerald-800" icon={tool.icon} /></span>
+                      <span>{tool.title}</span>
+                    </Link>
+                  ))}
+                </nav>
+                <Link className="occupation-sidebar-all-link" href="/verktoy">Alle verktøy</Link>
+              </section>
+
+              {SIDEBAR_BLOG_LINKS.length > 0 ? (
+                <section className="occupation-sidebar-section">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                    Fra bloggen
+                  </p>
+                  <div className="occupation-sidebar-links">
+                    {SIDEBAR_BLOG_LINKS.map((post) => (
+                      <Link
+                        className="occupation-sidebar-link"
+                        href={post.href}
+                        key={post.href}
+                      >
+                        <span className="occupation-sidebar-icon"><SidebarLinkIcon className="text-emerald-800" icon="document" /></span>
+                        <span>{post.title}</span>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link className="occupation-sidebar-all-link" href="/blogg">Alle artikler</Link>
+                </section>
+              ) : null}
+
+            </div>
 
             {hasEstimate ? (
-              <AdsenseAd className="mx-auto mt-4" placement="occupation-sidebar" />
+              <AdsenseAd className="mx-auto mt-4 xl:sticky xl:top-20" placement="occupation-sidebar" />
             ) : null}
           </aside>
         </div>
@@ -1080,6 +1091,22 @@ function SidebarLinkIcon({
         <path d="M16 15h0" />
       </svg>
     );
+  }
+
+  if (icon === "chart") {
+    return <svg {...commonProps}><path d="M5 19v-4m7 4V9m7 10V3" strokeWidth="3.5" /></svg>;
+  }
+
+  if (icon === "search") {
+    return <svg {...commonProps}><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>;
+  }
+
+  if (icon === "calendar") {
+    return <svg {...commonProps}><rect x="4" y="5" width="16" height="16" rx="2" /><path d="M8 3v4m8-4v4M4 11h16" /></svg>;
+  }
+
+  if (icon === "document") {
+    return <svg {...commonProps}><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6m-6 4h6" /></svg>;
   }
 
   if (icon === "check") {
