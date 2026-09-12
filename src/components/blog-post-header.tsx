@@ -36,7 +36,7 @@ export function BlogPostHeader({ post }: BlogPostHeaderProps) {
               fill
               priority
               quality={92}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 92vw, 1120px"
+              sizes="(max-width: 900px) calc(100vw - 32px), (max-width: 1348px) calc(100vw - 40px), 1308px"
               src={post.coverImage}
             />
           </div>

@@ -722,11 +722,155 @@ a.blog-meta-chip:focus-visible {
 .blog-prose .blog-chart-figure,
 .blog-prose .blog-editorial-chart-figure,
 .blog-prose .blog-chart-bubble-figure,
-.blog-prose .blog-salary-development-figure {
+.blog-prose .blog-salary-development-figure,
+.blog-prose .blog-salary-distribution-development-figure {
   width: min(calc(100vw - 2rem), 60rem);
   max-width: none;
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+.blog-post-shell {
+  max-width: 81.75rem;
+}
+
+.blog-post-layout {
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+
+.blog-post-main {
+  width: 100%;
+  max-width: 60rem;
+  min-width: 0;
+  margin-inline: auto;
+  container-type: inline-size;
+}
+
+.blog-post-main .blog-prose :is(.blog-chart-figure, .blog-editorial-chart-figure, .blog-chart-bubble-figure, .blog-salary-development-figure, .blog-salary-distribution-development-figure) {
+  width: min(100cqw, 60rem);
+}
+
+.blog-post-main .blog-post-content {
+  margin-top: 2.5rem;
+}
+
+.blog-sidebar {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 48rem;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.blog-sidebar-section {
+  border: 1px solid #e1e6e9;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ffffff, #f7f9f8);
+  padding: 1rem 1rem 0.6rem;
+  box-shadow: 0 4px 18px rgba(27, 36, 48, 0.035);
+}
+
+.blog-sidebar-heading {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: start;
+  margin-bottom: 0.65rem;
+}
+
+.blog-sidebar-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: #dceee3;
+  color: #183c35;
+}
+
+.blog-sidebar-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.blog-sidebar-heading p {
+  margin: 0.2rem 0 0;
+  color: #667281;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.blog-sidebar-section h2 {
+  margin: 0;
+  color: #15212f;
+  font-size: 1rem;
+  font-weight: 760;
+}
+
+.blog-sidebar-section ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blog-sidebar-section li + li {
+  border-top: 1px solid #e6eaed;
+}
+
+.blog-sidebar-section a {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 12px;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 34px;
+  padding: 0.45rem 0.15rem;
+  color: var(--foreground);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.blog-sidebar-section a > svg {
+  width: 18px;
+  height: 18px;
+  color: #273d47;
+}
+
+.blog-sidebar-section a > .blog-sidebar-chevron {
+  width: 12px;
+  height: 12px;
+  color: #526372;
+}
+
+.blog-sidebar-section a:hover,
+.blog-sidebar-section a:focus-visible {
+  color: var(--primary);
+  background: #edf5f0;
+  text-decoration: none;
+}
+
+.blog-sidebar-section a.blog-sidebar-all-link {
+  font-weight: 700;
+}
+
+@media (min-width: 1280px) {
+  .blog-post-layout {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .blog-post-main .blog-editorial-bar-wrap::before {
+    content: "Sveip sidelengs for å se hele diagrammet →";
+    display: block;
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
 }
 
 .blog-prose > * + * {

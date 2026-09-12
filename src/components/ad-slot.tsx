@@ -13,6 +13,7 @@ export type AdPlacement =
   | "occupation-sidebar"
   | "blog-after-intro"
   | "blog-after-content"
+  | "blog-sidebar"
   | "arsverk-after-tool"
   | "bruttolonn-after-tool"
   | "feriedager-after-tool"
