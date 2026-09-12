@@ -1,4 +1,5 @@
 import { AdsenseAd } from "@/components/adsense-ad";
+import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -138,13 +139,7 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
       <article className="mx-auto grid w-full max-w-6xl gap-12">
         <header className="grid w-full min-w-0 gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(18rem,1fr)] lg:items-start">
           <div className="min-w-0">
-            <nav aria-label="Brødsmuler" className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500">
-              <Link className="text-[var(--primary-strong)] no-underline hover:underline" href="/forklarer">
-                Forklarer
-              </Link>
-              <span aria-hidden="true">→</span>
-              <span>{post.term}</span>
-            </nav>
+            <ArticleBreadcrumbs section="Forklarer" href="/forklarer" title={post.term} />
 
             <p className="mt-8 text-lg font-extrabold text-slate-950">Hva er</p>
             <h1 className="mt-2 max-w-full text-[2.25rem] font-extrabold leading-[1.02] text-slate-950 [overflow-wrap:anywhere] sm:text-7xl sm:leading-[0.98] sm:[overflow-wrap:normal]">

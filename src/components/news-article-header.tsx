@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import Link from "next/link";
 import { editorialIdentity } from "@/lib/editorial-identity";
 import { formatNewsDate, getNewsUpdatedAt, type NewsPost } from "@/lib/nyheter";
@@ -12,13 +13,7 @@ export function NewsArticleHeader({ post }: NewsArticleHeaderProps) {
 
   return (
     <header>
-      <nav aria-label="Brødsmuler" className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-500">
-        <Link className="text-[var(--primary-strong)] hover:underline" href="/nyheter">
-          Lønnsnytt
-        </Link>
-        <span aria-hidden="true">→</span>
-        <span>{post.topic}</span>
-      </nav>
+      <ArticleBreadcrumbs section="Nyheter" href="/nyheter" title={post.title} />
 
       <div className="mt-10 max-w-4xl">
         <div className="flex flex-wrap items-center gap-3 text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--primary-strong)]">
