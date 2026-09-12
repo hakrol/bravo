@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import { NewsCard } from "@/components/news-card";
 import { getAllNewsPosts } from "@/lib/nyheter";
@@ -49,6 +50,7 @@ export default async function NewsPage() {
         <div className="mx-auto w-full max-w-7xl">
           {featuredPost ? <NewsCard featured post={featuredPost} /> : <p>Ingen nyheter er publisert ennå.</p>}
 
+          {posts.filter((post) => !post.isTest).length >= 4 ? <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" /> : null}
           {morePosts.length > 0 ? (
             <div className="mt-14 border-t border-black/10 pt-10">
               <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-slate-950">Flere nyheter</h2>

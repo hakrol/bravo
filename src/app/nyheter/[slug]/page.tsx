@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -112,6 +113,7 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
           <BlogProse>{post.content}</BlogProse>
         </div>
 
+        {!post.isTest ? <AdsenseAd placement="blog-after-content" className="mx-auto mt-10 max-w-3xl" /> : null}
         <footer className="mx-auto mt-12 max-w-3xl border-t border-black/10 pt-7">
           <Link className="font-bold text-[var(--primary-strong)] hover:underline" href="/nyheter">
             ← Tilbake til alle lønnsnyheter

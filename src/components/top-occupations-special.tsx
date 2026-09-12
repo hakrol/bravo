@@ -1,5 +1,7 @@
 "use client";
 
+import { AdsenseAd } from "@/components/adsense-ad";
+
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type {
@@ -356,6 +358,7 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
         </div>
       </section>
 
+      <AdsenseAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </main>
   );
 }

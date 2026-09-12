@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -165,6 +166,7 @@ export default async function OccupationGroupPage({
           valueLabel="Median månedslønn"
         />
       </div>
+      <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </div>
   );
 }

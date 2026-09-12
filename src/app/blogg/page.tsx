@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BlogCard } from "@/components/blog-card";
@@ -63,6 +64,7 @@ export default async function BlogPage() {
             <p>Ingen artikler er publisert ennå.</p>
           )}
 
+          {morePosts.length >= 3 ? <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" /> : null}
           {morePosts.length > 0 ? (
             <div className="mt-14 border-t border-black/10 pt-10">
               <h2 className="text-3xl font-extrabold tracking-[-0.04em] text-slate-950">Flere artikler</h2>

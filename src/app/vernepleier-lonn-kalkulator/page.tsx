@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -45,6 +46,7 @@ export default async function VernepleierSalaryCalculatorPage() {
           <Image alt="Stetoskop som symboliserer vernepleierens helsefaglige arbeid" className="pointer-events-none absolute right-2 top-1/2 hidden h-auto w-32 -translate-y-1/2 rotate-[4deg] object-contain opacity-95 drop-shadow-[0_18px_20px_rgba(20,83,45,0.12)] sm:block md:right-6 md:w-40 lg:right-14 lg:w-48" height={1254} priority src="/images/sykepleier-kalkulator-stetoskop.png" width={1254} />
         </header>
         <VernepleierSalaryCalculator ssbBenchmark={ssbBenchmark} />
+        <AdsenseAd placement="calculator-after-tool" className="my-4" />
         <CalculatorCrossLinks currentHref={pathname} />
       </div>
     </main>

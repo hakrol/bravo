@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -102,6 +103,7 @@ export default async function BlogCategoryPage({ params }: BlogCategoryPageProps
 
         {featuredPost ? <FeaturedCategoryPost post={featuredPost} /> : null}
 
+        {remainingPosts.length >= 3 ? <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" /> : null}
         <section className="fade-up-delay flex flex-col gap-8">
           <h2 className="blog-category-section-title">Alle artikler om {category.label.toLowerCase()}</h2>
 

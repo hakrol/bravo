@@ -1,12 +1,29 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import { AdsenseScript } from "@/components/adsense-script";
+import { ADSENSE_CLIENT_ID, ADSENSE_SLOTS, type AdsensePlacement } from "@/lib/adsense";
+import { shouldLoadAdsense } from "@/lib/adsense-routes";
 
 type AdsenseWindow = Window & {
   adsbygoogle?: { push: (ad: Record<string, never>) => unknown };
 };
 
-export function AdsenseAd() {
+type AdsenseAdProps = {
+  placement?: AdsensePlacement;
+  className?: string;
+};
+
+export function AdsenseAd({ placement = "blog-after-content", className = "" }: AdsenseAdProps) {
+  const pathname = usePathname();
+  if (!shouldLoadAdsense(pathname)) return null;
+
+  return <AdsenseUnit key={`${pathname}:${placement}`} placement={placement} className={className} />;
+}
+
+function AdsenseUnit({ placement = "blog-after-content", className = "" }: AdsenseAdProps) {
+  const sidebar = placement.endsWith("sidebar");
   const adRef = useRef<HTMLModElement>(null);
   const requestedRef = useRef(false);
 
@@ -36,15 +53,20 @@ export function AdsenseAd() {
   }, []);
 
   return (
-    <aside aria-label="Annonse" className="w-full min-w-0">
+    <aside
+      aria-label="Annonse"
+      data-ad-placement={placement}
+      className={`w-full min-w-0 print:hidden ${sidebar ? "hidden xl:block" : ""} ${className}`}
+    >
+      <AdsenseScript />
       <p className="mb-2 text-center text-xs text-slate-500">Annonse</p>
-      <div className="min-h-[280px]">
+      <div className={sidebar ? "min-h-[600px]" : "min-h-[280px]"}>
         <ins
           ref={adRef}
           className="adsbygoogle"
           style={{ display: "block" }}
-          data-ad-client="ca-pub-3073306475357950"
-          data-ad-slot="2721562873"
+          data-ad-client={ADSENSE_CLIENT_ID}
+          data-ad-slot={ADSENSE_SLOTS[placement]}
           data-ad-format="auto"
           data-full-width-responsive="true"
         />

@@ -1,5 +1,5 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 ﻿import Link from "next/link";
-import { AdSlot } from "@/components/ad-slot";
 import type { BlogPostPreview } from "@/lib/blog-shared";
 import type { NewsPostPreview } from "@/lib/nyheter";
 
@@ -62,8 +62,17 @@ function SidebarLinks({ title, description, icon, links }: {
 
 export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = true }: BlogSidebarProps) {
   return (
-    <aside className="blog-sidebar" aria-label="Verktøy, lesetips og nyheter">
+    <aside className="blog-sidebar" aria-label="Verktøy, populære yrker, lesetips og nyheter">
       <SidebarLinks title="Nyttige verktøy" icon="tools" description="Praktiske kalkulatorer og oversikter som hjelper deg med lønn og karriere." links={toolLinks} />
+      <SidebarLinks title="Populære yrker" icon="chart" description="Se lønnstall for populære yrker." links={[
+        { href: "/yrke/politikere-lonn", title: "Politikere" },
+        { href: "/yrke/elektrikere-lonn", title: "Elektrikere" },
+        { href: "/yrke/flygere-lonn", title: "Flygere" },
+        { href: "/yrke/butikkmedarbeidere-lonn", title: "Butikkmedarbeidere" },
+        { href: "/yrke/sykepleiere-lonn", title: "Sykepleiere" },
+        { href: "/yrke/dommere-lonn", title: "Dommere" },
+        { href: "/yrker", title: "Alle yrker", emphasis: true },
+      ]} />
       <SidebarLinks title="Les også" icon="document" description="Utforsk lønn, yrker og forskjeller i arbeidslivet." links={[
         ...relatedPosts.map((post) => ({
         href: `/blogg/${post.slug}`, title: post.title,
@@ -80,7 +89,7 @@ export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = tru
       ]} />
       {showAd ? (
         <div className="hidden xl:block">
-          <AdSlot placement="blog-sidebar" format="sidebar" />
+          <AdsenseAd placement="blog-sidebar" />
         </div>
       ) : null}
     </aside>

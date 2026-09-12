@@ -4,7 +4,6 @@ import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { AdsenseScript } from "@/components/adsense-script";
 import { AppShell } from "@/components/app-shell";
 import {
   clickioDefaultConsentMode,
@@ -83,7 +82,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           src="https://clickiocmp.com/t/consent_249773.js"
           strategy="beforeInteractive"
         />
-        <AdsenseScript />
         <AppShell>{children}</AppShell>
         <Analytics />
         <SpeedInsights />

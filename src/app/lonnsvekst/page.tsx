@@ -1,3 +1,4 @@
+import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -104,6 +105,7 @@ function SalaryGrowthGuide() {
           </section>
         </div>
       </div>
+      <AdsenseAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </article>
   );
 }

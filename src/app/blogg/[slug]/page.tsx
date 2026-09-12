@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AdSlot } from "@/components/ad-slot";
 import { AdsenseAd } from "@/components/adsense-ad";
 import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
@@ -159,9 +158,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div className="blog-post-main">
               <div className="blog-post-lonnsjekk-callout-wrap mx-auto max-w-3xl">
                 <BlogLonnsjekkCallout className="blog-post-lonnsjekk-callout" />
-              </div>
-              <div className="mx-auto my-8 w-full max-w-3xl sm:my-10 xl:hidden">
-                <AdSlot placement="blog-after-intro" />
               </div>
               <div className="blog-post-content mx-auto max-w-3xl">
                 <BlogProse>{post.content}</BlogProse>
