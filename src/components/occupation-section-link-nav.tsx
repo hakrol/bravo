@@ -36,6 +36,32 @@ export function OccupationSectionLinkNav({
 }: OccupationSectionLinkNavProps) {
   const [activeHref, setActiveHref] = useState(items[0]?.href ?? "");
   const navScrollerRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const page = nav?.closest("main");
+    if (!nav || !page) return;
+
+    const updateAdOffset = () => {
+      const top = Number.parseFloat(window.getComputedStyle(nav).top) || 0;
+      page.style.setProperty(
+        "--occupation-sidebar-ad-top",
+        `${top + nav.getBoundingClientRect().height + 16}px`,
+      );
+    };
+
+    const observer = new ResizeObserver(updateAdOffset);
+    observer.observe(nav);
+    window.addEventListener("resize", updateAdOffset);
+    updateAdOffset();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateAdOffset);
+      page.style.removeProperty("--occupation-sidebar-ad-top");
+    };
+  }, [items.length]);
 
   useEffect(() => {
     const sectionElements = items
@@ -142,6 +168,7 @@ export function OccupationSectionLinkNav({
 
   return (
     <nav
+      ref={navRef}
       aria-label={ariaLabel}
       className="sticky top-0 z-40 mb-3 w-full border-y border-slate-200/80 bg-white/94 px-2 py-1.5 shadow-[0_8px_22px_rgba(15,47,34,0.09)] backdrop-blur-xl sm:px-4 lg:top-20 lg:px-6"
     >
