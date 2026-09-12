@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdSlot } from "@/components/ad-slot";
+import { AdsenseAd } from "@/components/adsense-ad";
 import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
 import { BlogSidebar } from "@/components/blog-sidebar";
@@ -166,7 +167,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <BlogProse>{post.content}</BlogProse>
               </div>
               <div className="mx-auto mt-10 w-full max-w-3xl sm:mt-12">
-                <AdSlot placement="blog-after-content" />
+                <AdsenseAd key={post.slug} />
               </div>
             </div>
             <BlogSidebar relatedPosts={relatedPosts} salaryTips={salaryTips} latestNews={latestNews} />
