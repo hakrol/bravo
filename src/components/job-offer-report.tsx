@@ -43,7 +43,7 @@ export function JobOfferReportView({
             {report.assessmentLabel}
           </div>
           <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-800">
-            Din vurdering av jobbtilbudet
+            Slik ligger tilbudet ditt an
           </p>
           <h1 className="mx-auto mt-3 max-w-3xl text-3xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl">
             {report.headline}
@@ -98,7 +98,8 @@ export function JobOfferReportView({
             <div>
               <h2 className="text-xl font-semibold text-slate-950">Din plassering</h2>
               <p className="mt-1 text-sm leading-6 text-slate-600">
-                Det grønne feltet er vårt estimerte sammenligningsområde. Markøren viser tilbudet.
+                Det grønne feltet viser estimert intervall. Markørene viser tilbudet og SSB-medianen.
+                Alle beløp er årslønn. SSB-medianen for avtalt månedslønn er ganget med 12.
               </p>
             </div>
             <span className="rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 shadow-sm">
@@ -302,42 +303,64 @@ function ExplanationCard({
 
 function OfferRangeBar({ report }: { report: JobOfferReport }) {
   const values = [
-    report.official.p25,
+    report.official.median,
     report.estimate.lowerSalary,
     report.input.annualSalary,
     report.estimate.upperSalary,
-    report.official.p75,
   ].filter((value): value is number => value !== undefined);
-  const min = Math.min(...values) * 0.94;
-  const max = Math.max(...values) * 1.06;
+  const padding = Math.max((Math.max(...values) - Math.min(...values)) * 0.15, 1);
+  const min = Math.max(0, Math.min(...values) - padding);
+  const max = Math.max(...values) + padding;
   const position = (value: number) =>
-    Math.max(2, Math.min(98, ((value - min) / (max - min)) * 100));
+    ((value - min) / (max - min)) * 100;
   const lowerPosition = position(report.estimate.lowerSalary);
   const upperPosition = position(report.estimate.upperSalary);
   const offerPosition = position(report.input.annualSalary);
+  const medianPosition = report.official.median === undefined
+    ? undefined
+    : position(report.official.median);
+  const labels = [
+    { label: "Tilbudet", value: report.input.annualSalary, position: offerPosition, top: 0, color: "text-indigo-800" },
+    ...(medianPosition === undefined ? [] : [{ label: "SSB-median", value: report.official.median!, position: medianPosition, top: 48, color: "text-slate-800" }]),
+    { label: "Nedre estimat", value: report.estimate.lowerSalary, position: lowerPosition, top: 128, color: "text-emerald-800" },
+    { label: "Øvre estimat", value: report.estimate.upperSalary, position: upperPosition, top: 180, color: "text-emerald-800" },
+  ];
 
   return (
-    <div className="mt-10 pb-2 pt-6">
-      <div className="relative h-4 rounded-full bg-slate-200">
+    <div className="relative mt-6 h-56 text-xs">
+      {labels.map((item) => (
+        <div key={item.label} className={item.color}>
+          <span
+            aria-hidden="true"
+            className="absolute w-px bg-current opacity-40"
+            style={{ left: `${item.position}%`, top: item.top < 100 ? item.top + 36 : 116, height: item.top < 100 ? 100 - item.top - 36 : item.top - 116 }}
+          />
+          <span
+            className="absolute z-10 w-32 rounded bg-slate-50 text-center font-semibold leading-4"
+            style={{ left: `clamp(0px, calc(${item.position}% - 64px), calc(100% - 128px))`, top: item.top }}
+          >
+            {item.label}<br />{formatCurrency(item.value)}
+          </span>
+        </div>
+      ))}
+      <div aria-hidden="true" className="absolute top-[100px] h-4 w-full rounded-full bg-slate-200">
         <div
           className="absolute top-0 h-4 rounded-full bg-gradient-to-r from-emerald-300 to-emerald-600"
           style={{
             left: `${lowerPosition}%`,
-            width: `${Math.max(upperPosition - lowerPosition, 2)}%`,
+            width: `${upperPosition - lowerPosition}%`,
           }}
         />
+        {medianPosition !== undefined ? (
+          <div
+            className="absolute -top-3 h-7 w-1 -translate-x-1/2 rounded-full bg-slate-800"
+            style={{ left: `${medianPosition}%` }}
+          />
+        ) : null}
         <div
           className="absolute top-1/2 h-8 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-700 shadow-[0_0_0_4px_white]"
           style={{ left: `${offerPosition}%` }}
-        >
-          <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-bold text-indigo-800">
-            Tilbudet
-          </span>
-        </div>
-      </div>
-      <div className="mt-3 flex justify-between gap-4 text-xs font-semibold text-slate-600">
-        <span>{formatCurrency(report.estimate.lowerSalary)}</span>
-        <span>{formatCurrency(report.estimate.upperSalary)}</span>
+        />
       </div>
     </div>
   );

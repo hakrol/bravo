@@ -111,6 +111,7 @@ export default async function YrkerPage() {
       <div className="relative z-10 mx-auto -mt-16 w-full max-w-7xl px-5 sm:-mt-20 sm:px-6 lg:-mt-24 lg:px-8">
         <OccupationDirectory
           colorByOccupationGroup
+          defaultQuickFilter="highest-salary"
           featuredControls
           filterByOccupationGroup
           items={items}

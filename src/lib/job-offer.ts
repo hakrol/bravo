@@ -401,7 +401,7 @@ function getAssessmentLabel(assessment: JobOfferAssessment) {
     "clearly-below": "Klart under anslaget",
     below: "Litt under anslaget",
     within: "Innenfor anslaget",
-    upper: "I øvre del",
+    upper: "Litt over anslaget",
     above: "Over anslaget",
   };
 
@@ -410,11 +410,11 @@ function getAssessmentLabel(assessment: JobOfferAssessment) {
 
 function getAssessmentHeadline(assessment: JobOfferAssessment) {
   const headlines: Record<JobOfferAssessment, string> = {
-    "clearly-below": "Tilbudet ligger klart under vårt estimerte sammenligningsområde",
-    below: "Tilbudet ligger litt under vårt estimerte sammenligningsområde",
-    within: "Tilbudet ligger innenfor vårt estimerte sammenligningsområde",
-    upper: "Tilbudet ligger i den øvre delen av vårt estimerte nivå",
-    above: "Tilbudet ligger over vårt estimerte sammenligningsområde",
+    "clearly-below": "Tilbudet er klart lavere enn vi anslår",
+    below: "Tilbudet er litt lavere enn vi anslår",
+    within: "Tilbudet er på nivå med det vi anslår",
+    upper: "Tilbudet er litt høyere enn vi anslår",
+    above: "Tilbudet er høyere enn vi anslår",
   };
 
   return headlines[assessment];
@@ -435,16 +435,17 @@ function buildSummary({
 }) {
   const offer = formatCurrency(annualSalary);
   const interval = `${formatCurrency(lowerSalary)}–${formatCurrency(upperSalary)}`;
+  const introduction = `Du er tilbudt ${offer} i året. Vårt anslag for ${occupationLabel.toLowerCase()}, med din erfaring og ditt ansvar, er ${interval}.`;
 
   if (assessment === "clearly-below" || assessment === "below") {
-    return `Tilbudet på ${offer} er lavere enn vårt anslag på ${interval} for en sammenlignbar ${occupationLabel.toLowerCase()}. Det kan være grunnlag for å be arbeidsgiver forklare lønnsnivået eller diskutere en justering.`;
+    return `${introduction} Du kan bruke dette som utgangspunkt for å spørre om høyere lønn.`;
   }
 
   if (assessment === "within") {
-    return `Tilbudet på ${offer} ligger innenfor vårt anslag på ${interval} for en sammenlignbar ${occupationLabel.toLowerCase()}. Se også på pensjon, arbeidstid, bonus og tidspunktet for neste lønnsvurdering.`;
+    return `${introduction} Se også på pensjon, arbeidstid og bonus før du svarer.`;
   }
 
-  return `Tilbudet på ${offer} ligger høyt sammenlignet med vårt anslag på ${interval} for en sammenlignbar ${occupationLabel.toLowerCase()}. Vurder fortsatt hele pakken og hvilke forventninger som følger med rollen.`;
+  return `${introduction} Se også på pensjon, arbeidstid og hva arbeidsgiver forventer av deg.`;
 }
 
 function buildConfidence({
