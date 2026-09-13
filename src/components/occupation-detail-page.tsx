@@ -172,10 +172,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     latestSalaryPeriodLabel,
   });
   const sectorSalarySummary = detail.data.sectorSalarySeries
-    ? buildOccupationSectorSalarySummary({
-        occupationLabel: occupationText.seoLabel,
-        series: detail.data.sectorSalarySeries,
-      })
+    ? buildOccupationSectorSalarySummary(detail.data.sectorSalarySeries)
     : null;
   const salarySupplementCards = buildSalarySupplementCards({
     median: detail.data.supplementMedian,
@@ -225,14 +222,13 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }
       : null,
-    salarySupplementCards.length > 0 ? { href: "#tillegg", label: "Overtid" } : null,
     { href: "#lonnsutvikling", label: "Lønnsutvikling" },
     hasPurchasingPowerData ? { href: "#reallonn", label: "Reallønn" } : null,
-    hasEstimate ? { href: "#lonnsestimat", label: "Lønnsestimat" } : null,
-    newsPosts.length > 0 ? { href: "#nyheter", label: "Nyheter" } : null,
-    laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarked" } : null,
+    salarySupplementCards.length > 0 ? { href: "#tillegg", label: "Overtid" } : null,
+    laborMarket ? { href: "#arbeidsmarked", label: "Arbeidsmarkedet" } : null,
     relatedRows.length > 0 ? { href: "#relaterte-jobber", label: "Relaterte jobber" } : null,
     { href: "#vanlige-sporsmal", label: "Vanlige spørsmål" },
+    newsPosts.length > 0 ? { href: "#nyheter", label: "Nyheter" } : null,
     blogPosts.length > 0 ? { href: "#artikler", label: "Artikler" } : null,
   ].filter((item): item is { href: string; label: string } => Boolean(item));
 
@@ -280,6 +276,21 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                   Lønn for {occupationText.titleLabel}
                 </h2>
 
+                {hasEstimate ? (
+                  <div className="mt-8" id="lonnsestimat">
+                    <OccupationSalaryEstimate
+                      contractedMonthlySalary={contractedDistribution?.total?.median}
+                      contractedMonthlySalaryMen={contractedDistribution?.men?.median}
+                      contractedMonthlySalaryWomen={contractedDistribution?.women?.median}
+                      embedded
+                      monthlySalary={estimateMonthlySalary}
+                      monthlySalaryMen={estimateMonthlySalaryMen}
+                      monthlySalaryWomen={estimateMonthlySalaryWomen}
+                      occupationLabel={detail.detailPage.label}
+                    />
+                  </div>
+                ) : null}
+
                 {monthlySalaryOverviewCards.length > 0 ? (
                   <div className="mt-8">
                     <div className="space-y-3">
@@ -294,11 +305,29 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       </p>
                     </div>
                     <MonthlySalaryOverview cards={monthlySalaryOverviewCards} />
-                    <p className="mt-5 max-w-4xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-                      Når gjennomsnittet er høyere enn medianen, tyder det ofte på at noen høye
-                      lønninger trekker gjennomsnittet opp. Når gjennomsnittet er lavere, kan noen
-                      lave lønninger trekke det ned.
-                    </p>
+                    <aside
+                      aria-label="Om gjennomsnitt og median"
+                      className="mt-5 flex items-start gap-3 rounded-[6px] border border-sky-200 bg-sky-50 p-4 sm:p-5"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="mt-0.5 h-6 w-6 shrink-0 text-sky-700"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 11v5M12 8h.01" />
+                      </svg>
+                      <p className="text-sm leading-6 text-slate-800 sm:text-base sm:leading-7">
+                        Når gjennomsnittet er høyere enn medianen, tyder det ofte på at noen høye
+                        lønninger trekker gjennomsnittet opp. Når gjennomsnittet er lavere, kan noen
+                        lave lønninger trekke det ned.
+                      </p>
+                    </aside>
 
                     {salaryCalculatorKind || VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) ? (
                       <div className="mt-8 flex flex-wrap gap-3">
@@ -367,26 +396,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
 
             {hasEstimate ? <AdsenseAd placement="occupation-after-salary-overview" /> : null}
 
-            {salarySupplementCards.length > 0 ? (
-              <section
-                className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
-                id="tillegg"
-              >
-                <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
-                    Overtid, bonus og uregelmessige tillegg for {occupationText.titleLabel}
-                  </h2>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    {buildSalarySupplementSummary({
-                      cards: salarySupplementCards,
-                      occupationLabel: occupationText.seoLabel,
-                    })}
-                  </p>
-                </div>
-                <SalarySupplementOverview cards={salarySupplementCards} />
-              </section>
-            ) : null}
-
             <section
               aria-label="Lønnsutvikling"
               className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
@@ -432,48 +441,25 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               ) : null}
             </section>
 
-            {hasEstimate ? (
+            {salarySupplementCards.length > 0 ? (
               <section
                 className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
-                id="lonnsestimat"
+                id="tillegg"
               >
                 <div className="space-y-3">
                   <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
-                    Lønnsestimat for {occupationText.titleLabel}
+                    Overtid, bonus og uregelmessige tillegg for {occupationText.titleLabel}
                   </h2>
                   <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                    Her ser du et forenklet lønnsestimat der du kan veksle mellom samlet median
-                    månedslønn og avtalt månedslønn i yrket. Vi bruker vanlig heltidsstilling,
-                    standard feriepengesats og et fast
-                    skatteanslag for å vise timelønn, årslønn, feriepengeestimat og omtrent hva det
-                    kan gi utbetalt.{" "}
-                    <Link
-                      className="font-semibold text-[var(--primary-strong)] underline decoration-[var(--primary)] underline-offset-2"
-                      href="/blogg/hvor-mye-mer-kan-man-be-om-i-lonn"
-                    >
-                      Les også hvor mye mer kan man be om i lønn?
-                    </Link>
+                    {buildSalarySupplementSummary({
+                      cards: salarySupplementCards,
+                      occupationLabel: occupationText.seoLabel,
+                    })}
                   </p>
                 </div>
-                <div className="mt-8">
-                  <OccupationSalaryEstimate
-                    contractedMonthlySalary={contractedDistribution?.total?.median}
-                    contractedMonthlySalaryMen={contractedDistribution?.men?.median}
-                    contractedMonthlySalaryWomen={contractedDistribution?.women?.median}
-                    embedded
-                    monthlySalary={estimateMonthlySalary}
-                    monthlySalaryMen={estimateMonthlySalaryMen}
-                    monthlySalaryWomen={estimateMonthlySalaryWomen}
-                    occupationLabel={detail.detailPage.label}
-                  />
-                </div>
+                <SalarySupplementOverview cards={salarySupplementCards} />
               </section>
             ) : null}
-
-            <OccupationNewsSection
-              occupationLabel={occupationText.titleLabel}
-              posts={newsPosts}
-            />
 
             {laborMarket ? (
               <section
@@ -558,6 +544,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             {hasEstimate ? <AdsenseAd placement="occupation-before-faq" /> : null}
 
             <OccupationFaq items={faqItems} occupationLabel={occupationText.titleLabel} />
+
+            <OccupationNewsSection
+              occupationLabel={occupationText.titleLabel}
+              posts={newsPosts}
+            />
 
             {blogCategory ? (
               <OccupationBlogArticlesSection
@@ -1756,4 +1747,3 @@ function formatKrPlain(value?: number) {
 
   return `${value.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr`;
 }
-
