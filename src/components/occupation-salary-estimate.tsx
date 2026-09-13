@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
@@ -56,7 +56,7 @@ export function OccupationSalaryEstimate({
   const activeSalaryLabel =
     activeMode === "contracted" ? "avtalt månedslønn" : "samlet median månedslønn";
   const activeSalaryRowLabel =
-    activeMode === "contracted" ? "Avtalt månedslønn" : "Median samlet månedslønn";
+    activeMode === "contracted" ? "Avtalt månedslønn" : "Samlet månedslønn";
 
   if (!hasTotalSalary && !hasContractedSalary) {
     return null;
@@ -70,6 +70,28 @@ export function OccupationSalaryEstimate({
   const shouldShowTotalEstimate =
     totalEstimate !== undefined && (womenEstimate === undefined || menEstimate === undefined);
 
+  const estimateGroups = [
+    { key: "neutral", title: "Alle", subject: "alle", estimate: shouldShowTotalEstimate ? totalEstimate : undefined },
+    { key: "women", title: "Kvinner", subject: "kvinner", estimate: womenEstimate },
+    { key: "men", title: "Menn", subject: "menn", estimate: menEstimate },
+  ] as const;
+  const estimateCards = (
+    <div className="grid items-start gap-4 xl:grid-cols-2">
+      {estimateGroups.map(({ key, title, subject, estimate }) => estimate ? (
+        <div className="grid gap-4" key={key}>
+          <SalarySummaryCard
+            description={`${capitalizeFirst(activeSalaryLabel)} for ${subject} i yrket.`}
+            estimate={estimate}
+            salaryRowLabel={activeSalaryRowLabel}
+            title={title}
+            tone={key}
+          />
+          <HolidayPayCard estimate={estimate} title={`Feriepenger for ${subject}`} tone={key} />
+        </div>
+      ) : null)}
+    </div>
+  );
+
   if (embedded) {
     return (
       <div className="space-y-6">
@@ -79,7 +101,7 @@ export function OccupationSalaryEstimate({
           onChange={setSalaryMode}
         />
 
-        <div className="flex flex-wrap gap-2 text-xs leading-6 text-slate-600">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
           <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
           <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
           <span>{POSITION_PERCENTAGE} % stilling</span>
@@ -88,53 +110,7 @@ export function OccupationSalaryEstimate({
           <span>{VACATION_WEEKS} uker ferie</span>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          {shouldShowTotalEstimate && totalEstimate ? (
-            <SalarySummaryCard
-              description={`${capitalizeFirst(activeSalaryLabel)} for alle i yrket.`}
-              estimate={totalEstimate}
-              salaryRowLabel={activeSalaryRowLabel}
-              title="Alle"
-            />
-          ) : null}
-          {womenEstimate ? (
-            <SalarySummaryCard
-              description={`${capitalizeFirst(activeSalaryLabel)} for kvinner i yrket.`}
-              estimate={womenEstimate}
-              salaryRowLabel={activeSalaryRowLabel}
-              title="Kvinner"
-            />
-          ) : null}
-          {menEstimate ? (
-            <SalarySummaryCard
-              description={`${capitalizeFirst(activeSalaryLabel)} for menn i yrket.`}
-              estimate={menEstimate}
-              salaryRowLabel={activeSalaryRowLabel}
-              title="Menn"
-            />
-          ) : null}
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-2">
-          {shouldShowTotalEstimate && totalEstimate ? (
-            <HolidayPayCard
-              estimate={totalEstimate}
-              title="Feriepenger for alle"
-            />
-          ) : null}
-          {womenEstimate ? (
-            <HolidayPayCard
-              estimate={womenEstimate}
-              title="Feriepenger for kvinner"
-            />
-          ) : null}
-          {menEstimate ? (
-            <HolidayPayCard
-              estimate={menEstimate}
-              title="Feriepenger for menn"
-            />
-          ) : null}
-        </div>
+        {estimateCards}
       </div>
     );
   }
@@ -168,53 +144,7 @@ export function OccupationSalaryEstimate({
           />
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          {shouldShowTotalEstimate && totalEstimate ? (
-            <SalarySummaryCard
-              description={`${capitalizeFirst(activeSalaryLabel)} for alle i yrket.`}
-              estimate={totalEstimate}
-              salaryRowLabel={activeSalaryRowLabel}
-              title="Alle"
-            />
-          ) : null}
-          {womenEstimate ? (
-            <SalarySummaryCard
-              description={`${capitalizeFirst(activeSalaryLabel)} for kvinner i yrket.`}
-              estimate={womenEstimate}
-              salaryRowLabel={activeSalaryRowLabel}
-              title="Kvinner"
-            />
-          ) : null}
-          {menEstimate ? (
-            <SalarySummaryCard
-              description={`${capitalizeFirst(activeSalaryLabel)} for menn i yrket.`}
-              estimate={menEstimate}
-              salaryRowLabel={activeSalaryRowLabel}
-              title="Menn"
-            />
-          ) : null}
-        </div>
-
-        <div className="grid gap-4 lg:grid-cols-2">
-          {shouldShowTotalEstimate && totalEstimate ? (
-            <HolidayPayCard
-              estimate={totalEstimate}
-              title="Feriepenger for alle"
-            />
-          ) : null}
-          {womenEstimate ? (
-            <HolidayPayCard
-              estimate={womenEstimate}
-              title="Feriepenger for kvinner"
-            />
-          ) : null}
-          {menEstimate ? (
-            <HolidayPayCard
-              estimate={menEstimate}
-              title="Feriepenger for menn"
-            />
-          ) : null}
-        </div>
+        {estimateCards}
       </div>
     </section>
   );
@@ -232,74 +162,96 @@ function SalaryModeToggle({ activeMode, hasContractedSalary, onChange }: SalaryM
   const options: Array<{
     key: SalaryEstimateMode;
     label: string;
-    description: string;
     disabled?: boolean;
   }> = [
     {
       key: "total",
       label: "Samlet median månedslønn",
-      description:
-        "Samlet median månedslønn inkluderer avtalt månedslønn, bonus og uregelmessige tillegg. Overtid er ikke med.",
     },
     {
       key: "contracted",
       label: "Avtalt median månedslønn",
-      description:
-        "Avtalt median månedslønn er den faste lønnen som er avtalt for jobben, uten bonus, uregelmessige tillegg og overtid.",
       disabled: !hasContractedSalary,
     },
   ];
 
   return (
-    <div className="flex flex-wrap gap-2" role="group" aria-label="Velg lønnsmål for estimatet">
-      {options.map((option) => {
-        const isActive = option.key === activeMode;
-        const wrapperClassName = `inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm transition ${
-          option.disabled
-            ? "border-slate-200 bg-slate-100 text-slate-400"
-            : isActive
-              ? "border-emerald-900 bg-emerald-900 text-white shadow-[0_10px_24px_rgba(6,78,59,0.18)]"
-              : "border-slate-200 bg-white text-slate-700 hover:border-slate-950/30"
-        }`;
+    <div className="space-y-3">
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Velg lønnsmål for estimatet">
+        {options.map((option) => {
+          const isActive = option.key === activeMode;
+          const buttonClassName = `rounded-[5px] border px-2.5 py-1.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+            option.disabled
+              ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
+              : isActive
+                ? "cursor-pointer border-slate-900 bg-slate-900 text-white"
+                : "cursor-pointer border-slate-300 bg-white text-slate-700 hover:border-slate-500 hover:text-slate-950"
+          }`;
 
-        return (
-          <span
-            className={wrapperClassName}
-            key={option.key}
-          >
+          return (
             <button
-              className={option.disabled ? "cursor-not-allowed" : "cursor-pointer"}
+              key={option.key}
+              aria-pressed={isActive}
+              className={buttonClassName}
               disabled={option.disabled}
               onClick={() => onChange(option.key)}
               type="button"
             >
               {option.label}
             </button>
-            <MetricInfoButton
-              description={option.description}
-              label={option.label}
-              variant="muted"
-            />
-          </span>
-        );
-      })}
+          );
+        })}
+      </div>
+      <div className="space-y-1 text-sm leading-6 text-slate-600">
+        <p>
+          <span className="font-semibold text-slate-800">Samlet månedslønn:</span>{" "}
+          Inkludert bonus og uregelmessige tillegg, uten overtid.
+        </p>
+        <p>
+          <span className="font-semibold text-slate-800">Avtalt månedslønn:</span>{" "}
+          Fast avtalt lønn, uten bonus, uregelmessige tillegg og overtid.
+        </p>
+      </div>
     </div>
   );
 }
 
 type SalarySummaryCardProps = {
+  tone?: "women" | "men" | "neutral";
   title: string;
   description: string;
   estimate: SalaryEstimate;
   salaryRowLabel: string;
 };
 
-function SalarySummaryCard({ title, description, estimate, salaryRowLabel }: SalarySummaryCardProps) {
+const estimateCardColors = {
+  women: { card: "border-pink-200 bg-pink-50/50", heading: "border-pink-200 text-pink-900" },
+  men: { card: "border-sky-200 bg-sky-50/50", heading: "border-sky-200 text-blue-900" },
+  neutral: { card: "border-slate-200 bg-slate-50/50", heading: "border-slate-200 text-slate-900" },
+};
+
+function SalarySummaryCard({ title, description, estimate, salaryRowLabel, tone = "neutral" }: SalarySummaryCardProps) {
+  const colors = estimateCardColors[tone];
   return (
-    <div className="rounded-[5px] border border-slate-200 bg-slate-50 px-4 py-4 sm:px-5 sm:py-5">
+    <div className={`overflow-hidden rounded-[6px] border px-4 py-4 sm:px-5 sm:py-5 ${colors.card}`}>
       <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-950">
+        <div className={`space-y-1 border-b pb-4 ${colors.heading}`}>
+          <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.16em]">
+            {tone === "women" ? (
+              <span
+                aria-hidden="true"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pink-50 text-2xl font-normal tracking-normal text-pink-600 shadow-[0_8px_20px_rgba(236,72,153,0.14)]"
+              >
+                ♀
+              </span>
+            ) : tone === "men" ? (
+              <span
+                aria-hidden="true"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-50 text-2xl font-normal tracking-normal text-blue-600 shadow-[0_8px_20px_rgba(37,99,235,0.14)]"
+              >
+                ♂
+              </span>
+            ) : null}
             {title}
           </p>
           <p className="text-sm leading-6 text-slate-600">{description}</p>
@@ -324,14 +276,15 @@ function SalarySummaryCard({ title, description, estimate, salaryRowLabel }: Sal
 }
 
 type HolidayPayCardProps = {
+  tone?: "women" | "men" | "neutral";
   title: string;
   estimate: SalaryEstimate;
 };
 
-function HolidayPayCard({ title, estimate }: HolidayPayCardProps) {
+function HolidayPayCard({ title, estimate, tone = "neutral" }: HolidayPayCardProps) {
   return (
     <SummaryCard
-      accent="warm"
+      tone={tone}
       title={title}
       sections={[
         {
@@ -385,38 +338,61 @@ type SummaryCardSection = {
 };
 
 type SummaryCardProps = {
+  tone?: "women" | "men" | "neutral";
   title: string;
   sections: SummaryCardSection[];
-  accent?: "default" | "warm";
   footnote?: string;
 };
 
 function SummaryCard({
+  tone = "neutral",
   title,
   sections,
-  accent = "default",
   footnote,
 }: SummaryCardProps) {
-  const accentClasses =
-    accent === "warm"
-      ? "border-amber-200 bg-amber-50"
-      : "border-slate-200 bg-slate-50";
-
+  const [isExpanded, setIsExpanded] = useState(false);
+  const contentId = useId();
+  const colors = estimateCardColors[tone];
   return (
-    <div className={`rounded-[5px] border px-4 py-4 sm:px-5 sm:py-5 ${accentClasses}`}>
-      <div className="space-y-5">
-        <p className="text-sm font-semibold text-slate-900">{title}</p>
-
+    <div className={`overflow-hidden rounded-[6px] border px-4 py-4 sm:px-5 sm:py-5 ${colors.card}`}>
+      <button
+        aria-controls={contentId}
+        aria-expanded={isExpanded}
+        className={`flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 text-left text-sm font-bold uppercase tracking-[0.16em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 xl:hidden ${colors.heading}`}
+        onClick={() => setIsExpanded((expanded) => !expanded)}
+        type="button"
+      >
+        {title}
+        <svg
+          aria-hidden="true"
+          className={`h-5 w-5 shrink-0 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      <p className={`hidden border-b pb-4 text-sm font-bold uppercase tracking-[0.16em] xl:block ${colors.heading}`}>
+        {title}
+      </p>
+      <div
+        className={`${isExpanded ? "block" : "hidden"} mt-5 space-y-5 border-t pt-4 xl:block xl:border-t-0 xl:pt-0 ${colors.heading}`}
+        id={contentId}
+      >
         {sections.map((section, index) => (
           <div
             key={`${title}-${index}`}
-            className="space-y-3 border-b border-black/10 pb-4 last:border-b-0 last:pb-0"
+            className="space-y-3 border-b border-slate-200 pb-4 last:border-b-0 last:pb-0"
           >
             {section.title ? (
               <p className="text-base font-semibold text-slate-950">{section.title}</p>
             ) : null}
             {section.eyebrow ? (
-              <p className="text-sm font-medium text-[#946200]">{section.eyebrow}</p>
+              <p className="text-sm leading-6 text-slate-600">{section.eyebrow}</p>
             ) : null}
 
             <div className="space-y-3">
@@ -433,8 +409,8 @@ function SummaryCard({
                   </div>
                   <span
                     className={[
-                      "max-w-[45%] shrink-0 text-right font-semibold sm:max-w-none",
-                      row.strong ? "text-base" : "text-sm",
+                      "max-w-[45%] shrink-0 text-right font-semibold tabular-nums sm:max-w-none",
+                      row.strong ? "text-xl" : "text-lg",
                       row.tone === "positive"
                         ? "text-emerald-700"
                         : row.tone === "negative"
@@ -473,9 +449,9 @@ function SummaryRow({ label, value, tone = "default", strong = false }: SummaryR
         : "text-slate-950";
 
   return (
-    <div className="flex items-start justify-between gap-3 border-b border-black/8 pb-3 last:border-b-0 last:pb-0 sm:gap-4">
+    <div className="flex items-start justify-between gap-3 border-b border-slate-200 pb-3 last:border-b-0 last:pb-0 sm:gap-4">
       <span className="min-w-0 text-sm text-slate-700">{label}</span>
-      <span className={`${strong ? "text-base" : "text-sm"} max-w-[45%] shrink-0 text-right font-semibold sm:max-w-none ${toneClasses}`}>
+      <span className={`${strong ? "text-xl" : "text-lg"} max-w-[45%] shrink-0 text-right font-semibold tabular-nums sm:max-w-none ${toneClasses}`}>
         {value}
       </span>
     </div>
