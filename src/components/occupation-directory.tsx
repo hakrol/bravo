@@ -41,6 +41,7 @@ type OccupationDirectoryProps = {
   filterByOccupationGroup?: boolean;
   showSearch?: boolean;
   featuredControls?: boolean;
+  defaultQuickFilter?: QuickFilter | null;
   cardStatMetrics?: CardStatMetric[];
 };
 
@@ -74,12 +75,13 @@ export function OccupationDirectory({
   filterByOccupationGroup = false,
   showSearch = true,
   featuredControls = false,
+  defaultQuickFilter = null,
   cardStatMetrics = ["salaryGrowth", "employeeGrowth", "averageAge", "genderPayGap"],
 }: OccupationDirectoryProps) {
   const [query, setQuery] = useState("");
   const [salaryFilter, setSalaryFilter] = useState("all");
   const [occupationGroupFilter, setOccupationGroupFilter] = useState("all");
-  const [quickFilter, setQuickFilter] = useState<QuickFilter | null>(null);
+  const [quickFilter, setQuickFilter] = useState<QuickFilter | null>(defaultQuickFilter);
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = normalizeText(deferredQuery);
   const occupationGroups = buildFilterOptions(items, "groupCode", "groupLabel");

@@ -39,7 +39,7 @@ export default async function BlogPage() {
       <section className="border-b border-black/10 bg-[#fffdf8] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto w-full max-w-7xl">
           <h1 className="text-5xl font-extrabold leading-none tracking-[-0.065em] text-slate-950 sm:text-7xl">
-            Blogg
+            Artikler
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl">
             Innsikt om lønn, karriere og valg i arbeidslivet, skrevet for norske arbeidstakere og
