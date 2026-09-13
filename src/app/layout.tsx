@@ -17,6 +17,9 @@ const manrope = Manrope({
 });
 
 const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_ID;
+// Avoid beforeInteractive bootstrap tags being remounted by React during development.
+// Production must initialize consent before hydration and analytics.
+const consentScriptStrategy = process.env.NODE_ENV === "development" ? "afterInteractive" : "beforeInteractive";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -69,18 +72,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <Script
           id="clickio-tcf-stub"
-          strategy="beforeInteractive"
+          strategy={consentScriptStrategy}
           dangerouslySetInnerHTML={{ __html: clickioTcfStub }}
         />
         <Script
           id="clickio-default-consent-mode"
-          strategy="beforeInteractive"
+          strategy={consentScriptStrategy}
           dangerouslySetInnerHTML={{ __html: clickioDefaultConsentMode }}
         />
         <Script
           id="clickio-consent"
           src="https://clickiocmp.com/t/consent_249773.js"
-          strategy="beforeInteractive"
+          strategy={consentScriptStrategy}
         />
         <AppShell>{children}</AppShell>
         <Analytics />

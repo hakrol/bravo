@@ -110,6 +110,7 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
         ) : null}
 
         <div className="mx-auto mt-10 max-w-3xl">
+          {!post.isTest ? <AdsenseAd placement="blog-before-content" className="mb-10 sm:mb-12" /> : null}
           <BlogProse>{post.content}</BlogProse>
         </div>
 

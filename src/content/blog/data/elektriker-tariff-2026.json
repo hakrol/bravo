@@ -1,0 +1,15 @@
+{
+  "baseHourlyRate": 282.95,
+  "monthlyHours": 162.5,
+  "validFrom": "2026-05-01",
+  "sourceUrl": "https://www.nhoelektro.no/contentassets/af0d4782bb424e72a73cfed110f6b162/2026/landsoverenskomsten-2026-2028.pdf",
+  "steps": [
+    { "years": 0, "percent": 2 },
+    { "years": 2, "percent": 3 },
+    { "years": 5, "percent": 4 },
+    { "years": 8, "percent": 5 },
+    { "years": 11, "percent": 6 },
+    { "years": 14, "percent": 7 },
+    { "years": 17, "percent": 8 }
+  ]
+}

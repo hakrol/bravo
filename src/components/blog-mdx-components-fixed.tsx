@@ -49,7 +49,8 @@ import {
   SsbSalaryExampleChart,
 } from "@/components/blog-chart-examples";
 import { DoctorSalaryEditorialChart } from "@/components/blog-doctor-salary-chart";
-import { ElectricianSalaryBubbleChart, ElectricianSalaryEditorialChart } from "@/components/blog-electrician-salary-chart";
+import { ElectricianGenderSalaryCards, ElectricianSalaryBubbleChart, ElectricianSalaryEditorialChart } from "@/components/blog-electrician-salary-chart";
+import { ElectricianSeniorityChart } from "@/components/blog-electrician-seniority-chart";
 import {
   EnergyInstallerGenderSalaryCards,
   EnergyInstallerSalaryBubbleChart,
@@ -307,6 +308,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BussjaforerTrikkeforereSalaryBubbleChart,
     BussjaforerTrikkeforereSalaryDevelopmentChart,
     ElectricianSalaryBubbleChart,
+    ElectricianGenderSalaryCards,
+    ElectricianSeniorityChart,
     ElectricianSalaryEditorialChart,
     EnergyInstallerGenderSalaryCards,
     EnergyInstallerSalaryBubbleChart,

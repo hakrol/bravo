@@ -1,4 +1,5 @@
 import { BlogChart, type BlogChartDatum } from "@/components/blog-chart";
+import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { EditorialDivergingBarChart } from "@/components/editorial-diverging-bar-chart";
 import elektrikerLonn2025Snapshot from "@/content/blog/data/elektriker-lonn-2025.json";
 
@@ -74,6 +75,10 @@ function getBubbleData(): BlogChartDatum[] {
       },
     ];
   });
+}
+
+export function ElectricianGenderSalaryCards() {
+  return <BlogGenderSalaryCards {...elektrikerLonn2025Snapshot.genderMedian} />;
 }
 
 export function ElectricianSalaryEditorialChart() {

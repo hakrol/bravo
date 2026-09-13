@@ -118,6 +118,7 @@ const EXTERNAL_SOURCE_LINKS = [
 ];
 
 const NURSE_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2222", "2223"]);
+const VERNEPLEIER_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2223", "2224"]);
 const TEACHER_CALCULATOR_OCCUPATION_CODES = new Set(["2320", "2330", "2341", "2352"]);
 
 type OccupationSalaryCalculatorKind = "nurse" | "teacher";
@@ -300,19 +301,31 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       lave lønninger trekke det ned.
                     </p>
 
-                    {salaryCalculatorKind ? (
-                      <Link
-                        className="mt-8 inline-flex min-h-11 items-center justify-center rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
-                        href={
-                          salaryCalculatorKind === "teacher"
-                            ? "/laerer-lonn-kalkulator"
-                            : "/sykepleier-lonn-kalkulator"
-                        }
-                      >
-                        {salaryCalculatorKind === "teacher"
-                          ? "Lønnskalkulator for lærere"
-                          : "Lønnskalkulator for sykepleiere"}
-                      </Link>
+                    {salaryCalculatorKind || VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) ? (
+                      <div className="mt-8 flex flex-wrap gap-3">
+                        {salaryCalculatorKind ? (
+                          <Link
+                            className="inline-flex min-h-11 items-center justify-center rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                            href={
+                              salaryCalculatorKind === "teacher"
+                                ? "/laerer-lonn-kalkulator"
+                                : "/sykepleier-lonn-kalkulator"
+                            }
+                          >
+                            {salaryCalculatorKind === "teacher"
+                              ? "Lønnskalkulator for lærere"
+                              : "Lønnskalkulator for sykepleiere"}
+                          </Link>
+                        ) : null}
+                        {VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) ? (
+                          <Link
+                            className="inline-flex min-h-11 items-center justify-center rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                            href="/vernepleier-lonn-kalkulator"
+                          >
+                            Lønnskalkulator for vernepleiere
+                          </Link>
+                        ) : null}
+                      </div>
                     ) : null}
                   </div>
                 ) : null}

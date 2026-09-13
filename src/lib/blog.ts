@@ -133,7 +133,7 @@ export const getAllBlogPosts = cache(async (): Promise<BlogPostPreview[]> => {
       const { data, content } = matter(source);
       const frontmatter = normalizeFrontmatter(data);
 
-      if (frontmatter.draft) {
+      if (frontmatter.draft && process.env.NODE_ENV !== "development") {
         return null;
       }
 
@@ -155,7 +155,7 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
     const { data } = matter(source);
     const normalizedFrontmatter = normalizeFrontmatter(data);
 
-    if (normalizedFrontmatter.draft) {
+    if (normalizedFrontmatter.draft && process.env.NODE_ENV !== "development") {
       return null;
     }
 
