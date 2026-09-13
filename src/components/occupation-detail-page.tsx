@@ -245,7 +245,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
         contentDescription={`Her finner du lønn, lønnsutvikling og arbeidsmarkedsdata for ${occupationText.seoLabel}, basert på tall fra Statistisk sentralbyrå.`}
         description={buildHeroIntro(occupationText.seoLabel, intro)}
         employeeCount={laborMarket?.latest?.employees}
-        employeeGrowthPercent={laborMarket?.growth?.yearOverYearChange}
         employeeCountRank={heroRankings.employeeCountRank}
         occupationName={occupationText.titleLabel}
         medianMonthlySalary={estimateMonthlySalary}

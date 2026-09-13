@@ -15,7 +15,6 @@ type OccupationHeroProps = {
   averageAge?: number | null;
   salaryGrowthPercent?: number | null;
   employeeCount?: number | null;
-  employeeGrowthPercent?: number | null;
   salaryRank?: number | null;
   salaryGrowthRank?: number | null;
   realSalaryGrowthRank?: number | null;
@@ -38,8 +37,6 @@ type RankingCardData = {
 type MetricCardData = {
   icon: "salary" | "age" | "growth" | "workforce";
   label: string;
-  secondaryTone?: "positive" | "negative";
-  secondaryValue?: string;
   tone?: "positive" | "negative";
   value: string;
 };
@@ -52,7 +49,6 @@ export function OccupationHero({
   averageAge,
   salaryGrowthPercent,
   employeeCount,
-  employeeGrowthPercent,
   salaryRank,
   salaryGrowthRank,
   realSalaryGrowthRank,
@@ -71,7 +67,6 @@ export function OccupationHero({
   const metricCards = buildMetricCards({
     averageAge,
     employeeCount,
-    employeeGrowthPercent,
     medianMonthlySalary,
     salaryGrowthPercent,
   });
@@ -163,7 +158,7 @@ function MetricCards({ cards }: { cards: MetricCardData[] }) {
     <div aria-label="Nøkkeltall for yrket" className={styles.metricCards}>
       {cards.map((card) => (
         <div
-          className={`${styles.metricCard} ${card.secondaryValue ? styles.metricCardWithSecondary : ""}`}
+          className={styles.metricCard}
           key={card.label}
         >
           <span aria-hidden="true" className={styles.metricIcon}>
@@ -181,23 +176,6 @@ function MetricCards({ cards }: { cards: MetricCardData[] }) {
                 .join(" ")}
             >
               {card.value}
-              {card.secondaryValue ? (
-                <span className={styles.metricSecondaryValue}>
-                  (
-                  <span
-                    className={
-                      card.secondaryTone === "positive"
-                        ? styles.metricValuePositive
-                        : card.secondaryTone === "negative"
-                          ? styles.metricValueNegative
-                          : ""
-                    }
-                  >
-                    {card.secondaryValue}
-                  </span>
-                  )
-                </span>
-              ) : null}
             </strong>
           </span>
         </div>
@@ -287,13 +265,11 @@ function RankingCards({ cards }: { cards: RankingCardData[] }) {
 function buildMetricCards({
   averageAge,
   employeeCount,
-  employeeGrowthPercent,
   medianMonthlySalary,
   salaryGrowthPercent,
 }: {
   averageAge?: number | null;
   employeeCount?: number | null;
-  employeeGrowthPercent?: number | null;
   medianMonthlySalary?: number | null;
   salaryGrowthPercent?: number | null;
 }) {
@@ -324,12 +300,6 @@ function buildMetricCards({
       ? {
           icon: "workforce",
           label: "Arbeidstakere",
-          secondaryTone: isFiniteNumber(employeeGrowthPercent)
-            ? getGrowthTone(employeeGrowthPercent)
-            : undefined,
-          secondaryValue: isFiniteNumber(employeeGrowthPercent)
-            ? `${employeeGrowthPercent > 0 ? "+" : ""}${employeeGrowthPercent.toLocaleString("nb-NO", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} %`
-            : undefined,
           value: employeeCount.toLocaleString("nb-NO", { maximumFractionDigits: 0 }),
         }
       : null,
