@@ -4,6 +4,25 @@
   "source": "SSB tabell 11418",
   "period": "2025",
   "measure": "Median månedslønn",
+  "genderMedian": {
+    "occupationLabel": "elektrikere",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 48710,
+    "menMonthlyMedian": 55120
+  },
+  "genderMetadata": {
+    "sourceUrl": "https://www.ssb.no/statbank/table/11418/",
+    "occupationCode": "7411",
+    "sector": "ALLE",
+    "workingHours": "0",
+    "measureCode": "01",
+    "contentsCode": "Manedslonn",
+    "period": "2025",
+    "localSource": "src/lib/generated/occupation-latest-median.json",
+    "sourceUpdatedAt": "2026-08-28T06:00:00Z",
+    "frozenAt": "2026-09-13"
+  },
   "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Utvalget er hentet fra frosset håndverker-snapshot for 2025.",
   "rows": [
     { "code": "7412", "label": "Automatikere", "href": "/yrke/automatikere-lonn", "value": 60080 },

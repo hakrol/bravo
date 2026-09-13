@@ -1,6 +1,7 @@
 export const ADSENSE_CLIENT_ID = "ca-pub-3073306475357950";
 
 export const ADSENSE_SLOTS = {
+  "blog-before-content": "3791403284",
   "blog-after-content": "2721562873",
   "blog-sidebar": "2607233991",
   "occupation-after-salary-overview": "1294152328",
