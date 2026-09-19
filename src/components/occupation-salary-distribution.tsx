@@ -275,8 +275,6 @@ function EditorialSalaryDistribution({
   rows: DistributionRow[];
 }) {
   const completeRows = rows.filter((row) => hasCompleteDistribution(row.metrics));
-  const women = completeRows.find((row) => row.id === "women");
-  const men = completeRows.find((row) => row.id === "men");
   const periodLabel = distribution.periodLabel ?? "Siste tilgjengelige periode";
 
   if (completeRows.length === 0) {
@@ -285,8 +283,6 @@ function EditorialSalaryDistribution({
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      {women && men ? <MedianComparisonCard men={men.metrics} women={women.metrics} /> : null}
-
       {completeRows.map((row) => (
         <EditorialDistributionCard
           key={row.id}
@@ -296,80 +292,6 @@ function EditorialSalaryDistribution({
           title={row.label}
         />
       ))}
-    </div>
-  );
-}
-
-function MedianComparisonCard({
-  women,
-  men,
-}: {
-  women: OccupationSalaryDistributionMetrics;
-  men: OccupationSalaryDistributionMetrics;
-}) {
-  const womenMedian = women.median as number;
-  const menMedian = men.median as number;
-  const difference = Math.abs(menMedian - womenMedian);
-  const differenceDescription =
-    menMedian === womenMedian
-      ? "Kvinner og menn har lik medianlønn."
-      : menMedian > womenMedian
-        ? "Menn tjener mer enn kvinner."
-        : "Kvinner tjener mer enn menn.";
-
-  return (
-    <section
-      aria-label="Sammenligning av medianlønn for kvinner og menn"
-      className="overflow-hidden rounded-[18px] border border-slate-200 bg-slate-50/45 shadow-[0_8px_28px_rgba(15,23,42,0.035)]"
-    >
-      <div className="flex flex-col gap-3 border-b border-slate-200 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5">
-        <div className="flex items-center gap-3">
-          <span
-            aria-hidden="true"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600"
-          >
-            <DistributionChartIcon />
-          </span>
-          <h4 className="shrink-0 text-xl font-bold tracking-[-0.02em] text-slate-950 sm:text-2xl">
-            Medianlønn
-          </h4>
-        </div>
-        <p className="text-sm leading-5 text-slate-600 sm:border-l sm:border-slate-200 sm:pl-4 sm:text-base sm:leading-6">
-          Sammenlign medianlønnen mellom kvinner og menn i yrket.
-        </p>
-      </div>
-
-      <div className="grid divide-y divide-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-        <ComparisonValue label="Kvinner" value={formatCurrency(womenMedian)} />
-        <ComparisonValue label="Menn" value={formatCurrency(menMedian)} />
-        <ComparisonValue
-          description={differenceDescription}
-          label="Forskjell"
-          value={`${difference.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr/mnd`}
-        />
-      </div>
-    </section>
-  );
-}
-
-function ComparisonValue({
-  description,
-  label,
-  value,
-}: {
-  description?: string;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="min-w-0 p-5 sm:p-6">
-      <p className="text-sm font-medium text-slate-600 sm:text-base">{label}</p>
-      <p className="mt-1 whitespace-nowrap text-2xl font-bold tracking-[-0.03em] text-slate-950 sm:text-[1.75rem] sm:leading-tight lg:text-[1.85rem]">
-        {value}
-      </p>
-      {description ? (
-        <p className="mt-1 text-sm leading-5 text-slate-600">{description}</p>
-      ) : null}
     </div>
   );
 }
