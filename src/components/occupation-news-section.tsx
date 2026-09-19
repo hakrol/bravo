@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { OCCUPATION_SECTION_HEADING_CLASS } from "@/components/occupation-heading-styles";
 import { formatNewsDate, type NewsPostPreview } from "@/lib/nyheter";
 
 type OccupationNewsSectionProps = {
@@ -21,7 +22,7 @@ export function OccupationNewsSection({
       id="nyheter"
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+        <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
           Nyheter for {occupationLabel}
         </h2>
         <Link

@@ -24,6 +24,11 @@ import { OccupationBlogArticlesSection } from "@/components/occupation-blog-arti
 import { OccupationNewsSection } from "@/components/occupation-news-section";
 import { OccupationHero } from "@/components/occupation-hero";
 import { OccupationFaq, type OccupationFaqItem } from "@/components/occupation-faq";
+import {
+  OCCUPATION_HEADING_INTRO_CLASS,
+  OCCUPATION_SECTION_HEADING_CLASS,
+  OCCUPATION_SUBSECTION_HEADING_CLASS,
+} from "@/components/occupation-heading-styles";
 import { getApprenticeshipDetailPageByOccupationCode } from "@/lib/apprenticeship-detail-view-models";
 import {
   getOccupationFiveYearGrowthComparison,
@@ -182,14 +187,6 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
     estimateMonthlySalary !== undefined ||
     estimateMonthlySalaryWomen !== undefined ||
     estimateMonthlySalaryMen !== undefined;
-  const distributionSummary = buildDistributionSummary({
-    totalP25: distribution?.total?.p25,
-    totalP75: distribution?.total?.p75,
-    womenP25: distribution?.women?.p25,
-    womenP75: distribution?.women?.p75,
-    menP25: distribution?.men?.p25,
-    menP75: distribution?.men?.p75,
-  });
   const salaryDevelopmentSummary = buildSalaryDevelopmentSummary(fiveYearGrowthComparison);
   const purchasingPowerSummary = buildPurchasingPowerSummary(
     detail.data.trendData.purchasingPowerSeries,
@@ -272,12 +269,12 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
                 id="lonn"
               >
-                <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
                   Lønn for {occupationText.titleLabel}
                 </h2>
 
                 {hasEstimate ? (
-                  <div className="mt-8" id="lonnsestimat">
+                  <div className="mt-4" id="lonnsestimat">
                     <OccupationSalaryEstimate
                       contractedMonthlySalary={contractedDistribution?.total?.median}
                       contractedMonthlySalaryMen={contractedDistribution?.men?.median}
@@ -294,10 +291,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 {monthlySalaryOverviewCards.length > 0 ? (
                   <div className="mt-8">
                     <div className="space-y-3">
-                      <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
-                        Median og gjennomsnittlig lønn
+                      <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>
+                        Lønn kvinner og menn
                       </h3>
-                      <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                      <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                         {buildMonthlySalaryOverviewSummary({
                           cards: monthlySalaryOverviewCards,
                           occupationLabel: occupationText.seoLabel,
@@ -361,15 +358,18 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 {distribution ? (
                   <div className="mt-10">
                     <div className="space-y-3">
-                      <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                      <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>
                         Lønnsfordeling
                       </h3>
-                      <p className="text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
-                        {distributionSummary}
+                      <p className={OCCUPATION_HEADING_INTRO_CLASS}>
+                        Se hvordan månedslønnen fordeler seg blant personer i yrket. Tallene gjelder {distribution.periodLabel ?? "siste tilgjengelige periode"}.
                       </p>
                     </div>
-                    <div className="mt-8">
-                      <OccupationSalaryDistributionSection distribution={distribution} />
+                    <div className="mt-6">
+                      <OccupationSalaryDistributionSection
+                        distribution={distribution}
+                        variant="editorial"
+                      />
                     </div>
                   </div>
                 ) : null}
@@ -377,11 +377,11 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 {detail.data.sectorSalarySeries ? (
                   <div className="mt-10">
                     <div className="space-y-3">
-                      <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                      <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>
                         Lønn etter sektor
                       </h3>
                       {sectorSalarySummary ? (
-                        <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                        <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                           {sectorSalarySummary}
                         </p>
                       ) : null}
@@ -402,10 +402,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               id="lonnsutvikling"
             >
               <div className="space-y-3">
-                <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
                   Lønnsutvikling for {occupationText.titleLabel}
                 </h2>
-                <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                   {salaryDevelopmentSummary}
                 </p>
               </div>
@@ -422,10 +422,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               {hasPurchasingPowerData ? (
                 <section className="mt-10" id="reallonn">
                   <div className="space-y-3">
-                    <h3 className="text-xl font-semibold text-slate-950 sm:text-2xl">
+                    <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>
                       Reallønnsvekst og kjøpekraft for {occupationText.titleLabel}
                     </h3>
-                    <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                    <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                       {purchasingPowerSummary}
                     </p>
                   </div>
@@ -447,10 +447,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 id="tillegg"
               >
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                  <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
                     Overtid, bonus og uregelmessige tillegg for {occupationText.titleLabel}
                   </h2>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                     {buildSalarySupplementSummary({
                       cards: salarySupplementCards,
                       occupationLabel: occupationText.seoLabel,
@@ -467,10 +467,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 id="arbeidsmarked"
               >
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                  <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
                     Arbeidsmarkedet for {occupationText.titleLabel}
                   </h2>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                     {laborMarketSummary}
                   </p>
                 </div>
@@ -497,10 +497,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 id="relaterte-jobber"
               >
                 <div className="space-y-3">
-                  <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl">
+                  <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
                     Relaterte jobber for {occupationText.titleLabel}
                   </h2>
-                  <p className="max-w-4xl text-base leading-7 text-slate-800 sm:text-lg sm:leading-8">
+                  <p className={OCCUPATION_HEADING_INTRO_CLASS}>
                     {relatedJobsSummary}
                   </p>
                 </div>
@@ -1684,66 +1684,4 @@ function buildHeroIntro(occupationLabel: string, intro: string) {
 
   const lowerCasedIntro = trimmedIntro.charAt(0).toLowerCase() + trimmedIntro.slice(1);
   return `${normalizedLabel} ${lowerCasedIntro}`;
-}
-
-function buildDistributionSummary({
-  totalP25,
-  totalP75,
-  womenP25,
-  womenP75,
-  menP25,
-  menP75,
-}: {
-  totalP25?: number;
-  totalP75?: number;
-  womenP25?: number;
-  womenP75?: number;
-  menP25?: number;
-  menP75?: number;
-}) {
-  const introSentence = "Her ser du hvordan lønnen typisk fordeler seg i yrket.";
-  const totalSpread = calculateSpread(totalP25, totalP75);
-  const womenSpread = calculateSpread(womenP25, womenP75);
-  const menSpread = calculateSpread(menP25, menP75);
-
-  if (womenSpread === undefined && menSpread === undefined) {
-    if (totalSpread !== undefined) {
-      return `${introSentence} Blant alle i yrket skiller det ${formatKrPlain(totalSpread)} mellom de som tjener mindre og de som tjener mer.`;
-    }
-
-    return introSentence;
-  }
-
-  if (womenSpread !== undefined && menSpread !== undefined) {
-    const comparisonSentence =
-      womenSpread === menSpread
-        ? `Forskjellen mellom de lavere og høyere lønningene er like stor for kvinner og menn, på ${formatKrPlain(womenSpread)}.`
-        : womenSpread > menSpread
-          ? `Blant kvinner skiller det ${formatKrPlain(womenSpread)} mellom de som tjener mindre og de som tjener mer. For menn er forskjellen ${formatKrPlain(menSpread)}. Det betyr at lønnsforskjellen er størst blant kvinner, med ${formatKrPlain(womenSpread - menSpread)} mer mellom lav og høy enn blant menn.`
-          : `Blant kvinner skiller det ${formatKrPlain(womenSpread)} mellom de som tjener mindre og de som tjener mer. For menn er forskjellen ${formatKrPlain(menSpread)}. Det betyr at lønnsforskjellen er størst blant menn, med ${formatKrPlain(menSpread - womenSpread)} mer mellom lav og høy enn blant kvinner.`;
-
-    return `${introSentence} ${comparisonSentence}`;
-  }
-
-  if (womenSpread !== undefined) {
-    return `${introSentence} Blant kvinner skiller det ${formatKrPlain(womenSpread)} mellom de som tjener mindre og de som tjener mer.`;
-  }
-
-  return `${introSentence} Blant menn skiller det ${formatKrPlain(menSpread)} mellom de som tjener mindre og de som tjener mer.`;
-}
-
-function calculateSpread(min?: number, max?: number) {
-  if (min === undefined || max === undefined) {
-    return undefined;
-  }
-
-  return Math.max(0, max - min);
-}
-
-function formatKrPlain(value?: number) {
-  if (value === undefined) {
-    return "Mangler tall";
-  }
-
-  return `${value.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr`;
 }

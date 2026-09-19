@@ -7,6 +7,10 @@ import {
   getOccupationChartValueTone,
 } from "@/components/occupation-chart-reference-controls";
 import {
+  OCCUPATION_HEADING_INTRO_CLASS,
+  OCCUPATION_SUBSECTION_HEADING_CLASS,
+} from "@/components/occupation-heading-styles";
+import {
   formatCompactChartYear,
   useOccupationChartMobileLayout,
 } from "@/components/occupation-chart-mobile";
@@ -158,11 +162,11 @@ export function OccupationWorkforceTimeSeriesChart({
 
   return (
     <section className="bg-transparent">
-      <div className="space-y-2">
-        <h3 className="text-xl font-semibold text-slate-950">
+      <div className="space-y-3">
+        <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>
           Lønnstakere over tid
         </h3>
-        <p className="text-sm leading-6 text-slate-600">
+        <p className={OCCUPATION_HEADING_INTRO_CLASS}>
           {description ?? "Antall personer registrert som lønnstakere i midtmåneden i kvartalet."}
         </p>
       </div>

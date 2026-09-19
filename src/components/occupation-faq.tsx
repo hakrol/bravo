@@ -1,3 +1,5 @@
+import { OCCUPATION_SECTION_HEADING_CLASS } from "@/components/occupation-heading-styles";
+
 export type OccupationFaqItem = {
   answer: string;
   question: string;
@@ -17,7 +19,7 @@ export function OccupationFaq({ items, occupationLabel }: OccupationFaqProps) {
     >
       <div className="space-y-3">
         <h2
-          className="text-2xl font-semibold text-slate-950 sm:text-3xl"
+          className={OCCUPATION_SECTION_HEADING_CLASS}
           id="vanlige-sporsmal-heading"
         >
           Vanlige spørsmål om {occupationLabel.toLowerCase()}
