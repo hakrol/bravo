@@ -362,7 +362,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                         Lønnsfordeling
                       </h3>
                       <p className={OCCUPATION_HEADING_INTRO_CLASS}>
-                        Se hvordan månedslønnen fordeler seg blant personer i yrket. Tallene gjelder {distribution.periodLabel ?? "siste tilgjengelige periode"}.
+                        Se hvordan månedslønnen fordeler seg blant personer i yrket.
                       </p>
                     </div>
                     <div className="mt-6">
