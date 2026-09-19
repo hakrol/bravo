@@ -91,6 +91,18 @@ const staticRoutes = [
     changeFrequency: "yearly" as const,
   },
   {
+    path: "/minstelonn-elektriker",
+    filePath: "src/app/minstelonn-elektriker/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/minstelonn-butikkmedarbeider",
+    filePath: "src/app/minstelonn-butikkmedarbeider/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/ressurser/sjekkliste-for-lonnssamtale",
     filePath: "src/app/ressurser/sjekkliste-for-lonnssamtale/page.tsx",
     priority: 0.6,

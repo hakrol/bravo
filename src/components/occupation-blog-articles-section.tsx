@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OCCUPATION_SECTION_HEADING_CLASS } from "@/components/occupation-heading-styles";
 import type { BlogPostPreview } from "@/lib/blog-shared";
 
 type OccupationBlogArticlesSectionProps = {
@@ -25,7 +26,7 @@ export function OccupationBlogArticlesSection({
       id="artikler"
     >
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h2 className="text-2xl font-semibold text-slate-950 sm:text-3xl" id="artikler-heading">
+        <h2 className={OCCUPATION_SECTION_HEADING_CLASS} id="artikler-heading">
           Artikler om {sentenceLabel}
         </h2>
         <Link

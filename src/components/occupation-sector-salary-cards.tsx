@@ -32,12 +32,6 @@ export function OccupationSectorSalaryCards({
   periodLabel: string;
 }) {
   const [activePeriod, setActivePeriod] = useState<SalaryPeriod>("monthly");
-  const gridColumns =
-    cards.length === 1
-      ? "grid-cols-1"
-      : cards.length === 2
-        ? "xl:grid-cols-2"
-        : "xl:grid-cols-3";
 
   return (
     <div>
@@ -66,7 +60,7 @@ export function OccupationSectorSalaryCards({
         </div>
       </div>
 
-      <div className={`mt-5 grid gap-4 ${gridColumns}`}>
+      <div className="mt-5 grid gap-4">
         {cards.map((card) => (
           <article
             className="overflow-hidden rounded-[6px] border border-slate-200 bg-white"
@@ -86,7 +80,35 @@ export function OccupationSectorSalaryCards({
                 {periodLabel}
               </span>
             </div>
-            <table className="w-full table-fixed border-collapse text-left">
+            <div className="divide-y divide-slate-200 sm:hidden">
+              {card.rows.map((row) => (
+                <section className="px-4 py-5" key={row.label}>
+                  <h5 className={`text-base font-semibold ${getGenderColor(row.label)}`}>
+                    {row.label}
+                  </h5>
+                  <dl className="mt-3 grid grid-cols-2 gap-3">
+                    <div className="min-w-0 rounded-[8px] bg-slate-50/80 px-3 py-3">
+                      <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                        Median
+                      </dt>
+                      <dd className={`mt-1 whitespace-nowrap text-lg font-semibold tabular-nums min-[380px]:text-xl ${getGenderColor(row.label)}`}>
+                        {formatKr(convertMonthlySalary(row.median, activePeriod))}
+                      </dd>
+                    </div>
+                    <div className="min-w-0 rounded-[8px] bg-slate-50/80 px-3 py-3 text-right">
+                      <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                        Gjennomsnitt
+                      </dt>
+                      <dd className={`mt-1 whitespace-nowrap text-lg font-semibold tabular-nums min-[380px]:text-xl ${getGenderColor(row.label)}`}>
+                        {formatKr(convertMonthlySalary(row.average, activePeriod))}
+                      </dd>
+                    </div>
+                  </dl>
+                </section>
+              ))}
+            </div>
+
+            <table className="hidden w-full table-fixed border-collapse text-left sm:table">
               <thead>
                 <tr className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
                   <th className="w-[32%] px-4 py-3" scope="col">
@@ -103,13 +125,13 @@ export function OccupationSectorSalaryCards({
               <tbody>
                 {card.rows.map((row) => (
                   <tr className="border-t border-slate-200" key={row.label}>
-                    <th className="px-4 py-3 text-sm font-medium text-slate-700" scope="row">
+                    <th className={`px-4 py-3 text-sm font-semibold ${getGenderColor(row.label)}`} scope="row">
                       {row.label}
                     </th>
-                    <td className="whitespace-nowrap px-2 py-3 text-right text-sm font-semibold tabular-nums text-slate-950">
+                    <td className={`whitespace-nowrap px-2 py-3 text-right text-xl font-semibold tabular-nums ${getGenderColor(row.label)}`}>
                       {formatKr(convertMonthlySalary(row.median, activePeriod))}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-3 text-right text-sm font-semibold tabular-nums text-slate-950">
+                    <td className={`whitespace-nowrap px-4 py-3 text-right text-xl font-semibold tabular-nums ${getGenderColor(row.label)}`}>
                       {formatKr(convertMonthlySalary(row.average, activePeriod))}
                     </td>
                   </tr>
@@ -139,6 +161,18 @@ export function OccupationSectorSalaryCards({
       ) : null}
     </div>
   );
+}
+
+function getGenderColor(label: string) {
+  if (label === "Kvinner") {
+    return "text-[#ec1f74]";
+  }
+
+  if (label === "Menn") {
+    return "text-[#2563eb]";
+  }
+
+  return "text-[#14532d]";
 }
 
 function convertMonthlySalary(value: number | undefined, period: SalaryPeriod) {

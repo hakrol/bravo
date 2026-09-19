@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import { MetricInfoButton } from "@/components/metric-info-button";
+import { OCCUPATION_HEADING_INTRO_CLASS } from "@/components/occupation-heading-styles";
 import { formatOccupationDisplayLabel } from "@/lib/occupation-detail-pages";
 
 type OccupationSalaryEstimateProps = {
@@ -94,21 +95,19 @@ export function OccupationSalaryEstimate({
 
   if (embedded) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-5">
+        <p className={OCCUPATION_HEADING_INTRO_CLASS}>
+          Se samlet eller avtalt median månedslønn fra Statistisk sentralbyrå (SSB), med
+          forenklede beregninger av års-, time- og daglønn, skatt, nettolønn og feriepenger for {formattedOccupationTitle}.
+        </p>
+
         <SalaryModeToggle
           activeMode={activeMode}
           hasContractedSalary={hasContractedSalary}
           onChange={setSalaryMode}
         />
 
-        <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs leading-6 text-slate-600">
-          <span>{formatDecimal(HOURS_PER_WEEK)} t/uke i 100 % stilling</span>
-          <span>{HOURS_PER_YEAR.toLocaleString("nb-NO")} t/år</span>
-          <span>{POSITION_PERCENTAGE} % stilling</span>
-          <span>{ESTIMATED_TAX_RATE} % estimert skatt</span>
-          <span>{HOLIDAY_PAY_RATE} % feriepengesats</span>
-          <span>{VACATION_WEEKS} uker ferie</span>
-        </div>
+        <SalaryAssumptions />
 
         {estimateCards}
       </div>
@@ -125,7 +124,7 @@ export function OccupationSalaryEstimate({
           <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-950">
             Hva er lønnen til {formattedOccupationTitle}?
           </h2>
-          <p className="max-w-3xl text-sm leading-7 text-slate-700">
+          <p className={OCCUPATION_HEADING_INTRO_CLASS}>
             Vi har gjort et forenklet estimat basert på valgt lønnsmål, vanlig heltidsstilling,
             standard feriepengesats og et fast skatteanslag.
           </p>
@@ -162,58 +161,145 @@ function SalaryModeToggle({ activeMode, hasContractedSalary, onChange }: SalaryM
   const options: Array<{
     key: SalaryEstimateMode;
     label: string;
+    description: string;
     disabled?: boolean;
   }> = [
     {
       key: "total",
       label: "Samlet median månedslønn",
+      description:
+        "Samlet median månedslønn er midtverdien for månedslønnen i yrket. Den inkluderer avtalt lønn, bonus og uregelmessige tillegg, men ikke overtidsbetaling.",
     },
     {
       key: "contracted",
       label: "Avtalt median månedslønn",
+      description:
+        "Avtalt median månedslønn er midtverdien for avtalt månedslønn i yrket. Den inkluderer fast grunnlønn og faste personlige tillegg, men ikke bonus, uregelmessige tillegg eller overtidsbetaling.",
       disabled: !hasContractedSalary,
     },
   ];
 
   return (
-    <div className="space-y-3">
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Velg lønnsmål for estimatet">
+    <div className="space-y-2.5">
+      <div className="grid gap-2 sm:grid-cols-2 lg:max-w-[700px]" role="group" aria-label="Velg lønnsmål for estimatet">
         {options.map((option) => {
           const isActive = option.key === activeMode;
-          const buttonClassName = `rounded-[5px] border px-2.5 py-1.5 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+          const buttonClassName = `min-h-11 w-full rounded-[9px] border px-4 py-2.5 pr-12 text-sm font-semibold shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800 ${
             option.disabled
               ? "cursor-not-allowed border-slate-200 bg-slate-100 text-slate-400"
               : isActive
-                ? "cursor-pointer border-slate-900 bg-slate-900 text-white"
-                : "cursor-pointer border-slate-300 bg-white text-slate-700 hover:border-slate-500 hover:text-slate-950"
+                ? "cursor-pointer border-[#14532d] bg-[#14532d] text-white hover:bg-[#0f4425]"
+                : "cursor-pointer border-slate-200 bg-white text-slate-700 hover:border-[#14532d] hover:text-[#14532d]"
           }`;
 
           return (
-            <button
-              key={option.key}
-              aria-pressed={isActive}
-              className={buttonClassName}
-              disabled={option.disabled}
-              onClick={() => onChange(option.key)}
-              type="button"
-            >
-              {option.label}
-            </button>
+            <div className="relative" key={option.key}>
+              <button
+                aria-pressed={isActive}
+                className={buttonClassName}
+                disabled={option.disabled}
+                onClick={() => onChange(option.key)}
+                type="button"
+              >
+                {option.label}
+              </button>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                <MetricInfoButton
+                  description={option.description}
+                  label={option.label}
+                  modalVariant="compact"
+                />
+              </span>
+            </div>
           );
         })}
       </div>
-      <div className="space-y-1 text-sm leading-6 text-slate-600">
-        <p>
-          <span className="font-semibold text-slate-800">Samlet månedslønn:</span>{" "}
-          Inkludert bonus og uregelmessige tillegg, uten overtid.
-        </p>
-        <p>
-          <span className="font-semibold text-slate-800">Avtalt månedslønn:</span>{" "}
-          Fast avtalt lønn, uten bonus, uregelmessige tillegg og overtid.
-        </p>
-      </div>
     </div>
   );
+}
+
+type AssumptionIconName = "clock" | "calendar" | "coins" | "sun" | "vacation";
+
+const salaryAssumptions: Array<{
+  icon: AssumptionIconName;
+  value: string;
+  description: string;
+}> = [
+  {
+    icon: "clock",
+    value: `${formatDecimal(HOURS_PER_WEEK)} t/uke`,
+    description: `${POSITION_PERCENTAGE} % stilling`,
+  },
+  {
+    icon: "coins",
+    value: `${ESTIMATED_TAX_RATE} %`,
+    description: "Estimert skatt",
+  },
+  {
+    icon: "sun",
+    value: `${HOLIDAY_PAY_RATE} %`,
+    description: "Feriepengesats",
+  },
+  {
+    icon: "vacation",
+    value: `${VACATION_WEEKS} uker`,
+    description: "Ferie",
+  },
+];
+
+function SalaryAssumptions() {
+  return (
+    <div
+      aria-label="Forutsetninger for lønnsberegningene"
+      className="grid grid-cols-2 gap-2.5 md:grid-cols-4"
+    >
+      {salaryAssumptions.map((assumption) => (
+        <div
+          className="flex min-h-[68px] items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50/70 px-3 py-2.5 shadow-sm"
+          key={assumption.description}
+        >
+          <span
+            aria-hidden="true"
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#14532d]/10 text-[#14532d]"
+          >
+            <AssumptionIcon icon={assumption.icon} />
+          </span>
+          <span className="min-w-0">
+            <strong className="block whitespace-nowrap text-sm font-semibold tabular-nums text-slate-900">
+              {assumption.value}
+            </strong>
+            <span className="block text-xs leading-4 text-slate-500">{assumption.description}</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AssumptionIcon({ icon }: { icon: AssumptionIconName }) {
+  const commonProps = {
+    className: "h-5 w-5",
+    fill: "none",
+    stroke: "currentColor",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    strokeWidth: 1.8,
+    viewBox: "0 0 24 24",
+  };
+
+  if (icon === "clock") {
+    return <svg {...commonProps}><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5v5l3.5 2" /></svg>;
+  }
+
+  if (icon === "calendar" || icon === "vacation") {
+    return <svg {...commonProps}><rect x="4" y="5.5" width="16" height="14" rx="2" /><path d="M8 3.5v4M16 3.5v4M4 9.5h16" />{icon === "vacation" ? <path d="M8 13h8" /> : <path d="M8 13h2M14 13h2M8 16.5h2" />}</svg>;
+  }
+
+  if (icon === "coins") {
+    return <svg {...commonProps}><ellipse cx="12" cy="7" rx="7" ry="3" /><path d="M5 7v4c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 11v4c0 1.7 3.1 3 7 3s7-1.3 7-3v-4" /></svg>;
+  }
+
+  return <svg {...commonProps}><circle cx="12" cy="12" r="3.5" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" /></svg>;
 }
 
 type SalarySummaryCardProps = {
@@ -225,9 +311,18 @@ type SalarySummaryCardProps = {
 };
 
 const estimateCardColors = {
-  women: { card: "border-pink-200 bg-pink-50/50", heading: "border-pink-200 text-pink-900" },
-  men: { card: "border-sky-200 bg-sky-50/50", heading: "border-sky-200 text-blue-900" },
-  neutral: { card: "border-slate-200 bg-slate-50/50", heading: "border-slate-200 text-slate-900" },
+  women: {
+    card: "border-[#ec1f74]/25 bg-[#ec1f74]/[0.04]",
+    heading: "border-[#ec1f74]/20 text-[#ec1f74]",
+  },
+  men: {
+    card: "border-[#2563eb]/25 bg-[#2563eb]/[0.04]",
+    heading: "border-[#2563eb]/20 text-[#2563eb]",
+  },
+  neutral: {
+    card: "border-[#14532d]/20 bg-[#14532d]/[0.04]",
+    heading: "border-[#14532d]/20 text-[#14532d]",
+  },
 };
 
 function SalarySummaryCard({ title, description, estimate, salaryRowLabel, tone = "neutral" }: SalarySummaryCardProps) {
@@ -240,14 +335,14 @@ function SalarySummaryCard({ title, description, estimate, salaryRowLabel, tone 
             {tone === "women" ? (
               <span
                 aria-hidden="true"
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-pink-50 text-2xl font-normal tracking-normal text-pink-600 shadow-[0_8px_20px_rgba(236,72,153,0.14)]"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#ec1f74]/10 text-2xl font-normal tracking-normal text-[#ec1f74] shadow-[0_8px_20px_rgba(236,31,116,0.14)]"
               >
                 ♀
               </span>
             ) : tone === "men" ? (
               <span
                 aria-hidden="true"
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-50 text-2xl font-normal tracking-normal text-blue-600 shadow-[0_8px_20px_rgba(37,99,235,0.14)]"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2563eb]/10 text-2xl font-normal tracking-normal text-[#2563eb] shadow-[0_8px_20px_rgba(37,99,235,0.14)]"
               >
                 ♂
               </span>

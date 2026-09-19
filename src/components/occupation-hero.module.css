@@ -9,7 +9,7 @@
 .inner {
   position: relative;
   width: 100%;
-  min-height: clamp(580px, 39vw, 680px);
+  min-height: clamp(450px, 29vw, 510px);
   overflow: hidden;
 }
 
@@ -78,18 +78,18 @@
   display: flex;
   width: 100%;
   max-width: 1660px;
-  min-height: clamp(580px, 39vw, 680px);
+  min-height: clamp(450px, 29vw, 510px);
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   margin-inline: auto;
   /* Behold en stabil tekstkolonne når viewporten blir bredere enn maksbredden. */
-  padding: clamp(28px, 2.5vw, 42px) min(50%, 830px) clamp(30px, 2.7vw, 46px) clamp(28px, 3.4vw, 60px);
+  padding: clamp(18px, 1.5vw, 24px) min(50%, 830px) clamp(18px, 1.6vw, 26px) clamp(28px, 3.4vw, 60px);
 }
 
 .breadcrumbs {
   max-width: 100%;
-  margin-bottom: clamp(21px, 1.6vw, 29px);
+  margin-bottom: clamp(10px, 0.8vw, 14px);
   border: 1px solid rgba(15, 23, 42, 0.07);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.92);
@@ -100,7 +100,7 @@
 .breadcrumbs ol {
   display: flex;
   min-width: 0;
-  min-height: 46px;
+  min-height: 38px;
   align-items: center;
   gap: 11px;
   margin: 0;
@@ -177,10 +177,10 @@
 .description {
   display: grid;
   max-width: 650px;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 11px;
   font-size: clamp(1.05rem, 1.18vw, 1.2rem);
-  line-height: 1.55;
+  line-height: 1.45;
 }
 
 .description p {
@@ -189,16 +189,16 @@
 
 .metricCards {
   display: grid;
-  width: min(100%, 690px);
+  width: min(100%, 760px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 13px;
 }
 
 .metricCard {
   display: grid;
   min-width: 0;
-  min-height: 92px;
+  min-height: 76px;
   grid-template-columns: 24px minmax(0, 1fr);
   align-content: center;
   align-items: center;
@@ -206,7 +206,7 @@
   border: 1px solid rgba(38, 91, 55, 0.12);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.94);
-  padding: 12px 10px;
+  padding: 9px 10px;
   box-shadow: 0 6px 18px rgba(15, 47, 34, 0.045);
 }
 
@@ -246,7 +246,7 @@
   font-weight: 700;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 .metricValuePositive {
@@ -263,7 +263,7 @@
   max-width: none;
   flex-wrap: nowrap;
   gap: 7px;
-  margin: 10px 0 0;
+  margin: 6px 0 0;
 }
 
 .rankingCard {
@@ -342,13 +342,13 @@
 @media (max-width: 1100px) {
   .inner,
   .content {
-    min-height: 580px;
+    min-height: 480px;
   }
 
   .content {
     width: 100%;
     padding-right: 47%;
-    padding-block: 29px;
+    padding-block: 21px;
   }
 
   .heading {
@@ -356,22 +356,22 @@
   }
 
   .breadcrumbs {
-    margin-bottom: 21px;
+    margin-bottom: 12px;
   }
 
 }
 
 @media (max-width: 767px) {
   .inner {
-    min-height: clamp(700px, 185vw, 780px);
+    min-height: clamp(650px, 170vw, 730px);
     overflow: hidden;
   }
 
   .content {
     width: 100%;
-    min-height: clamp(700px, 185vw, 780px);
+    min-height: clamp(650px, 170vw, 730px);
     justify-content: flex-start;
-    padding: 21px 22px clamp(220px, 62vw, 280px);
+    padding: 17px 22px clamp(195px, 55vw, 250px);
   }
 
   .illustration,
@@ -399,7 +399,7 @@
   .breadcrumbs {
     width: auto;
     max-width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     padding-inline: 14px;
   }
 
@@ -419,21 +419,21 @@
   }
 
   .description {
-    gap: 14px;
-    margin-top: 18px;
+    gap: 9px;
+    margin-top: 12px;
     font-size: 1.03rem;
-    line-height: 1.55;
+    line-height: 1.45;
   }
 
   .metricCards {
     width: 100%;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-top: 22px;
+    margin-top: 15px;
   }
 
   .metricCard {
-    min-height: 86px;
+    min-height: 78px;
     padding: 10px;
   }
 

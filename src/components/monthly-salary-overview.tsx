@@ -57,7 +57,7 @@ export function MonthlySalaryOverview({
         </div>
       </div>
 
-      <div className="mt-5 grid gap-4 xl:grid-cols-2">
+      <div className="mt-5 grid gap-4">
         {cards.map((card) => (
           <SalaryOverviewCard activePeriod={activePeriod} card={card} key={card.key} />
         ))}
@@ -106,8 +106,8 @@ function SalaryOverviewCard({
   ];
 
   return (
-    <article className="overflow-hidden rounded-[6px] border border-slate-200 bg-white">
-      <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-4 py-4 sm:px-5">
+    <article className={`overflow-hidden rounded-[6px] border bg-white ${tone.card}`}>
+      <div className={`flex items-center justify-between gap-4 border-b px-4 py-4 sm:px-5 ${tone.header}`}>
         <div className="flex items-center gap-3">
           <MetricAvatar tone={card.tone} />
           <h3 className="text-sm font-bold uppercase tracking-[0.16em] text-slate-950">
@@ -121,7 +121,39 @@ function SalaryOverviewCard({
         ) : null}
       </div>
 
-      <table className="w-full table-fixed border-collapse text-left">
+      <div className="divide-y divide-slate-200 sm:hidden">
+        {rows.map((row) => (
+          <section className="px-4 py-5" key={row.key}>
+            <div>
+              <h4 className="text-base font-semibold text-slate-950">{row.label}</h4>
+              <p className="mt-1 max-w-[28rem] text-sm leading-5 text-slate-500">
+                {row.description}
+              </p>
+            </div>
+
+            <dl className="mt-4 grid grid-cols-2 gap-3">
+              <div className="min-w-0 rounded-[8px] bg-slate-50/80 px-3 py-3">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                  Median
+                </dt>
+                <dd className={`mt-1 whitespace-nowrap text-lg font-semibold tabular-nums min-[380px]:text-xl ${tone.value}`}>
+                  {formatKr(row.median)}
+                </dd>
+              </div>
+              <div className="min-w-0 rounded-[8px] bg-slate-50/80 px-3 py-3 text-right">
+                <dt className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                  Gjennomsnitt
+                </dt>
+                <dd className={`mt-1 whitespace-nowrap text-lg font-semibold tabular-nums min-[380px]:text-xl ${tone.value}`}>
+                  {formatKr(row.average)}
+                </dd>
+              </div>
+            </dl>
+          </section>
+        ))}
+      </div>
+
+      <table className="hidden w-full table-fixed border-collapse text-left sm:table">
         <thead>
           <tr className="bg-slate-50 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
             <th className="w-[48%] px-4 py-3 sm:px-5" scope="col">
@@ -150,10 +182,10 @@ function SalaryOverviewCard({
                   {row.description}
                 </span>
               </th>
-              <td className="whitespace-nowrap px-2 py-4 text-right text-sm font-semibold tabular-nums text-slate-950">
+              <td className={`whitespace-nowrap px-2 py-4 text-right text-xl font-semibold tabular-nums ${tone.value}`}>
                 {formatKr(row.median)}
               </td>
-              <td className="whitespace-nowrap px-3 py-4 text-right text-sm font-semibold tabular-nums text-slate-950 sm:px-4">
+              <td className={`whitespace-nowrap px-3 py-4 text-right text-xl font-semibold tabular-nums sm:px-4 ${tone.value}`}>
                 {formatKr(row.average)}
               </td>
             </tr>
@@ -167,7 +199,7 @@ function SalaryOverviewCard({
 function MetricAvatar({ tone }: { tone: MonthlySalaryOverviewCardData["tone"] }) {
   if (tone === "women") {
     return (
-      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-pink-50 text-2xl text-pink-600 shadow-[0_8px_20px_rgba(236,72,153,0.14)]">
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#ec1f74]/10 text-2xl text-[#ec1f74] shadow-[0_8px_20px_rgba(236,31,116,0.14)]">
         ♀
       </span>
     );
@@ -175,7 +207,7 @@ function MetricAvatar({ tone }: { tone: MonthlySalaryOverviewCardData["tone"] })
 
   if (tone === "men") {
     return (
-      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-sky-50 text-2xl text-blue-600 shadow-[0_8px_20px_rgba(37,99,235,0.14)]">
+      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#2563eb]/10 text-2xl text-[#2563eb] shadow-[0_8px_20px_rgba(37,99,235,0.14)]">
         ♂
       </span>
     );
@@ -218,14 +250,29 @@ function getSalaryLabel(period: SalaryPeriod) {
 
 function getTone(tone: MonthlySalaryOverviewCardData["tone"]) {
   if (tone === "women") {
-    return { period: "bg-pink-50 text-pink-700" };
+    return {
+      card: "border-[#ec1f74]/25",
+      header: "border-[#ec1f74]/20 bg-[#ec1f74]/[0.04]",
+      period: "bg-[#ec1f74]/10 text-[#ec1f74]",
+      value: "text-[#ec1f74]",
+    };
   }
 
   if (tone === "men") {
-    return { period: "bg-blue-50 text-blue-700" };
+    return {
+      card: "border-[#2563eb]/25",
+      header: "border-[#2563eb]/20 bg-[#2563eb]/[0.04]",
+      period: "bg-[#2563eb]/10 text-[#2563eb]",
+      value: "text-[#2563eb]",
+    };
   }
 
-  return { period: "bg-slate-100 text-slate-700" };
+  return {
+    card: "border-[#14532d]/20",
+    header: "border-[#14532d]/20 bg-[#14532d]/[0.04]",
+    period: "bg-[#14532d]/10 text-[#14532d]",
+    value: "text-[#14532d]",
+  };
 }
 
 function formatKr(value?: number) {

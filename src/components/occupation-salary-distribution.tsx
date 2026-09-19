@@ -11,6 +11,7 @@ type OccupationSalaryDistributionProps = {
   visibleRows?: DistributionRow["id"][];
   userMarkers?: Partial<Record<DistributionRow["id"], DistributionUserMarker>>;
   scaleMode?: "data" | "focusBand";
+  variant?: "default" | "editorial";
 };
 
 type DistributionRow = {
@@ -60,6 +61,7 @@ export function OccupationSalaryDistributionSection({
   visibleRows,
   userMarkers,
   scaleMode = "data",
+  variant = "default",
 }: OccupationSalaryDistributionProps) {
   const allowedRows = visibleRows ? new Set(visibleRows) : null;
   const genderRows: DistributionRow[] = [
@@ -87,6 +89,10 @@ export function OccupationSalaryDistributionSection({
 
   if (values.length === 0) {
     return null;
+  }
+
+  if (variant === "editorial") {
+    return <EditorialSalaryDistribution distribution={distribution} rows={rows} />;
   }
 
   return (
@@ -258,6 +264,336 @@ export function OccupationSalaryDistributionSection({
         );
       })}
     </section>
+  );
+}
+
+function EditorialSalaryDistribution({
+  distribution,
+  rows,
+}: {
+  distribution: OccupationSalaryDistribution;
+  rows: DistributionRow[];
+}) {
+  const completeRows = rows.filter((row) => hasCompleteDistribution(row.metrics));
+  const women = completeRows.find((row) => row.id === "women");
+  const men = completeRows.find((row) => row.id === "men");
+  const periodLabel = distribution.periodLabel ?? "Siste tilgjengelige periode";
+
+  if (completeRows.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-5 sm:space-y-6">
+      {women && men ? <MedianComparisonCard men={men.metrics} women={women.metrics} /> : null}
+
+      {completeRows.map((row) => (
+        <EditorialDistributionCard
+          key={row.id}
+          metrics={row.metrics}
+          periodLabel={periodLabel}
+          rowId={row.id}
+          title={row.label}
+        />
+      ))}
+    </div>
+  );
+}
+
+function MedianComparisonCard({
+  women,
+  men,
+}: {
+  women: OccupationSalaryDistributionMetrics;
+  men: OccupationSalaryDistributionMetrics;
+}) {
+  const womenMedian = women.median as number;
+  const menMedian = men.median as number;
+  const difference = Math.abs(menMedian - womenMedian);
+  const differenceDescription =
+    menMedian === womenMedian
+      ? "Kvinner og menn har lik medianlønn."
+      : menMedian > womenMedian
+        ? "Menn tjener mer enn kvinner."
+        : "Kvinner tjener mer enn menn.";
+
+  return (
+    <section
+      aria-label="Sammenligning av medianlønn for kvinner og menn"
+      className="overflow-hidden rounded-[18px] border border-slate-200 bg-slate-50/45 shadow-[0_8px_28px_rgba(15,23,42,0.035)]"
+    >
+      <div className="flex flex-col gap-3 border-b border-slate-200 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600"
+          >
+            <DistributionChartIcon />
+          </span>
+          <h4 className="shrink-0 text-xl font-bold tracking-[-0.02em] text-slate-950 sm:text-2xl">
+            Medianlønn
+          </h4>
+        </div>
+        <p className="text-sm leading-5 text-slate-600 sm:border-l sm:border-slate-200 sm:pl-4 sm:text-base sm:leading-6">
+          Sammenlign medianlønnen mellom kvinner og menn i yrket.
+        </p>
+      </div>
+
+      <div className="grid divide-y divide-slate-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <ComparisonValue label="Kvinner" value={formatCurrency(womenMedian)} />
+        <ComparisonValue label="Menn" value={formatCurrency(menMedian)} />
+        <ComparisonValue
+          description={differenceDescription}
+          label="Forskjell"
+          value={`${difference.toLocaleString("nb-NO", { maximumFractionDigits: 0 })} kr/mnd`}
+        />
+      </div>
+    </section>
+  );
+}
+
+function ComparisonValue({
+  description,
+  label,
+  value,
+}: {
+  description?: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="min-w-0 p-5 sm:p-6">
+      <p className="text-sm font-medium text-slate-600 sm:text-base">{label}</p>
+      <p className="mt-1 whitespace-nowrap text-2xl font-bold tracking-[-0.03em] text-slate-950 sm:text-[1.75rem] sm:leading-tight lg:text-[1.85rem]">
+        {value}
+      </p>
+      {description ? (
+        <p className="mt-1 text-sm leading-5 text-slate-600">{description}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function EditorialDistributionCard({
+  metrics,
+  periodLabel,
+  rowId,
+  title,
+}: {
+  metrics: OccupationSalaryDistributionMetrics;
+  periodLabel: string;
+  rowId: DistributionRow["id"];
+  title: string;
+}) {
+  const p25 = metrics.p25 as number;
+  const median = metrics.median as number;
+  const p75 = metrics.p75 as number;
+  const spread = p75 - p25;
+  const tone = getEditorialTone(rowId);
+
+  return (
+    <article className={`rounded-[18px] border p-5 sm:p-7 ${tone.card}`}>
+      <header className="flex items-center gap-3">
+        <span
+          aria-hidden="true"
+          className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-2xl ${tone.avatar}`}
+        >
+          {rowId === "women" ? "♀" : rowId === "men" ? "♂" : "•"}
+        </span>
+        <div>
+          <h4 className="text-2xl font-bold tracking-[-0.025em] text-slate-950 sm:text-[1.7rem]">
+            {title}
+          </h4>
+          <p className="text-sm text-slate-600 sm:text-base">Månedslønn · {periodLabel}</p>
+        </div>
+      </header>
+
+      <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 sm:items-end sm:gap-6">
+        <DistributionStat
+          className="order-2 sm:order-none"
+          label="25 % tjener dette eller mindre"
+          value={p25}
+        />
+        <DistributionStat
+          accentClassName={tone.accentText}
+          className="order-1 col-span-2 text-center sm:order-none sm:col-span-1"
+          description="Halvparten tjener mindre, halvparten tjener mer."
+          emphasized
+          infoDescription="Median er lønnen som ligger i midten når alle lønningene sorteres fra lavest til høyest. Det er et godt mål fordi det viser det typiske lønnsnivået uten å bli dratt opp av noen få svært høye lønninger."
+          label="Medianlønn"
+          value={median}
+        />
+        <DistributionStat
+          className="order-3 text-right sm:order-none"
+          label="25 % tjener dette eller mer"
+          value={p75}
+        />
+      </div>
+
+      <div
+        aria-label={`${title}: 25 prosent tjener ${formatCurrency(p25)} eller mindre, medianlønnen er ${formatCurrency(median)}, og 25 prosent tjener ${formatCurrency(p75)} eller mer.`}
+        className="mt-7"
+      >
+        <div className="relative h-5">
+          <div className="absolute inset-x-0 top-1/2 grid h-3 -translate-y-1/2 grid-cols-4 overflow-hidden rounded-full">
+            <span className="bg-slate-200" />
+            <span className={tone.middleZone} />
+            <span className={tone.middleZone} />
+            <span className="bg-slate-200" />
+          </div>
+          <DistributionTrackMarker className={tone.marker} position="25%" />
+          <DistributionTrackMarker className={tone.marker} emphasized position="50%" />
+          <DistributionTrackMarker className={tone.marker} position="75%" />
+        </div>
+
+        <div className="relative mt-1 h-7 text-[11px] font-semibold tabular-nums text-slate-800 sm:text-sm">
+          <span className="absolute left-1/4 -translate-x-1/2">{formatCurrency(p25)}</span>
+          <span className="absolute left-1/2 -translate-x-1/2">{formatCurrency(median)}</span>
+          <span className="absolute left-3/4 -translate-x-1/2">{formatCurrency(p75)}</span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 text-center text-[11px] leading-4 text-slate-500 sm:text-sm">
+          <span>Laveste 25 %</span>
+          <strong className={tone.accentText}>Midterste 50 %</strong>
+          <span>Høyeste 25 %</span>
+        </div>
+      </div>
+
+      <div className={`mt-5 flex items-start gap-3 rounded-[13px] px-4 py-4 sm:px-5 ${tone.callout}`}>
+        <span
+          aria-hidden="true"
+          className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border bg-white ${tone.calloutIcon}`}
+        >
+          <DistributionChartIcon />
+        </span>
+        <p className="text-sm leading-6 text-slate-700 sm:text-base sm:leading-6">
+          De midterste 50 % tjener mellom {formatCurrency(p25)} og {formatCurrency(p75)} per måned.
+          <br />
+          Lønnsspennet er <strong className={tone.accentText}>{formatCurrency(spread)}</strong>.
+        </p>
+      </div>
+    </article>
+  );
+}
+
+function DistributionStat({
+  accentClassName,
+  className = "",
+  description,
+  emphasized = false,
+  infoDescription,
+  label,
+  value,
+}: {
+  accentClassName?: string;
+  className?: string;
+  description?: string;
+  emphasized?: boolean;
+  infoDescription?: string;
+  label: string;
+  value: number;
+}) {
+  return (
+    <div className={className}>
+      <div className="inline-flex items-center gap-2 text-sm leading-5 text-slate-600 sm:text-base">
+        <span>{label}</span>
+        {infoDescription ? (
+          <MetricInfoButton
+            description={infoDescription}
+            label={label}
+            modalVariant="compact"
+          />
+        ) : null}
+      </div>
+      <p
+        className={`mt-1 whitespace-nowrap font-bold tracking-[-0.035em] ${
+          emphasized ? "text-3xl sm:text-[2rem]" : "text-2xl sm:text-[1.65rem]"
+        } ${accentClassName ?? "text-slate-950"}`}
+      >
+        {formatCurrency(value)}
+      </p>
+      {description ? (
+        <p className="mt-1 text-xs leading-5 text-slate-500 sm:text-sm">{description}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function DistributionTrackMarker({
+  className,
+  emphasized = false,
+  position,
+}: {
+  className: string;
+  emphasized?: boolean;
+  position: string;
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white ${
+        emphasized ? "h-6 w-6" : "h-4 w-4"
+      } ${className}`}
+      style={{ left: position }}
+    />
+  );
+}
+
+function DistributionChartIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-5 w-5"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="2.2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M6 19v-5M12 19V9M18 19V5" />
+    </svg>
+  );
+}
+
+function getEditorialTone(id: DistributionRow["id"]) {
+  if (id === "women") {
+    return {
+      accentText: "text-[#ec1f74]",
+      avatar: "bg-[#ec1f74]/10 text-[#ec1f74]",
+      callout: "bg-[#ec1f74]/[0.055]",
+      calloutIcon: "border-[#ec1f74]/20 text-[#ec1f74]",
+      card: "border-[#ec1f74]/25 bg-[#ec1f74]/[0.025]",
+      marker: "bg-[#ec1f74]",
+      middleZone: "bg-[#ec1f74]/55",
+    };
+  }
+
+  if (id === "men") {
+    return {
+      accentText: "text-[#2563eb]",
+      avatar: "bg-[#2563eb]/10 text-[#2563eb]",
+      callout: "bg-[#2563eb]/[0.055]",
+      calloutIcon: "border-[#2563eb]/20 text-[#2563eb]",
+      card: "border-[#2563eb]/25 bg-[#2563eb]/[0.025]",
+      marker: "bg-[#2563eb]",
+      middleZone: "bg-[#2563eb]/55",
+    };
+  }
+
+  return {
+    accentText: "text-[#14532d]",
+    avatar: "bg-[#14532d]/10 text-[#14532d]",
+    callout: "bg-[#14532d]/[0.055]",
+    calloutIcon: "border-[#14532d]/20 text-[#14532d]",
+    card: "border-[#14532d]/25 bg-[#14532d]/[0.025]",
+    marker: "bg-[#14532d]",
+    middleZone: "bg-[#14532d]/55",
+  };
+}
+
+function hasCompleteDistribution(metrics: OccupationSalaryDistributionMetrics) {
+  return [metrics.p25, metrics.median, metrics.p75].every((value) =>
+    Number.isFinite(value),
   );
 }
 
