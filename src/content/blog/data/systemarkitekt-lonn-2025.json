@@ -1,0 +1,74 @@
+{
+  "id": "systemarkitekt-lonn-2025",
+  "title": "Systemanalytikere/-arkitekter og andre IT-yrker i 2025",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Tallene viser median månedslønn for heltids- og deltidsansatte samlet, omregnet til heltidsekvivalenter. Yrkesinndelingen følger STYRK-08.",
+  "occupationMapping": {
+    "styrk08Code": "2511",
+    "styrk08Title": "Systemanalytikere/-arkitekter"
+  },
+  "genderMedian": {
+    "occupationLabel": "Systemanalytikere/-arkitekter",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 70820,
+    "menMonthlyMedian": 78650
+  },
+  "salaryDevelopment": {
+    "occupationLabel": "Systemanalytikere/-arkitekter",
+    "source": "SSB tabell 11418",
+    "rows": [
+      { "label": "2021", "value": 63840 },
+      { "label": "2022", "value": 66670 },
+      { "label": "2023", "value": 70290 },
+      { "label": "2024", "value": 73340 },
+      { "label": "2025", "value": 76330 }
+    ]
+  },
+  "rows": [
+    {
+      "code": "2529",
+      "label": "Sikkerhetsanalytikere mv.",
+      "href": "/yrke/sikkerhetsanalytikere-mv-lonn",
+      "value": 78010
+    },
+    {
+      "code": "2512",
+      "label": "Programvareutviklere",
+      "href": "/yrke/programvareutviklere-lonn",
+      "value": 77420
+    },
+    {
+      "code": "2511",
+      "label": "Systemanalytikere/-arkitekter",
+      "href": "/yrke/systemanalytikere-arkitekter-lonn",
+      "value": 76330
+    },
+    {
+      "code": "2521",
+      "label": "Databasedesignere og -administratorer",
+      "href": "/yrke/databasedesignere-og-administratorer-lonn",
+      "value": 75150
+    },
+    {
+      "code": "2519",
+      "label": "Andre programvare- og applikasjonsutviklere",
+      "href": "/yrke/andre-programvare-og-applikasjonsutviklere-lonn",
+      "value": 74170
+    },
+    {
+      "code": "2514",
+      "label": "Applikasjonsprogrammerere",
+      "href": "/yrke/applikasjonsprogrammerere-lonn",
+      "value": 70700
+    },
+    {
+      "code": "2513",
+      "label": "Nett- og multimediautviklere",
+      "href": "/yrke/nett-og-multimediautviklere-lonn",
+      "value": 62500
+    }
+  ]
+}

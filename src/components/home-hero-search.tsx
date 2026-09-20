@@ -144,6 +144,7 @@ function HeroVisualization({
       <OccupationImageCard
         alt="En norsk politisk sal med talerstol og representantplasser"
         className={styles.politicians}
+        href="/yrke/politikere-lonn"
         label="Politikere"
         priority
         src={occupationImages.politicians}
@@ -151,18 +152,21 @@ function HeroVisualization({
       <OccupationImageCard
         alt="Sikringsskap og verktøy i et elektrisk verksted"
         className={styles.electricians}
+        href="/yrke/elektrikere-lonn"
         label="Elektrikere"
         src={occupationImages.electricians}
       />
       <OccupationImageCard
         alt="Radiologirom med MR-maskin og diagnostiske skjermer"
         className={styles.specialists}
+        href="/yrke/legespesialister-lonn"
         label="Legespesialister"
         src={occupationImages.specialists}
       />
       <OccupationImageCard
         alt="Passasjerfly på en norsk flyplass"
         className={styles.pilots}
+        href="/yrke/flygere-lonn"
         label="Flygere"
         src={occupationImages.pilots}
       />
@@ -208,18 +212,24 @@ function HeroVisualization({
 function OccupationImageCard({
   alt,
   className,
+  href,
   label,
   priority = false,
   src,
 }: {
   alt: string;
   className: string;
+  href: string;
   label: string;
   priority?: boolean;
   src: string;
 }) {
   return (
-    <figure className={`${styles.imageCard} ${className}`}>
+    <Link
+      aria-label={`Se lønn for ${label.toLowerCase()}`}
+      className={`${styles.imageCard} ${className}`}
+      href={href}
+    >
       <Image
         alt={alt}
         fill
@@ -227,8 +237,8 @@ function OccupationImageCard({
         sizes="(max-width: 767px) 42vw, (max-width: 1099px) 18vw, 190px"
         src={src}
       />
-      <figcaption>{label}</figcaption>
-    </figure>
+      <span className={styles.imageCardLabel}>{label}</span>
+    </Link>
   );
 }
 
