@@ -1,5 +1,5 @@
-import { AdsenseAd } from "@/components/adsense-ad";
 import type { Metadata } from "next";
+import { HomeJobOfferSection } from "@/components/home-job-offer-section";
 import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
 import { HomeOccupationSalarySearch } from "@/components/home-occupation-salary-search";
 import {
@@ -69,8 +69,8 @@ export default async function HomePage() {
           periodLabel={overview.periodLabel}
           rows={overview.rows}
         />
-        <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
         <HomeLatestBlogSection posts={latestBlogPosts} />
+        <HomeJobOfferSection />
       </div>
     </div>
   );

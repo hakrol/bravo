@@ -292,10 +292,11 @@ export function MainNav({ onOpenChange }: MainNavProps) {
 
         <Link
           aria-current={pathname && isActivePath(pathname, "/lonnsjekk") ? "page" : undefined}
-          className="ml-2 inline-flex items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(20,83,45,0.18)] transition hover:bg-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+          className="group ml-2 inline-flex min-h-[52px] min-w-[178px] items-center justify-between gap-7 rounded-[8px] bg-gradient-to-b from-[#245f3f] to-[#10492c] px-6 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_24px_rgba(16,73,44,0.22)] transition duration-200 hover:-translate-y-0.5 hover:from-[#286746] hover:to-[#0d4026] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10492c]"
           href="/lonnsjekk"
         >
-          Lønnsjekk
+          <span>Lønnsjekk</span>
+          <NavArrowIcon />
         </Link>
       </nav>
 
@@ -512,15 +513,35 @@ export function MainNav({ onOpenChange }: MainNavProps) {
           })}
           <Link
             aria-current={pathname && isActivePath(pathname, "/lonnsjekk") ? "page" : undefined}
-            className="mt-1 flex items-center justify-center rounded-[5px] bg-[var(--primary-strong)] px-4 py-3 text-base font-semibold text-white shadow-[0_10px_24px_rgba(20,83,45,0.18)] transition hover:bg-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary-strong)]"
+            className="group mt-1 flex min-h-[52px] items-center justify-between gap-6 rounded-[8px] bg-gradient-to-b from-[#245f3f] to-[#10492c] px-6 text-base font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_24px_rgba(16,73,44,0.22)] transition duration-200 hover:from-[#286746] hover:to-[#0d4026] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10492c]"
             href="/lonnsjekk"
             onClick={closeMenus}
             tabIndex={isMobileMenuOpen ? undefined : -1}
           >
-            Lønnsjekk
+            <span>Lønnsjekk</span>
+            <NavArrowIcon />
           </Link>
         </nav>
       </div>
     </div>
+  );
+}
+
+function NavArrowIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-6 w-6 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M5 12h14m-5-5 5 5-5 5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
+    </svg>
   );
 }

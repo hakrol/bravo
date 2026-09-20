@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
+import { AdsenseAd } from "@/components/adsense-ad";
 import { BlogChart } from "@/components/blog-chart";
 import {
   ArealPlannerGenderSalaryCards,
@@ -120,6 +121,10 @@ import { StortingPresidentCompensationChart } from "@/components/blog-storting-p
 import { PilotSalaryDevelopmentChart, PilotSalaryEditorialChart } from "@/components/blog-pilot-salary-chart";
 import { BlogSalaryDevelopmentChart } from "@/components/blog-salary-development-chart";
 import { BlogSalaryDistributionDevelopmentChart } from "@/components/blog-salary-distribution-development-chart";
+import {
+  SystemArchitectGenderSalaryCards,
+  SystemArchitectSalaryDevelopmentChart,
+} from "@/components/blog-system-architect-salary-chart";
 import { ProgramvareutviklereSalaryDistributionDevelopmentChart } from "@/components/blog-programvareutviklere-salary-distribution-development-chart";
 import { TopSalaryGrowth2024To2025Chart } from "@/components/blog-salary-growth-ranking-chart";
 import {
@@ -185,6 +190,9 @@ function slugifyHeading(value: string) {
 
 export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContentsItem[]): MDXComponents {
   let hasRenderedTableOfContents = false;
+  let renderedH2Count = 0;
+  const h2Count = tableOfContents.filter((item) => item.level === 2).length;
+  const midArticleAdIndex = Math.ceil(h2Count / 2);
 
   return {
     a: ({ href = "", children, ...props }) => {
@@ -212,12 +220,19 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       const text = typeof children === "string" ? children : "";
       const id = props.id ?? (text ? slugifyHeading(text) : undefined);
       const shouldRenderTableOfContents = !hasRenderedTableOfContents && tableOfContents.length > 0;
+      const shouldRenderMidArticleAd = h2Count > 1 && renderedH2Count === midArticleAdIndex;
 
       hasRenderedTableOfContents = true;
+      renderedH2Count += 1;
 
       return (
         <Fragment>
           {shouldRenderTableOfContents ? <BlogTableOfContents items={tableOfContents} /> : null}
+          {shouldRenderMidArticleAd ? (
+            <div className="not-prose my-10 sm:my-12">
+              <AdsenseAd placement="blog-mid-content" />
+            </div>
+          ) : null}
           <h2 id={id} {...props}>
             {children}
           </h2>
@@ -337,6 +352,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     LegalSalaryDevelopmentChart,
     BlogSalaryDevelopmentChart,
     BlogSalaryDistributionDevelopmentChart,
+    SystemArchitectGenderSalaryCards,
+    SystemArchitectSalaryDevelopmentChart,
     ProgramvareutviklereSalaryDistributionDevelopmentChart,
     TopSalaryGrowth2024To2025Chart,
     HealthSalaryBubbleChart,
