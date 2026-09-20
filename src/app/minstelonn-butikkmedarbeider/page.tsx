@@ -55,7 +55,20 @@ export default function MinstelonnButikkmedarbeiderPage() {
       <nav aria-label="Brødsmulesti" className="mb-6 text-sm text-slate-600"><ol className="flex gap-2"><li><Link className="hover:underline" href="/">Hjem</Link></li><li aria-hidden="true">/</li><li aria-current="page" className="font-medium text-slate-900">Minstelønn butikkmedarbeider</li></ol></nav>
       <header className="overflow-hidden rounded-[5px] border border-black/10 bg-[#f3f5ed] shadow-[0_24px_70px_rgba(15,23,42,.07)]">
         <div className="grid gap-8 px-5 py-8 sm:px-8 sm:py-10 lg:grid-cols-[1.05fr_.95fr] lg:px-12 lg:py-14">
-          <div className="self-center"><p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--primary)]">Varehandel · Virke–HK</p><h1 className="mt-4 text-balance text-4xl font-semibold tracking-[-.055em] text-slate-950 sm:text-5xl lg:text-6xl">Minstelønn for butikkmedarbeidere</h1><p className="mt-5 max-w-2xl text-base leading-7 text-slate-700 sm:text-lg">Det finnes ingen generell lovpålagt minstelønn for butikkmedarbeidere i Norge. Jobber du i en virksomhet med tariffavtale, kan du derimot ha krav på en bestemt minstelønn. Her finner du Virke–HK-satser, lønnstrinn, historikk og tillegg for kveld og helg.</p><Source href="https://www.arbeidstilsynet.no/lonn-og-ansettelse/lonn/minstelonn/" label="Arbeidstilsynet – minstelønn" /></div>
+          <div className="self-center">
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-[var(--primary)]">Varehandel · Virke–HK</p>
+            <h1 className="mt-4 text-balance text-4xl font-semibold tracking-[-.055em] text-slate-950 sm:text-5xl lg:text-6xl">Minstelønn for butikkmedarbeidere</h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-700 sm:text-lg">Det finnes ingen generell lovpålagt minstelønn for butikkmedarbeidere i Norge. Jobber du i en virksomhet med tariffavtale, kan du derimot ha krav på en bestemt minstelønn. Her finner du Virke–HK-satser, lønnstrinn, historikk og tillegg for kveld og helg.</p>
+            <Link
+              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-[5px] bg-[#163d26] px-5 py-3 text-sm font-semibold text-white transition hover:bg-green-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#163d26]"
+              href="/yrke/butikkmedarbeidere-lonn"
+            >
+              Se lønn og lønnsutvikling for butikkmedarbeidere
+            </Link>
+            <div className="mt-4">
+              <Source href="https://www.arbeidstilsynet.no/lonn-og-ansettelse/lonn/minstelonn/" label="Arbeidstilsynet – minstelønn" />
+            </div>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <HeroCard eyebrow="Ikke lovbestemt" title="Ingen generell sats" text="Butikk er ikke en av de allmenngjorte bransjene." />
             <HeroCard eyebrow="Over 18 år · trinn 1" title={`${money(current.rates.step1.hourly)}/time`} text={`${wholeMoney(current.rates.step1.monthly)}/måned`} accent />

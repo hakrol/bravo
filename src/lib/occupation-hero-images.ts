@@ -13,6 +13,10 @@ const OCCUPATION_HERO_IMAGE_OVERRIDES: Record<string, OccupationHeroImages> = {
     desktop: "/images/hero-occupations/politikere-desktop-v1.webp",
     mobile: "/images/hero-occupations/politikere-mobile-v1.webp",
   },
+  "2223": {
+    desktop: "/images/hero-occupations/sykepleiere-desktop-v1.png",
+    mobile: "/images/hero-occupations/sykepleiere-mobile-v1.png",
+  },
   "7411": {
     desktop: "/images/hero-occupations/elektrikere-desktop-v4.webp",
     mobile: "/images/hero-occupations/elektrikere-mobile-v4.webp",
