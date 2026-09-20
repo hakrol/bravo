@@ -1,6 +1,5 @@
 export const OCCUPATION_CHART_HORIZONS = [
   { key: "1-year", label: "Det siste året", years: 1 },
-  { key: "3-years", label: "De siste 3 årene", years: 3 },
   { key: "5-years", label: "De siste 5 årene", years: 5 },
   { key: "10-years", label: "De siste 10 årene", years: 10 },
 ] as const;

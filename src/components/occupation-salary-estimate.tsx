@@ -97,8 +97,8 @@ export function OccupationSalaryEstimate({
     return (
       <div className="space-y-5">
         <p className={OCCUPATION_HEADING_INTRO_CLASS}>
-          Se samlet eller avtalt median månedslønn fra Statistisk sentralbyrå (SSB), med
-          forenklede beregninger av års-, time- og daglønn, skatt, nettolønn og feriepenger for {formattedOccupationTitle}.
+          Se et forenklet estimat av års-, time- og daglønn, skatt, nettolønn og feriepenger
+          for {formattedOccupationTitle}. Du kan velge mellom samlet og avtalt median månedslønn.
         </p>
 
         <SalaryModeToggle
@@ -218,30 +218,23 @@ function SalaryModeToggle({ activeMode, hasContractedSalary, onChange }: SalaryM
   );
 }
 
-type AssumptionIconName = "clock" | "calendar" | "coins" | "sun" | "vacation";
-
 const salaryAssumptions: Array<{
-  icon: AssumptionIconName;
   value: string;
   description: string;
 }> = [
   {
-    icon: "clock",
     value: `${formatDecimal(HOURS_PER_WEEK)} t/uke`,
     description: `${POSITION_PERCENTAGE} % stilling`,
   },
   {
-    icon: "coins",
     value: `${ESTIMATED_TAX_RATE} %`,
     description: "Estimert skatt",
   },
   {
-    icon: "sun",
     value: `${HOLIDAY_PAY_RATE} %`,
     description: "Feriepengesats",
   },
   {
-    icon: "vacation",
     value: `${VACATION_WEEKS} uker`,
     description: "Ferie",
   },
@@ -251,55 +244,16 @@ function SalaryAssumptions() {
   return (
     <div
       aria-label="Forutsetninger for lønnsberegningene"
-      className="grid grid-cols-2 gap-2.5 md:grid-cols-4"
+      className="flex flex-wrap gap-x-5 gap-y-2 border-y border-slate-200 py-3 text-xs text-slate-500"
     >
       {salaryAssumptions.map((assumption) => (
-        <div
-          className="flex min-h-[68px] items-center gap-3 rounded-[10px] border border-slate-200 bg-slate-50/70 px-3 py-2.5 shadow-sm"
-          key={assumption.description}
-        >
-          <span
-            aria-hidden="true"
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#14532d]/10 text-[#14532d]"
-          >
-            <AssumptionIcon icon={assumption.icon} />
-          </span>
-          <span className="min-w-0">
-            <strong className="block whitespace-nowrap text-sm font-semibold tabular-nums text-slate-900">
-              {assumption.value}
-            </strong>
-            <span className="block text-xs leading-4 text-slate-500">{assumption.description}</span>
-          </span>
-        </div>
+        <span className="whitespace-nowrap" key={assumption.description}>
+          <strong className="font-medium tabular-nums text-slate-600">{assumption.value}</strong>{" "}
+          {assumption.description}
+        </span>
       ))}
     </div>
   );
-}
-
-function AssumptionIcon({ icon }: { icon: AssumptionIconName }) {
-  const commonProps = {
-    className: "h-5 w-5",
-    fill: "none",
-    stroke: "currentColor",
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    strokeWidth: 1.8,
-    viewBox: "0 0 24 24",
-  };
-
-  if (icon === "clock") {
-    return <svg {...commonProps}><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5v5l3.5 2" /></svg>;
-  }
-
-  if (icon === "calendar" || icon === "vacation") {
-    return <svg {...commonProps}><rect x="4" y="5.5" width="16" height="14" rx="2" /><path d="M8 3.5v4M16 3.5v4M4 9.5h16" />{icon === "vacation" ? <path d="M8 13h8" /> : <path d="M8 13h2M14 13h2M8 16.5h2" />}</svg>;
-  }
-
-  if (icon === "coins") {
-    return <svg {...commonProps}><ellipse cx="12" cy="7" rx="7" ry="3" /><path d="M5 7v4c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 11v4c0 1.7 3.1 3 7 3s7-1.3 7-3v-4" /></svg>;
-  }
-
-  return <svg {...commonProps}><circle cx="12" cy="12" r="3.5" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" /></svg>;
 }
 
 type SalarySummaryCardProps = {
@@ -453,7 +407,7 @@ function SummaryCard({
       <button
         aria-controls={contentId}
         aria-expanded={isExpanded}
-        className={`flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 text-left text-sm font-bold uppercase tracking-[0.16em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 xl:hidden ${colors.heading}`}
+        className={`flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 text-left text-sm font-bold uppercase tracking-[0.16em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${colors.heading}`}
         onClick={() => setIsExpanded((expanded) => !expanded)}
         type="button"
       >
@@ -471,11 +425,8 @@ function SummaryCard({
           <path d="m6 9 6 6 6-6" />
         </svg>
       </button>
-      <p className={`hidden border-b pb-4 text-sm font-bold uppercase tracking-[0.16em] xl:block ${colors.heading}`}>
-        {title}
-      </p>
       <div
-        className={`${isExpanded ? "block" : "hidden"} mt-5 space-y-5 border-t pt-4 xl:block xl:border-t-0 xl:pt-0 ${colors.heading}`}
+        className={`${isExpanded ? "block" : "hidden"} mt-5 space-y-5 border-t pt-4 ${colors.heading}`}
         id={contentId}
       >
         {sections.map((section, index) => (

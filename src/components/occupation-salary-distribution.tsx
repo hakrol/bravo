@@ -326,7 +326,9 @@ function EditorialDistributionCard({
           <h4 className="text-2xl font-bold tracking-[-0.025em] text-slate-950 sm:text-[1.7rem]">
             {title}
           </h4>
-          <p className="text-sm text-slate-600 sm:text-base">Månedslønn · {periodLabel}</p>
+          {rowId === "total" ? (
+            <p className="text-sm text-slate-600 sm:text-base">Månedslønn · {periodLabel}</p>
+          ) : null}
         </div>
       </header>
 
@@ -342,7 +344,7 @@ function EditorialDistributionCard({
           description="Halvparten tjener mindre, halvparten tjener mer."
           emphasized
           infoDescription="Median er lønnen som ligger i midten når alle lønningene sorteres fra lavest til høyest. Det er et godt mål fordi det viser det typiske lønnsnivået uten å bli dratt opp av noen få svært høye lønninger."
-          label="Medianlønn"
+          label="Samlet medianlønn"
           value={median}
         />
         <DistributionStat

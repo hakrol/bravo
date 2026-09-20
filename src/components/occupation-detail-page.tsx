@@ -270,37 +270,17 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 id="lonn"
               >
                 <h2 className={OCCUPATION_SECTION_HEADING_CLASS}>
-                  Lønn for {occupationText.titleLabel}
+                  Hva tjener {occupationText.titleLabel}
                 </h2>
 
-                {hasEstimate ? (
-                  <div className="mt-4" id="lonnsestimat">
-                    <OccupationSalaryEstimate
-                      contractedMonthlySalary={contractedDistribution?.total?.median}
-                      contractedMonthlySalaryMen={contractedDistribution?.men?.median}
-                      contractedMonthlySalaryWomen={contractedDistribution?.women?.median}
-                      embedded
-                      monthlySalary={estimateMonthlySalary}
-                      monthlySalaryMen={estimateMonthlySalaryMen}
-                      monthlySalaryWomen={estimateMonthlySalaryWomen}
-                      occupationLabel={detail.detailPage.label}
-                    />
-                  </div>
-                ) : null}
-
                 {monthlySalaryOverviewCards.length > 0 ? (
-                  <div className="mt-8">
-                    <div className="space-y-3">
-                      <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>
-                        Lønn kvinner og menn
-                      </h3>
-                      <p className={OCCUPATION_HEADING_INTRO_CLASS}>
-                        {buildMonthlySalaryOverviewSummary({
-                          cards: monthlySalaryOverviewCards,
-                          occupationLabel: occupationText.seoLabel,
-                        })}
-                      </p>
-                    </div>
+                  <div className="mt-4">
+                    <p className={OCCUPATION_HEADING_INTRO_CLASS}>
+                      {buildMonthlySalaryOverviewSummary({
+                        cards: monthlySalaryOverviewCards,
+                        occupationLabel: occupationText.seoLabel,
+                      })}
+                    </p>
                     <MonthlySalaryOverview cards={monthlySalaryOverviewCards} />
                     <aside
                       aria-label="Om gjennomsnitt og median"
@@ -352,6 +332,24 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                         ) : null}
                       </div>
                     ) : null}
+                  </div>
+                ) : null}
+
+                {hasEstimate ? (
+                  <div className="mt-10" id="lonnsestimat">
+                    <h3 className={OCCUPATION_SUBSECTION_HEADING_CLASS}>Lønnsestimat</h3>
+                    <div className="mt-3">
+                      <OccupationSalaryEstimate
+                        contractedMonthlySalary={contractedDistribution?.total?.median}
+                        contractedMonthlySalaryMen={contractedDistribution?.men?.median}
+                        contractedMonthlySalaryWomen={contractedDistribution?.women?.median}
+                        embedded
+                        monthlySalary={estimateMonthlySalary}
+                        monthlySalaryMen={estimateMonthlySalaryMen}
+                        monthlySalaryWomen={estimateMonthlySalaryWomen}
+                        occupationLabel={detail.detailPage.label}
+                      />
+                    </div>
                   </div>
                 ) : null}
 
@@ -441,6 +439,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               ) : null}
             </section>
 
+            {hasPurchasingPowerData && salarySupplementCards.length > 0 ? (
+              <AdsenseAd placement="occupation-between-real-salary-and-overtime" />
+            ) : null}
+
             {salarySupplementCards.length > 0 ? (
               <section
                 className="rounded-[5px] border border-slate-200 bg-white p-5 shadow-[0_16px_44px_rgba(15,23,42,0.05)] sm:p-7"
@@ -459,6 +461,10 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                 </div>
                 <SalarySupplementOverview cards={salarySupplementCards} />
               </section>
+            ) : null}
+
+            {salarySupplementCards.length > 0 && laborMarket ? (
+              <AdsenseAd placement="occupation-between-overtime-and-labor-market" />
             ) : null}
 
             {laborMarket ? (
