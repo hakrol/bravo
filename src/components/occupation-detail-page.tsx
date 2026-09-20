@@ -215,6 +215,17 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const salaryCalculatorKind = getOccupationSalaryCalculatorKind(
     detail.detailPage.occupationCode,
   );
+  const minimumWagePage = detail.detailPage.occupationCode === "5223"
+    ? {
+        href: "/minstelonn-butikkmedarbeider",
+        label: "Se tariffsatsene for butikkmedarbeidere",
+      }
+    : detail.detailPage.occupationCode === "7411"
+      ? {
+          href: "/minstelonn-elektriker",
+          label: "Se minstelønnssatsene for elektrikere",
+        }
+      : null;
   const sectionNavItems = [
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }
@@ -306,17 +317,18 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       </p>
                     </aside>
 
-                    {salaryCalculatorKind || VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) ? (
+                    {salaryCalculatorKind || VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) || minimumWagePage ? (
                       <div className="mt-8 flex flex-wrap gap-3">
                         {salaryCalculatorKind ? (
                           <Link
-                            className="inline-flex min-h-11 items-center justify-center rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
                             href={
                               salaryCalculatorKind === "teacher"
                                 ? "/laerer-lonn-kalkulator"
                                 : "/sykepleier-lonn-kalkulator"
                             }
                           >
+                            <SidebarLinkIcon className="text-white" icon="calculator" />
                             {salaryCalculatorKind === "teacher"
                               ? "Lønnskalkulator for lærere"
                               : "Lønnskalkulator for sykepleiere"}
@@ -324,10 +336,20 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                         ) : null}
                         {VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) ? (
                           <Link
-                            className="inline-flex min-h-11 items-center justify-center rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
                             href="/vernepleier-lonn-kalkulator"
                           >
+                            <SidebarLinkIcon className="text-white" icon="calculator" />
                             Lønnskalkulator for vernepleiere
+                          </Link>
+                        ) : null}
+                        {minimumWagePage ? (
+                          <Link
+                            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
+                            href={minimumWagePage.href}
+                          >
+                            <SidebarLinkIcon className="text-white" icon="document" />
+                            {minimumWagePage.label}
                           </Link>
                         ) : null}
                       </div>
