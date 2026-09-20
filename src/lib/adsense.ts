@@ -5,6 +5,8 @@ export const ADSENSE_SLOTS = {
   "blog-after-content": "2721562873",
   "blog-sidebar": "2607233991",
   "occupation-after-salary-overview": "1294152328",
+  "occupation-between-real-salary-and-overtime": "1294152328",
+  "occupation-between-overtime-and-labor-market": "1294152328",
   "occupation-before-faq": "1294152328",
   "occupation-sidebar": "9387043575",
   "calculator-after-tool": "2663074318",
