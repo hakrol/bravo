@@ -29,7 +29,7 @@ const toolLinks: { href: string; title: string; icon: SidebarIconName; emphasis?
   { href: "/lonnsjekk", title: "Sjekk lønnen din", icon: "chart" },
   { href: "/jobbtilbud", title: "Lønnstilbud", icon: "document" },
   { href: "/feriekalkulator", title: "Feriekalkulator", icon: "calendar" },
-  { href: "/kalkulatorer", title: "Lønnskalkulatorer", icon: "calculator" },
+  { href: "/verktoy#kalkulatorer", title: "Lønnskalkulatorer", icon: "calculator" },
   { href: "/verktoy", title: "Se alle verktøy", icon: "tools", emphasis: true },
 ];
 

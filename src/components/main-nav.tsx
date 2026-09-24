@@ -37,7 +37,6 @@ const allToolPaths = [
   "/verktoy",
   ...primaryTools.map((tool) => tool.href),
   ...secondaryTools.map((tool) => tool.href),
-  "/kalkulatorer",
   "/sammenlign-lonn",
   "/lonnsvekst",
   "/bruttolonn-kalkulator",

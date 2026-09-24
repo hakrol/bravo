@@ -56,7 +56,7 @@ const BLOG_DEMO_LINKS = [
 ];
 
 const TOOL_LINKS = [
-  { colorClassName: "text-sky-700", href: "/kalkulatorer", icon: "calculator", title: "Kalkulatorer" },
+  { colorClassName: "text-sky-700", href: "/verktoy", icon: "calculator", title: "Kalkulatorer" },
   { colorClassName: "text-emerald-700", href: "/lonnsjekk", icon: "check", title: "Lønnssjekk" },
   { colorClassName: "text-indigo-700", href: "/sammenlign-lonn", icon: "compare", title: "Sammenlign lønn" },
 ];
