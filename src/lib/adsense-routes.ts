@@ -23,7 +23,6 @@ const ADSENSE_ALLOWED_EXACT_PATHS = new Set([
   "/bruttolonn-kalkulator",
   "/feriedager-norge",
   "/feriekalkulator",
-  "/kalkulatorer",
   "/kilometergodtgjorelse-kalkulator",
   "/lanekalkulator",
   "/lonnskalkulator",
