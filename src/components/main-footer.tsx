@@ -20,6 +20,7 @@ const footerGroups = [
     links: [
       { href: "/yrker", label: "Yrker" },
       { href: "/yrkesgrupper", label: "Yrkesgrupper" },
+      { href: "/minstelonn", label: "Minstelønn" },
       { href: "/laerling", label: "Lærlingfag" },
       { href: "/lønnsforskjell-mellom-kvinner-og-menn", label: "Lønnsforskjell mellom kvinner og menn" },
       {

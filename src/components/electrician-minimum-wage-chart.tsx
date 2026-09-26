@@ -2,173 +2,105 @@
 
 import { useMemo, useState } from "react";
 
-type ChartPoint = {
-  effectiveFrom: string;
-  effectiveTo: string | null;
-  skilledRate: number;
-};
-
-type ElectricianMinimumWageChartProps = {
-  points: ChartPoint[];
-  today: string;
-};
+type ChartPoint = { effectiveFrom: string; skilledRate: number; otherRate: number };
+type Unit = "time" | "måned" | "år";
+type YearPoint = ChartPoint & { year: number };
+type ActivePoint = { year: number; series: "skilled" | "other" };
 
 const width = 920;
-const height = 410;
-const plot = { top: 38, right: 26, bottom: 64, left: 72 };
+const height = 300;
+const plot = { left: 88, right: 132, top: 15, bottom: 48 };
+const units: { value: Unit; label: string; factor: number }[] = [
+  { value: "time", label: "Time", factor: 1 },
+  { value: "måned", label: "Måned", factor: (37.5 * 52) / 12 },
+  { value: "år", label: "År", factor: 37.5 * 52 },
+];
 
-export function ElectricianMinimumWageChart({
-  points,
-  today,
-}: ElectricianMinimumWageChartProps) {
-  const [activeIndex, setActiveIndex] = useState(points.length - 1);
-  const model = useMemo(() => createChartModel(points, today), [points, today]);
-  const active = points[activeIndex] ?? points.at(-1);
-  const previous = points[activeIndex - 1];
-  const amountChange = active && previous ? active.skilledRate - previous.skilledRate : null;
-  const percentChange =
-    amountChange !== null && previous ? (amountChange / previous.skilledRate) * 100 : null;
+export function ElectricianMinimumWageChart({ points, today }: { points: ChartPoint[]; today: string }) {
+  const [unit, setUnit] = useState<Unit>("time");
+  const [activePoint, setActivePoint] = useState<ActivePoint | null>(null);
+  const selected = units.find((item) => item.value === unit) ?? units[0];
+  const yearPoints = useMemo(() => getYearEndPoints(points, today), [points, today]);
+  const model = useMemo(() => makeChartModel(yearPoints, selected.factor), [yearPoints, selected.factor]);
+  const active = yearPoints.find((point) => point.year === activePoint?.year);
+  const latest = yearPoints.at(-1);
 
-  if (!active || !model) {
-    return null;
-  }
+  if (!model || !latest) return null;
 
   return (
-    <figure className="overflow-hidden rounded-[5px] border border-black/10 bg-white p-4 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <figure className="rounded-[11px] border border-[#dde4ee] bg-white px-5 pb-5 pt-6 shadow-[0_10px_35px_rgba(19,37,64,0.04)] sm:px-7 sm:pb-7 sm:pt-7">
+      <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--primary)]">
-            Faglært elektriker · kr/time
-          </p>
-          <p className="mt-2 text-2xl font-bold tabular-nums text-slate-950">
-            {formatRate(active.skilledRate)}
-          </p>
-          <p className="mt-1 text-sm text-slate-600">
-            Fra {formatDate(active.effectiveFrom)}
-            {amountChange !== null && percentChange !== null
-              ? ` · +${formatRate(amountChange)} (+${formatPercent(percentChange)})`
-              : " · første dokumenterte punkt"}
-          </p>
+          <h2 className="text-[1.75rem] font-bold leading-[1.15] tracking-[-0.03em] text-[#19243b] sm:text-[2.1rem] sm:leading-[1.1]">Utvikling i minstelønn for elektrikere</h2>
+          <p className="mt-2 text-[1.03rem] leading-[1.8] text-[#52627d] sm:text-lg sm:leading-[1.95]">Minstelønn per {unit}. Faglærte og andre arbeidstakere. {yearPoints[0].year}–{latest.year}.</p>
         </div>
-        <p className="text-xs leading-5 text-slate-500">Velg eller hold over et punkt for detaljer.</p>
+        <div aria-label="Vis sats per" className="inline-flex rounded-full border border-[#dde4ee] bg-white p-1 shadow-sm" role="group">
+          {units.map((item) => <button aria-pressed={unit === item.value} className={`rounded-full px-4 py-2 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#15533d] ${unit === item.value ? "bg-[#15533d] text-white" : "text-[#34415a] hover:bg-slate-100"}`} key={item.value} onClick={() => { setUnit(item.value); setActivePoint(null); }} type="button">{item.label}</button>)}
+        </div>
       </div>
 
-      <div className="mt-5 overflow-x-auto" role="group" aria-label="Utvikling i minstelønn">
-        <svg className="min-w-[700px]" role="img" viewBox={`0 0 ${width} ${height}`}>
-          <title>Stegdiagram for minstelønn til faglærte elektrikere</title>
-          {model.ticks.map((tick) => {
-            const y = model.yForRate(tick);
-            return (
-              <g key={tick}>
-                <line x1={plot.left} x2={width - plot.right} y1={y} y2={y} stroke="#e2e8f0" />
-                <text fill="#64748b" fontSize="13" textAnchor="end" x={plot.left - 12} y={y + 5}>
-                  {tick.toLocaleString("nb-NO")}
-                </text>
-              </g>
-            );
-          })}
-          {model.yearTicks.map((tick) => (
-            <g key={tick.year}>
-              <line x1={tick.x} x2={tick.x} y1={plot.top} y2={height - plot.bottom} stroke="#f1f5f9" />
-              <text fill="#64748b" fontSize="13" textAnchor="middle" x={tick.x} y={height - 26}>
-                {tick.year}
-              </text>
-            </g>
-          ))}
-          <path
-            d={model.path}
-            fill="none"
-            stroke="#14532d"
-            strokeLinejoin="round"
-            strokeWidth="5"
-          />
-          {points.map((point, index) => {
-            const x = model.xForDate(point.effectiveFrom);
-            const y = model.yForRate(point.skilledRate);
-            const selected = index === activeIndex;
-            return (
-              <g
-                aria-label={`${formatDate(point.effectiveFrom)}: ${formatRate(point.skilledRate)}`}
-                key={point.effectiveFrom}
-                onBlur={() => undefined}
-                onFocus={() => setActiveIndex(index)}
-                onMouseEnter={() => setActiveIndex(index)}
-                role="button"
-                tabIndex={0}
-              >
-                <circle cx={x} cy={y} fill="transparent" r="18" />
-                <circle
-                  cx={x}
-                  cy={y}
-                  fill={selected ? "#14532d" : "#ffffff"}
-                  r={selected ? 7 : 5.5}
-                  stroke="#14532d"
-                  strokeWidth="3"
-                />
-              </g>
-            );
-          })}
+      <div className="mt-6 overflow-x-auto">
+        <svg aria-label={`Lønnsutvikling ${yearPoints[0].year} til ${latest.year}. Mørkegrønn linje viser satsen for faglærte. Lys grønn linje viser satsen for andre arbeidstakere.`} className="w-full min-w-[660px]" role="img" viewBox={`0 0 ${width} ${height}`}>
+          {model.ticks.map((tick) => { const y = model.y(tick); return <g key={tick}><line stroke="#e3e9f2" x1={plot.left} x2={width - plot.right} y1={y} y2={y} /><text fill="#52627d" fontSize="13" textAnchor="end" x={plot.left - 12} y={y + 5}>{formatAxis(tick)}</text></g>; })}
+          {yearPoints.map((point, index) => { const x = model.x(index); return <g key={`grid-${point.year}`}><line stroke="#e9edf4" x1={x} x2={x} y1={plot.top} y2={height - plot.bottom} /><text fill="#52627d" fontSize="13" textAnchor="middle" x={x} y={height - 17}>{point.year}</text></g>; })}
+          <path d={model.skilledPath} fill="none" stroke="#15533d" strokeWidth="2.5" />
+          <path d={model.otherPath} fill="none" stroke="#93b4a5" strokeWidth="2.5" />
+          {yearPoints.map((point, index) => <g key={`dots-${point.year}`}>
+            <circle cx={model.x(index)} cy={model.y(point.skilledRate * selected.factor)} fill="#15533d" r="4.5" />
+            <circle cx={model.x(index)} cy={model.y(point.otherRate * selected.factor)} fill="#93b4a5" r="4.5" />
+            <ChartHitPoint label={`Faglært i ${point.year}: ${formatValue(point.skilledRate * selected.factor, unit)}`} onClose={() => setActivePoint(null)} onOpen={() => setActivePoint({ year: point.year, series: "skilled" })} x={model.x(index)} y={model.y(point.skilledRate * selected.factor)} />
+            <ChartHitPoint label={`Andre arbeidstakere i ${point.year}: ${formatValue(point.otherRate * selected.factor, unit)}`} onClose={() => setActivePoint(null)} onOpen={() => setActivePoint({ year: point.year, series: "other" })} x={model.x(index)} y={model.y(point.otherRate * selected.factor)} />
+          </g>)}
+          <text fill="#19243b" fontSize="15" x={width - plot.right + 13} y={model.y(latest.skilledRate * selected.factor) + 5}>{formatValue(latest.skilledRate * selected.factor, unit)}</text>
+          <text fill="#15533d" fontSize="15" x={width - plot.right + 13} y={model.y(latest.otherRate * selected.factor) + 5}>{formatValue(latest.otherRate * selected.factor, unit)}</text>
+          {active && activePoint && <ChartTooltip factor={selected.factor} model={model} point={active} series={activePoint.series} unit={unit} />}
         </svg>
       </div>
-      <figcaption className="mt-3 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-500">
-        Stegformen viser at hver sats gjelder uendret frem til neste ikrafttredelsesdato. Kilde:
-        Lovdata og Tariffnemnda.
-      </figcaption>
+      <div className="mt-1 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-[#52627d]"><span className="inline-flex items-center gap-2"><span className="size-3.5 rounded-full bg-[#15533d]" />Faglært</span><span className="inline-flex items-center gap-2"><span className="size-3.5 rounded-full bg-[#93b4a5]" />Andre arbeidstakere</span></div>
+      <figcaption className="mt-4 text-center text-xs leading-5 text-slate-500">Punktene viser satsen ved utgangen av hvert år. Linjene illustrerer utviklingen.{unit !== "time" ? " Måned og år er omregnet med 37,5 timer per uke, ikke egne lovpålagte satser." : ""} Foreslått 2026-sats er ikke inkludert.</figcaption>
     </figure>
   );
 }
 
-function createChartModel(points: ChartPoint[], today: string) {
+function getYearEndPoints(points: ChartPoint[], today: string): YearPoint[] {
+  if (points.length === 0) return [];
+  const firstYear = Math.max(2016, Number(points[0].effectiveFrom.slice(0, 4)));
+  const lastYear = Math.min(Number(today.slice(0, 4)), Number(points.at(-1)?.effectiveFrom.slice(0, 4)));
+  return Array.from({ length: lastYear - firstYear + 1 }, (_, index) => {
+    const year = firstYear + index;
+    const date = year === lastYear ? today : `${year}-12-31`;
+    const rate = [...points].reverse().find((point) => point.effectiveFrom <= date);
+    return rate ? { ...rate, year } : null;
+  }).filter((point): point is YearPoint => point !== null);
+}
+
+function makeChartModel(points: YearPoint[], factor: number) {
   if (points.length === 0) return null;
-  const start = toTimestamp(points[0].effectiveFrom);
-  const end = toTimestamp(today);
-  const rates = points.map((point) => point.skilledRate);
-  const min = Math.floor((Math.min(...rates) - 5) / 10) * 10;
-  const max = Math.ceil((Math.max(...rates) + 5) / 10) * 10;
-  const plotWidth = width - plot.left - plot.right;
-  const plotHeight = height - plot.top - plot.bottom;
-  const xForDate = (date: string) =>
-    plot.left + ((toTimestamp(date) - start) / Math.max(end - start, 1)) * plotWidth;
-  const yForRate = (rate: number) =>
-    plot.top + plotHeight - ((rate - min) / Math.max(max - min, 1)) * plotHeight;
-  const pathParts: string[] = [];
-
-  points.forEach((point, index) => {
-    const x = xForDate(point.effectiveFrom);
-    const y = yForRate(point.skilledRate);
-    if (index === 0) pathParts.push(`M ${x} ${y}`);
-    else pathParts.push(`H ${x} V ${y}`);
-  });
-  pathParts.push(`H ${xForDate(today)}`);
-
-  const startYear = new Date(start).getUTCFullYear();
-  const endYear = new Date(end).getUTCFullYear();
-  const yearTicks = Array.from({ length: endYear - startYear + 1 }, (_, index) => startYear + index)
-    .filter((year) => year === startYear || year === endYear || year % 2 === 0)
-    .map((year) => ({ year, x: xForDate(`${year}-01-01`) }))
-    .filter((tick) => tick.x >= plot.left && tick.x <= width - plot.right);
-  const ticks = [min, min + (max - min) / 2, max];
-
-  return { path: pathParts.join(" "), ticks, yearTicks, xForDate, yForRate };
+  const values = points.flatMap((point) => [point.skilledRate * factor, point.otherRate * factor]);
+  const step = factor === 1 ? 50 : factor < 1000 ? 10000 : 100000;
+  const max = Math.ceil(Math.max(...values) / step) * step + step;
+  const x = (index: number) => plot.left + index * (width - plot.left - plot.right) / Math.max(points.length - 1, 1);
+  const y = (value: number) => plot.top + (height - plot.top - plot.bottom) * (1 - value / max);
+  const path = (key: "skilledRate" | "otherRate") => points.map((point, index) => `${index ? "L" : "M"} ${x(index)} ${y(point[key] * factor)}`).join(" ");
+  const ticks = Array.from({ length: Math.round(max / step) + 1 }, (_, index) => index * step);
+  return { x, y, skilledPath: path("skilledRate"), otherPath: path("otherRate"), ticks, years: points.map((point) => point.year) };
 }
 
-function toTimestamp(date: string) {
-  return new Date(`${date}T00:00:00Z`).getTime();
+function ChartHitPoint({ label, onClose, onOpen, x, y }: { label: string; onClose: () => void; onOpen: () => void; x: number; y: number }) {
+  return <circle aria-label={label} cx={x} cy={y} fill="transparent" onBlur={onClose} onClick={onOpen} onFocus={onOpen} onMouseEnter={onOpen} onMouseLeave={onClose} r="18" role="button" style={{ cursor: "pointer", touchAction: "manipulation" }} tabIndex={0} />;
 }
 
-function formatRate(value: number) {
-  return `${value.toLocaleString("nb-NO", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kr`;
+function ChartTooltip({ factor, model, point, series, unit }: { factor: number; model: NonNullable<ReturnType<typeof makeChartModel>>; point: YearPoint; series: ActivePoint["series"]; unit: Unit }) {
+  const pointIndex = model.years.indexOf(point.year);
+  const x = model.x(pointIndex);
+  const value = (series === "skilled" ? point.skilledRate : point.otherRate) * factor;
+  const y = model.y(value);
+  const boxWidth = 210;
+  const boxHeight = 58;
+  const boxX = Math.min(Math.max(x - boxWidth / 2, plot.left), width - plot.right - boxWidth);
+  const boxY = Math.max(plot.top + 4, y - boxHeight - 14);
+  return <g pointerEvents="none"><rect fill="#19243b" height={boxHeight} rx="8" width={boxWidth} x={boxX} y={boxY} /><path d={`M ${x - 6} ${boxY + boxHeight} L ${x} ${boxY + boxHeight + 7} L ${x + 6} ${boxY + boxHeight} Z`} fill="#19243b" /><text fill="#cfe5d8" fontSize="12" x={boxX + 12} y={boxY + 21}>{series === "skilled" ? "Faglært" : "Andre arbeidstakere"} · {point.year}</text><text fill="white" fontSize="16" fontWeight="700" x={boxX + 12} y={boxY + 44}>{formatValue(value, unit)} / {unit}</text></g>;
 }
 
-function formatPercent(value: number) {
-  return `${value.toLocaleString("nb-NO", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %`;
-}
-
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat("nb-NO", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${value}T00:00:00Z`));
-}
+function formatAxis(value: number) { return value.toLocaleString("nb-NO", { maximumFractionDigits: 0 }); }
+function formatValue(value: number, unit: Unit) { return `${value.toLocaleString("nb-NO", { minimumFractionDigits: unit === "time" ? 2 : 0, maximumFractionDigits: unit === "time" ? 2 : 0 })} kr`; }

@@ -28,7 +28,7 @@ export function RetailRateFinder({ rateSet }: { rateSet: RetailRateSet }) {
       <NumberField label="År med relevant yrkesutdanning etter videregående" value={education} min={0} max={5} onChange={setEducation} />
     </div>
     {age >= 25 && <label className="mt-4 flex items-start gap-3 text-sm leading-6 text-slate-700"><input checked={shortStudentJob} className="mt-1" onChange={(event) => setShortStudentJob(event.target.checked)} type="checkbox" />Dette er en kortvarig jobb som skoleelev/student i ferie eller lignende.</label>}
-    <div className="mt-6 rounded-[5px] bg-[#163d26] p-5 text-white">
+    <div className="mt-6 rounded-[11px] bg-[linear-gradient(135deg,#1d634c,#104733)] p-5 text-white">
       <p className="text-sm text-green-100">Veiledende minsteplassering</p>
       <p className="mt-1 text-3xl font-bold">{retailRateLabels[result.key]}</p>
       <div className="mt-4 flex flex-wrap gap-x-8 gap-y-2 text-lg"><strong>{money(rate.hourly)} / time</strong><strong>{wholeMoney(rate.monthly)} / måned</strong></div>
@@ -88,7 +88,7 @@ export function RetailTariffHistory({ rateSets }: { rateSets: RetailRateSet[] })
   </>;
 }
 
-function ToolCard({ children }: { children: ReactNode }) { return <div className="rounded-[5px] border border-black/10 bg-white p-5 shadow-[0_18px_50px_rgba(15,23,42,.06)] sm:p-7">{children}</div>; }
+function ToolCard({ children }: { children: ReactNode }) { return <div className="rounded-[11px] border border-slate-200 bg-white p-5 shadow-[0_18px_50px_rgba(15,23,42,.06)] sm:p-7">{children}</div>; }
 function NumberField({ label, value, min, max, step = 1, onChange }: { label: string; value: number; min: number; max: number; step?: number; onChange: (value: number) => void }) { return <label className="grid gap-2 text-sm font-semibold text-slate-800">{label}<input className="h-11 rounded-[5px] border border-slate-300 px-3 font-normal" type="number" value={value} min={min} max={max} step={step} onChange={(event) => onChange(Number(event.target.value))}/></label>; }
 function SelectField({ label, value, options, onChange }: { label: string; value: string; options: { value: string; label: string }[]; onChange: (value: string) => void }) { return <label className="grid min-w-44 gap-2 text-sm font-semibold text-slate-800">{label}<select className="h-11 rounded-[5px] border border-slate-300 bg-white px-3 font-normal" value={value} onChange={(event) => onChange(event.target.value)}>{options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>; }
 function TimeField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) { return <label className="grid gap-2 text-sm font-semibold text-slate-800">{label}<input className="h-11 rounded-[5px] border border-slate-300 px-3 font-normal" type="time" value={value} onChange={(event) => onChange(event.target.value)}/></label>; }
@@ -102,6 +102,23 @@ function formatNumber(value: number, fractionDigits: number) {
   const groupedInteger = integer.replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0");
 
   return fraction === undefined ? groupedInteger : `${groupedInteger},${fraction}`;
+}
+
+export function RetailTariffHistoryTable({ rateSets }: { rateSets: RetailRateSet[] }) {
+  const [key, setKey] = useState<RetailRateKey>("step1");
+
+  return <ToolCard>
+    <div className="flex flex-wrap items-end justify-between gap-4">
+      <SelectField label="Vis lønnstrinn" value={key} onChange={(value) => setKey(value as RetailRateKey)} options={retailRateKeys.map((value) => ({ value, label: retailRateLabels[value] }))} />
+      <p className="max-w-md text-xs leading-5 text-slate-500">Velg sats for å se alle faktiske virkningsperioder. Historisk timelønn merket «beregnet» er månedslønn ÷ 162,5.</p>
+    </div>
+    <div className="mt-6 overflow-x-auto rounded-[5px] border border-black/10 bg-white">
+      <table className="w-full min-w-[800px] text-left text-sm">
+        <thead className="bg-[#f3f5ed] text-slate-700"><tr>{["Gjelder fra", "Gjelder til", "Lønnstrinn", "Månedslønn", "Timelønn", "Endring", "Kilde"].map((heading) => <th className="px-4 py-3 font-semibold" key={heading}>{heading}</th>)}</tr></thead>
+        <tbody>{rateSets.map((set, index) => { const rate = set.rates[key]; const previous = rateSets[index - 1]?.rates[key]; return <tr className="border-t border-slate-200" key={set.effectiveFrom}><td className="px-4 py-3 tabular-nums">{date(set.effectiveFrom)}</td><td className="px-4 py-3 tabular-nums">{set.effectiveTo ? date(set.effectiveTo) : "Gjeldende"}</td><td className="px-4 py-3 font-medium">{retailRateLabels[key]}</td><td className="px-4 py-3 tabular-nums">{wholeMoney(rate.monthly)}</td><td className="px-4 py-3 tabular-nums">{money(rate.hourly)} <span className="text-xs text-slate-500">({rate.hourlyRateSource === "official" ? "offisiell" : "beregnet"})</span></td><td className="px-4 py-3 tabular-nums">{previous ? `${rate.monthly - previous.monthly >= 0 ? "+" : ""}${wholeMoney(rate.monthly - previous.monthly)}` : "–"}</td><td className="px-4 py-3"><a className="font-semibold text-[var(--primary)] hover:underline" href={set.sourceUrl}>Virke ↗</a></td></tr>; })}</tbody>
+      </table>
+    </div>
+  </ToolCard>;
 }
 function date(value: string) {
   const [year, month, day] = value.split("-");
