@@ -87,8 +87,16 @@ export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = tru
         ...salaryTips.map((post) => ({ href: `/blogg/${post.slug}`, title: post.title })),
         { href: "/blogg/kategori/lonnsforhandling", title: "Se alle lønnstips", emphasis: true },
       ]} />
+      <SidebarLinks
+        title="Minstelønn"
+        icon="document"
+        description="Se hvilke bransjer som har lovpålagt minstelønn, og finn gjeldende satser."
+        links={[
+          { href: "/minstelonn", title: "Se oversikten over minstelønn", emphasis: true },
+        ]}
+      />
       {showAd ? (
-        <AdsenseAd className="xl:sticky xl:top-20" placement="blog-sidebar" />
+        <AdsenseAd className="blog-sidebar-ad" placement="blog-sidebar" />
       ) : null}
     </aside>
   );

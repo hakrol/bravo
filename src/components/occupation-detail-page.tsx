@@ -126,6 +126,32 @@ const NURSE_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2222", "2223"]);
 const VERNEPLEIER_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2223", "2224"]);
 const TEACHER_CALCULATOR_OCCUPATION_CODES = new Set(["2320", "2330", "2341", "2352"]);
 
+const MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE: Record<
+  string,
+  { href: string; label: string }
+> = {
+  "9112": {
+    href: "/minstelonn/minstelonn-renholder",
+    label: "Se minstelønnssatsene for renholdere",
+  },
+  "9111": {
+    href: "/minstelonn/minstelonn-renholder",
+    label: "Se minstelønnssatsene for renholdere",
+  },
+  "5151": {
+    href: "/minstelonn/minstelonn-renholder",
+    label: "Se minstelønnssatsene for renholdere",
+  },
+  "7411": {
+    href: "/minstelonn/minstelonn-elektriker",
+    label: "Se minstelønnssatsene for elektrikere",
+  },
+  "5223": {
+    href: "/minstelonn/minstelonn-butikkmedarbeider",
+    label: "Se tariffsatsene for butikkmedarbeidere",
+  },
+};
+
 type OccupationSalaryCalculatorKind = "nurse" | "teacher";
 
 function getOccupationSalaryCalculatorKind(
@@ -215,17 +241,8 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const salaryCalculatorKind = getOccupationSalaryCalculatorKind(
     detail.detailPage.occupationCode,
   );
-  const minimumWagePage = detail.detailPage.occupationCode === "5223"
-    ? {
-        href: "/minstelonn/minstelonn-butikkmedarbeider",
-        label: "Se tariffsatsene for butikkmedarbeidere",
-      }
-    : detail.detailPage.occupationCode === "7411"
-      ? {
-          href: "/minstelonn/minstelonn-elektriker",
-          label: "Se minstelønnssatsene for elektrikere",
-        }
-      : null;
+  const minimumWagePage =
+    MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE[detail.detailPage.occupationCode] ?? null;
   const sectionNavItems = [
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }

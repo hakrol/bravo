@@ -155,6 +155,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <article>
           <BlogPostHeader post={post} />
           <div className="blog-post-layout">
+            <div className="blog-left-ad-rail">
+              <AdsenseAd placement="blog-left-sidebar" />
+            </div>
             <div className="blog-post-main">
               <div className="blog-post-lonnsjekk-callout-wrap mx-auto max-w-3xl">
                 <BlogLonnsjekkCallout className="blog-post-lonnsjekk-callout" />
