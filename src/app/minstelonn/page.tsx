@@ -4,7 +4,7 @@ import { AdsenseAd } from "@/components/adsense-ad";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Finn sider om minstelønn i Norge. Se gjeldende satser, tillegg og regler for renholdere, elektrikere og tariffbaserte butikksatser.";
+  "Finn sider om minstelønn i Norge. Se gjeldende satser og regler for restaurant, renhold og elektro, samt tariffbaserte butikksatser.";
 
 export const metadata: Metadata = {
   title: "Minstelønn i Norge – satser og regler",
@@ -30,7 +30,7 @@ type MinimumWageCard = {
   category: string;
   description: string;
   href: string;
-  icon: "cleaning" | "electricity" | "retail";
+  icon: "cleaning" | "electricity" | "restaurant" | "retail";
   title: string;
 };
 
@@ -50,6 +50,14 @@ const minimumWagePages: readonly MinimumWageCard[] = [
     href: "/minstelonn/minstelonn-elektriker",
     icon: "electricity",
     title: "Minstelønn for elektrikere",
+  },
+  {
+    badge: "Lovpålagt",
+    category: "Restaurant · servering · catering",
+    description: "Se gjeldende satser etter alder og praksis, og les om tips, tillegg, overtid og forskjellen på minstelønn og Riksavtalen.",
+    href: "/minstelonn/minstelonn-restaurant",
+    icon: "restaurant",
+    title: "Minstelønn i restaurant",
   },
   {
     badge: "Tariff",
@@ -104,6 +112,10 @@ function MinimumWageIcon({ icon }: { icon: MinimumWageCard["icon"] }) {
     return <svg {...commonProps}><path d="M4 10v10h16V10M3 10l2-6h14l2 6" /><path d="M3 10a3 3 0 0 0 5 2 3 3 0 0 0 4 0 3 3 0 0 0 4 0 3 3 0 0 0 5-2M9 20v-5h6v5" /></svg>;
   }
 
+  if (icon === "restaurant") {
+    return <svg {...commonProps}><path d="M4 3v7a3 3 0 0 0 3 3v8M7 3v10M10 3v7a3 3 0 0 1-3 3M16 3v18M16 3c3 1 4 4 4 7v2h-4" /></svg>;
+  }
+
   return <svg {...commonProps}><path d="M7 21h10M9 21v-7l2-3V5h5v6l2 3v7" /><path d="M11 5V3h5v2M6 9h3m-4 3h4" /></svg>;
 }
 
@@ -156,7 +168,7 @@ export default function MinimumWageOverviewPage() {
             <h2 className="text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-4xl">Velg bransje</h2>
             <p className="max-w-3xl text-base leading-7 text-[var(--muted)]">Gå til den relevante siden for oppdaterte satser, virkeområde, tillegg og praktiske forklaringer.</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {minimumWagePages.map((page) => <MinimumWagePageCard {...page} key={page.href} />)}
           </div>
         </section>
