@@ -1,0 +1,58 @@
+{
+  "id": "minstelonn-servitor-relaterte-yrker-2025",
+  "title": "Relevante yrker innen restaurant, servering og hotell",
+  "source": "SSB tabell 11418",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "note": "Listen er redaksjonelt avgrenset til yrker som er direkte relevante for restaurant-, serverings-, kjøkken- og hotellarbeid. Tallene gjelder begge kjønn, alle sektorer og arbeidstid i alt i 2025.",
+  "rows": [
+    {
+      "code": "1412",
+      "label": "Restaurantsjefer",
+      "href": "/yrke/restaurantsjefer-lonn",
+      "value": 50770
+    },
+    {
+      "code": "3434",
+      "label": "Sjefskokker",
+      "href": "/yrke/sjefskokker-lonn",
+      "value": 47850
+    },
+    {
+      "code": "5120",
+      "label": "Kokker",
+      "href": "/yrke/kokker-lonn",
+      "value": 41610
+    },
+    {
+      "code": "4224",
+      "label": "Hotellresepsjonister",
+      "href": "/yrke/hotellresepsjonister-lonn",
+      "value": 39630
+    },
+    {
+      "code": "9412",
+      "label": "Kjøkkenassistenter",
+      "href": "/yrke/kjokkenassistenter-lonn",
+      "value": 38140
+    },
+    {
+      "code": "5132",
+      "label": "Bartendere",
+      "href": "/yrke/bartendere-lonn",
+      "value": 37480
+    },
+    {
+      "code": "5131",
+      "label": "Servitører",
+      "href": "/yrke/servitorer-lonn",
+      "value": 37350
+    },
+    {
+      "code": "5246",
+      "label": "Gatekjøkken- og kafémedarbeidere mv.",
+      "href": "/yrke/gatekjokken-og-kafemedarbeidere-mv-lonn",
+      "value": 36360
+    }
+  ]
+}

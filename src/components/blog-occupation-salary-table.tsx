@@ -28,6 +28,7 @@ import konduktorLonn2025Snapshot from "@/content/blog/data/konduktor-lonn-2025.j
 import laerereLonn2025Snapshot from "@/content/blog/data/laerere-lonn-2025.json";
 import legeLonn2025Snapshot from "@/content/blog/data/lege-lonn-2025.json";
 import malerLonn2025Snapshot from "@/content/blog/data/maler-lonn-2025.json";
+import minstelonnServitorRelaterteYrker2025Snapshot from "@/content/blog/data/minstelonn-servitor-relaterte-yrker-2025.json";
 import lavestLonnedeYrker2025Snapshot from "@/content/blog/data/lavest-lonnede-yrker-2025.json";
 import norgesVanligsteYrker2026Snapshot from "@/content/blog/data/norges-vanligste-yrker-2026.json";
 import piloterLonn2025Snapshot from "@/content/blog/data/piloter-lonn-2025.json";
@@ -93,6 +94,7 @@ const snapshots = {
   "lavest-lonnede-yrker-2025": lavestLonnedeYrker2025Snapshot as OccupationSalarySnapshot,
   "lege-lonn-2025": legeLonn2025Snapshot as OccupationSalarySnapshot,
   "maler-lonn-2025": malerLonn2025Snapshot as OccupationSalarySnapshot,
+  "minstelonn-servitor-relaterte-yrker-2025": minstelonnServitorRelaterteYrker2025Snapshot as OccupationSalarySnapshot,
   "norges-vanligste-yrker-2026": norgesVanligsteYrker2026Snapshot as OccupationSalarySnapshot,
   "piloter-lonn-2025": piloterLonn2025Snapshot as OccupationSalarySnapshot,
   "politi-lonn-2025": politiLonn2025Snapshot as OccupationSalarySnapshot,

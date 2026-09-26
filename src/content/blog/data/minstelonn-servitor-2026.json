@@ -1,0 +1,22 @@
+{
+  "verifiedAt": "2026-09-26",
+  "currentEffectiveFrom": "2025-06-15",
+  "source": "Arbeidstilsynet og Lovdata",
+  "sourceUrl": "https://www.arbeidstilsynet.no/lonn-og-ansettelse/lonn/minstelonn/",
+  "rates": {
+    "under17": 142.58,
+    "age17": 152.08,
+    "age18": 166.34,
+    "adult": 204.79
+  },
+  "adultRateHistory": [
+    { "effectiveFrom": "2018-01-01", "adultRate": 157.18 },
+    { "effectiveFrom": "2018-12-01", "adultRate": 161.87 },
+    { "effectiveFrom": "2019-06-01", "adultRate": 167.9 },
+    { "effectiveFrom": "2021-07-01", "adultRate": 175.47 },
+    { "effectiveFrom": "2022-12-15", "adultRate": 179.94 },
+    { "effectiveFrom": "2023-06-15", "adultRate": 190.79 },
+    { "effectiveFrom": "2024-11-01", "adultRate": 197.79 },
+    { "effectiveFrom": "2025-06-15", "adultRate": 204.79 }
+  ]
+}
