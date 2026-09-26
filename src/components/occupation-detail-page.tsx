@@ -150,6 +150,42 @@ const MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE: Record<
     href: "/minstelonn/minstelonn-butikkmedarbeider",
     label: "Se tariffsatsene for butikkmedarbeidere",
   },
+  "3434": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "4224": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "5120": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "5131": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "5132": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "5246": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "9412": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "1411": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
+  "1412": {
+    href: "/minstelonn/minstelonn-restaurant",
+    label: "Se minstelønn i restaurant, hotell og catering",
+  },
 };
 
 type OccupationSalaryCalculatorKind = "nurse" | "teacher";

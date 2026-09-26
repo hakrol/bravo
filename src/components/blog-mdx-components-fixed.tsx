@@ -132,6 +132,7 @@ import {
   ServitorSalaryBubbleChart,
   ServitorSalaryDevelopmentChart,
 } from "@/components/blog-servitor-salary-chart";
+import { ServitorMinimumWageDevelopmentChart } from "@/components/blog-servitor-minimum-wage-chart";
 import { PoliceSalaryBubbleChart, PoliceSalaryEditorialChart } from "@/components/blog-police-salary-chart";
 import {
   RorleggerGenderSalaryCards,
@@ -387,6 +388,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     RorleggerSalaryDevelopmentChart,
     RorleggerSalaryEditorialChart,
     ServitorGenderSalaryCards,
+    ServitorMinimumWageDevelopmentChart,
     ServitorSalaryBubbleChart,
     ServitorSalaryDevelopmentChart,
     SnekkerSalaryBubbleChart,
