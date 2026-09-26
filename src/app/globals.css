@@ -738,6 +738,11 @@ a.blog-meta-chip:focus-visible {
   display: grid;
   gap: 3rem;
   align-items: start;
+  position: relative;
+}
+
+.blog-left-ad-rail {
+  display: none;
 }
 
 .blog-post-main {
@@ -982,6 +987,30 @@ a.blog-meta-chip:focus-visible {
     display: flex;
     flex-direction: column;
     align-self: stretch;
+  }
+
+  .blog-sidebar-ad {
+    position: sticky;
+    top: 5rem;
+  }
+}
+
+@media (min-width: 1760px) and (min-height: 720px) {
+  .blog-left-ad-rail {
+    position: absolute;
+    inset-block: 0;
+    right: calc(100% + 1.5rem);
+    display: block;
+    width: 160px;
+  }
+
+  .blog-left-ad-rail > [data-ad-placement="blog-left-sidebar"] {
+    position: sticky;
+    top: 5rem;
+  }
+
+  .blog-sidebar-ad {
+    position: static;
   }
 }
 
