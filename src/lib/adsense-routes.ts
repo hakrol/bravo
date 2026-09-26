@@ -27,6 +27,7 @@ const ADSENSE_ALLOWED_EXACT_PATHS = new Set([
   "/lanekalkulator",
   "/lonnskalkulator",
   "/lonnsjekk",
+  "/minstelonn",
   "/lønnsforskjell-mellom-kvinner-og-menn",
   "/lønnsforskjeller-mellom-offentlige-og-private-yrker",
   "/rente-og-avdrag-kalkulator",
@@ -44,6 +45,7 @@ const ADSENSE_ALLOWED_DYNAMIC_PATHS = [
   /^\/yrkesgrupper\/[^/]+$/,
   /^\/blogg\/[^/]+$/,
   /^\/forklarer\/[^/]+$/,
+  /^\/minstelonn\/minstelonn-[^/]+$/,
   /^\/yrke\/[^/]+$/,
 ] as const;
 

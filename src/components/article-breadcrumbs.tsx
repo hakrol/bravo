@@ -2,8 +2,8 @@ import Link from "next/link";
 import styles from "./article-breadcrumbs.module.css";
 
 type ArticleBreadcrumbsProps = {
-  section: "Forklarer" | "Nyheter" | "Blogg";
-  href: "/forklarer" | "/nyheter" | "/blogg";
+  section: "Forklarer" | "Nyheter" | "Blogg" | "Minstelønn";
+  href: "/forklarer" | "/nyheter" | "/blogg" | "/minstelonn";
   title: string;
 };
 

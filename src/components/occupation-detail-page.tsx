@@ -217,12 +217,12 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   );
   const minimumWagePage = detail.detailPage.occupationCode === "5223"
     ? {
-        href: "/minstelonn-butikkmedarbeider",
+        href: "/minstelonn/minstelonn-butikkmedarbeider",
         label: "Se tariffsatsene for butikkmedarbeidere",
       }
     : detail.detailPage.occupationCode === "7411"
       ? {
-          href: "/minstelonn-elektriker",
+          href: "/minstelonn/minstelonn-elektriker",
           label: "Se minstelønnssatsene for elektrikere",
         }
       : null;

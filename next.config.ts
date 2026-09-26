@@ -12,6 +12,21 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/minstelonn-elektriker",
+        destination: "/minstelonn/minstelonn-elektriker",
+        permanent: true,
+      },
+      {
+        source: "/minstelonn-renholder",
+        destination: "/minstelonn/minstelonn-renholder",
+        permanent: true,
+      },
+      {
+        source: "/minstelonn-butikkmedarbeider",
+        destination: "/minstelonn/minstelonn-butikkmedarbeider",
+        permanent: true,
+      },
+      {
         source: "/kalkulatorer",
         destination: "/verktoy",
         permanent: true,
