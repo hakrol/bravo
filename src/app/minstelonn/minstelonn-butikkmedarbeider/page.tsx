@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { AdsenseAd } from "@/components/adsense-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { RetailTariffChart } from "@/components/retail-tariff-chart";
 import { RetailRateFinder, RetailShiftCalculator, RetailTariffHistoryTable } from "@/components/retail-tariff-tools";
 import { getRetailRateSetForDate, RETAIL_TARIFF_VERIFIED_AT, retailRateKeys, retailRateLabels, retailTariffRateSets, retailUbSupplements, validateRetailTariffData } from "@/lib/retail-tariff";
@@ -82,7 +83,8 @@ export default function MinstelonnButikkmedarbeiderPage() {
   return (
     <main className="min-h-screen bg-white px-4 pb-16 pt-5 sm:px-6 lg:px-8">
       {structuredData.map((data, index) => <script dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} key={index} type="application/ld+json" />)}
-      <div className="mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl">
+        <StickyLeftAdRail />
         <ArticleBreadcrumbs href="/minstelonn" section="Minstelønn" title="Butikkmedarbeidere" />
 
         <div className="relative mx-auto mt-7 max-w-[1080px] overflow-hidden rounded-[28px] bg-[radial-gradient(circle_at_50%_40%,#ffffff_0%,#fbfdfb_50%,#f1f7f2_100%)] px-5 pb-8 pt-8 sm:px-10 lg:min-h-[410px] lg:px-[250px] lg:pb-10">
@@ -103,7 +105,7 @@ export default function MinstelonnButikkmedarbeiderPage() {
           <p className="mt-4 text-sm leading-6 text-slate-600">Satsene gjelder arbeidsforhold som omfattes av Landsoverenskomsten mellom Virke og HK. De er ikke generell lovpålagt minstelønn i butikk.</p>
         </section>
 
-        <div id="utvikling" className="mx-auto mt-7 max-w-[900px] scroll-mt-24"><RetailTariffChart rateSets={retailTariffRateSets.map((set) => ({ effectiveFrom: set.effectiveFrom, rates: set.rates }))} /></div>
+        <div id="utvikling" className="mx-auto mt-7 max-w-[900px] scroll-mt-24"><RetailTariffChart rateSets={retailTariffRateSets.map((set) => ({ effectiveFrom: set.effectiveFrom, rates: set.rates }))} today={RETAIL_TARIFF_VERIFIED_AT} /></div>
 
         <div aria-label="Prosentvis utvikling i tariffsatsene" className="mx-auto mt-5 grid max-w-[900px] gap-3 sm:grid-cols-3">
           <p className="mb-1 text-xs font-bold uppercase tracking-[0.13em] text-slate-500 sm:col-span-3">Prosentvis vekst i tariffsatsene</p>

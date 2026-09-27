@@ -48,7 +48,7 @@ const allToolPaths = [
 ] as const;
 
 const desktopNavLinkBase =
-  "relative inline-flex items-center justify-center rounded-[5px] px-4 py-2.5 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-1.5 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[var(--nav-underline)] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100 group-hover:after:scale-x-100";
+  "relative inline-flex items-center justify-center rounded-[5px] px-3.5 py-2 text-sm font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[var(--nav-underline)] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100 group-hover:after:scale-x-100";
 
 const mobileNavLinkBase =
   "relative flex items-center justify-between rounded-[5px] px-4 py-3 text-base font-semibold transition duration-200 after:pointer-events-none after:absolute after:bottom-2 after:left-4 after:right-4 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-[var(--nav-underline)] after:transition-transform after:duration-200 hover:after:scale-x-100 focus-visible:after:scale-x-100";
@@ -291,7 +291,7 @@ export function MainNav({ onOpenChange }: MainNavProps) {
 
         <Link
           aria-current={pathname && isActivePath(pathname, "/lonnsjekk") ? "page" : undefined}
-          className="group ml-2 inline-flex min-h-[52px] min-w-[178px] items-center justify-between gap-7 rounded-[8px] bg-gradient-to-b from-[#245f3f] to-[#10492c] px-6 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_24px_rgba(16,73,44,0.22)] transition duration-200 hover:-translate-y-0.5 hover:from-[#286746] hover:to-[#0d4026] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10492c]"
+          className="group ml-2 inline-flex min-h-11 min-w-[154px] items-center justify-between gap-5 rounded-[7px] bg-gradient-to-b from-[#245f3f] to-[#10492c] px-5 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_7px_18px_rgba(16,73,44,0.18)] transition duration-200 hover:-translate-y-0.5 hover:from-[#286746] hover:to-[#0d4026] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10492c]"
           href="/lonnsjekk"
         >
           <span>Lønnsjekk</span>

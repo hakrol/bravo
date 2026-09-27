@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AdsenseAd } from "@/components/adsense-ad";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Finn sider om minstelønn i Norge. Se gjeldende satser og regler for restaurant, renhold og elektro, samt tariffbaserte butikksatser.";
+  "Finn sider om minstelønn i Norge. Se gjeldende satser og regler for bygg, jordbruk, gartneri, restaurant, renhold og elektro, samt tariffbaserte butikksatser.";
 
 export const metadata: Metadata = {
   title: "Minstelønn i Norge – satser og regler",
@@ -30,11 +31,27 @@ type MinimumWageCard = {
   category: string;
   description: string;
   href: string;
-  icon: "cleaning" | "electricity" | "restaurant" | "retail";
+  icon: "agriculture" | "construction" | "cleaning" | "electricity" | "restaurant" | "retail";
   title: string;
 };
 
 const minimumWagePages: readonly MinimumWageCard[] = [
+  {
+    badge: "Lovpålagt",
+    category: "Jordbruk · gartneri",
+    description: "Se satser for sesongarbeidere, faste ansatte og unge, med praksis, fagarbeidertillegg og helgetillegg.",
+    href: "/minstelonn/minstelonn-jordbruk-gartneri",
+    icon: "agriculture",
+    title: "Minstelønn i jordbruk og gartneri",
+  },
+  {
+    badge: "Lovpålagt",
+    category: "Byggebransjen",
+    description: "Se satser for fagarbeidere, ufaglærte og unge, med historikk, overtid, arbeidstøy, reise, kost og losji.",
+    href: "/minstelonn/minstelonn-bygg",
+    icon: "construction",
+    title: "Minstelønn i bygg",
+  },
   {
     badge: "Lovpålagt",
     category: "Renholdsbransjen",
@@ -116,6 +133,14 @@ function MinimumWageIcon({ icon }: { icon: MinimumWageCard["icon"] }) {
     return <svg {...commonProps}><path d="M4 3v7a3 3 0 0 0 3 3v8M7 3v10M10 3v7a3 3 0 0 1-3 3M16 3v18M16 3c3 1 4 4 4 7v2h-4" /></svg>;
   }
 
+  if (icon === "construction") {
+    return <svg {...commonProps}><path d="M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6M8 10h2m4 0h2" /></svg>;
+  }
+
+  if (icon === "agriculture") {
+    return <svg {...commonProps}><path d="M12 21V10M12 15c-4 0-7-2.5-7-6 4 0 7 2.5 7 6ZM12 11c0-4 2.5-7 7-7 0 4-2.5 7-7 7Z" /><path d="M7 21h10" /></svg>;
+  }
+
   return <svg {...commonProps}><path d="M7 21h10M9 21v-7l2-3V5h5v6l2 3v7" /><path d="M11 5V3h5v2M6 9h3m-4 3h4" /></svg>;
 }
 
@@ -156,7 +181,8 @@ export default function MinimumWageOverviewPage() {
   return (
     <main className="min-h-screen bg-[#fbfcfa] px-5 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
       {structuredData.map((data, index) => <script dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} key={index} type="application/ld+json" />)}
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-14 lg:gap-16">
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-14 lg:gap-16">
+        <StickyLeftAdRail />
         <section className="fade-up grid gap-4 text-center sm:mx-auto sm:max-w-4xl">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--primary-strong)]">Minstelønn</p>
           <h1 className="text-4xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-5xl lg:text-6xl">Minstelønn i Norge</h1>
@@ -168,7 +194,7 @@ export default function MinimumWageOverviewPage() {
             <h2 className="text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-4xl">Velg bransje</h2>
             <p className="max-w-3xl text-base leading-7 text-[var(--muted)]">Gå til den relevante siden for oppdaterte satser, virkeområde, tillegg og praktiske forklaringer.</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {minimumWagePages.map((page) => <MinimumWagePageCard {...page} key={page.href} />)}
           </div>
         </section>

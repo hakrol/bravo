@@ -5,11 +5,18 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 
 const DESKTOP_QUERY = "(min-width: 64rem)";
 const SECTION_NAV_OFFSET = 56;
-const DESKTOP_HEADER_OFFSET = 80;
+
+function getDesktopHeaderOffset() {
+  const configuredHeight = window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue("--site-header-height");
+
+  return Number.parseFloat(configuredHeight) || 68;
+}
 
 function getStickyOffset() {
   return SECTION_NAV_OFFSET +
-    (window.matchMedia(DESKTOP_QUERY).matches ? DESKTOP_HEADER_OFFSET : 0);
+    (window.matchMedia(DESKTOP_QUERY).matches ? getDesktopHeaderOffset() : 0);
 }
 
 type OccupationSectionLinkNavItem = {
@@ -170,7 +177,7 @@ export function OccupationSectionLinkNav({
     <nav
       ref={navRef}
       aria-label={ariaLabel}
-      className="sticky top-0 z-40 mb-3 w-full border-y border-slate-200/80 bg-white/94 px-2 py-1.5 shadow-[0_8px_22px_rgba(15,47,34,0.09)] backdrop-blur-xl sm:px-4 lg:top-20 lg:px-6"
+      className="occupation-section-nav sticky z-40 mb-3 w-full border-y border-slate-200/80 bg-white/94 px-2 py-1.5 shadow-[0_8px_22px_rgba(15,47,34,0.09)] backdrop-blur-xl sm:px-4 lg:px-6"
     >
       <div
         className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

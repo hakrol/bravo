@@ -103,7 +103,7 @@ export function MainHeader({ regionRef }: MainHeaderProps) {
   return (
     <header
       className={[
-        "sticky top-0 z-50 bg-[#f4f7f1] px-5 py-3 transition-transform duration-200 ease-out motion-reduce:transition-none sm:px-6 lg:translate-y-0 lg:px-8 print:hidden",
+        "site-header sticky top-0 z-50 bg-[#f4f7f1] px-5 transition-transform duration-200 ease-out motion-reduce:transition-none sm:px-6 lg:translate-y-0 lg:px-8 print:hidden",
         isVisible ? "translate-y-0" : "-translate-y-full",
       ].join(" ")}
       ref={regionRef}
@@ -119,9 +119,9 @@ export function MainHeader({ regionRef }: MainHeaderProps) {
         setIsVisible(true);
       }}
     >
-      <div className="mx-auto max-w-7xl">
-        <div className="relative overflow-visible">
-          <div className="flex items-center justify-between gap-4 py-2">
+      <div className="mx-auto h-full max-w-7xl">
+        <div className="relative h-full overflow-visible">
+          <div className="flex h-full items-center justify-between gap-4">
             <div className="min-w-0">
               <SiteBrand size="header" />
             </div>

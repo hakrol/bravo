@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogProse } from "@/components/blog-prose";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import {
   getAllForklarerPosts,
   getForklarerPostBySlug,
@@ -136,7 +137,8 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
         }}
       />
 
-      <article className="mx-auto grid w-full max-w-6xl gap-12">
+      <article className="relative mx-auto grid w-full max-w-6xl gap-12">
+        <StickyLeftAdRail />
         <header className="grid w-full min-w-0 gap-10 lg:grid-cols-[minmax(0,42rem)_minmax(18rem,1fr)] lg:items-start">
           <div className="min-w-0">
             <ArticleBreadcrumbs section="Forklarer" href="/forklarer" title={post.term} />

@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { AdsenseAd } from "@/components/adsense-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { ElectricianMinimumWageChart } from "@/components/electrician-minimum-wage-chart";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import {
   electricianAllmenngjoringStatus2026,
   electricianMinimumWageRates,
@@ -81,7 +82,8 @@ export default function MinstelonnElektrikerPage() {
   return (
     <main className="min-h-screen bg-white px-4 pb-16 pt-5 sm:px-6 lg:px-8">
       {structuredData.map((data, index) => <script dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} key={index} type="application/ld+json" />)}
-      <div className="mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl">
+        <StickyLeftAdRail />
         <ArticleBreadcrumbs href="/minstelonn" section="Minstelønn" title="Elektrikere" />
 
         <div className="relative mx-auto mt-7 max-w-[1080px] overflow-hidden rounded-[28px] bg-[radial-gradient(circle_at_50%_40%,#ffffff_0%,#fbfdfb_50%,#f1f7f2_100%)] px-5 pb-8 pt-8 sm:px-10 lg:min-h-[410px] lg:px-[250px] lg:pb-10">
@@ -97,8 +99,8 @@ export default function MinstelonnElektrikerPage() {
         </div>
 
         <div className="mx-auto mt-9 grid max-w-[840px] gap-5 sm:grid-cols-2">
-          <RateCard emphasized label="Faglært som utfører fagarbeid" rate={currentRate.skilledRate} />
           <RateCard label="Andre arbeidstakere" rate={currentRate.otherRate} />
+          <RateCard emphasized label="Faglært som utfører fagarbeid" rate={currentRate.skilledRate} />
         </div>
 
         <div id="utvikling" className="mx-auto mt-7 max-w-[900px] scroll-mt-24"><ElectricianMinimumWageChart points={electricianMinimumWageRates.map(({ effectiveFrom, skilledRate, otherRate }) => ({ effectiveFrom, skilledRate, otherRate }))} today={today} /></div>

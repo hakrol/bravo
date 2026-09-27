@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BlogProse } from "@/components/blog-prose";
 import { NewsArticleHeader } from "@/components/news-article-header";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import {
   getNewsPostBySlug,
   getNewsPostSlugs,
@@ -100,7 +101,8 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
         />
       ) : null}
 
-      <article className="mx-auto w-full max-w-6xl">
+      <article className="relative mx-auto w-full max-w-6xl">
+        {!post.isTest ? <StickyLeftAdRail /> : null}
         <NewsArticleHeader post={post} />
 
         {post.isTest ? (

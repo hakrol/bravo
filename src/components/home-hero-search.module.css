@@ -88,7 +88,17 @@
 .primaryAction:focus-visible, .secondaryAction:focus-visible { outline: 3px solid rgba(23, 100, 58, 0.25); outline-offset: 3px; }
 
 .searchWrap { position: relative; z-index: 20; max-width: 560px; margin-top: 28px; }
-.directorySearch { max-width: 760px; margin: 0 auto; }
+.directorySearch { max-width: none; margin: 0; }
+.directorySearchForm { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.directorySearchLabel { width: min(760px, 100%); min-width: 0; }
+.directorySearchAction {
+  display: inline-flex; height: 48px; flex: none; align-items: center; justify-content: center; gap: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.1); border-radius: 6px; background: #fff; padding: 0 20px;
+  color: #14532d; font-size: 14px; font-weight: 600; box-shadow: 0 10px 24px rgba(27, 36, 48, 0.06);
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+.directorySearchAction:hover { transform: translateY(-1px); border-color: rgba(23, 100, 58, 0.3); background: #f7fbf8; }
+.directorySearchAction:focus-visible { outline: 3px solid rgba(23, 100, 58, 0.25); outline-offset: 3px; }
 .searchField { position: relative; display: block; }
 .searchField input {
   width: 100%; height: 66px; border: 1px solid rgba(15, 23, 42, 0.13); border-radius: 14px;
@@ -174,6 +184,9 @@
   .heroActions { margin-top: 26px; }
   .primaryAction, .secondaryAction { min-height: 54px; padding-inline: 19px; }
   .directorySearch { margin-top: 0; }
+  .directorySearchForm { align-items: stretch; flex-direction: column; gap: 14px; }
+  .directorySearchLabel { width: 100%; }
+  .directorySearchAction { align-self: flex-end; }
   .searchField input { height: 62px; padding-right: 14px; padding-left: 51px; border-radius: 13px; font-size: 15px; }
   .searchIcon { left: 18px; }
   .visualization { height: 390px; transform: none; }

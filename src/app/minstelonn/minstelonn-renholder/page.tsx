@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { AdsenseAd } from "@/components/adsense-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { CleaningMinimumWageChart } from "@/components/cleaning-minimum-wage-chart";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { CleaningNightSupplementChart } from "@/components/cleaning-night-supplement-chart";
 import {
   cleaningAllmenngjoringStatus2026,
@@ -83,7 +84,8 @@ export default function MinstelonnRenholderPage() {
   return (
     <main className="min-h-screen bg-white px-4 pb-16 pt-5 sm:px-6 lg:px-8">
       {structuredData.map((data, index) => <script dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} key={index} type="application/ld+json" />)}
-      <div className="mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl">
+        <StickyLeftAdRail />
         <ArticleBreadcrumbs href="/minstelonn" section="Minstelønn" title="Renholdere" />
 
         <div className="relative mx-auto mt-7 max-w-[1080px] overflow-hidden rounded-[28px] bg-[radial-gradient(circle_at_50%_40%,#ffffff_0%,#fbfdfb_50%,#f1f7f2_100%)] px-5 pb-8 pt-8 sm:px-10 lg:min-h-[410px] lg:px-[250px] lg:pb-10">
@@ -103,8 +105,8 @@ export default function MinstelonnRenholderPage() {
         </div>
 
         <div className="mx-auto mt-9 grid max-w-[840px] gap-5 sm:grid-cols-2">
-          <RateCard emphasized label="Over 18 år" rate={currentRate.adultRate} />
           <RateCard label="Under 18 år" rate={currentRate.under18Rate} />
+          <RateCard emphasized label="Over 18 år" rate={currentRate.adultRate} />
         </div>
 
         <div id="utvikling" className="mx-auto mt-7 max-w-[900px] scroll-mt-24">
