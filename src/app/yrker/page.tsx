@@ -40,7 +40,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function YrkerPage() {
+type YrkerPageProps = {
+  searchParams: Promise<{ q?: string | string[] }>;
+};
+
+export default async function YrkerPage({ searchParams }: YrkerPageProps) {
+  const { q } = await searchParams;
+  const initialQuery = Array.isArray(q) ? (q[0] ?? "") : (q ?? "");
   const [dataset, occupationIndex, occupationCardStatsByCode] = await Promise.all([
     getLatestOccupationMedianMonthlySalaryDataset(),
     getOccupationDetailViewModelIndex(),
@@ -114,6 +120,7 @@ export default async function YrkerPage() {
           defaultQuickFilter="highest-salary"
           featuredControls
           filterByOccupationGroup
+          initialQuery={initialQuery}
           items={items}
           searchPlaceholder="Søk etter yrke, for eksempel flyger"
         />

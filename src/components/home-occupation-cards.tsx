@@ -56,17 +56,6 @@ export function HomeOccupationCards({
         </div>
       )}
 
-      <div className="mt-6 flex justify-center">
-        <Link
-          className="inline-flex h-12 items-center justify-center rounded-md border border-black/10 bg-white px-5 text-sm font-semibold text-[var(--primary-strong)] shadow-[0_10px_24px_rgba(27,36,48,0.06)] transition hover:border-[var(--primary)]/30 hover:bg-[#f7fbf8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2"
-          href="/yrker"
-        >
-          Se alle yrker
-          <span aria-hidden="true" className="ml-3 text-base">
-            &gt;
-          </span>
-        </Link>
-      </div>
     </div>
   );
 }

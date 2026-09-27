@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type { FormEvent } from "react";
 import type { OccupationSalaryRow } from "@/components/occupation-salary-overview";
 import type { OccupationCardStats } from "@/lib/occupation-card-stats";
 import styles from "./home-hero-search.module.css";
@@ -104,21 +106,42 @@ export function HomeOccupationSearchField({
   query,
   onQueryChange,
 }: HomeOccupationSearchFieldProps) {
+  const router = useRouter();
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const trimmedQuery = query.trim();
+    const destination = trimmedQuery
+      ? `/yrker?q=${encodeURIComponent(trimmedQuery)}`
+      : "/yrker";
+
+    router.push(destination);
+  }
+
   return (
     <div className={`${styles.searchWrap} ${styles.directorySearch}`} id="yrke-sok">
-      <label htmlFor="occupation-search">
-        <span className="sr-only">Søk etter yrke</span>
-        <span className={styles.searchField}>
-          <SearchIcon className={styles.searchIcon} />
-          <input
-            id="occupation-search"
-            onChange={(event) => onQueryChange(event.target.value)}
-            placeholder="Søk etter yrke, for eksempel regnskapsfører"
-            type="search"
-            value={query}
-          />
-        </span>
-      </label>
+      <form className={styles.directorySearchForm} onSubmit={handleSubmit}>
+        <label className={styles.directorySearchLabel} htmlFor="occupation-search">
+          <span className="sr-only">Søk etter yrke</span>
+          <span className={styles.searchField}>
+            <SearchIcon className={styles.searchIcon} />
+            <input
+              id="occupation-search"
+              name="q"
+              onChange={(event) => onQueryChange(event.target.value)}
+              placeholder="Søk etter yrke, for eksempel regnskapsfører"
+              type="search"
+              value={query}
+            />
+          </span>
+        </label>
+
+        <Link className={styles.directorySearchAction} href="/yrker">
+          Se alle yrker
+          <span aria-hidden="true">&gt;</span>
+        </Link>
+      </form>
     </div>
   );
 }

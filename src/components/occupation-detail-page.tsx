@@ -126,10 +126,54 @@ const NURSE_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2222", "2223"]);
 const VERNEPLEIER_CALCULATOR_OCCUPATION_CODES = new Set(["2221", "2223", "2224"]);
 const TEACHER_CALCULATOR_OCCUPATION_CODES = new Set(["2320", "2330", "2341", "2352"]);
 
+type MinimumWagePageLink = { href: string; label: string };
+
+const BUILD_MINIMUM_WAGE_PAGE: MinimumWagePageLink = {
+  href: "/minstelonn/minstelonn-bygg",
+  label: "Se minstelønn for arbeid på byggeplasser",
+};
+
 const MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE: Record<
   string,
-  { href: string; label: string }
+  MinimumWagePageLink | readonly MinimumWagePageLink[]
 > = {
+  "6113": [
+    {
+      href: "/minstelonn/minstelonn-jordbruk-gartneri",
+      label: "Se minstelønn i jordbruk og gartneri",
+    },
+    BUILD_MINIMUM_WAGE_PAGE,
+  ],
+  "6121": {
+    href: "/minstelonn/minstelonn-jordbruk-gartneri",
+    label: "Se minstelønn i jordbruk og gartneri",
+  },
+  "9212": {
+    href: "/minstelonn/minstelonn-jordbruk-gartneri",
+    label: "Se minstelønn i jordbruk og gartneri",
+  },
+  "9214": {
+    href: "/minstelonn/minstelonn-jordbruk-gartneri",
+    label: "Se minstelønn i jordbruk og gartneri",
+  },
+  "7112": BUILD_MINIMUM_WAGE_PAGE,
+  "7113": BUILD_MINIMUM_WAGE_PAGE,
+  "7114": BUILD_MINIMUM_WAGE_PAGE,
+  "7115": BUILD_MINIMUM_WAGE_PAGE,
+  "7119": BUILD_MINIMUM_WAGE_PAGE,
+  "7121": BUILD_MINIMUM_WAGE_PAGE,
+  "7122": BUILD_MINIMUM_WAGE_PAGE,
+  "7123": BUILD_MINIMUM_WAGE_PAGE,
+  "7124": BUILD_MINIMUM_WAGE_PAGE,
+  "7125": BUILD_MINIMUM_WAGE_PAGE,
+  "7126": BUILD_MINIMUM_WAGE_PAGE,
+  "7127": BUILD_MINIMUM_WAGE_PAGE,
+  "7131": BUILD_MINIMUM_WAGE_PAGE,
+  "7132": BUILD_MINIMUM_WAGE_PAGE,
+  "7213": BUILD_MINIMUM_WAGE_PAGE,
+  "7542": BUILD_MINIMUM_WAGE_PAGE,
+  "8342": BUILD_MINIMUM_WAGE_PAGE,
+  "9313": BUILD_MINIMUM_WAGE_PAGE,
   "9112": {
     href: "/minstelonn/minstelonn-renholder",
     label: "Se minstelønnssatsene for renholdere",
@@ -187,6 +231,13 @@ const MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE: Record<
     label: "Se minstelønn i restaurant, hotell og catering",
   },
 };
+
+function toMinimumWagePages(
+  value: MinimumWagePageLink | readonly MinimumWagePageLink[] | undefined,
+): readonly MinimumWagePageLink[] {
+  if (!value) return [];
+  return "href" in value ? [value] : value;
+}
 
 type OccupationSalaryCalculatorKind = "nurse" | "teacher";
 
@@ -277,8 +328,9 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
   const salaryCalculatorKind = getOccupationSalaryCalculatorKind(
     detail.detailPage.occupationCode,
   );
-  const minimumWagePage =
-    MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE[detail.detailPage.occupationCode] ?? null;
+  const minimumWagePages = toMinimumWagePages(
+    MINIMUM_WAGE_PAGES_BY_OCCUPATION_CODE[detail.detailPage.occupationCode],
+  );
   const sectionNavItems = [
     monthlySalaryOverviewCards.length > 0 || distribution || detail.data.sectorSalarySeries
       ? { href: "#lonn", label: "Lønn" }
@@ -370,7 +422,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                       </p>
                     </aside>
 
-                    {salaryCalculatorKind || VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) || minimumWagePage ? (
+                    {salaryCalculatorKind || VERNEPLEIER_CALCULATOR_OCCUPATION_CODES.has(detail.detailPage.occupationCode) || minimumWagePages.length > 0 ? (
                       <div className="mt-8 flex flex-wrap gap-3">
                         {salaryCalculatorKind ? (
                           <Link
@@ -396,15 +448,16 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
                             Lønnskalkulator for vernepleiere
                           </Link>
                         ) : null}
-                        {minimumWagePage ? (
+                        {minimumWagePages.map((minimumWagePage) => (
                           <Link
                             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[5px] bg-emerald-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800"
                             href={minimumWagePage.href}
+                            key={minimumWagePage.href}
                           >
                             <SidebarLinkIcon className="text-white" icon="document" />
                             {minimumWagePage.label}
                           </Link>
-                        ) : null}
+                        ))}
                       </div>
                     ) : null}
                   </div>
