@@ -11,6 +11,8 @@ export const ADSENSE_SLOTS = {
   "occupation-between-overtime-and-labor-market": "1294152328",
   "occupation-before-faq": "1294152328",
   "occupation-sidebar": "9387043575",
+  "minimum-wage-mid-content": "1294152328",
+  "minimum-wage-before-faq": "1294152328",
   "calculator-after-tool": "2663074318",
   "overview-between-sections": "5886782261",
   "statistics-after-content": "7723829309",
