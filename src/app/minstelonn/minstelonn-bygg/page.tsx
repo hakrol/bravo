@@ -197,6 +197,8 @@ export default function MinstelonnByggPage() {
             <SourceLine href={constructionTariff2026.sourceUrl} label="NHO Byggenæringen – lønns- og satstabeller" />
           </Section>
 
+          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+
           <Section id="overtid" title="Overtid, kveld, natt og helg">
             <p>Byggeforskriften fastsetter ikke en egen overtidsprosent. Etter arbeidsmiljøloven skal overtid minst gi <strong>40 prosent tillegg av den avtalte ordinære lønnen</strong>. Tariffavtale eller arbeidsavtale kan gi bedre vilkår.</p>
             <div className="rounded-[11px] bg-[#f1f7f2] p-5 sm:p-6"><p className="text-xs font-bold uppercase tracking-[0.13em] text-[#15533d]">Regneeksempel for fagarbeider på minstelønn</p><div className="mt-4 grid gap-3 sm:grid-cols-3"><Metric label="Ordinær lønn" value={formatRate(currentRate.skilledRate)} /><Metric label="40 % tillegg" value={formatRate(currentRate.skilledRate * 0.4)} /><Metric label="Sum per overtidstime" value={formatRate(currentRate.skilledRate * 1.4)} /></div><p className="mt-4 text-xs leading-5 text-slate-600">Tillegget beregnes av din avtalte ordinære lønn. Er den høyere enn minstelønnen, blir overtidsbetalingen også høyere.</p></div>
@@ -227,6 +229,8 @@ export default function MinstelonnByggPage() {
             <p className="text-sm text-slate-600">Kilde: SSB tabell 11418, sist oppdatert 28. august 2026. Tallene skal ikke leses som lovpålagte satser.</p>
             <Link className="inline-flex items-center gap-2 font-semibold text-[var(--primary)] hover:underline" href="/blogg/dette-er-arslonnen-til-bygningsarbeidere">Les mer om lønn i byggyrkene <span aria-hidden="true">→</span></Link>
           </Section>
+
+          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
           <Section id="faq" title="Ofte stilte spørsmål om minstelønn i bygg">
             <div className="divide-y divide-slate-200 border-y border-slate-200">{faqItems.map((item) => <details className="group py-5" key={item.question}><summary className="flex cursor-pointer list-none items-start justify-between gap-5 text-lg font-semibold leading-7 text-slate-950 marker:hidden"><span>{item.question}</span><span aria-hidden="true" className="text-2xl font-normal text-[var(--primary)] transition-transform group-open:rotate-45">+</span></summary><p className="mt-4 max-w-3xl text-base leading-7 text-slate-700">{item.answer}</p></details>)}</div>

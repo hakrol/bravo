@@ -185,6 +185,8 @@ export default function MinstelonnRestaurantPage() {
             <SourceLine href={restaurantMinimumWageRules.labourInspectionUrl} label="Arbeidstilsynet – tillegg i restaurantbransjen" />
           </Section>
 
+          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+
           <Section id="overtid" title="Overtid i restaurant">
             <p>Når arbeidet faktisk er overtid etter arbeidsmiljøloven, har du krav på minst 40 prosent tillegg av den avtalte timelønnen. Ekstra timer for en deltidsansatt kan være merarbeid og er ikke automatisk overtid.</p>
             <div className="rounded-[10px] border border-[#d8eadf] bg-[#f3faf5] p-5"><p className="text-xs font-bold uppercase tracking-[0.13em] text-[#15533d]">Regneeksempel</p><p className="mt-2 text-lg text-slate-950">Avtalt lønn {formatRate(currentRate.adultRate)} × 1,40 = <strong>{formatRate(currentRate.adultRate * 1.4)} per overtidstime</strong>.</p><p className="mt-2 text-sm leading-6 text-slate-600">Eksemplet forutsetter at timen er overtid etter loven, og at avtalt ordinær timelønn er lik minstelønnen. Bedre avtaler kan gi høyere tillegg.</p></div>
@@ -215,7 +217,7 @@ export default function MinstelonnRestaurantPage() {
             <SourceLine href="https://www.ssb.no/statbank/table/11418/" label="SSB tabell 11418, oppdatert 28. august 2026" />
           </Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="occupation-before-faq" />
+          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
           <Section id="faq" title="Ofte stilte spørsmål"><div className="divide-y divide-slate-200 overflow-hidden rounded-[5px] border border-black/10 bg-white">{faqItems.map((item) => <details className="group px-5 py-4 open:bg-[#fbfbf8]" key={item.question}><summary className="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:hidden">{item.question}<span aria-hidden="true" className="float-right text-[var(--primary)] group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-700">{item.answer}</p></details>)}</div></Section>
 

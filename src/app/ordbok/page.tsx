@@ -9,6 +9,246 @@ const description =
 
 const baseDictionaryEntries: DictionaryEntry[] = [
   {
+    term: "Allmenngjøring",
+    definition:
+      "At Tariffnemnda gjør bestemmelser fra en tariffavtale bindende for alle arbeidstakere som omfattes av et bestemt bransjeområde, også de som ikke er organisert.",
+  },
+  {
+    term: "Allmenngjøringsforskrift",
+    definition:
+      "En forskrift som fastsetter hvilke lønns- og arbeidsvilkår fra en tariffavtale som skal gjelde for alle arbeidstakere innenfor forskriftens virkeområde.",
+  },
+  {
+    term: "Alminnelig arbeidstid",
+    definition:
+      "Arbeidstid innenfor lovens ordinære grenser. Arbeid utover disse grensene kan være overtid, mens arbeid utover avtalen, men innenfor grensene, kan være merarbeid.",
+  },
+  {
+    term: "Arbeidsmarkedstiltak",
+    definition:
+      "Et organisert tiltak som skal hjelpe personer inn i eller tilbake til arbeid. Deltakere kan være unntatt fra enkelte allmenngjorte minstelønnsregler.",
+  },
+  {
+    term: "Avtalt arbeidstid",
+    definition:
+      "Arbeidstiden arbeidsgiver og arbeidstaker har avtalt, og som skal stå i arbeidsavtalen. Den kan være kortere enn lovens grense for alminnelig arbeidstid.",
+  },
+  {
+    term: "Bransjeerfaring",
+    definition:
+      "Arbeidserfaring fra en bestemt bransje. I noen minstelønnsforskrifter kan dokumentert bransjeerfaring gi rett til en høyere sats.",
+  },
+  {
+    term: "Deltidspraksis",
+    definition:
+      "Praksis opptjent i en deltidsstilling. Hvordan praksisen teller ved lønnsplassering, avhenger av tariffavtalen eller regelverket som gjelder.",
+  },
+  {
+    term: "Diettsats",
+    definition:
+      "Et fast beløp som skal dekke kostutgifter på tjenestereise eller arbeidsoppdrag. Satsen og skattereglene avhenger av avtalen og reisens art.",
+  },
+  {
+    term: "Fagarbeider",
+    definition:
+      "En arbeidstaker med fagbrev, svennebrev eller annen godkjent fagkompetanse i det aktuelle faget. Enkelte lønnsregler har egne satser for fagarbeidere.",
+  },
+  {
+    term: "Fagarbeidertillegg",
+    definition:
+      "Et tillegg til grunnsatsen for arbeidstakere som oppfyller kravene til fagarbeiderstatus. Tilleggets størrelse følger regelverket eller avtalen som gjelder.",
+  },
+  {
+    term: "Garantilønn",
+    definition:
+      "Et avtalt minste lønnsnivå som arbeidstakeren er sikret etter en tariffavtale eller lønnsordning. Garantilønn er ikke nødvendigvis lovfestet minstelønn.",
+  },
+  {
+    term: "Helligdagstillegg",
+    definition:
+      "Ekstra betaling for arbeid på bestemte helligdager. Retten til tillegget og satsen følger vanligvis tariffavtale, arbeidsavtale eller særskilt regelverk.",
+  },
+  {
+    term: "Hjelpearbeider",
+    definition:
+      "En arbeidstaker som utfører praktiske støtteoppgaver uten å være plassert som fagarbeider. Noen tariffavtaler og minstelønnsregler har egne satser for hjelpearbeidere.",
+  },
+  {
+    term: "Høringsfrist",
+    definition:
+      "Siste dato for å sende inn merknader til et forslag som er på offentlig høring. Et forslag er ikke vedtatt bare fordi høringsfristen har gått ut.",
+  },
+  {
+    term: "Høringsutkast",
+    definition:
+      "Et foreløpig forslag som sendes ut for kommentarer før et endelig vedtak. Foreslåtte lønnssatser i et høringsutkast er ikke gjeldende satser.",
+  },
+  {
+    term: "Ikrafttredelsesdato",
+    definition:
+      "Datoen en lov, forskrift, tariffbestemmelse eller lønnssats begynner å gjelde fra. Datoen kan være senere enn vedtaksdatoen.",
+  },
+  {
+    term: "Innkvartering",
+    definition:
+      "Bolig eller overnatting som arbeidsgiver tilbyr eller organiserer i forbindelse med arbeid. Regler eller avtaler kan begrense hva arbeidsgiver kan trekke i lønn for tilbudet.",
+  },
+  {
+    term: "Innhøstingshjelp",
+    definition:
+      "Midlertidig arbeid knyttet til innhøsting i jordbruk eller gartneri. Allmenngjorte regler kan ha egne minstelønnssatser basert på alder og praksistid.",
+  },
+  {
+    term: "Kost og losji",
+    definition:
+      "Utgifter til mat og overnatting ved arbeid eller reise utenfor hjemstedet. Hvem som skal dekke utgiftene, følger av regelverket eller avtalen som gjelder.",
+  },
+  {
+    term: "Kveldstillegg",
+    definition:
+      "Ekstra betaling for arbeid på kveldstid. Det finnes ingen felles sats for alle arbeidstakere; retten følger av tariffavtale, arbeidsavtale eller særregler.",
+  },
+  {
+    term: "Landsoverenskomsten",
+    definition:
+      "Et navn som brukes om flere landsdekkende tariffavtaler. Hvilke parter, yrker, satser og vilkår som gjelder, må derfor kontrolleres i den konkrete avtalen.",
+  },
+  {
+    term: "Lønnsgulv",
+    definition:
+      "En uformell betegnelse på det laveste lønnsnivået som er tillatt etter en lov, forskrift eller bindende avtale.",
+  },
+  {
+    term: "Lønnstrinn",
+    definition:
+      "Et nivå i en lønnstabell. Plasseringen kan avhenge av blant annet alder, ansiennitet, utdanning, fagbrev eller arbeidsoppgaver.",
+  },
+  {
+    term: "Lærlinglønn",
+    definition:
+      "Lønn til en lærling i læretiden. Den følger ofte en tariffavtale og kan være en prosentandel av lønnen til en fagarbeider.",
+  },
+  {
+    term: "Lærekontrakt",
+    definition:
+      "En skriftlig kontrakt om opplæring i bedrift mellom lærlingen, lærebedriften og fylkeskommunen. Kontrakten er ikke det samme som arbeidsavtalen.",
+  },
+  {
+    term: "Merarbeid",
+    definition:
+      "Arbeid utover avtalt arbeidstid, men innenfor grensen for alminnelig arbeidstid. Merarbeid er derfor ikke alltid overtid etter loven.",
+  },
+  {
+    term: "Minstesats",
+    definition:
+      "Den laveste satsen som kan brukes etter en bestemt regel eller avtale. En minstesats kan være lovpålagt, tariffestet eller individuelt avtalt.",
+  },
+  {
+    term: "Nattarbeid",
+    definition:
+      "Arbeid som utføres om natten etter tidsgrensene i loven eller avtalen som gjelder. Nattarbeid kan ha egne regler og gi rett til tillegg.",
+  },
+  {
+    term: "Nattillegg",
+    definition:
+      "Ekstra betaling for arbeid om natten. Retten til nattillegg og størrelsen på tillegget følger av tariffavtale, arbeidsavtale eller særskilt regelverk.",
+  },
+  {
+    term: "Overenskomst",
+    definition:
+      "En avtale mellom parter. I arbeidslivet brukes ordet ofte om en tariffavtale som regulerer lønn og arbeidsvilkår i et tariffområde.",
+  },
+  {
+    term: "Overtidstillegg",
+    definition:
+      "Ekstra betaling for overtidsarbeid. Etter arbeidsmiljøloven skal tillegget som hovedregel være minst 40 prosent av avtalt timelønn.",
+  },
+  {
+    term: "Rammetimetall",
+    definition:
+      "Et avtalt antall timer som settes av til bestemte arbeidsoppgaver. I renhold kan ordningen ha betydning for hvordan arbeidstid og reisetid mellom oppdrag behandles.",
+  },
+  {
+    term: "Reell timelønn",
+    definition:
+      "Den faktiske avtalte lønnen per time før et bestemt tillegg beregnes. Den kan være høyere enn en lovpålagt eller tariffestet minstesats.",
+  },
+  {
+    term: "Relevant praksis",
+    definition:
+      "Tidligere arbeidserfaring som har betydning for stillingen eller lønnsplasseringen. Hva som teller, bestemmes av regelverket eller avtalen som gjelder.",
+  },
+  {
+    term: "Reise mellom oppdrag",
+    definition:
+      "Forflytning fra ett arbeidsoppdrag til det neste i løpet av arbeidsdagen. I enkelte bransjer skal tiden regnes som arbeidstid eller lønnes særskilt.",
+  },
+  {
+    term: "Reiseutgifter",
+    definition:
+      "Kostnader til transport i forbindelse med arbeid eller arbeidsoppdrag. Regler eller avtaler kan pålegge arbeidsgiver å dekke nødvendige utgifter.",
+  },
+  {
+    term: "Reisetid",
+    definition:
+      "Tid som brukes på reise i forbindelse med arbeid. Om tiden regnes som arbeidstid eller skal betales, avhenger av reisens formål og reglene som gjelder.",
+  },
+  {
+    term: "Riksavtalen",
+    definition:
+      "Tariffavtalen mellom Fellesforbundet og NHO Reiseliv for blant annet hotell-, restaurant- og cateringvirksomheter. Avtalen har egne lønnssatser og tillegg.",
+  },
+  {
+    term: "Sesongarbeid",
+    definition:
+      "Midlertidig arbeid som følger en bestemt sesong eller periode i året. Noen allmenngjorte regler har egne satser for sesongarbeidere.",
+  },
+  {
+    term: "Skiftarbeid",
+    definition:
+      "En arbeidsordning der flere arbeidslag avløser hverandre etter en plan. Skiftarbeid kan gi kortere arbeidstid eller rett til egne tillegg.",
+  },
+  {
+    term: "Tariffbundet virksomhet",
+    definition:
+      "En virksomhet som er bundet av en tariffavtale og må følge avtalens bestemmelser for arbeidsforholdene avtalen omfatter.",
+  },
+  {
+    term: "Tarifflønn",
+    definition:
+      "Lønn som følger satsene og reglene i en tariffavtale. Tarifflønn er ikke automatisk det samme som lovpålagt minstelønn.",
+  },
+  {
+    term: "Tariffsats",
+    definition:
+      "En lønnssats som er fastsatt i en tariffavtale. Satsen gjelder i tariffbundne arbeidsforhold og blir ikke automatisk lovpålagt for hele bransjen.",
+  },
+  {
+    term: "Tillitsvalgt",
+    definition:
+      "En arbeidstaker som er valgt til å representere medlemmer eller ansatte overfor arbeidsgiver, blant annet i spørsmål om lønn og arbeidsvilkår.",
+  },
+  {
+    term: "Ufaglært arbeidstaker",
+    definition:
+      "En arbeidstaker som ikke har fagbrev eller annen formell fagkompetanse som kreves for å bli lønnet som fagarbeider i det aktuelle faget.",
+  },
+  {
+    term: "Ungdomssats",
+    definition:
+      "En egen lønnssats for arbeidstakere under en bestemt alder. Aldersgrensen og satsen varierer mellom forskrifter og tariffavtaler.",
+  },
+  {
+    term: "Uravstemning",
+    definition:
+      "En avstemning der alle stemmeberettigede medlemmer kan ta stilling til et forslag, for eksempel resultatet av et tariffoppgjør.",
+  },
+  {
+    term: "Virkeområde",
+    definition:
+      "Avgrensningen som viser hvilke virksomheter, arbeidstakere, arbeidsoppgaver eller geografiske områder en regel eller avtale gjelder for.",
+  },
+  {
     term: "Avtalt månedslønn",
     definition:
       "Månedslønn som er avtalt for jobben, vanligvis før tillegg som overtid, bonus og uregelmessige tillegg.",
@@ -153,7 +393,7 @@ const baseDictionaryEntries: DictionaryEntry[] = [
   {
     term: "Overtid",
     definition:
-      "Arbeid utover avtalt eller lovbestemt arbeidstid. Overtidsbetaling kan gjøre faktisk utbetalt lønn høyere enn avtalt månedslønn.",
+      "Arbeid utover grensene for alminnelig arbeidstid. Arbeid utover avtalt tid, men innenfor disse grensene, er normalt merarbeid og ikke overtid etter loven.",
   },
   {
     term: "Persentil",
@@ -178,7 +418,7 @@ const baseDictionaryEntries: DictionaryEntry[] = [
   {
     term: "Skifttillegg",
     definition:
-      "Tillegg som kan gis for arbeid på ubekvemme tider, for eksempel kveld, natt, helg eller turnus.",
+      "Ekstra betaling for arbeid i en skiftordning. Satsen og tidsrommene følger av tariffavtalen, arbeidsavtalen eller særreglene som gjelder.",
   },
   {
     term: "Tariffavtale",
