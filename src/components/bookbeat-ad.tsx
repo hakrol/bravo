@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getBookbeatTrackingUrl, type BookbeatPlacement } from "@/lib/bookbeat";
 import { shouldShowBookbeat } from "@/lib/bookbeat-routes";
@@ -12,8 +13,23 @@ type BookbeatAdProps = {
 
 export function BookbeatAd({ placement = "blog-after-content", className = "" }: BookbeatAdProps) {
   const pathname = usePathname();
-  if (!shouldShowBookbeat(pathname)) return null;
   const sidebar = placement.endsWith("sidebar");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [wide, setWide] = useState(false);
+  const enabled = shouldShowBookbeat(pathname);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      setWide(entry.contentRect.width >= 900);
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [enabled, sidebar]);
+
+  if (!enabled) return null;
 
   function banner(width: number, height: number, bannerClassName: string) {
     const format = `${width}x${height}`;
@@ -44,9 +60,8 @@ export function BookbeatAd({ placement = "blog-after-content", className = "" }:
     >
       <p className="mb-2 text-center text-xs text-slate-500">Annonse</p>
       {sidebar ? banner(160, 600, "block") : (
-        <div className="bookbeat-banner-container">
-          {banner(300, 250, "bookbeat-banner-compact")}
-          {banner(980, 120, "bookbeat-banner-wide")}
+        <div ref={containerRef} className="w-full min-w-0">
+          {wide ? banner(980, 120, "block") : banner(300, 250, "block")}
         </div>
       )}
     </aside>
