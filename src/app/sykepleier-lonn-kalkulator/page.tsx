@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -67,7 +67,7 @@ export default async function NurseSalaryCalculatorPage() {
         </header>
 
         <NurseSalaryCalculator ssbBenchmarks={ssbBenchmarks} />
-        <AdsenseAd placement="calculator-after-tool" className="my-4" />
+        <BookbeatAd placement="calculator-after-tool" className="my-4" />
         <CalculatorCrossLinks currentHref="/sykepleier-lonn-kalkulator" />
       </div>
     </main>

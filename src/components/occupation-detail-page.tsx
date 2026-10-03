@@ -1,4 +1,5 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
+import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import Link from "next/link";
 import { OccupationAgeTimeSeriesChart } from "@/components/occupation-age-time-series";
 import { OccupationPurchasingPowerLineChart } from "@/components/occupation-purchasing-power-line-chart";
@@ -376,7 +377,12 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
       />
 
       <section className="px-4 pb-6 pt-2 sm:px-6 lg:px-8">
-        <div className="mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <BookbeatAd
+          placement="occupation-mobile-before-content"
+          className="mb-6 sm:hidden"
+        />
+        <div className="relative mx-auto grid w-full max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+          <StickyLeftAdRail placement="occupation-left-sidebar" />
           <div className="space-y-6">
             {monthlySalaryOverviewCards.length > 0 ||
             distribution ||
@@ -520,7 +526,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            {hasEstimate ? <AdsenseAd placement="occupation-after-salary-overview" /> : null}
+            {hasEstimate ? <BookbeatAd placement="occupation-after-salary-overview" /> : null}
 
             <section
               aria-label="Lønnsutvikling"
@@ -568,7 +574,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </section>
 
             {hasPurchasingPowerData && salarySupplementCards.length > 0 ? (
-              <AdsenseAd placement="occupation-between-real-salary-and-overtime" />
+              <BookbeatAd placement="occupation-between-real-salary-and-overtime" />
             ) : null}
 
             {salarySupplementCards.length > 0 ? (
@@ -592,7 +598,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             {salarySupplementCards.length > 0 && laborMarket ? (
-              <AdsenseAd placement="occupation-between-overtime-and-labor-market" />
+              <BookbeatAd placement="occupation-between-overtime-and-labor-market" />
             ) : null}
 
             {laborMarket ? (
@@ -675,7 +681,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            {hasEstimate ? <AdsenseAd placement="occupation-before-faq" /> : null}
+            {hasEstimate ? <BookbeatAd placement="occupation-before-faq" /> : null}
 
             <OccupationFaq items={faqItems} occupationLabel={occupationText.titleLabel} />
 
@@ -797,7 +803,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </div>
 
             {hasEstimate ? (
-              <AdsenseAd className="mx-auto mt-4 xl:sticky xl:top-[var(--occupation-sidebar-ad-top,152px)]" placement="occupation-sidebar" />
+              <BookbeatAd className="mx-auto mt-4 xl:sticky xl:top-[var(--occupation-sidebar-ad-top,152px)]" placement="occupation-sidebar" />
             ) : null}
           </aside>
         </div>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { BlogChart } from "@/components/blog-chart";
 import {
   ArealPlannerGenderSalaryCards,
@@ -231,7 +231,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
           {shouldRenderTableOfContents ? <BlogTableOfContents items={tableOfContents} /> : null}
           {shouldRenderMidArticleAd ? (
             <div className="not-prose my-10 sm:my-12">
-              <AdsenseAd placement="blog-mid-content" />
+              <BookbeatAd placement="blog-mid-content" />
             </div>
           ) : null}
           <h2 id={id} {...props}>

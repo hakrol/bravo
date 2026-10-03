@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { RestaurantMinimumWageChart } from "@/components/restaurant-minimum-wage-chart";
@@ -141,7 +141,7 @@ export default function MinstelonnRestaurantPage() {
           <SourceLine href={restaurantAllmenngjoringStatus2026.sourceUrl} label="Tariffnemnda – overnatting, servering og catering" />
         </div>
 
-        <AdsenseAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
+        <BookbeatAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
 
         <nav aria-labelledby="innholdsfortegnelse" className="mx-auto mt-7 max-w-[900px] rounded-[11px] border border-slate-200 bg-slate-50 px-5 py-4 sm:px-7 sm:py-5">
           <h2 className="text-xl font-bold tracking-[-0.02em] text-slate-950" id="innholdsfortegnelse">Innhold på siden</h2>
@@ -185,7 +185,7 @@ export default function MinstelonnRestaurantPage() {
             <SourceLine href={restaurantMinimumWageRules.labourInspectionUrl} label="Arbeidstilsynet – tillegg i restaurantbransjen" />
           </Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
 
           <Section id="overtid" title="Overtid i restaurant">
             <p>Når arbeidet faktisk er overtid etter arbeidsmiljøloven, har du krav på minst 40 prosent tillegg av den avtalte timelønnen. Ekstra timer for en deltidsansatt kan være merarbeid og er ikke automatisk overtid.</p>
@@ -217,7 +217,7 @@ export default function MinstelonnRestaurantPage() {
             <SourceLine href="https://www.ssb.no/statbank/table/11418/" label="SSB tabell 11418, oppdatert 28. august 2026" />
           </Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
           <Section id="faq" title="Ofte stilte spørsmål"><div className="divide-y divide-slate-200 overflow-hidden rounded-[5px] border border-black/10 bg-white">{faqItems.map((item) => <details className="group px-5 py-4 open:bg-[#fbfbf8]" key={item.question}><summary className="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:hidden">{item.question}<span aria-hidden="true" className="float-right text-[var(--primary)] group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-700">{item.answer}</p></details>)}</div></Section>
 

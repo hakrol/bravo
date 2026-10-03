@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { RetailTariffChart } from "@/components/retail-tariff-chart";
@@ -112,7 +112,7 @@ export default function MinstelonnButikkmedarbeiderPage() {
           {tariffGrowth.map((growth) => <article className="rounded-[12px] border border-slate-200 bg-white px-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] sm:px-5" key={growth.period}><div className="flex items-baseline justify-between gap-3"><h2 className="font-bold text-slate-950">{growth.period} års vekst</h2><span className="text-xs tabular-nums text-slate-500">{growth.years}</span></div><dl className="mt-4 space-y-2">{retailRateKeys.map((key, index) => <div className="flex items-center justify-between gap-3" key={key}><dt className="flex items-center gap-2 text-xs text-slate-600 sm:text-sm"><span aria-hidden="true" className={`size-2.5 shrink-0 rounded-full ${index % 2 === 0 ? "bg-[#15533d]" : "bg-[#93b4a5]"}`} />{growthLabel(key)}</dt><dd className="text-sm font-bold tabular-nums text-[#15533d] sm:text-base">+{percent(growth.rates[key])}</dd></div>)}</dl></article>)}
         </div>
 
-        <AdsenseAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
+        <BookbeatAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
 
         <nav aria-labelledby="innholdsfortegnelse" className="mx-auto mt-7 max-w-[900px] rounded-[11px] border border-slate-200 bg-slate-50 px-5 py-4 sm:px-7 sm:py-5">
           <h2 className="text-xl font-bold tracking-[-0.02em] text-slate-950" id="innholdsfortegnelse">Innhold på siden</h2>
@@ -141,7 +141,7 @@ export default function MinstelonnButikkmedarbeiderPage() {
 
           <Section id="overtid" title="Overtid for butikkmedarbeidere"><p>Arbeidsmiljøloven krever minst 40 prosent overtidstillegg når arbeidet er overtid etter loven. Virke–HK har normalt 50 prosent tillegg og 100 prosent blant annet klokken 21–08 på hverdager, på søn- og helligdager, 1. og 17. mai, etter ordinær arbeidstid før søn- og helligdag og etter klokken 13.15 jul-, nyttårs- og pinseaften.</p><p>For deltidsansatte utløser avtalen overtidsbetaling når arbeidet går over 37,5 timer i én uke eller samlet arbeidstid går over 9 timer samme dag. Merarbeid under disse grensene er ikke automatisk tariffmessig overtid.</p><Source href={agreementUrl} label="Landsoverenskomsten § 3" /></Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
 
           <Section id="ungdom" title="Tariffsatsene for unge butikkmedarbeidere"><p>Virke–HK-satsen er {money(current.rates.under16.hourly)} per time for ansatte under 16 år og {money(current.rates.under18.hourly)} per time for ansatte mellom 16 og 17 år. Dette er tariffsatsene i denne avtalen, ikke en generell lovpålagt ungdomslønn i norske butikker.</p><div className="grid gap-4 sm:grid-cols-2"><ComparisonCard label="Under 16 år" monthly={current.rates.under16.monthly} rate={current.rates.under16.hourly} /><ComparisonCard label="16–17 år" monthly={current.rates.under18.monthly} rate={current.rates.under18.hourly} /></div><Source href={virkeUrl} label="Virke – lønnssatser 2026" /></Section>
 
@@ -153,7 +153,7 @@ export default function MinstelonnButikkmedarbeiderPage() {
 
           <Section id="historikk" title="Historiske tariffsatser"><p>Tabellen viser de faktiske virkningsperiodene for garantiendringer i februar og tariffendringer i april. Velg lønnstrinn eller ungdomssats for å se hele utviklingen.</p><RetailTariffHistoryTable rateSets={[...retailTariffRateSets]} /><Source href={historyUrl} label="Virke – historiske satser" /></Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
           <Section id="faq" title="Ofte stilte spørsmål"><div className="divide-y divide-slate-200 overflow-hidden rounded-[5px] border border-black/10 bg-white">{faqItems.map((item) => <details className="group px-5 py-4 open:bg-[#fbfbf8]" key={item.question}><summary className="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:hidden">{item.question}<span aria-hidden="true" className="float-right text-[var(--primary)] group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-700">{item.answer}</p></details>)}</div></Section>
 

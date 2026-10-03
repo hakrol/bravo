@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
 import { VacationCalculator } from "@/components/vacation-calculator";
@@ -35,7 +35,7 @@ export default function FeriekalkulatorPage() {
     <main className="min-h-screen px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <VacationCalculator referenceDate={new Date().toISOString()} />
-        <AdsenseAd className="mt-4" placement="calculator-after-tool" />
+        <BookbeatAd className="mt-4" placement="calculator-after-tool" />
         <CalculatorCrossLinks currentHref="/feriekalkulator" />
       </div>
     </main>

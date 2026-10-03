@@ -1,9 +1,12 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
+import type { BookbeatPlacement } from "@/lib/bookbeat";
 
-export function StickyLeftAdRail() {
+export function StickyLeftAdRail({ placement = "blog-left-sidebar" }: {
+  placement?: Extract<BookbeatPlacement, "blog-left-sidebar" | "occupation-left-sidebar">;
+} = {}) {
   return (
     <div className="sticky-left-ad-rail">
-      <AdsenseAd placement="blog-left-sidebar" />
+      <BookbeatAd placement={placement} />
     </div>
   );
 }

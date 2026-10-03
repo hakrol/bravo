@@ -149,62 +149,19 @@ export default function PersonvernPage() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-extrabold text-slate-950">Google AdSense</h2>
+              <h2 className="text-2xl font-extrabold text-slate-950">Annonser og affiliatelenker</h2>
               <div className="mt-4 grid gap-4">
                 <p>
-                  Nettstedet er integrert med Google AdSense, som kan brukes til å vise og måle
-                  annonser. Google og andre annonseteknologileverandører kan behandle
-                  opplysninger fra nettleseren eller enheten din når annonser er aktive.
-                  Opplysningene kan omfatte IP-adresse, nettleser- og enhetsinformasjon,
-                  sideadressen du besøker, omtrentlig posisjon, informasjonskapsel-ID-er,
-                  annonsevisninger og interaksjoner med annonser.
+                  Nettstedet viser BookBeat-annonser med affiliatelenker gjennom Adtraction.
+                  Vi kan motta provisjon når du registrerer deg gjennom en annonselenke.
+                  Bannerbildene lastes fra vårt eget nettsted, uten AdSense-script.
                 </p>
                 <p>
-                  Tredjepartsleverandører, inkludert Google, bruker informasjonskapsler og
-                  lignende teknologier til å vise annonser basert på tidligere besøk på
-                  Lønnsinnsikt eller andre nettsteder. Googles bruk av
-                  annonseringsinformasjonskapsler gjør det mulig for Google og deres partnere
-                  å vise annonser basert på besøk på dette og andre nettsteder.
-                </p>
-                <p>Opplysningene kan brukes til å:</p>
-                <ul className="list-disc space-y-2 pl-6">
-                  <li>levere og velge annonser</li>
-                  <li>tilpasse annonser når du har samtykket til det</li>
-                  <li>begrense hvor ofte den samme annonsen vises</li>
-                  <li>måle annonsevisninger, interaksjoner og effekt</li>
-                  <li>oppdage og forhindre svindel, misbruk og ugyldig trafikk</li>
-                  <li>rapportere og forbedre annonsetjenestene</li>
-                </ul>
-                <p>
-                  Personlig tilpassede annonser kan bygge på tidligere aktivitet, interesser,
-                  omtrentlig område og besøk på dette eller andre nettsteder. Ikke-personlig
-                  tilpassede annonser bygger hovedsakelig på sammenhengen de vises i, som
-                  innholdet på siden, tidspunkt og omtrentlig område. Også
-                  ikke-personlig tilpassede eller begrensede annonser kan innebære behandling
-                  av tekniske data for levering, måling, frekvensbegrensning, sikkerhet og
-                  svindelforebygging.
-                </p>
-                <p>
-                  Du kan lese mer om{" "}
-                  <a
-                    className={externalLinkClass}
-                    href="https://policies.google.com/technologies/partner-sites?hl=no"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    hvordan Google bruker opplysninger fra nettsteder som benytter Googles
-                    tjenester
-                  </a>
-                  , og administrere Googles bruk av personlige annonser i{" "}
-                  <a
-                    className={externalLinkClass}
-                    href="https://myadcenter.google.com/"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    Mitt annonsesenter
-                  </a>
-                  .
+                  Når du klikker på en annonse, følger du en sporingslenke til BookBeat.
+                  Lenken inneholder identifikatorer for nettstedet, siden, annonseplasseringen
+                  og bannerformatet, slik at konverteringer kan knyttes til annonsen.
+                  Vi legger ikke inn lønn, skjemasvar eller andre brukeropplysninger i lenken.
+                  Adtraction og BookBeat behandler opplysninger etter sine egne personvernvilkår.
                 </p>
               </div>
             </section>
@@ -236,13 +193,7 @@ export default function PersonvernPage() {
                   nettstedets lenke for personvern- og informasjonskapselvalg. Tilbaketrekking
                   påvirker ikke lovligheten av behandling som allerede har skjedd.
                 </p>
-                <p>
-                  Hvis du ikke samtykker til personlig tilpassede annonser, kan du få
-                  ikke-personlig tilpassede eller begrensede annonser, eller ingen annonser.
-                  Du kan i tillegg slette eller blokkere informasjonskapsler i nettleseren,
-                  men dette erstatter ikke nettstedets samtykkevalg og kan påvirke enkelte
-                  funksjoner.
-                </p>
+                <p>BookBeat-bannerne velges ut fra annonseplasseringen og tilgjengelig bredde, uten personlig tilpasning. Du kan slette eller blokkere informasjonskapsler i nettleseren, men dette erstatter ikke nettstedets samtykkevalg og kan påvirke enkelte funksjoner.</p>
               </div>
             </section>
 
@@ -254,25 +205,11 @@ export default function PersonvernPage() {
                 <p>
                   Vi bruker Vercel til drift, besøksstatistikk og ytelsesmåling, Google
                   Analytics til bruksanalyse, Resend til levering av kontakthenvendelser,
-                  Gmail til mottak og oppfølging av e-post, og Google AdSense til annonsering.
+                  Gmail til mottak og oppfølging av e-post, og Adtraction og BookBeat til affiliatemarkedsføring.
                   Leverandørene behandler opplysninger etter egne personvernvilkår og, der de
                   er databehandlere for oss, etter avtale og våre instrukser.
                 </p>
-                <p>
-                  Ved annonsering kan Google og andre valgte annonseteknologileverandører motta
-                  data. Den oppdaterte listen over leverandører, formål, behandlingsgrunnlag og
-                  lagringstider skal vises i samtykkeløsningen. Google gjør også informasjon
-                  om{" "}
-                  <a
-                    className={externalLinkClass}
-                    href="https://support.google.com/admanager/answer/9012903?hl=no"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    annonseteknologileverandører
-                  </a>{" "}
-                  tilgjengelig.
-                </p>
+                <p>Ved klikk på affiliatelenker kan Adtraction og BookBeat behandle tekniske opplysninger for sporing og provisjonsberegning. Se leverandørenes personvernvilkår for nærmere informasjon.</p>
                 <p>
                   Enkelte leverandører kan behandle opplysninger utenfor Norge og EØS. Slik
                   overføring skal skje på et gyldig overføringsgrunnlag, for eksempel en

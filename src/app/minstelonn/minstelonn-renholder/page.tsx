@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { CleaningMinimumWageChart } from "@/components/cleaning-minimum-wage-chart";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
@@ -118,7 +118,7 @@ export default function MinstelonnRenholderPage() {
           {minimumWageGrowth.map((growth) => <article className="rounded-[12px] border border-slate-200 bg-white px-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] sm:px-5" key={growth.period}><div className="flex items-baseline justify-between gap-3"><h2 className="font-bold text-slate-950">{growth.period} års vekst</h2><span className="text-xs tabular-nums text-slate-500">{growth.years}</span></div><dl className="mt-4 space-y-2.5"><div className="flex items-center justify-between gap-3"><dt className="flex items-center gap-2 text-sm text-slate-600"><span aria-hidden="true" className="size-2.5 rounded-full bg-[#15533d]" />Over 18 år</dt><dd className="text-lg font-bold tabular-nums text-[#15533d]">+{formatPercent(growth.adult)}</dd></div><div className="flex items-center justify-between gap-3"><dt className="flex items-center gap-2 text-sm text-slate-600"><span aria-hidden="true" className="size-2.5 rounded-full bg-[#93b4a5]" />Under 18 år</dt><dd className="text-lg font-bold tabular-nums text-[#557f6d]">+{formatPercent(growth.under18)}</dd></div></dl></article>)}
         </div>
 
-        <AdsenseAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
+        <BookbeatAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
 
         <nav aria-labelledby="innholdsfortegnelse" className="mx-auto mt-7 max-w-[900px] rounded-[11px] border border-slate-200 bg-slate-50 px-5 py-4 sm:px-7 sm:py-5">
           <h2 className="text-xl font-bold tracking-[-0.02em] text-slate-950" id="innholdsfortegnelse">Innhold på siden</h2>
@@ -142,7 +142,7 @@ export default function MinstelonnRenholderPage() {
 
             <Section id="under-18" title="Minstelønn for renholdere under 18 år"><p>Arbeidstakere under 18 år som omfattes av forskriften, skal minst ha {formatRate(currentRate.under18Rate)} per time fra {formatDate(currentRate.effectiveFrom)}. Unge arbeidstakere er i tillegg omfattet av særskilte arbeidstids- og HMS-regler.</p><SourceLine href={cleaningMinimumWageRules.labourInspectionUrl} label="Arbeidstilsynet – minstelønn og unge arbeidstakere" /></Section>
 
-            <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+            <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
 
             <Section id="overtid" title="Overtid for renholdere"><p>Arbeidsmiljøloven gir som hovedregel krav på minst 40 prosent overtidstillegg av avtalt timelønn. Overtidstillegget beregnes derfor ikke nødvendigvis av minstelønnssatsen.</p><p>Tariffavtale eller arbeidsavtale kan gi bedre vilkår.</p><SourceLine href={cleaningMinimumWageRules.labourInspectionUrl} label="Arbeidstilsynet – overtidstillegg i renholdsbransjen" /></Section>
 
@@ -150,7 +150,7 @@ export default function MinstelonnRenholderPage() {
 
             <Section id="tariff" title="Tariffsats og lovpålagt minstelønn er ikke alltid det samme"><p>Tariffavtalen kan få nye satser før Tariffnemnda eventuelt gjør dem bindende gjennom allmenngjøring. Tariffsatsen gjelder tariffbundne arbeidsforhold, mens allmenngjort minstelønn er det lovpålagte gulvet for arbeidstakere som omfattes av forskriften.</p><div className="grid gap-4 md:grid-cols-2"><ComparisonCard eyebrow="Gjeldende lovkrav" title="Allmenngjort minstelønn" rate={currentRate.adultRate}>Gjelder fra {formatDate(currentRate.effectiveFrom)} for ansatte over 18 år som omfattes av forskriften.</ComparisonCard><ComparisonCard eyebrow="Forslag – ikke vedtatt" title="Foreslått 2026-sats" rate={cleaningAllmenngjoringStatus2026.proposedAdultRate}>Tariffnemndas utkast foreslår også {formatRate(cleaningAllmenngjoringStatus2026.proposedUnder18Rate)} for arbeidstakere under 18 år. Forslaget har ingen fastsatt ikrafttredelsesdato.</ComparisonCard></div><div className="rounded-[5px] border border-amber-700/25 bg-amber-50 px-5 py-5"><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Status 2026</p><h3 className="mt-2 text-xl font-semibold text-slate-950">Ny allmenngjøringsforskrift er under behandling</h3><p className="mt-2 text-sm leading-6 text-slate-700">Tariffnemnda oppgir status <strong>{cleaningAllmenngjoringStatus2026.status}</strong>. Høringsfristen var {formatDate(cleaningAllmenngjoringStatus2026.hearingDeadline)}. Dagens satser gjelder til et nytt vedtak eventuelt trer i kraft.</p><SourceLine href={cleaningAllmenngjoringStatus2026.sourceUrl} label="Tariffnemnda – renhold" /></div></Section>
 
-            <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
+            <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
             <Section id="faq" title="Ofte stilte spørsmål"><div className="divide-y divide-slate-200 overflow-hidden rounded-[5px] border border-black/10 bg-white">{faqItems.map((item) => <details className="group px-5 py-4 open:bg-[#fbfbf8]" key={item.question}><summary className="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:hidden">{item.question}<span aria-hidden="true" className="float-right text-[var(--primary)] group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-700">{item.answer}</p></details>)}</div></Section>
 

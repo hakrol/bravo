@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { siteConfig } from "@/lib/site-config";
 
@@ -199,7 +199,7 @@ export default function MinimumWageOverviewPage() {
           </div>
         </section>
 
-        <AdsenseAd placement="overview-between-sections" />
+        <BookbeatAd placement="overview-between-sections" />
 
         <section className="mx-auto w-full max-w-3xl">
           <header>
