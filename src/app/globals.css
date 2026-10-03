@@ -3333,11 +3333,3 @@ a.blog-meta-chip:focus-visible {
 body.clickio-cmp-in-scope .clickio-cmp-settings-display {
   display: inherit !important;
 }
-
-.bookbeat-banner-container { container-type: inline-size; }
-.bookbeat-banner-compact { display: block; }
-.bookbeat-banner-wide { display: none; }
-@container (min-width: 980px) {
-  .bookbeat-banner-compact { display: none; }
-  .bookbeat-banner-wide { display: block; }
-}
