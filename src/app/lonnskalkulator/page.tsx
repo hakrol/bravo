@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +55,7 @@ export default function LonnskalkulatorPage() {
         </header>
 
         <SalaryCalculatorDashboard />
-        <AdsenseAd placement="calculator-after-tool" />
+        <BookbeatAd placement="calculator-after-tool" />
         <SalaryCalculatorGuide />
         <CalculatorCrossLinks currentHref="/lonnskalkulator" />
       </div>

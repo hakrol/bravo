@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 ﻿import Link from "next/link";
 import type { BlogPostPreview } from "@/lib/blog-shared";
 import type { NewsPostPreview } from "@/lib/nyheter";
@@ -96,7 +96,7 @@ export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = tru
         ]}
       />
       {showAd ? (
-        <AdsenseAd className="blog-sidebar-ad" placement="blog-sidebar" />
+        <BookbeatAd className="blog-sidebar-ad" placement="blog-sidebar" />
       ) : null}
     </aside>
   );

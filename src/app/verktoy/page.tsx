@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { calculators, otherTools } from "@/lib/tool-catalog";
@@ -174,7 +174,7 @@ export default function VerktoyPage() {
           </div>
         </section>
 
-        <AdsenseAd placement="overview-between-sections" />
+        <BookbeatAd placement="overview-between-sections" />
 
         <section className="grid scroll-mt-24 gap-7" id="kalkulatorer">
           <SectionHeading description="Regn på lønn, arbeidstid, ferie, lån og andre økonomiske valg med raske og enkle kalkulatorer.">

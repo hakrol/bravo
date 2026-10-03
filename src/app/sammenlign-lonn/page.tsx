@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -64,7 +64,7 @@ export default async function SammenlignLonnPage() {
     <div className="min-h-screen px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <OccupationComparisonCalculator data={comparisonData} />
-        <AdsenseAd placement="calculator-after-tool" />
+        <BookbeatAd placement="calculator-after-tool" />
         <SammenlignLonnGuide />
         <CalculatorCrossLinks currentHref="/sammenlign-lonn" />
       </div>

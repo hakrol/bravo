@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -40,7 +40,7 @@ export default function MileageAllowanceCalculatorPage() {
     <div className="min-h-screen px-5 py-4 sm:px-6 sm:py-5 lg:px-8 lg:py-6">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
         <MileageAllowanceCalculatorDashboard />
-        <AdsenseAd placement="calculator-after-tool" />
+        <BookbeatAd placement="calculator-after-tool" />
         <MileageAllowanceRates />
         <CalculatorCrossLinks currentHref="/kilometergodtgjorelse-kalkulator" />
       </div>

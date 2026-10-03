@@ -1,4 +1,4 @@
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import type { Metadata } from "next";
 import {
   OccupationDirectory,
@@ -125,7 +125,7 @@ export default async function YrkerPage({ searchParams }: YrkerPageProps) {
           searchPlaceholder="Søk etter yrke, for eksempel flyger"
         />
       </div>
-      <AdsenseAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+      <BookbeatAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </div>
   );
 }

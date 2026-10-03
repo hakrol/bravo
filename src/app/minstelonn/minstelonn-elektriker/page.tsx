@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { ElectricianMinimumWageChart } from "@/components/electrician-minimum-wage-chart";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
@@ -110,7 +110,7 @@ export default function MinstelonnElektrikerPage() {
           {minimumWageGrowth.map((growth) => <article className="rounded-[12px] border border-slate-200 bg-white px-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] sm:px-5" key={growth.period}><div className="flex items-baseline justify-between gap-3"><h2 className="font-bold text-slate-950">{growth.period} års vekst</h2><span className="text-xs tabular-nums text-slate-500">{growth.years}</span></div><dl className="mt-4 space-y-2.5"><div className="flex items-center justify-between gap-3"><dt className="flex items-center gap-2 text-sm text-slate-600"><span aria-hidden="true" className="size-2.5 rounded-full bg-[#15533d]" />Faglært</dt><dd className="text-lg font-bold tabular-nums text-[#15533d]">+{formatPercent(growth.skilled)}</dd></div><div className="flex items-center justify-between gap-3"><dt className="flex items-center gap-2 text-sm text-slate-600"><span aria-hidden="true" className="size-2.5 rounded-full bg-[#93b4a5]" />Andre</dt><dd className="text-lg font-bold tabular-nums text-[#557f6d]">+{formatPercent(growth.other)}</dd></div></dl></article>)}
         </div>
 
-        <AdsenseAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
+        <BookbeatAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
 
         <nav aria-labelledby="innholdsfortegnelse" className="mx-auto mt-7 max-w-[900px] rounded-[11px] border border-slate-200 bg-slate-50 px-5 py-4 sm:px-7 sm:py-5">
           <h2 className="text-xl font-bold tracking-[-0.02em] text-slate-950" id="innholdsfortegnelse">Innhold på siden</h2>
@@ -132,13 +132,13 @@ export default function MinstelonnElektrikerPage() {
 
           <Section id="skiftarbeid" title="Tillegg ved skiftarbeid"><p>Minstetillegget er 17 prosent ved toskiftsarbeid og 27,3 prosent ved treskiftsarbeid. Regelmessig skiftarbeid er sammenhengende arbeidsoppdrag på minst 14 dager; helgen bryter ikke sammenhengen.</p><SourceLine href={`${electricianMinimumWageRules.sourceUrl}#§3`} label="Lovdata, § 3" /></Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
 
           <Section id="arbeidstid" title="Arbeidstid"><p>Ordinær arbeidstid etter forskriften skal ikke overstige 37,5 timer per uke. Ved omregning til kortere skiftordninger skal lønnen kompenseres av den reelle timelønnen.</p><div className="overflow-hidden rounded-[11px] border border-black/10 bg-white">{electricianMinimumWageRules.workingTimeCompensation.map((item) => <div className="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 last:border-b-0" key={item.weeklyHours}><span className="text-sm text-slate-700">37,5 → {formatDecimal(item.weeklyHours)} timer per uke</span><strong className="tabular-nums text-slate-950">+{formatPercent(item.supplement * 100)}</strong></div>)}</div><SourceLine href={`${electricianMinimumWageRules.sourceUrl}#§3`} label="Lovdata, §§ 3 og 5" /></Section>
 
           <Section id="tariff" title="Tariffsats og lovpålagt minstelønn er ikke alltid det samme"><p>Den lovpålagte minstelønnen kommer fra allmenngjøring av deler av Landsoverenskomsten. Tariffavtalen kan få nye eller høyere satser uten at de automatisk blir lovpålagt minstelønn for hele bransjen.</p><div className="grid gap-4 md:grid-cols-2"><ComparisonCard eyebrow="Gjeldende lovkrav" title="Allmenngjort minstelønn" rate={currentRate.skilledRate}>Gjelder fra {formatDate(currentRate.effectiveFrom)} for faglærte som utfører fagarbeid omfattet av forskriften.</ComparisonCard><ComparisonCard eyebrow="Tariffbundet" title="Tariffsats 2026" rate={electricianTariff2026.skilledRate}>Minstesats for fagarbeider i Landsoverenskomsten 2026–2028. Den er ikke automatisk en lovpålagt sats for hele bransjen.</ComparisonCard></div><div className="rounded-[5px] border border-amber-700/25 bg-amber-50 px-5 py-5"><p className="text-xs font-bold uppercase tracking-[0.14em] text-amber-800">Status 2026</p><h3 className="mt-2 text-xl font-semibold text-slate-950">Ny allmenngjøringsforskrift er under behandling</h3><p className="mt-2 text-sm leading-6 text-slate-700">Tariffnemnda oppgir status <strong>{electricianAllmenngjoringStatus2026.status}</strong>. Utkastet foreslår {formatRate(electricianAllmenngjoringStatus2026.proposedSkilledRate)} for faglærte og {formatRate(electricianAllmenngjoringStatus2026.proposedOtherRate)} for andre arbeidstakere. Dagens satser gjelder til et nytt vedtak eventuelt trer i kraft.</p><SourceLine href={electricianAllmenngjoringStatus2026.sourceUrl} label="Tariffnemnda – elektrofagene" /></div></Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
           <Section id="faq" title="Ofte stilte spørsmål"><div className="divide-y divide-slate-200 overflow-hidden rounded-[5px] border border-black/10 bg-white">{faqItems.map((item) => <details className="group px-5 py-4 open:bg-[#fbfbf8]" key={item.question}><summary className="cursor-pointer list-none pr-8 font-semibold text-slate-950 marker:hidden">{item.question}<span aria-hidden="true" className="float-right text-[var(--primary)] group-open:rotate-45">+</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-700">{item.answer}</p></details>)}</div></Section>
 

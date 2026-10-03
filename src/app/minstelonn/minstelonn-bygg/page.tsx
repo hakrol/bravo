@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { ConstructionMinimumWageChart } from "@/components/construction-minimum-wage-chart";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
@@ -153,7 +153,7 @@ export default function MinstelonnByggPage() {
           </article>)}
         </div>
 
-        <AdsenseAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
+        <BookbeatAd className="mx-auto mt-8 max-w-[900px]" placement="overview-between-sections" />
 
         <nav aria-labelledby="innholdsfortegnelse" className="mx-auto mt-7 max-w-[900px] rounded-[11px] border border-slate-200 bg-slate-50 px-5 py-4 sm:px-7 sm:py-5">
           <h2 className="text-xl font-bold tracking-[-0.02em] text-slate-950" id="innholdsfortegnelse">Innhold på siden</h2>
@@ -197,7 +197,7 @@ export default function MinstelonnByggPage() {
             <SourceLine href={constructionTariff2026.sourceUrl} label="NHO Byggenæringen – lønns- og satstabeller" />
           </Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-mid-content" />
 
           <Section id="overtid" title="Overtid, kveld, natt og helg">
             <p>Byggeforskriften fastsetter ikke en egen overtidsprosent. Etter arbeidsmiljøloven skal overtid minst gi <strong>40 prosent tillegg av den avtalte ordinære lønnen</strong>. Tariffavtale eller arbeidsavtale kan gi bedre vilkår.</p>
@@ -230,7 +230,7 @@ export default function MinstelonnByggPage() {
             <Link className="inline-flex items-center gap-2 font-semibold text-[var(--primary)] hover:underline" href="/blogg/dette-er-arslonnen-til-bygningsarbeidere">Les mer om lønn i byggyrkene <span aria-hidden="true">→</span></Link>
           </Section>
 
-          <AdsenseAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
+          <BookbeatAd className="my-8 sm:my-10" placement="minimum-wage-before-faq" />
 
           <Section id="faq" title="Ofte stilte spørsmål om minstelønn i bygg">
             <div className="divide-y divide-slate-200 border-y border-slate-200">{faqItems.map((item) => <details className="group py-5" key={item.question}><summary className="flex cursor-pointer list-none items-start justify-between gap-5 text-lg font-semibold leading-7 text-slate-950 marker:hidden"><span>{item.question}</span><span aria-hidden="true" className="text-2xl font-normal text-[var(--primary)] transition-transform group-open:rotate-45">+</span></summary><p className="mt-4 max-w-3xl text-base leading-7 text-slate-700">{item.answer}</p></details>)}</div>

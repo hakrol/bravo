@@ -1,6 +1,6 @@
 "use client";
 
-import { AdsenseAd } from "@/components/adsense-ad";
+import { BookbeatAd } from "@/components/bookbeat-ad";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -358,7 +358,7 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
         </div>
       </section>
 
-      <AdsenseAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+      <BookbeatAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </main>
   );
 }
