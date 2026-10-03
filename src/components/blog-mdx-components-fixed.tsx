@@ -5,8 +5,8 @@ import { AdsenseAd } from "@/components/adsense-ad";
 import { BlogChart } from "@/components/blog-chart";
 import {
   ArealPlannerGenderSalaryCards,
-  ArealPlannerSalaryDevelopmentChart,
 } from "@/components/blog-areal-planner-salary-chart";
+import { ArealPlannerSalaryGrowthExplorer } from "@/components/areal-planner-salary-growth-explorer";
 import {
   AutomatikerGenderSalaryCards,
   AutomatikerSalaryBubbleChart,
@@ -301,7 +301,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     ),
     BlogChart,
     ArealPlannerGenderSalaryCards,
-    ArealPlannerSalaryDevelopmentChart,
+    ArealPlannerSalaryGrowthExplorer,
     AutomatikerGenderSalaryCards,
     AutomatikerSalaryBubbleChart,
     AutomatikerSalaryDevelopmentChart,

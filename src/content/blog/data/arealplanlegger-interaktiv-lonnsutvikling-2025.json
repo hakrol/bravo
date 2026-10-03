@@ -1,0 +1,13 @@
+{
+  "title": "Slik har arealplanleggerlønnen utviklet seg",
+  "subtitle": "Median månedslønn fra 2021 til 2025",
+  "source": "SSB tabell 11418",
+  "note": "Utviklingen er nominell og ikke justert for prisvekst.",
+  "points": [
+    { "year": 2021, "value": 55030 },
+    { "year": 2022, "value": 58270 },
+    { "year": 2023, "value": 61480 },
+    { "year": 2024, "value": 64580 },
+    { "year": 2025, "value": 68140 }
+  ]
+}
