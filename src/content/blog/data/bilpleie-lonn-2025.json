@@ -1,0 +1,15 @@
+{
+  "source": "SSB tabell 11418",
+  "sourceUrl": "https://www.ssb.no/statbank/table/11418/",
+  "period": "2025",
+  "measure": "Median månedslønn",
+  "population": "Alle sektorer, begge kjønn, heltid og deltid samlet. Deltidslønn omregnet til heltid.",
+  "verifiedAt": "2026-10-04",
+  "provenance": "Repoets src/lib/generated/occupation-detail-view-models: medianOverview for 7231, 9122 og 7132. For 9129 er trendData.series tomme og medianOverview mangler egen yrkesrad.",
+  "rows": [
+    { "code": "7132", "label": "Overflatebehandlere og lakkerere", "href": "/yrke/overflatebehandlere-og-lakkerere-lonn", "value": 48690 },
+    { "code": "7231", "label": "Bilmekanikere", "href": "/yrke/bilmekanikere-lonn", "value": 48500 },
+    { "code": "9122", "label": "Bilvaskere", "href": "/yrke/bilvaskere-lonn", "value": 39960 },
+    { "code": "9129", "label": "Andre rengjørere", "href": "/yrke/andre-rengjorere-lonn", "value": null }
+  ]
+}

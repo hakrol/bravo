@@ -5,7 +5,7 @@ import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { siteConfig } from "@/lib/site-config";
 
 const description =
-  "Finn sider om minstelønn i Norge. Se gjeldende satser og regler for bygg, jordbruk, gartneri, restaurant, renhold og elektro, samt tariffbaserte butikksatser.";
+  "Finn sider om minstelønn i Norge. Se gjeldende satser og regler for bilbransjen, bygg, jordbruk, gartneri, restaurant, renhold og elektro, samt tariffbaserte butikksatser.";
 
 export const metadata: Metadata = {
   title: "Minstelønn i Norge – satser og regler",
@@ -31,11 +31,12 @@ type MinimumWageCard = {
   category: string;
   description: string;
   href: string;
-  icon: "agriculture" | "construction" | "cleaning" | "electricity" | "restaurant" | "retail";
+  icon: "automotive" | "agriculture" | "construction" | "cleaning" | "electricity" | "restaurant" | "retail";
   title: string;
 };
 
 const minimumWagePages: readonly MinimumWageCard[] = [
+  { badge: "Lovpålagt", category: "Bilbransjen", description: "Se satser for bilmekanikere, hjelpearbeidere, bilpleie og dekk, med forskjellen på lovpålagt minstelønn og tariff.", href: "/minstelonn/minstelonn-bilbransjen", icon: "automotive", title: "Minstelønn i bilbransjen" },
   {
     badge: "Lovpålagt",
     category: "Jordbruk · gartneri",
@@ -120,6 +121,10 @@ function MinimumWageIcon({ icon }: { icon: MinimumWageCard["icon"] }) {
     strokeWidth: 1.8,
     viewBox: "0 0 24 24",
   };
+
+  if (icon === "automotive") {
+    return <svg {...commonProps}><path d="m5 7 2-4h10l2 4M3 7h18v10H3zM3 17v3h3v-3m12 0v3h3v-3M6 11h2m8 0h2" /></svg>;
+  }
 
   if (icon === "electricity") {
     return <svg {...commonProps}><path d="m13 2-8 12h7l-1 8 8-12h-7z" /></svg>;
