@@ -81,12 +81,10 @@ export function ArealPlannerSalaryGrowthExplorer() {
       { length: Math.round(valueSpan / 5000) + 1 },
       (_, index) => minValue + index * 5000,
     );
-    const intervalPoints = points.slice(activeIndex, latestIndex + 1);
-    const intervalTop = Math.min(...intervalPoints.map((point) => y(point.value)));
-    const annotationY = Math.max(70, intervalTop - (chartWidth < 440 ? 30 : 36));
+    const annotationY = y(points[points.length - 1].value);
 
     return { height, margin, plotWidth, plotHeight, minValue, maxValue, x, y, ticks, annotationY };
-  }, [activeIndex, chartWidth, latestIndex, points]);
+  }, [chartWidth, points]);
 
   const change = percentChange(activePoint.value, latestPoint.value);
   const changeLabel = `${formatPercent(change)} siden ${activePoint.year}`;
@@ -131,11 +129,11 @@ export function ArealPlannerSalaryGrowthExplorer() {
         </p>
         <h3
           id="arealplanner-growth-title"
-          className="m-0 text-balance font-serif text-[1.7rem] font-semibold leading-[1.08] tracking-[-0.025em] text-slate-950 sm:text-[2.15rem]"
+          className="m-0 text-balance font-serif text-[1.35rem] font-semibold leading-[1.08] tracking-[-0.025em] text-slate-950 sm:text-[2.15rem]"
         >
           {snapshot.title}
         </h3>
-        <p className="mb-0 mt-2 text-sm text-slate-600 sm:text-base">{snapshot.subtitle}</p>
+        <p className="mb-0 mt-2 text-xs text-slate-600 sm:text-base">{snapshot.subtitle}</p>
       </header>
 
       <div
@@ -152,7 +150,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
           role="group"
           aria-label="Interaktiv lønnsutvikling. Velg et år for å sammenligne med siste år."
         >
-          <text x={geometry.margin.left} y={geometry.margin.top - 24} fill="#64748b" className="text-sm sm:text-base">
+          <text x={geometry.margin.left} y={geometry.margin.top - 24} fill="#64748b" className="text-xs sm:text-sm">
             Kroner per måned
           </text>
 
@@ -172,7 +170,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
                   x={geometry.margin.left - 10}
                   y={tickY + 4}
                   fill="#64748b"
-                  className="text-sm sm:text-base"
+                  className="text-xs sm:text-sm"
                   textAnchor="end"
                 >
                   {kronerFormatter.format(tick)}
@@ -213,6 +211,17 @@ export function ArealPlannerSalaryGrowthExplorer() {
             strokeWidth="4"
           />
 
+          {activeIndex !== latestIndex ? (
+            <g pointerEvents="none" aria-hidden="true" stroke="#0b376d" strokeWidth="2">
+              <line x1={startX} x2={endX - 16} y1={geometry.annotationY} y2={geometry.annotationY} />
+              <path
+                d={`M ${endX - 21} ${geometry.annotationY - 5} L ${endX - 16} ${geometry.annotationY} L ${endX - 21} ${geometry.annotationY + 5}`}
+                fill="none"
+                strokeLinejoin="round"
+              />
+            </g>
+          ) : null}
+
           {points.map((point, index) => {
             const pointX = geometry.x(index);
             const pointY = geometry.y(point.value);
@@ -235,7 +244,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
                   x={pointX}
                   y={geometry.margin.top + geometry.plotHeight + 25}
                   fill={isActive ? "#0f3d4a" : "#64748b"}
-                  className="text-sm sm:text-base"
+                  className="text-xs sm:text-sm"
                   fontWeight={isActive ? 700 : 500}
                   textAnchor="middle"
                 >
@@ -257,7 +266,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
                       x={index === 0 ? pointX + 10 : pointX - 9}
                       y={pointY - 52}
                       fill="#0b376d"
-                      className="text-sm sm:text-base"
+                      className="text-xs sm:text-sm"
                       fontWeight="600"
                       textAnchor={index === 0 ? "start" : "end"}
                     >
@@ -267,7 +276,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
                       x={index === 0 ? pointX + 10 : pointX - 9}
                       y={pointY - 30}
                       fill="#0b376d"
-                      className="text-sm sm:text-base"
+                      className="text-xs sm:text-sm"
                       fontWeight="800"
                       textAnchor={index === 0 ? "start" : "end"}
                     >
@@ -318,7 +327,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
               x={endX - 2}
               y={geometry.y(latestPoint.value) + (activeIndex === latestIndex ? -38 : 30)}
               fill="#0b376d"
-              className="text-sm sm:text-base"
+              className="text-xs sm:text-sm"
               fontWeight="600"
               textAnchor="end"
             >
@@ -328,7 +337,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
               x={endX - 2}
               y={geometry.y(latestPoint.value) + (activeIndex === latestIndex ? -16 : 52)}
               fill="#0b376d"
-              className="text-sm sm:text-base"
+              className="text-xs sm:text-sm"
               fontWeight="800"
               textAnchor="end"
             >
@@ -340,28 +349,10 @@ export function ArealPlannerSalaryGrowthExplorer() {
         {activeIndex !== latestIndex ? (
           <>
             <div
-              className="pointer-events-none absolute z-10 h-[3px] bg-[#0b376d] transition-[left,top,width] duration-[225ms] ease-out motion-reduce:transition-none"
-              style={{
-                left: startX,
-                top: geometry.annotationY,
-                width: endX - startX,
-              }}
-              aria-hidden="true"
-            >
-              <span
-                className="absolute -left-px -top-[4px] h-[11px] border-l-[3px]"
-                style={{ borderColor: "#0b376d" }}
-              />
-              <span
-                className="absolute -right-px -top-[2px] h-[7px] w-[7px] rotate-45 border-r-[3px] border-t-[3px]"
-                style={{ borderColor: "#0b376d" }}
-              />
-            </div>
-            <div
               className="pointer-events-none absolute z-10 transition-[left,top] duration-[225ms] ease-out motion-reduce:transition-none"
               style={{ left: labelX, top: geometry.annotationY - 7 }}
             >
-              <span className="block -translate-x-1/2 -translate-y-full whitespace-nowrap text-sm font-extrabold leading-none text-[#0b376d] sm:text-base">
+              <span className="block -translate-x-1/2 -translate-y-full whitespace-nowrap text-xs font-extrabold leading-none text-[#0b376d] sm:text-sm">
                 {changeLabel}
               </span>
             </div>
@@ -371,7 +362,7 @@ export function ArealPlannerSalaryGrowthExplorer() {
 
       <figcaption
         id="arealplanner-growth-description"
-        className="border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-sm leading-relaxed text-slate-600 sm:px-7 sm:text-base"
+        className="border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-xs leading-relaxed text-slate-600 sm:px-7 sm:text-base"
       >
         <span className="font-bold text-slate-700">Kilde: {snapshot.source}.</span>{" "}
         {snapshot.note}

@@ -3,6 +3,7 @@ import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
 import { BookbeatAd } from "@/components/bookbeat-ad";
 import { BlogChart } from "@/components/blog-chart";
+import { BilpleieSalaryEditorialChart } from "@/components/blog-bilpleie-salary-chart";
 import {
   ArealPlannerGenderSalaryCards,
 } from "@/components/blog-areal-planner-salary-chart";
@@ -300,6 +301,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
       </td>
     ),
     BlogChart,
+    BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     ArealPlannerSalaryGrowthExplorer,
     AutomatikerGenderSalaryCards,
