@@ -79,6 +79,18 @@ const staticRoutes = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/minstelonn/minstelonn-turbil",
+    filePath: "src/app/minstelonn/minstelonn-turbil/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
+    path: "/minstelonn/minstelonn-godstransport",
+    filePath: "src/app/minstelonn/minstelonn-godstransport/page.tsx",
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/minstelonn/minstelonn-bilbransjen",
     filePath: "src/app/minstelonn/minstelonn-bilbransjen/page.tsx",
     priority: 0.8,
