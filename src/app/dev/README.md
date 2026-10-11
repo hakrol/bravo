@@ -6,6 +6,7 @@ Dette området brukes til interne prototyper, grafskisser og eksperimenter som i
 
 - `/dev` er startsiden for utviklingsområdet.
 - `/dev/grafer` er grafverkstedet.
+- `/utvikling-diagram` samler nye diagrammer med én fane per diagram og er lenket fra `/dev`.
 - Nye dev-sider kan legges under `src/app/dev/`, for eksempel `src/app/dev/ssb/page.tsx`.
 
 ## Produksjonssperre
@@ -18,6 +19,17 @@ Hele området er sperret i `src/app/dev/layout.tsx`.
 - `ENABLE_DEV_AREA` ikke er satt til `false`
 
 I produksjon svarer området med 404 via `notFound()`.
+
+`/utvikling-diagram` har en egen serversperre i `src/app/utvikling-diagram/page.tsx`.
+Siden krever `NODE_ENV=development` og at `isDevAreaAvailable()` er sann.
+Den er ikke med i sitemap eller vanlig navigasjon, og metadata hindrer indeksering.
+Legg til nye faner i `diagrams` i `src/components/development-diagram-tabs.tsx`.
+Hver fane bruker den eksisterende diagramkomponenten med testdata i utviklingsvisningen.
+Lønnsutviklingsdiagrammet bruker fiktive lønnstall og prisindekser for 2016–2025 fra
+`src/lib/development-diagram-data.ts`. Blogginnlegget bruker fortsatt sitt opprinnelige datagrunnlag.
+Diagrammets faste navn er «Interaktiv lønnsutvikling». Både utviklingsvisningen og
+bloggkomponenten `BlogSalaryGrowthExplorer` bruker `src/components/salary-growth-explorer.tsx`.
+Bloggkomponenten velger faktiske data med `snapshotId`; se standarden i `src/content/blog/README.md`.
 
 ## Når skal dette brukes?
 

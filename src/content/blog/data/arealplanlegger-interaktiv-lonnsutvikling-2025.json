@@ -1,13 +1,105 @@
 {
-  "title": "Slik har arealplanleggerlønnen utviklet seg",
-  "subtitle": "Median månedslønn fra 2021 til 2025",
+  "title": "Slik har lønnen til arealplanleggere utviklet seg",
+  "subtitle": "Median månedslønn fra 2016 til 2025",
   "source": "SSB tabell 11418",
-  "note": "Utviklingen er nominell og ikke justert for prisvekst.",
+  "note": "Tallene gjelder heltids- og deltidsansatte samlet, omregnet til heltidsekvivalenter. Utviklingen er nominell og ikke justert for prisvekst.",
   "points": [
-    { "year": 2021, "value": 55030 },
-    { "year": 2022, "value": 58270 },
-    { "year": 2023, "value": 61480 },
-    { "year": 2024, "value": 64580 },
-    { "year": 2025, "value": 68140 }
-  ]
+    {
+      "year": 2016,
+      "value": 48260
+    },
+    {
+      "year": 2017,
+      "value": 49850
+    },
+    {
+      "year": 2018,
+      "value": 50610
+    },
+    {
+      "year": 2019,
+      "value": 52110
+    },
+    {
+      "year": 2020,
+      "value": 52540
+    },
+    {
+      "year": 2021,
+      "value": 55030
+    },
+    {
+      "year": 2022,
+      "value": 58270
+    },
+    {
+      "year": 2023,
+      "value": 61480
+    },
+    {
+      "year": 2024,
+      "value": 64580
+    },
+    {
+      "year": 2025,
+      "value": 68140
+    }
+  ],
+  "womenPoints": [
+    { "year": 2016, "value": 47540 },
+    { "year": 2017, "value": 49110 },
+    { "year": 2018, "value": 49900 },
+    { "year": 2019, "value": 51420 },
+    { "year": 2020, "value": 52120 },
+    { "year": 2021, "value": 54730 },
+    { "year": 2022, "value": 57760 },
+    { "year": 2023, "value": 60610 },
+    { "year": 2024, "value": 63330 },
+    { "year": 2025, "value": 67420 }
+  ],
+  "menPoints": [
+    { "year": 2016, "value": 49170 },
+    { "year": 2017, "value": 50490 },
+    { "year": 2018, "value": 51250 },
+    { "year": 2019, "value": 53260 },
+    { "year": 2020, "value": 52930 },
+    { "year": 2021, "value": 55280 },
+    { "year": 2022, "value": 58710 },
+    { "year": 2023, "value": 62440 },
+    { "year": 2024, "value": 65580 },
+    { "year": 2025, "value": 69010 }
+  ],
+  "inflation": {
+    "source": "SSB tabell 14700",
+    "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+    "referenceMonth": "november",
+    "updated": "2026-08-10T06:00:00Z",
+    "points": [
+      { "year": 2016, "value": 76.2 },
+      { "year": 2017, "value": 77 },
+      { "year": 2018, "value": 79.7 },
+      { "year": 2019, "value": 81 },
+      { "year": 2020, "value": 81.6 },
+      {
+        "year": 2021,
+        "value": 85.8
+      },
+      {
+        "year": 2022,
+        "value": 91.4
+      },
+      {
+        "year": 2023,
+        "value": 95.7
+      },
+      {
+        "year": 2024,
+        "value": 98
+      },
+      {
+        "year": 2025,
+        "value": 100.9
+      }
+    ]
+  }
 }
