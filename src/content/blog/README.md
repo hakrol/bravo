@@ -223,3 +223,34 @@ Eksempel på FAQ:
 Diagrammer skal være enkle, redaksjonelle og kildebelagte.
 
 Datadrevne innlegg som handler om en bestemt periode skal bruke snapshots. Hvis et innlegg for eksempel handler om 2025-tall, skal tallgrunnlaget lagres som en egen fil under `src/content/blog/data/` og hentes via en eksplisitt kortkode eller `snapshotId`. Ikke bruk `latest`-datasett direkte i historiske blogginnlegg, fordi de vil endre seg når nye SSB-data synkes.
+
+### Standarddiagram: Interaktiv lønnsutvikling
+
+«Interaktiv lønnsutvikling» er det faste navnet på det felles lønnsutviklingsdiagrammet. Når en brief ber om dette diagrammet, eller et nytt yrkesinnlegg skal vise lønnsutvikling, bruk `BlogSalaryGrowthExplorer`:
+
+```mdx
+<BlogSalaryGrowthExplorer snapshotId="arealplanlegger-lonnsutvikling-2025" />
+```
+
+`snapshotId` er obligatorisk og velger et registrert datasett. En ukjent ID gir en feil, slik at innlegget ikke viser tall for et annet yrke ved en skrivefeil. Bruk en ID med formatet `<yrke>-lonnsutvikling-<siste-år>`, med små bokstaver og bindestreker.
+
+For et nytt innlegg:
+
+1. Lag et kildebelagt JSON-snapshot under `src/content/blog/data/` og bruk strukturen i `arealplanlegger-interaktiv-lonnsutvikling-2025.json` som utgangspunkt. Typen er `SalaryGrowthSnapshot` i `src/lib/salary-growth-snapshot.ts`.
+2. Importer og registrer filen med sin ID i `src/lib/blog-salary-growth-snapshots.ts`.
+3. Sett inn `BlogSalaryGrowthExplorer` i innlegget med denne ID-en. MDX-komponenten er allerede registrert i `src/components/blog-mdx-components-fixed.tsx`.
+
+Datasettet skal følge disse reglene:
+
+- `title`: «Slik har lønnen til [yrke] utviklet seg».
+- `subtitle`: «Median månedslønn fra [startår] til [sluttår]». Oppgi lønnsbegrepet som faktisk brukes i datagrunnlaget; bruk «Gjennomsnittlig månedslønn» når tallene er gjennomsnitt.
+- `source`: oppgi bare SSB-tabellen, for eksempel «SSB tabell 11418». Kildefeltet under diagrammet viser bare tabellhenvisninger, med KPI-tabellen i tillegg når inflasjonsjusteringen er på. Forklar nødvendige avgrensninger og forskjellen mellom nominell og inflasjonsjustert lønn i brødteksten. `note` kan bevare slike opplysninger i datasettet, men vises ikke under diagrammet.
+- `points`: lønn for begge kjønn i kroner per måned, med minst to år i stigende rekkefølge, unike årstall og positive, endelige verdier. Bruk de siste ti tilgjengelige årene når sammenlignbare tall finnes. En kortere, tydelig oppgitt periode er tillatt.
+- `womenPoints` og `menPoints`: valgfrie serier med samme årstall, lønnsbegrep og avgrensninger som `points`. Ta bare med serier som har kildebelagte tall for hele perioden. Manglende eller undertrykte tall skal ikke erstattes med null eller anslag.
+- `inflation`: oppgi KPI-kilde, eventuell `sourceUrl`, `referenceMonth`, oppdateringsdato i `updated` og årsverdier i `points`. Bruk samme referansemåned hvert år. Justeringen bruker siste lønnsårs prisnivå. Manglende KPI-år gjør inflasjonsjusteringen utilgjengelig; ikke finn opp verdier for å fylle hull.
+
+Utseende, farger, plassering av tall, vekstpil, inflasjonsknapp og fokus ved hover styres samlet i `src/components/salary-growth-explorer.tsx`. Bruk denne komponenten fremfor å kopiere designet eller lage artikkelspesifikke stilvarianter. Testdata fra `src/lib/development-diagram-data.ts` brukes bare på `/utvikling-diagram`.
+
+Fast formulering i en brief:
+
+> Bruk standarddiagrammet «Interaktiv lønnsutvikling» med lønnsdata for [yrke].

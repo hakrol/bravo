@@ -8,6 +8,11 @@ export const metadata: Metadata = {
 
 const devAreas = [
   {
+    href: "/utvikling-diagram",
+    title: "Utvikling-diagram",
+    description: "Nye diagrammer samlet i faner, med samme komponenter som i blogginnleggene.",
+  },
+  {
     href: "/dev/grafer",
     title: "Grafverksted",
     description: "Skisser, sammenligninger og visuelle prototyper for lønnsdata.",

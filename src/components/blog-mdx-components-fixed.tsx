@@ -7,7 +7,7 @@ import { BilpleieSalaryEditorialChart } from "@/components/blog-bilpleie-salary-
 import {
   ArealPlannerGenderSalaryCards,
 } from "@/components/blog-areal-planner-salary-chart";
-import { ArealPlannerSalaryGrowthExplorer } from "@/components/areal-planner-salary-growth-explorer";
+import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
   AutomatikerGenderSalaryCards,
   AutomatikerSalaryBubbleChart,
@@ -303,7 +303,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BlogChart,
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
-    ArealPlannerSalaryGrowthExplorer,
+    BlogSalaryGrowthExplorer,
     AutomatikerGenderSalaryCards,
     AutomatikerSalaryBubbleChart,
     AutomatikerSalaryDevelopmentChart,

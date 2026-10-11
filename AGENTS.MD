@@ -14,6 +14,7 @@ Before changing App Router, metadata, routing, server actions, caching, or data 
 
 - Read `PROJECT.MD` when work affects product positioning, page content, UX copy, blog strategy, information architecture, or feature prioritization.
 - Use `PROJECT.MD` as the source of truth for target audience, value proposition, product purpose, and editorial direction.
+- For blogginnlegg, les og følg `src/content/blog/README.md`. Standarddiagrammet «Interaktiv lønnsutvikling» settes inn med `<BlogSalaryGrowthExplorer snapshotId="..." />`. Gjenbruk komponenten og registrer et eget datasett for yrket; ikke kopier designet eller bruk utviklingssidens testdata.
 
 
 ## Execution model
