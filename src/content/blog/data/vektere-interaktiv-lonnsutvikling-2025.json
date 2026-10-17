@@ -1,0 +1,96 @@
+{
+  "title": "Slik har lønnen til vektere utviklet seg",
+  "subtitle": "Median månedslønn fra 2016 til 2025",
+  "source": "SSB tabell 11418",
+  "note": "Yrke 5414 Vektere, median månedslønn, alle sektorer, heltid og deltid samlet, omregnet til heltidsekvivalenter. Månedslønn inkluderer uregelmessige tillegg og bonus, men ikke overtid. KPI totalindeks for november brukes gjennomgående. 2015 er bare beregningsgrunnlag for årlig reallønnsendring i 2016.",
+  "provenance": {
+    "snapshotDate": "2026-10-17",
+    "salaryFile": "src/lib/generated/occupation-median-timeseries.json",
+    "salaryUpdated": "2026-08-28T06:00:00Z",
+    "salarySourceUrl": "https://www.ssb.no/statbank/table/11418/",
+    "salaryFilters": {
+      "MaaleMetode": "01",
+      "Yrke": "5414",
+      "Sektor": "ALLE",
+      "AvtaltVanlig": "0",
+      "ContentsCode": "Manedslonn",
+      "Kjonn": ["0", "1", "2"],
+      "Tid": ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
+    },
+    "inflationFile": "src/lib/generated/inflation-quarter-series.json",
+    "inflationFilters": { "VareTjenesteGrp": "00", "ContentsCode": "KpiIndMnd", "month": "11" },
+    "comparisonOccupationCodes": ["5414", "5413", "5411", "5419", "3355"],
+    "employmentFile": "src/lib/generated/occupation-workforce-timeseries.json",
+    "employmentUpdated": "2026-08-13T06:00:00Z",
+    "employmentSourceUrl": "https://www.ssb.no/statbank/table/11658/",
+    "employmentFilters": { "Kjonn": "0", "Alder": "999D", "ContentsCode": "Lonsstakere", "Tid": "2025K4" }
+  },
+  "points": [
+    { "year": 2016, "value": 33120 },
+    { "year": 2017, "value": 33320 },
+    { "year": 2018, "value": 34280 },
+    { "year": 2019, "value": 34540 },
+    { "year": 2020, "value": 34940 },
+    { "year": 2021, "value": 36300 },
+    { "year": 2022, "value": 37590 },
+    { "year": 2023, "value": 39440 },
+    { "year": 2024, "value": 41740 },
+    { "year": 2025, "value": 43450 }
+  ],
+  "womenPoints": [
+    { "year": 2016, "value": 32480 },
+    { "year": 2017, "value": 32610 },
+    { "year": 2018, "value": 33810 },
+    { "year": 2019, "value": 33770 },
+    { "year": 2020, "value": 34060 },
+    { "year": 2021, "value": 35280 },
+    { "year": 2022, "value": 36870 },
+    { "year": 2023, "value": 38390 },
+    { "year": 2024, "value": 40990 },
+    { "year": 2025, "value": 42760 }
+  ],
+  "menPoints": [
+    { "year": 2016, "value": 33330 },
+    { "year": 2017, "value": 33550 },
+    { "year": 2018, "value": 34510 },
+    { "year": 2019, "value": 34900 },
+    { "year": 2020, "value": 35320 },
+    { "year": 2021, "value": 36700 },
+    { "year": 2022, "value": 37860 },
+    { "year": 2023, "value": 39790 },
+    { "year": 2024, "value": 42000 },
+    { "year": 2025, "value": 43720 }
+  ],
+  "inflation": {
+    "source": "SSB tabell 14700",
+    "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+    "referenceMonth": "november",
+    "updated": "2026-08-10T06:00:00Z",
+    "points": [
+      { "year": 2016, "value": 76.2 },
+      { "year": 2017, "value": 77.0 },
+      { "year": 2018, "value": 79.7 },
+      { "year": 2019, "value": 81.0 },
+      { "year": 2020, "value": 81.6 },
+      { "year": 2021, "value": 85.8 },
+      { "year": 2022, "value": 91.4 },
+      { "year": 2023, "value": 95.7 },
+      { "year": 2024, "value": 98.0 },
+      { "year": 2025, "value": 100.9 }
+    ]
+  },
+  "realWageBaseline": { "year": 2015, "median": 31880, "women": 31400, "men": 32100, "cpi": 73.6 },
+  "comparison": {
+    "year": 2025,
+    "source": "SSB tabell 11418, 14700 og 11658",
+    "salaryPopulation": "Median månedslønn per heltidsekvivalent, alle sektorer, begge kjønn, heltid og deltid samlet, november 2025.",
+    "employmentPopulation": "Lønnstakere (personer), begge kjønn, alle aldre, heltid og deltid samlet, 4. kvartal 2025. Ikke antall arbeidsforhold eller årsverk.",
+    "points": [
+      { "occupationCode": "5414", "occupationName": "Vektere", "href": "/yrke/vektere-lonn", "year": 2025, "medianMonthlySalary": 43450, "previousMedianMonthlySalary": 41740, "employees": 10460, "employeesPeriodLabel": "4. kv. 2025", "source": "SSB tabell 11418 og 11658" },
+      { "occupationCode": "5413", "occupationName": "Fengselsbetjenter", "href": "/yrke/fengselsbetjenter-lonn", "year": 2025, "medianMonthlySalary": 55900, "previousMedianMonthlySalary": 51240, "employees": 3687, "employeesPeriodLabel": "4. kv. 2025", "source": "SSB tabell 11418 og 11658" },
+      { "occupationCode": "5411", "occupationName": "Brannkonstabler", "href": "/yrke/brannkonstabler-lonn", "year": 2025, "medianMonthlySalary": 60510, "previousMedianMonthlySalary": 58960, "employees": 4307, "employeesPeriodLabel": "4. kv. 2025", "source": "SSB tabell 11418 og 11658" },
+      { "occupationCode": "5419", "occupationName": "Andre sikkerhetsarbeidere", "href": "/yrke/andre-sikkerhetsarbeidere-lonn", "year": 2025, "medianMonthlySalary": 42340, "previousMedianMonthlySalary": 41020, "employees": 3309, "employeesPeriodLabel": "4. kv. 2025", "source": "SSB tabell 11418 og 11658" },
+      { "occupationCode": "3355", "occupationName": "Politibetjenter mv.", "href": "/yrke/politibetjenter-mv-lonn", "year": 2025, "medianMonthlySalary": 63920, "previousMedianMonthlySalary": 61320, "employees": 12145, "employeesPeriodLabel": "4. kv. 2025", "source": "SSB tabell 11418 og 11658" }
+    ]
+  }
+}

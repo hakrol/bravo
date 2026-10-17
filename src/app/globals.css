@@ -1050,34 +1050,35 @@ a.blog-meta-chip:focus-visible {
   }
 }
 
-.blog-prose > * + * {
+.blog-prose > * + *:not(.not-prose) {
   margin-top: 1.4rem;
 }
 
-.blog-prose h2,
-.blog-prose h3,
-.blog-prose h4 {
+/* Diagrammer med not-prose bruker samme typografi som i utviklingsvisningen. */
+.blog-prose h2:not(:where(.not-prose, .not-prose *)),
+.blog-prose h3:not(:where(.not-prose, .not-prose *)),
+.blog-prose h4:not(:where(.not-prose, .not-prose *)) {
   color: var(--foreground);
   font-weight: 700;
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
-.blog-prose h2 {
+.blog-prose h2:not(:where(.not-prose, .not-prose *)) {
   margin-top: 2.5rem;
   font-size: 2.1rem;
   line-height: 1.1;
 }
 
-.blog-prose h3 {
+.blog-prose h3:not(:where(.not-prose, .not-prose *)) {
   margin-top: 2rem;
   font-size: 1.5rem;
   line-height: 1.2;
 }
 
-.blog-prose p,
-.blog-prose li,
-.blog-prose blockquote {
+.blog-prose p:not(:where(.not-prose, .not-prose *)),
+.blog-prose li:not(:where(.not-prose, .not-prose *)),
+.blog-prose blockquote:not(:where(.not-prose, .not-prose *)) {
   font-size: 1.125rem;
   line-height: 1.95;
   color: var(--foreground);
@@ -1173,19 +1174,19 @@ a.blog-meta-chip:focus-visible {
 }
 
 @media (max-width: 640px) {
-  .blog-prose h2 {
+  .blog-prose h2:not(:where(.not-prose, .not-prose *)) {
     font-size: 1.75rem;
     line-height: 1.15;
   }
 
-  .blog-prose h3 {
+  .blog-prose h3:not(:where(.not-prose, .not-prose *)) {
     font-size: 1.35rem;
     line-height: 1.2;
   }
 
-  .blog-prose p,
-  .blog-prose li,
-  .blog-prose blockquote {
+  .blog-prose p:not(:where(.not-prose, .not-prose *)),
+  .blog-prose li:not(:where(.not-prose, .not-prose *)),
+  .blog-prose blockquote:not(:where(.not-prose, .not-prose *)) {
     font-size: 1.03rem;
     line-height: 1.8;
   }

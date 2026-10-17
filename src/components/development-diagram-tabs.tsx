@@ -2,6 +2,9 @@
 
 import { useRef, useState, type ComponentType, type KeyboardEvent } from "react";
 import { SalaryGrowthExplorer } from "@/components/salary-growth-explorer";
+import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
+import { DevelopmentRealWage } from "@/components/development-real-wage";
+import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
 import { salaryGrowthTestSnapshot } from "@/lib/development-diagram-data";
 
 type DevelopmentDiagram = {
@@ -20,6 +23,21 @@ const diagrams: DevelopmentDiagram[] = [
     id: "lonnsutvikling",
     label: "Interaktiv lønnsutvikling",
     Component: SalaryGrowthTestDiagram,
+  },
+  {
+    id: "lonnsforskjell",
+    label: "Interaktiv lønnsforskjell",
+    Component: DevelopmentSalaryGenderGap,
+  },
+  {
+    id: "reallonn",
+    label: "Interaktiv reallønn",
+    Component: DevelopmentRealWage,
+  },
+  {
+    id: "yrkessammenligning",
+    label: "Interaktiv yrkessammenligning",
+    Component: DevelopmentOccupationComparison,
   },
 ];
 
