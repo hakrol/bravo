@@ -9,6 +9,11 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  VekterOccupationSalaryComparisonExplorer,
+  VekterRealWageGrowthExplorer,
+  VekterSalaryGenderGapExplorer,
+} from "@/components/blog-vekter-salary-charts";
+import {
   AutomatikerGenderSalaryCards,
   AutomatikerSalaryBubbleChart,
   AutomatikerSalaryDevelopmentChart,
@@ -304,6 +309,9 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    VekterOccupationSalaryComparisonExplorer,
+    VekterRealWageGrowthExplorer,
+    VekterSalaryGenderGapExplorer,
     AutomatikerGenderSalaryCards,
     AutomatikerSalaryBubbleChart,
     AutomatikerSalaryDevelopmentChart,

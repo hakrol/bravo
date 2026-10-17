@@ -114,6 +114,8 @@ export function SalaryGrowthExplorer({ snapshot }: { snapshot: SalaryGrowthSnaps
   })), [displaySeries, geometry]);
 
   const change = percentChange(activePoint.value, latestPoint.value);
+  const roundedChange = Math.round(change * 10) / 10;
+  const changeColor = roundedChange > 0 ? "#15803d" : roundedChange < 0 ? "#b91c1c" : focusedSeries.color;
   const changeLabel = `${displaySeries.length > 1 ? `${focusedSeries.label} · ` : ""}${formatPercent(change)} siden ${activePoint.year}`;
   const startX = geometry.x(activeIndex);
   const endX = geometry.x(latestIndex);
@@ -318,7 +320,9 @@ export function SalaryGrowthExplorer({ snapshot }: { snapshot: SalaryGrowthSnaps
                 fill={focusedSeries.color}
                 className="text-xs font-extrabold sm:text-sm"
               >
-                {changeLabel}
+                {displaySeries.length > 1 ? `${focusedSeries.label} · ` : ""}
+                <tspan fill={changeColor}>{formatPercent(change)}</tspan>
+                {` siden ${activePoint.year}`}
               </text>
               <line
                 x1={startX}

@@ -1,6 +1,9 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
+import { DevelopmentRealWage } from "@/components/development-real-wage";
+import { DevelopmentDiagramTabs } from "@/components/development-diagram-tabs";
 
 export const metadata: Metadata = {
   title: "Grafverksted",
@@ -60,12 +63,18 @@ export default function DevGraferPage() {
             Grafverksted
           </p>
           <h1 className="mt-3 text-4xl font-semibold text-slate-950 text-balance sm:text-5xl">
-            Lønnsfordelingsgraf for yrkesdetaljer
+            Diagrammer for lønn og lønnsforskjeller
           </h1>
           <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--muted)] sm:text-lg">
-            Prototype for en redaksjonell fordeling med P25, median og P75 for kvinner og menn.
+            Utforsk lønnsforskjeller over tid og en redaksjonell fordeling med P25, median og P75 for kvinner og menn.
           </p>
         </section>
+
+        <DevelopmentDiagramTabs />
+
+        <DevelopmentSalaryGenderGap />
+
+        <DevelopmentRealWage />
 
         <SalaryDistributionPrototype />
       </div>
