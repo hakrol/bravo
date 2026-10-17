@@ -234,6 +234,8 @@ Datadrevne innlegg som handler om en bestemt periode skal bruke snapshots. Hvis 
 
 `snapshotId` er obligatorisk og velger et registrert datasett. En ukjent ID gir en feil, slik at innlegget ikke viser tall for et annet yrke ved en skrivefeil. Bruk en ID med formatet `<yrke>-lonnsutvikling-<siste-år>`, med små bokstaver og bindestreker.
 
+Når et innlegg sammenligner flere fagretninger, kan `snapshotIds` oppgis som en kommaseparert streng med registrerte ID-er i tillegg til `snapshotId`, for eksempel `snapshotIds="yrke-a-lonnsutvikling-2025,yrke-b-lonnsutvikling-2025"`. Bruk en streng i MDX, siden JavaScript-uttrykk som array-props filtreres bort. Da vises en fagvelger over det samme standarddiagrammet. `snapshotId` angir hvilken fagretning som vises først. Hver fagretning skal fortsatt ha sitt eget kildebelagte snapshot; flere snapshots kan samles i én JSON-fil og registreres hver for seg.
+
 For et nytt innlegg:
 
 1. Lag et kildebelagt JSON-snapshot under `src/content/blog/data/` og bruk strukturen i `arealplanlegger-interaktiv-lonnsutvikling-2025.json` som utgangspunkt. Typen er `SalaryGrowthSnapshot` i `src/lib/salary-growth-snapshot.ts`.

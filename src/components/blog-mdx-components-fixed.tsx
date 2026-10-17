@@ -8,6 +8,7 @@ import {
   ArealPlannerGenderSalaryCards,
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
+import { EngineerSalaryExplorer } from "@/components/blog-engineer-salary-charts";
 import {
   VekterOccupationSalaryComparisonExplorer,
   VekterRealWageGrowthExplorer,
@@ -142,9 +143,12 @@ import { ServitorMinimumWageDevelopmentChart } from "@/components/blog-servitor-
 import { PoliceSalaryBubbleChart, PoliceSalaryEditorialChart } from "@/components/blog-police-salary-chart";
 import {
   RorleggerGenderSalaryCards,
+  RorleggerOccupationSalaryComparisonExplorer,
+  RorleggerRealWageGrowthExplorer,
   RorleggerSalaryBubbleChart,
   RorleggerSalaryDevelopmentChart,
   RorleggerSalaryEditorialChart,
+  RorleggerSalaryGenderGapExplorer,
 } from "@/components/blog-rorlegger-salary-chart";
 import { SnekkerSalaryBubbleChart, SnekkerSalaryEditorialChart } from "@/components/blog-snekker-salary-chart";
 import { StavangerMayorCompensationChart } from "@/components/blog-stavanger-mayor-compensation-chart";
@@ -309,6 +313,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    EngineerSalaryExplorer,
     VekterOccupationSalaryComparisonExplorer,
     VekterRealWageGrowthExplorer,
     VekterSalaryGenderGapExplorer,
@@ -394,9 +399,12 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     PilotSalaryDevelopmentChart,
     PilotSalaryEditorialChart,
     RorleggerGenderSalaryCards,
+    RorleggerOccupationSalaryComparisonExplorer,
+    RorleggerRealWageGrowthExplorer,
     RorleggerSalaryBubbleChart,
     RorleggerSalaryDevelopmentChart,
     RorleggerSalaryEditorialChart,
+    RorleggerSalaryGenderGapExplorer,
     ServitorGenderSalaryCards,
     ServitorMinimumWageDevelopmentChart,
     ServitorSalaryBubbleChart,

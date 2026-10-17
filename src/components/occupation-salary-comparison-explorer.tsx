@@ -11,7 +11,6 @@ import { formatRealWagePercent, realWageColors } from "@/lib/real-wage-growth";
 import styles from "./occupation-salary-comparison-explorer.module.css";
 
 const number = new Intl.NumberFormat("nb-NO", { maximumFractionDigits: 0 });
-const compactNumber = new Intl.NumberFormat("nb-NO", { maximumFractionDigits: 1 });
 const money = (value: number | null) => value === null ? "Mangler data" : `${number.format(value)} kr`;
 const signedMoney = (value: number) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${number.format(Math.abs(value))} kr`;
 const growthColor = (value: number | null) => value === null || value === 0 ? realWageColors.neutral : value > 0 ? realWageColors.positive : realWageColors.negative;
@@ -149,8 +148,8 @@ export function OccupationSalaryComparisonExplorer({ dataset, selectedOccupation
           })}
         </ol>
         {sorted.length ? <div aria-hidden="true" className={`${styles.axis} relative mb-7 mt-2 h-5 text-[0.65rem] tabular-nums text-slate-500 sm:text-xs`}>
-          {scale.ticks.map((tick, index) => <span key={tick} className={`absolute whitespace-nowrap ${view === "difference" && index > 0 && index < scale.ticks.length - 1 && tick !== 0 ? "hidden sm:block" : ""} ${index === 0 ? "" : index === scale.ticks.length - 1 ? "-translate-x-full" : "-translate-x-1/2"}`}
-            style={{ left: `${scale.position(tick)}%` }}>{tick < 0 ? "−" : tick > 0 && view === "difference" ? "+" : ""}{compactNumber.format(Math.abs(tick) >= 1000 ? Math.abs(tick) / 1000 : Math.abs(tick))}{Math.abs(tick) >= 1000 ? "k" : ""}</span>)}
+          {scale.ticks.map((tick, index) => <span key={tick} className={`absolute whitespace-nowrap ${view === "difference" && index > 0 && index < scale.ticks.length - 1 && tick !== 0 ? styles.minorTick : ""} ${index === 0 ? "" : index === scale.ticks.length - 1 ? "-translate-x-full" : "-translate-x-1/2"}`}
+            style={{ left: `${scale.position(tick)}%` }}>{tick < 0 ? "−" : tick > 0 && view === "difference" ? "+" : ""}{number.format(Math.abs(tick))}</span>)}
         </div> : <p className="px-2 py-8 text-sm text-slate-600">Ingen yrkesdata å vise for {dataset.year}.</p>}
       </div>
 

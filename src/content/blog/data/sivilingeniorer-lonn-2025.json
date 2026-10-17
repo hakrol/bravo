@@ -1,0 +1,2670 @@
+{
+  "retrievedAt": "2026-10-17",
+  "salaryYear": 2025,
+  "salaryPopulation": "Alle sektorer, begge kjønn, heltid og deltid omregnet til heltid. Månedslønn før skatt, inkludert bonus og uregelmessige tillegg, uten overtid.",
+  "employmentPopulation": "Lønnstakere (personer) etter hovedjobb, alle aldre, bosatte og ikke-bosatte. Selvstendig næringsdrivende er ikke inkludert.",
+  "sources": {
+    "salary": {
+      "tableId": "11418",
+      "url": "https://www.ssb.no/statbank/table/11418/",
+      "updated": "2026-08-28T06:00:00Z",
+      "query": {
+        "valueCodes[MaaleMetode]": [
+          "01",
+          "02"
+        ],
+        "valueCodes[Yrke]": [
+          "2141",
+          "2142",
+          "2143",
+          "2144",
+          "2145",
+          "2146",
+          "2149",
+          "2151",
+          "2152",
+          "2153",
+          "3112",
+          "3115"
+        ],
+        "valueCodes[Sektor]": "ALLE",
+        "valueCodes[Kjonn]": [
+          "0",
+          "1",
+          "2"
+        ],
+        "valueCodes[AvtaltVanlig]": "0",
+        "valueCodes[ContentsCode]": "Manedslonn",
+        "valueCodes[Tid]": [
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "note": "2015 er utelatt fordi referansemåneden og beregning av arbeidstid avviker. : betyr at SSB ikke publiserer tallet av konfidensialitetshensyn; verdien beholdes som null."
+    },
+    "inflation": {
+      "tableId": "14700",
+      "url": "https://www.ssb.no/statbank/table/14700/",
+      "updated": "2026-10-09T06:00:00Z",
+      "query": {
+        "valueCodes[VareTjenesteGrp]": "00",
+        "valueCodes[ContentsCode]": "KpiIndMnd",
+        "valueCodes[Tid]": [
+          "2015M11",
+          "2016M11",
+          "2017M11",
+          "2018M11",
+          "2019M11",
+          "2020M11",
+          "2021M11",
+          "2022M11",
+          "2023M11",
+          "2024M11",
+          "2025M11"
+        ]
+      }
+    },
+    "workforce": {
+      "tableId": "11658",
+      "url": "https://www.ssb.no/statbank/table/11658/",
+      "updated": "2026-08-13T06:00:00Z",
+      "query": {
+        "valueCodes[Kjonn]": [
+          "0",
+          "1",
+          "2"
+        ],
+        "valueCodes[Alder]": "999D",
+        "valueCodes[Yrke]": [
+          "2141",
+          "2142",
+          "2143",
+          "2144",
+          "2145",
+          "2146",
+          "2149",
+          "2151",
+          "2152",
+          "2153"
+        ],
+        "valueCodes[ContentsCode]": "Lonsstakere",
+        "valueCodes[Tid]": [
+          "2016K2",
+          "2025K2",
+          "2026K2"
+        ]
+      }
+    }
+  },
+  "occupations": [
+    {
+      "code": "2141",
+      "label": "Sivilingeniører (industri og produksjon)",
+      "href": "/yrke/sivilingeniorer-industri-og-produksjon-lonn",
+      "snapshotId": "sivilingeniorer-industri-og-produksjon-lonnsutvikling-2025",
+      "averageMonthlySalary": 75200,
+      "history": [
+        {
+          "year": 2016,
+          "median": 49640,
+          "women": 47960,
+          "men": 50000,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 50710,
+          "women": 48600,
+          "men": 50980,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 51450,
+          "women": 50580,
+          "men": 51800,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 53720,
+          "women": 52960,
+          "men": 53870,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 54350,
+          "women": 53580,
+          "men": 54460,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 56430,
+          "women": 54890,
+          "men": 56790,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 59140,
+          "women": 56900,
+          "men": 59860,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 62580,
+          "women": 60920,
+          "men": 63230,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 64790,
+          "women": 62920,
+          "men": 65240,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 68690,
+          "women": 66150,
+          "men": 69010,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 1104,
+        "women": 214,
+        "men": 890,
+        "previousYearEmployees": 1146
+      }
+    },
+    {
+      "code": "2142",
+      "label": "Sivilingeniører (bygg og anlegg)",
+      "href": "/yrke/sivilingeniorer-bygg-og-anlegg-lonn",
+      "snapshotId": "sivilingeniorer-bygg-og-anlegg-lonnsutvikling-2025",
+      "averageMonthlySalary": 81250,
+      "history": [
+        {
+          "year": 2016,
+          "median": 55450,
+          "women": 51780,
+          "men": 56330,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 56670,
+          "women": 52670,
+          "men": 57730,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 58300,
+          "women": 53770,
+          "men": 59230,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 59900,
+          "women": 55440,
+          "men": 60870,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 60980,
+          "women": 56670,
+          "men": 62130,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 64000,
+          "women": 60240,
+          "men": 65000,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 66320,
+          "women": 62500,
+          "men": 67150,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 69630,
+          "women": 65890,
+          "men": 70510,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 72390,
+          "women": 68580,
+          "men": 73330,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 75990,
+          "women": 71520,
+          "men": 77190,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 26740,
+        "women": 5487,
+        "men": 21253,
+        "previousYearEmployees": 27088
+      }
+    },
+    {
+      "code": "2143",
+      "label": "Sivilingeniører (miljøteknikk)",
+      "href": "/yrke/sivilingeniorer-miljoteknikk-lonn",
+      "snapshotId": "sivilingeniorer-miljoteknikk-lonnsutvikling-2025",
+      "averageMonthlySalary": 81860,
+      "history": [
+        {
+          "year": 2016,
+          "median": 56250,
+          "women": null,
+          "men": null,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 54860,
+          "women": null,
+          "men": null,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 57060,
+          "women": null,
+          "men": null,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 59080,
+          "women": 53500,
+          "men": 63570,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 57980,
+          "women": 53080,
+          "men": 62680,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 60010,
+          "women": 58010,
+          "men": 65770,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 62650,
+          "women": 59860,
+          "men": 67910,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 66790,
+          "women": 64420,
+          "men": 70560,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 69300,
+          "women": 67000,
+          "men": 73810,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 78690,
+          "women": 76410,
+          "men": 81080,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 539,
+        "women": 318,
+        "men": 221,
+        "previousYearEmployees": 521
+      }
+    },
+    {
+      "code": "2144",
+      "label": "Sivilingeniører (maskin- og marinteknikk)",
+      "href": "/yrke/sivilingeniorer-maskin-og-marin-teknikk-lonn",
+      "snapshotId": "sivilingeniorer-maskin-og-marinteknikk-lonnsutvikling-2025",
+      "averageMonthlySalary": 90390,
+      "history": [
+        {
+          "year": 2016,
+          "median": 59860,
+          "women": 54660,
+          "men": 60990,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 61830,
+          "women": 56240,
+          "men": 63410,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 64000,
+          "women": 58730,
+          "men": 65170,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 67200,
+          "women": 61190,
+          "men": 68040,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 68740,
+          "women": 64160,
+          "men": 69440,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 70160,
+          "women": 64850,
+          "men": 70910,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 73310,
+          "women": 69420,
+          "men": 74220,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 77400,
+          "women": 72820,
+          "men": 78320,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 81260,
+          "women": 75810,
+          "men": 82310,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 87200,
+          "women": 81920,
+          "men": 87990,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 5037,
+        "women": 838,
+        "men": 4199,
+        "previousYearEmployees": 4887
+      }
+    },
+    {
+      "code": "2145",
+      "label": "Sivilingeniører (kjemi)",
+      "href": "/yrke/sivilingeniorer-kjemi-lonn",
+      "snapshotId": "sivilingeniorer-kjemi-lonnsutvikling-2025",
+      "averageMonthlySalary": 80520,
+      "history": [
+        {
+          "year": 2016,
+          "median": 56680,
+          "women": 50580,
+          "men": 60390,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 57150,
+          "women": 50940,
+          "men": 61710,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 59000,
+          "women": 52950,
+          "men": 63130,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 59020,
+          "women": 54700,
+          "men": 64240,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 59210,
+          "women": 54240,
+          "men": 65500,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 60400,
+          "women": 56490,
+          "men": 67100,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 62840,
+          "women": 57480,
+          "men": 68710,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 66620,
+          "women": 61700,
+          "men": 72680,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 69500,
+          "women": 63680,
+          "men": 74970,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 72440,
+          "women": 67390,
+          "men": 77720,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 872,
+        "women": 410,
+        "men": 462,
+        "previousYearEmployees": 837
+      }
+    },
+    {
+      "code": "2146",
+      "label": "Sivilingeniører (geofag, petroleumsteknologi, metallurgi mv.)",
+      "href": "/yrke/sivilingeniorer-geofag-petro-leumsteknologi-metallurgi-mv-lonn",
+      "snapshotId": "sivilingeniorer-geofag-petroleum-metallurgi-lonnsutvikling-2025",
+      "averageMonthlySalary": 102790,
+      "history": [
+        {
+          "year": 2016,
+          "median": 74190,
+          "women": 67610,
+          "men": 76420,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 74950,
+          "women": 69320,
+          "men": 76860,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 78450,
+          "women": 73380,
+          "men": 80040,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 80750,
+          "women": 76100,
+          "men": 82610,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 79730,
+          "women": 75080,
+          "men": 81220,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 81920,
+          "women": 77580,
+          "men": 83450,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 88260,
+          "women": 84570,
+          "men": 89580,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 90870,
+          "women": 87100,
+          "men": 92230,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 95410,
+          "women": 91780,
+          "men": 96860,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 98500,
+          "women": 94400,
+          "men": 100070,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 11555,
+        "women": 3111,
+        "men": 8444,
+        "previousYearEmployees": 11622
+      }
+    },
+    {
+      "code": "2149",
+      "label": "Andre sivilingeniører (unntatt elektroteknologi)",
+      "href": "/yrke/andre-sivilingeniorer-unntatt-elektroteknologi-lonn",
+      "snapshotId": "sivilingeniorer-andre-lonnsutvikling-2025",
+      "averageMonthlySalary": 82500,
+      "history": [
+        {
+          "year": 2016,
+          "median": 60830,
+          "women": 55590,
+          "men": 63680,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 62220,
+          "women": 57210,
+          "men": 65700,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 63650,
+          "women": 58300,
+          "men": 67190,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 65500,
+          "women": 60360,
+          "men": 69170,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 65650,
+          "women": 60570,
+          "men": 69070,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 67550,
+          "women": 63190,
+          "men": 70850,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 70490,
+          "women": 65480,
+          "men": 73660,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 72740,
+          "women": 67750,
+          "men": 76700,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 75240,
+          "women": 69850,
+          "men": 79610,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 77770,
+          "women": 72580,
+          "men": 81560,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 7575,
+        "women": 3249,
+        "men": 4326,
+        "previousYearEmployees": 7634
+      }
+    },
+    {
+      "code": "2151",
+      "label": "Sivilingeniører (elkraftteknikk)",
+      "href": "/yrke/sivilingeniorer-elkraftteknikk-lonn",
+      "snapshotId": "sivilingeniorer-elkraftteknikk-lonnsutvikling-2025",
+      "averageMonthlySalary": 89670,
+      "history": [
+        {
+          "year": 2016,
+          "median": 64640,
+          "women": 58900,
+          "men": 65370,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 65100,
+          "women": 60730,
+          "men": 65830,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 66670,
+          "women": 62350,
+          "men": 67710,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 68830,
+          "women": 64580,
+          "men": 69900,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 67320,
+          "women": 63850,
+          "men": 68330,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 70080,
+          "women": 66450,
+          "men": 70830,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 73500,
+          "women": 70400,
+          "men": 74450,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 77360,
+          "women": 73250,
+          "men": 78340,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 80890,
+          "women": 78130,
+          "men": 81630,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 84580,
+          "women": 82020,
+          "men": 85240,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 4701,
+        "women": 934,
+        "men": 3767,
+        "previousYearEmployees": 4441
+      }
+    },
+    {
+      "code": "2152",
+      "label": "Sivilingeniører (elektronikk)",
+      "href": "/yrke/sivilingeniorer-elektronikk-lonn",
+      "snapshotId": "sivilingeniorer-elektronikk-lonnsutvikling-2025",
+      "averageMonthlySalary": 87590,
+      "history": [
+        {
+          "year": 2016,
+          "median": 61390,
+          "women": 55780,
+          "men": 62040,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 62430,
+          "women": 56970,
+          "men": 63190,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 65050,
+          "women": 58580,
+          "men": 65790,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 66180,
+          "women": 59290,
+          "men": 66960,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 65990,
+          "women": 59710,
+          "men": 66670,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 68600,
+          "women": 61280,
+          "men": 69730,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 71950,
+          "women": 64010,
+          "men": 73190,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 75620,
+          "women": 68110,
+          "men": 76690,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 78830,
+          "women": 70830,
+          "men": 79940,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 83330,
+          "women": 73400,
+          "men": 85000,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 4612,
+        "women": 605,
+        "men": 4007,
+        "previousYearEmployees": 4618
+      }
+    },
+    {
+      "code": "2153",
+      "label": "Sivilingeniører (telekommunikasjon)",
+      "href": "/yrke/sivilingeniorer-telekommunikasjon-lonn",
+      "snapshotId": "sivilingeniorer-telekommunikasjon-lonnsutvikling-2025",
+      "averageMonthlySalary": 86690,
+      "history": [
+        {
+          "year": 2016,
+          "median": 54170,
+          "women": null,
+          "men": 54930,
+          "cpi": 76.2
+        },
+        {
+          "year": 2017,
+          "median": 56090,
+          "women": null,
+          "men": 56420,
+          "cpi": 77
+        },
+        {
+          "year": 2018,
+          "median": 57640,
+          "women": null,
+          "men": 57800,
+          "cpi": 79.7
+        },
+        {
+          "year": 2019,
+          "median": 59080,
+          "women": null,
+          "men": 59700,
+          "cpi": 81
+        },
+        {
+          "year": 2020,
+          "median": 63610,
+          "women": null,
+          "men": 65110,
+          "cpi": 81.6
+        },
+        {
+          "year": 2021,
+          "median": 67500,
+          "women": null,
+          "men": 68550,
+          "cpi": 85.8
+        },
+        {
+          "year": 2022,
+          "median": 68340,
+          "women": null,
+          "men": 69360,
+          "cpi": 91.4
+        },
+        {
+          "year": 2023,
+          "median": 73990,
+          "women": null,
+          "men": 75200,
+          "cpi": 95.7
+        },
+        {
+          "year": 2024,
+          "median": 74870,
+          "women": null,
+          "men": 76540,
+          "cpi": 98
+        },
+        {
+          "year": 2025,
+          "median": 81100,
+          "women": 69820,
+          "men": 83140,
+          "cpi": 100.9
+        }
+      ],
+      "workforce": {
+        "period": "2026K2",
+        "periodLabel": "2. kvartal 2026",
+        "employees": 717,
+        "women": 128,
+        "men": 589,
+        "previousYearEmployees": 655
+      }
+    }
+  ],
+  "salaryGrowthSnapshots": {
+    "sivilingeniorer-industri-og-produksjon-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (industri og produksjon) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 49640
+        },
+        {
+          "year": 2017,
+          "value": 50710
+        },
+        {
+          "year": 2018,
+          "value": 51450
+        },
+        {
+          "year": 2019,
+          "value": 53720
+        },
+        {
+          "year": 2020,
+          "value": 54350
+        },
+        {
+          "year": 2021,
+          "value": 56430
+        },
+        {
+          "year": 2022,
+          "value": 59140
+        },
+        {
+          "year": 2023,
+          "value": 62580
+        },
+        {
+          "year": 2024,
+          "value": 64790
+        },
+        {
+          "year": 2025,
+          "value": 68690
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 47960
+        },
+        {
+          "year": 2017,
+          "value": 48600
+        },
+        {
+          "year": 2018,
+          "value": 50580
+        },
+        {
+          "year": 2019,
+          "value": 52960
+        },
+        {
+          "year": 2020,
+          "value": 53580
+        },
+        {
+          "year": 2021,
+          "value": 54890
+        },
+        {
+          "year": 2022,
+          "value": 56900
+        },
+        {
+          "year": 2023,
+          "value": 60920
+        },
+        {
+          "year": 2024,
+          "value": 62920
+        },
+        {
+          "year": 2025,
+          "value": 66150
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 50000
+        },
+        {
+          "year": 2017,
+          "value": 50980
+        },
+        {
+          "year": 2018,
+          "value": 51800
+        },
+        {
+          "year": 2019,
+          "value": 53870
+        },
+        {
+          "year": 2020,
+          "value": 54460
+        },
+        {
+          "year": 2021,
+          "value": 56790
+        },
+        {
+          "year": 2022,
+          "value": 59860
+        },
+        {
+          "year": 2023,
+          "value": 63230
+        },
+        {
+          "year": 2024,
+          "value": 65240
+        },
+        {
+          "year": 2025,
+          "value": 69010
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-bygg-og-anlegg-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (bygg og anlegg) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 55450
+        },
+        {
+          "year": 2017,
+          "value": 56670
+        },
+        {
+          "year": 2018,
+          "value": 58300
+        },
+        {
+          "year": 2019,
+          "value": 59900
+        },
+        {
+          "year": 2020,
+          "value": 60980
+        },
+        {
+          "year": 2021,
+          "value": 64000
+        },
+        {
+          "year": 2022,
+          "value": 66320
+        },
+        {
+          "year": 2023,
+          "value": 69630
+        },
+        {
+          "year": 2024,
+          "value": 72390
+        },
+        {
+          "year": 2025,
+          "value": 75990
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 51780
+        },
+        {
+          "year": 2017,
+          "value": 52670
+        },
+        {
+          "year": 2018,
+          "value": 53770
+        },
+        {
+          "year": 2019,
+          "value": 55440
+        },
+        {
+          "year": 2020,
+          "value": 56670
+        },
+        {
+          "year": 2021,
+          "value": 60240
+        },
+        {
+          "year": 2022,
+          "value": 62500
+        },
+        {
+          "year": 2023,
+          "value": 65890
+        },
+        {
+          "year": 2024,
+          "value": 68580
+        },
+        {
+          "year": 2025,
+          "value": 71520
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 56330
+        },
+        {
+          "year": 2017,
+          "value": 57730
+        },
+        {
+          "year": 2018,
+          "value": 59230
+        },
+        {
+          "year": 2019,
+          "value": 60870
+        },
+        {
+          "year": 2020,
+          "value": 62130
+        },
+        {
+          "year": 2021,
+          "value": 65000
+        },
+        {
+          "year": 2022,
+          "value": 67150
+        },
+        {
+          "year": 2023,
+          "value": 70510
+        },
+        {
+          "year": 2024,
+          "value": 73330
+        },
+        {
+          "year": 2025,
+          "value": 77190
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-miljoteknikk-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (miljøteknikk) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 56250
+        },
+        {
+          "year": 2017,
+          "value": 54860
+        },
+        {
+          "year": 2018,
+          "value": 57060
+        },
+        {
+          "year": 2019,
+          "value": 59080
+        },
+        {
+          "year": 2020,
+          "value": 57980
+        },
+        {
+          "year": 2021,
+          "value": 60010
+        },
+        {
+          "year": 2022,
+          "value": 62650
+        },
+        {
+          "year": 2023,
+          "value": 66790
+        },
+        {
+          "year": 2024,
+          "value": 69300
+        },
+        {
+          "year": 2025,
+          "value": 78690
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-maskin-og-marinteknikk-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (maskin- og marinteknikk) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 59860
+        },
+        {
+          "year": 2017,
+          "value": 61830
+        },
+        {
+          "year": 2018,
+          "value": 64000
+        },
+        {
+          "year": 2019,
+          "value": 67200
+        },
+        {
+          "year": 2020,
+          "value": 68740
+        },
+        {
+          "year": 2021,
+          "value": 70160
+        },
+        {
+          "year": 2022,
+          "value": 73310
+        },
+        {
+          "year": 2023,
+          "value": 77400
+        },
+        {
+          "year": 2024,
+          "value": 81260
+        },
+        {
+          "year": 2025,
+          "value": 87200
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 54660
+        },
+        {
+          "year": 2017,
+          "value": 56240
+        },
+        {
+          "year": 2018,
+          "value": 58730
+        },
+        {
+          "year": 2019,
+          "value": 61190
+        },
+        {
+          "year": 2020,
+          "value": 64160
+        },
+        {
+          "year": 2021,
+          "value": 64850
+        },
+        {
+          "year": 2022,
+          "value": 69420
+        },
+        {
+          "year": 2023,
+          "value": 72820
+        },
+        {
+          "year": 2024,
+          "value": 75810
+        },
+        {
+          "year": 2025,
+          "value": 81920
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 60990
+        },
+        {
+          "year": 2017,
+          "value": 63410
+        },
+        {
+          "year": 2018,
+          "value": 65170
+        },
+        {
+          "year": 2019,
+          "value": 68040
+        },
+        {
+          "year": 2020,
+          "value": 69440
+        },
+        {
+          "year": 2021,
+          "value": 70910
+        },
+        {
+          "year": 2022,
+          "value": 74220
+        },
+        {
+          "year": 2023,
+          "value": 78320
+        },
+        {
+          "year": 2024,
+          "value": 82310
+        },
+        {
+          "year": 2025,
+          "value": 87990
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-kjemi-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (kjemi) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 56680
+        },
+        {
+          "year": 2017,
+          "value": 57150
+        },
+        {
+          "year": 2018,
+          "value": 59000
+        },
+        {
+          "year": 2019,
+          "value": 59020
+        },
+        {
+          "year": 2020,
+          "value": 59210
+        },
+        {
+          "year": 2021,
+          "value": 60400
+        },
+        {
+          "year": 2022,
+          "value": 62840
+        },
+        {
+          "year": 2023,
+          "value": 66620
+        },
+        {
+          "year": 2024,
+          "value": 69500
+        },
+        {
+          "year": 2025,
+          "value": 72440
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 50580
+        },
+        {
+          "year": 2017,
+          "value": 50940
+        },
+        {
+          "year": 2018,
+          "value": 52950
+        },
+        {
+          "year": 2019,
+          "value": 54700
+        },
+        {
+          "year": 2020,
+          "value": 54240
+        },
+        {
+          "year": 2021,
+          "value": 56490
+        },
+        {
+          "year": 2022,
+          "value": 57480
+        },
+        {
+          "year": 2023,
+          "value": 61700
+        },
+        {
+          "year": 2024,
+          "value": 63680
+        },
+        {
+          "year": 2025,
+          "value": 67390
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 60390
+        },
+        {
+          "year": 2017,
+          "value": 61710
+        },
+        {
+          "year": 2018,
+          "value": 63130
+        },
+        {
+          "year": 2019,
+          "value": 64240
+        },
+        {
+          "year": 2020,
+          "value": 65500
+        },
+        {
+          "year": 2021,
+          "value": 67100
+        },
+        {
+          "year": 2022,
+          "value": 68710
+        },
+        {
+          "year": 2023,
+          "value": 72680
+        },
+        {
+          "year": 2024,
+          "value": 74970
+        },
+        {
+          "year": 2025,
+          "value": 77720
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-geofag-petroleum-metallurgi-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (geofag, petroleumsteknologi, metallurgi mv.) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 74190
+        },
+        {
+          "year": 2017,
+          "value": 74950
+        },
+        {
+          "year": 2018,
+          "value": 78450
+        },
+        {
+          "year": 2019,
+          "value": 80750
+        },
+        {
+          "year": 2020,
+          "value": 79730
+        },
+        {
+          "year": 2021,
+          "value": 81920
+        },
+        {
+          "year": 2022,
+          "value": 88260
+        },
+        {
+          "year": 2023,
+          "value": 90870
+        },
+        {
+          "year": 2024,
+          "value": 95410
+        },
+        {
+          "year": 2025,
+          "value": 98500
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 67610
+        },
+        {
+          "year": 2017,
+          "value": 69320
+        },
+        {
+          "year": 2018,
+          "value": 73380
+        },
+        {
+          "year": 2019,
+          "value": 76100
+        },
+        {
+          "year": 2020,
+          "value": 75080
+        },
+        {
+          "year": 2021,
+          "value": 77580
+        },
+        {
+          "year": 2022,
+          "value": 84570
+        },
+        {
+          "year": 2023,
+          "value": 87100
+        },
+        {
+          "year": 2024,
+          "value": 91780
+        },
+        {
+          "year": 2025,
+          "value": 94400
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 76420
+        },
+        {
+          "year": 2017,
+          "value": 76860
+        },
+        {
+          "year": 2018,
+          "value": 80040
+        },
+        {
+          "year": 2019,
+          "value": 82610
+        },
+        {
+          "year": 2020,
+          "value": 81220
+        },
+        {
+          "year": 2021,
+          "value": 83450
+        },
+        {
+          "year": 2022,
+          "value": 89580
+        },
+        {
+          "year": 2023,
+          "value": 92230
+        },
+        {
+          "year": 2024,
+          "value": 96860
+        },
+        {
+          "year": 2025,
+          "value": 100070
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-andre-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til andre sivilingeniører (unntatt elektroteknologi) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 60830
+        },
+        {
+          "year": 2017,
+          "value": 62220
+        },
+        {
+          "year": 2018,
+          "value": 63650
+        },
+        {
+          "year": 2019,
+          "value": 65500
+        },
+        {
+          "year": 2020,
+          "value": 65650
+        },
+        {
+          "year": 2021,
+          "value": 67550
+        },
+        {
+          "year": 2022,
+          "value": 70490
+        },
+        {
+          "year": 2023,
+          "value": 72740
+        },
+        {
+          "year": 2024,
+          "value": 75240
+        },
+        {
+          "year": 2025,
+          "value": 77770
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 55590
+        },
+        {
+          "year": 2017,
+          "value": 57210
+        },
+        {
+          "year": 2018,
+          "value": 58300
+        },
+        {
+          "year": 2019,
+          "value": 60360
+        },
+        {
+          "year": 2020,
+          "value": 60570
+        },
+        {
+          "year": 2021,
+          "value": 63190
+        },
+        {
+          "year": 2022,
+          "value": 65480
+        },
+        {
+          "year": 2023,
+          "value": 67750
+        },
+        {
+          "year": 2024,
+          "value": 69850
+        },
+        {
+          "year": 2025,
+          "value": 72580
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 63680
+        },
+        {
+          "year": 2017,
+          "value": 65700
+        },
+        {
+          "year": 2018,
+          "value": 67190
+        },
+        {
+          "year": 2019,
+          "value": 69170
+        },
+        {
+          "year": 2020,
+          "value": 69070
+        },
+        {
+          "year": 2021,
+          "value": 70850
+        },
+        {
+          "year": 2022,
+          "value": 73660
+        },
+        {
+          "year": 2023,
+          "value": 76700
+        },
+        {
+          "year": 2024,
+          "value": 79610
+        },
+        {
+          "year": 2025,
+          "value": 81560
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-elkraftteknikk-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (elkraftteknikk) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 64640
+        },
+        {
+          "year": 2017,
+          "value": 65100
+        },
+        {
+          "year": 2018,
+          "value": 66670
+        },
+        {
+          "year": 2019,
+          "value": 68830
+        },
+        {
+          "year": 2020,
+          "value": 67320
+        },
+        {
+          "year": 2021,
+          "value": 70080
+        },
+        {
+          "year": 2022,
+          "value": 73500
+        },
+        {
+          "year": 2023,
+          "value": 77360
+        },
+        {
+          "year": 2024,
+          "value": 80890
+        },
+        {
+          "year": 2025,
+          "value": 84580
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 58900
+        },
+        {
+          "year": 2017,
+          "value": 60730
+        },
+        {
+          "year": 2018,
+          "value": 62350
+        },
+        {
+          "year": 2019,
+          "value": 64580
+        },
+        {
+          "year": 2020,
+          "value": 63850
+        },
+        {
+          "year": 2021,
+          "value": 66450
+        },
+        {
+          "year": 2022,
+          "value": 70400
+        },
+        {
+          "year": 2023,
+          "value": 73250
+        },
+        {
+          "year": 2024,
+          "value": 78130
+        },
+        {
+          "year": 2025,
+          "value": 82020
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 65370
+        },
+        {
+          "year": 2017,
+          "value": 65830
+        },
+        {
+          "year": 2018,
+          "value": 67710
+        },
+        {
+          "year": 2019,
+          "value": 69900
+        },
+        {
+          "year": 2020,
+          "value": 68330
+        },
+        {
+          "year": 2021,
+          "value": 70830
+        },
+        {
+          "year": 2022,
+          "value": 74450
+        },
+        {
+          "year": 2023,
+          "value": 78340
+        },
+        {
+          "year": 2024,
+          "value": 81630
+        },
+        {
+          "year": 2025,
+          "value": 85240
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-elektronikk-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (elektronikk) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 61390
+        },
+        {
+          "year": 2017,
+          "value": 62430
+        },
+        {
+          "year": 2018,
+          "value": 65050
+        },
+        {
+          "year": 2019,
+          "value": 66180
+        },
+        {
+          "year": 2020,
+          "value": 65990
+        },
+        {
+          "year": 2021,
+          "value": 68600
+        },
+        {
+          "year": 2022,
+          "value": 71950
+        },
+        {
+          "year": 2023,
+          "value": 75620
+        },
+        {
+          "year": 2024,
+          "value": 78830
+        },
+        {
+          "year": 2025,
+          "value": 83330
+        }
+      ],
+      "womenPoints": [
+        {
+          "year": 2016,
+          "value": 55780
+        },
+        {
+          "year": 2017,
+          "value": 56970
+        },
+        {
+          "year": 2018,
+          "value": 58580
+        },
+        {
+          "year": 2019,
+          "value": 59290
+        },
+        {
+          "year": 2020,
+          "value": 59710
+        },
+        {
+          "year": 2021,
+          "value": 61280
+        },
+        {
+          "year": 2022,
+          "value": 64010
+        },
+        {
+          "year": 2023,
+          "value": 68110
+        },
+        {
+          "year": 2024,
+          "value": 70830
+        },
+        {
+          "year": 2025,
+          "value": 73400
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 62040
+        },
+        {
+          "year": 2017,
+          "value": 63190
+        },
+        {
+          "year": 2018,
+          "value": 65790
+        },
+        {
+          "year": 2019,
+          "value": 66960
+        },
+        {
+          "year": 2020,
+          "value": 66670
+        },
+        {
+          "year": 2021,
+          "value": 69730
+        },
+        {
+          "year": 2022,
+          "value": 73190
+        },
+        {
+          "year": 2023,
+          "value": 76690
+        },
+        {
+          "year": 2024,
+          "value": 79940
+        },
+        {
+          "year": 2025,
+          "value": 85000
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    },
+    "sivilingeniorer-telekommunikasjon-lonnsutvikling-2025": {
+      "title": "Slik har lønnen til sivilingeniører (telekommunikasjon) utviklet seg",
+      "subtitle": "Median månedslønn fra 2016 til 2025",
+      "source": "SSB tabell 11418",
+      "note": "Begge kjønn, alle sektorer, heltid og deltid omregnet til heltid. Månedslønn før skatt inkludert bonus og uregelmessige tillegg, uten overtid. November hvert år. Serier for kvinner og menn vises bare når hele perioden har publiserte tall.",
+      "points": [
+        {
+          "year": 2016,
+          "value": 54170
+        },
+        {
+          "year": 2017,
+          "value": 56090
+        },
+        {
+          "year": 2018,
+          "value": 57640
+        },
+        {
+          "year": 2019,
+          "value": 59080
+        },
+        {
+          "year": 2020,
+          "value": 63610
+        },
+        {
+          "year": 2021,
+          "value": 67500
+        },
+        {
+          "year": 2022,
+          "value": 68340
+        },
+        {
+          "year": 2023,
+          "value": 73990
+        },
+        {
+          "year": 2024,
+          "value": 74870
+        },
+        {
+          "year": 2025,
+          "value": 81100
+        }
+      ],
+      "menPoints": [
+        {
+          "year": 2016,
+          "value": 54930
+        },
+        {
+          "year": 2017,
+          "value": 56420
+        },
+        {
+          "year": 2018,
+          "value": 57800
+        },
+        {
+          "year": 2019,
+          "value": 59700
+        },
+        {
+          "year": 2020,
+          "value": 65110
+        },
+        {
+          "year": 2021,
+          "value": 68550
+        },
+        {
+          "year": 2022,
+          "value": 69360
+        },
+        {
+          "year": 2023,
+          "value": 75200
+        },
+        {
+          "year": 2024,
+          "value": 76540
+        },
+        {
+          "year": 2025,
+          "value": 83140
+        }
+      ],
+      "inflation": {
+        "source": "SSB tabell 14700",
+        "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+        "referenceMonth": "november",
+        "updated": "2026-10-09T06:00:00Z",
+        "points": [
+          {
+            "year": 2016,
+            "value": 76.2
+          },
+          {
+            "year": 2017,
+            "value": 77
+          },
+          {
+            "year": 2018,
+            "value": 79.7
+          },
+          {
+            "year": 2019,
+            "value": 81
+          },
+          {
+            "year": 2020,
+            "value": 81.6
+          },
+          {
+            "year": 2021,
+            "value": 85.8
+          },
+          {
+            "year": 2022,
+            "value": 91.4
+          },
+          {
+            "year": 2023,
+            "value": 95.7
+          },
+          {
+            "year": 2024,
+            "value": 98
+          },
+          {
+            "year": 2025,
+            "value": 100.9
+          }
+        ]
+      }
+    }
+  },
+  "relatedOccupations": [
+    {
+      "code": "3112",
+      "label": "Bygningsingeniører",
+      "href": "/yrke/bygningsingeniorer-lonn",
+      "medianMonthlySalary": 66720
+    },
+    {
+      "code": "3115",
+      "label": "Maskiningeniører",
+      "href": "/yrke/maskiningeniorer-lonn",
+      "medianMonthlySalary": 65440
+    }
+  ]
+}

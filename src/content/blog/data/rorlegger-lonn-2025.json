@@ -5,6 +5,24 @@
   "period": "2025",
   "measure": "Median månedslønn",
   "note": "Målemetode: median. Sektor: alle sektorer. Kjønn: begge kjønn. Arbeidstid: i alt. Tid: 2025. Antall lønnstakere, arbeidsforhold og gjennomsnittsalder gjelder 2025K4.",
+  "comparison": {
+    "year": 2025,
+    "previousYear": 2024,
+    "salarySourceFile": "src/lib/generated/occupation-median-timeseries.json",
+    "salarySourceUpdated": "2026-08-28T06:00:00Z",
+    "salaryFilters": { "MaaleMetode": "01", "Sektor": "ALLE", "Kjonn": "0", "AvtaltVanlig": "0", "ContentsCode": "Manedslonn", "Tid": ["2024", "2025"] },
+    "previousYearRows": [
+      { "code": "7127", "value": 53920 },
+      { "code": "7411", "value": 52770 },
+      { "code": "7126", "value": 51930 },
+      { "code": "7114", "value": 51310 },
+      { "code": "7112", "value": 46760 },
+      { "code": "7122", "value": 47090 },
+      { "code": "7115", "value": 45630 },
+      { "code": "7131", "value": 43930 },
+      { "code": "7522", "value": 43240 }
+    ]
+  },
   "rows": [
     { "code": "7127", "label": "Kuldemontører mv.", "href": "/yrke/kuldemontorer-mv-lonn", "value": 56830, "average": 54400, "p25": 45000, "p75": 65140, "employees": 1434, "jobs": 1476, "averageAge": 36.3 },
     { "code": "7411", "label": "Elektrikere", "href": "/yrke/elektrikere-lonn", "value": 54930, "average": 54460, "p25": 48390, "p75": 61540, "employees": 34783, "jobs": 35425, "averageAge": 35.6 },

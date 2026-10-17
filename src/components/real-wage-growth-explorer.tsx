@@ -14,7 +14,6 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
   const allYears = useMemo(() => prepareRealWageGrowth(dataset, { includeHistory: true }), [dataset]);
   const years = useMemo(() => allYears.slice(-10), [allYears]);
   const [chartWidth, setChartWidth] = useState(766);
-  const [scrollLeft, setScrollLeft] = useState(0);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [previewKey, setPreviewKey] = useState<string | null>(null);
   const [highlightedGender, setHighlightedGender] = useState<"all" | RealWageGender>("all");
@@ -27,6 +26,12 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
   const activeBar = geometry?.bars.find((bar) => `${bar.observation.year}-${bar.observation.gender}` === activeKey);
   const active = activeBar?.observation;
   const activeGender = realWageGenders.find((gender) => gender.key === active?.gender);
+  const visibleYears = new Set(years.length ? [years[0][0].year, years[years.length - 1][0].year, ...(active ? [active.year] : [])] : []);
+  for (const zone of geometry?.yearZones ?? []) {
+    if (geometry!.yearZones.every((other) => !visibleYears.has(other.year) || Math.abs(other.centerX - zone.centerX) >= 36)) {
+      visibleYears.add(zone.year);
+    }
+  }
   const summaries = useMemo(() => ([5, 10] as const).map((period) => ({
     period,
     entries: realWageGenders.flatMap((gender) => {
@@ -85,7 +90,6 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
       setSelectedKey(null);
       setPreviewKey(`${point.year}-${point.gender}`);
       barRefs.current[next]?.focus({ preventScroll: true });
-      barRefs.current[next]?.scrollIntoView({ block: "nearest", inline: "nearest" });
     } else if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       const point = geometry.bars[index].observation;
@@ -95,7 +99,7 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
   }
 
   const tooltipLeft = activeBar ? Math.max(8, Math.min(chartWidth - 280,
-    activeBar.x - scrollLeft + (activeBar.x - scrollLeft + 290 < chartWidth ? 22 : -294))) : 8;
+    activeBar.x + (activeBar.x + 290 < chartWidth ? 22 : -294))) : 8;
 
   return (
     <figure className="not-prose my-10 overflow-hidden rounded-[6px] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:my-12"
@@ -117,13 +121,13 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
             </button>
           ))}
         </div>
-        <div aria-live="polite" aria-atomic="true" className="ml-auto max-w-full">
+        <div aria-live="polite" aria-atomic="true" className="w-full max-w-full sm:ml-auto sm:w-auto">
           {visibleSummaries.length > 0 ? (
             <div role="group" aria-label="Samlet reallønnsvekst" className="grid gap-y-1">
               {visibleSummaries.map((summary) => (
-                <section key={summary.period} aria-label={`Samlet reallønnsvekst siste ${summary.period} år`} className="flex min-w-0 flex-wrap items-baseline justify-end gap-x-3 gap-y-1">
+                <section key={summary.period} aria-label={`Samlet reallønnsvekst siste ${summary.period} år`} className="flex min-w-0 flex-wrap items-baseline justify-start gap-x-3 gap-y-1 sm:justify-end">
                   <h3 className="m-0 w-[4.5rem] shrink-0 whitespace-nowrap text-[0.7rem] font-semibold leading-4 text-slate-600">Siste {summary.period} år</h3>
-                  <dl className="m-0 flex flex-wrap items-baseline justify-end gap-x-3 gap-y-1">
+                  <dl className="m-0 flex flex-wrap items-baseline justify-start gap-x-3 gap-y-1 sm:justify-end">
                     {summary.entries.map((entry) => (
                       <div key={entry.key} className="inline-flex items-baseline gap-1.5">
                         <dt className="text-sm leading-5 text-slate-500"><span aria-hidden="true" style={{ color: entry.color }}>{entry.symbol}</span><span className="sr-only">{entry.label}</span></dt>
@@ -143,9 +147,8 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
       <div ref={containerRef} className="relative w-full" onPointerLeave={() => setPreviewKey(null)}>
         {geometry ? (
           <>
-            {geometry.width > chartWidth ? <p className="mb-0 mt-3 px-5 text-xs text-slate-500 sm:px-7">Rull eller sveip horisontalt for å se alle år.</p> : null}
-            <div className="overflow-x-auto overscroll-x-contain" onScroll={(event) => setScrollLeft(event.currentTarget.scrollLeft)}>
-              <svg width={geometry.width} height={geometry.height} viewBox={`0 0 ${geometry.width} ${geometry.height}`} className="block max-w-none"
+            <div className="relative w-full touch-manipulation select-none">
+              <svg height={geometry.height} viewBox={`0 0 ${geometry.width} ${geometry.height}`} className="block w-full"
                 role="group" aria-label="Årlig reallønnsvekst for kvinner og menn. Velg en stolpe. Bruk piltastene for å bytte kjønn og år.">
                 {geometry.yearZones.map((zone, index) => <g key={zone.year} data-real-wage-year={zone.year} aria-hidden="true" pointerEvents="none">
                   <rect x={zone.x} y={zone.y} width={zone.width} height={zone.height} fill={index % 2 === 0 ? "#ffffff" : "#f5f8fb"} />
@@ -169,11 +172,11 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
                     <g pointerEvents="none" aria-hidden="true" opacity={opacity} className="transition-opacity duration-200 motion-reduce:transition-none">
                       {bar.height > 0 ? <rect x={bar.x - geometry.barWidth / 2} y={bar.top} width={geometry.barWidth} height={bar.height} fill={color} />
                         : <line x1={bar.x - geometry.barWidth / 2} x2={bar.x + geometry.barWidth / 2} y1={geometry.zeroY} y2={geometry.zeroY} stroke={color} strokeWidth="3" strokeDasharray={point.realGrowth === null ? "2 2" : undefined} />}
-                      <text x={bar.x} y={bar.labelY} fill={color} fontSize={geometry.fontSize} fontWeight="800" textAnchor="middle">
+                      {!geometry.compactLabels || inFocus ? <text x={geometry.compactLabels ? Math.max(geometry.margin.left + bar.labelWidth / 2, Math.min(geometry.width - geometry.margin.right - bar.labelWidth / 2, bar.x)) : bar.x} y={bar.labelY} fill={color} fontSize={geometry.fontSize} fontWeight="800" textAnchor="middle">
                         {label.endsWith("%") ? <><tspan>{label.slice(0, -1)}</tspan><tspan fontSize={geometry.fontSize * 0.72}>%</tspan></> : label}
-                      </text>
+                      </text> : null}
                     </g>
-                    <text x={bar.x} y={geometry.margin.top + geometry.plotHeight + 23} fill={gender.color} fontSize="18" textAnchor="middle" aria-hidden="true" pointerEvents="none"
+                    <text x={bar.x} y={geometry.margin.top + geometry.plotHeight + 23} fill={gender.color} fontSize={Math.min(18, geometry.slotWidth * 0.4)} textAnchor="middle" aria-hidden="true" pointerEvents="none"
                       opacity={genderInFocus ? 1 : 0.22} className="transition-opacity duration-200 motion-reduce:transition-none">{gender.symbol}</text>
                     <rect ref={(element) => { barRefs.current[index] = element; }}
                       x={bar.centerX + (point.gender === "women" ? -geometry.slotWidth / 2 : 0)} y={8}
@@ -206,7 +209,7 @@ export function RealWageGrowthExplorer({ dataset }: { dataset: RealWageDataset }
                       className="cursor-pointer outline-none focus-visible:stroke-[#0b376d] focus-visible:stroke-1" />
                   </g>;
                 })}
-                {geometry.yearZones.map((zone) => <text key={zone.year} x={zone.centerX} y={geometry.margin.top + geometry.plotHeight + 48}
+                {geometry.yearZones.filter((zone) => visibleYears.has(zone.year)).map((zone) => <text key={zone.year} x={zone.centerX} y={geometry.margin.top + geometry.plotHeight + (zone.year === active?.year && geometry.yearZones.some((other) => other !== zone && (other === geometry.yearZones[0] || other === geometry.yearZones.at(-1)) && Math.abs(other.centerX - zone.centerX) < 36) ? 64 : 48)}
                   fill="#64748b" fontSize="13" textAnchor="middle" aria-hidden="true">{zone.year}</text>)}
               </svg>
             </div>
