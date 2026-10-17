@@ -204,7 +204,7 @@ for (const mode of ["mixed", "positive", "negative", "zero", "missing"] as const
         assert.ok(chart.zeroY > chart.margin.top && chart.zeroY < chart.margin.top + chart.plotHeight);
         assert.equal(chart.bars.length, count * 2);
         assert.equal(chart.yearZones.length, count);
-        if (width >= 718) assert.equal(chart.width, width);
+        assert.equal(chart.width, width, "hele perioden skal få plass også på mobil");
         chart.yearZones.forEach((zone, index) => {
           const [women, men] = chart.bars.slice(index * 2, index * 2 + 2);
           assert.equal(zone.year, women.observation.year);
@@ -234,7 +234,8 @@ for (const mode of ["mixed", "positive", "negative", "zero", "missing"] as const
           assert.equal(bar.labelY, bar.endY + (value < 0 ? chart.fontSize + 8 : -8),
             "etiketten skal alltid ligge tett ved sin egen stolpeende");
           assert.ok(chart.barWidth > Math.min(24, chart.slotWidth * 0.22), "stolpene skal være bredere enn før");
-          for (const other of chart.bars) {
+          // I kompakt visning viser bare valgt stolpe prosentetikett.
+          for (const other of chart.compactLabels ? [] : chart.bars) {
             if (bar === other) continue;
             assert.ok(Math.abs(bar.x - other.x) >= (bar.labelWidth + other.labelWidth) / 2 + 2
               || Math.abs(bar.labelY - other.labelY) >= chart.fontSize + 6);

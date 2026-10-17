@@ -160,11 +160,13 @@ export function buildRealWageGeometry(years: RealWageObservation[][], availableW
   const groupingMinimum = Math.min((2 * innerGap + 2) / (1 - 2 * barFraction), 60 + 2 * innerGap + 2);
   const minimumSlot = Math.max(availableWidth < 440 ? 88 : 62, groupingMinimum,
     (desiredLabelWidth - innerGap) / barFraction, (desiredLabelWidth + innerGap) / (1 - barFraction));
-  const width = Math.max(280, availableWidth, margin.left + margin.right + years.length * minimumSlot);
+  const width = Math.max(280, availableWidth);
   const slotWidth = (width - margin.left - margin.right) / years.length;
-  const barWidth = Math.min(30, slotWidth * barFraction);
-  const closestCenterGap = Math.min(barWidth + innerGap, slotWidth - barWidth - innerGap);
-  const fontSize = Math.floor(Math.min(12, (closestCenterGap - labelClearance) / maxLabelUnits) * 10) / 10;
+  const compactLabels = slotWidth < minimumSlot;
+  const barWidth = Math.min(30, slotWidth * (compactLabels ? 0.3 : barFraction));
+  const barGap = compactLabels ? Math.min(innerGap, slotWidth * 0.14) : innerGap;
+  const closestCenterGap = Math.min(barWidth + barGap, slotWidth - barWidth - barGap);
+  const fontSize = compactLabels ? 12 : Math.floor(Math.min(12, (closestCenterGap - labelClearance) / maxLabelUnits) * 10) / 10;
   const y = (value: number) => margin.top + ((max - value) / (max - min)) * plotHeight;
   const zeroY = y(0);
   const yearZones = years.map((points, index) => ({
@@ -173,7 +175,7 @@ export function buildRealWageGeometry(years: RealWageObservation[][], availableW
   }));
   const bars = years.flatMap((points, yearIndex) => points.map((observation, genderIndex) => {
     const centerX = yearZones[yearIndex].centerX;
-    const x = centerX + (genderIndex === 0 ? -1 : 1) * (barWidth + innerGap) / 2;
+    const x = centerX + (genderIndex === 0 ? -1 : 1) * (barWidth + barGap) / 2;
     const endY = y(observation.realGrowth ?? 0);
     return {
       observation, x, centerX, endY, top: Math.min(zeroY, endY), height: Math.abs(endY - zeroY),
@@ -182,5 +184,5 @@ export function buildRealWageGeometry(years: RealWageObservation[][], availableW
     };
   }));
   const ticks = Array.from({ length: Math.round((max - min) / step) + 1 }, (_, index) => min + index * step);
-  return { width, height: margin.top + plotHeight + margin.bottom, margin, plotHeight, slotWidth, barWidth, zeroY, min, max, ticks, bars, yearZones, fontSize, y };
+  return { width, height: margin.top + plotHeight + margin.bottom, margin, plotHeight, slotWidth, barWidth, zeroY, min, max, ticks, bars, yearZones, fontSize, compactLabels, y };
 }

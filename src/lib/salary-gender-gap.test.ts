@@ -57,11 +57,11 @@ test("avviser duplikate år og ugyldige lønninger", () => {
   assert.throws(() => prepareSalaryGenderGapPoints([{ year: 2025.5, men: 55000, women: 54000 }]));
 });
 
-test("ti år får plass innenfor utviklings- og bloggbredden uten horisontal scrolling", () => {
+test("ti år får plass på mobil, i blogg og på utviklingssiden uten horisontal scrolling", () => {
   const points = Array.from({ length: 10 }, (_, index) => ({
     year: 2016 + index, men: 48000 + index * 2200, women: 45500 + index * 2400,
   }));
-  for (const width of [640, 718, 766, 768, 960]) {
+  for (const width of [280, 320, 375, 440, 640, 718, 766, 768, 960]) {
     const chart = buildSalaryGenderGapGeometry(points, width);
     assert.equal(chart.width, width, "diagrammet skal ikke være bredere enn beholderen");
     assert.equal(chart.bars.length, 10);
@@ -102,9 +102,11 @@ for (const count of [1, 5, 10]) {
         assert.ok(bar.percentY >= chart.margin.top);
         assert.ok(bar.measureX > bar.x + chart.barWidth / 2);
         assert.ok(bar.measureX < bar.x + chart.slotWidth / 2);
-        const halfLabelWidth = formatGenderGapPercent(bar.gap.percent).length * 7.5 / 2;
-        assert.ok(bar.x + 3 - halfLabelWidth > bar.x - chart.slotWidth / 2);
-        assert.ok(bar.x + 3 + halfLabelWidth < bar.x + chart.slotWidth / 2);
+        if (!chart.compactLabels) {
+          const halfLabelWidth = formatGenderGapPercent(bar.gap.percent).length * 7.5 / 2;
+          assert.ok(bar.x + 3 - halfLabelWidth > bar.x - chart.slotWidth / 2);
+          assert.ok(bar.x + 3 + halfLabelWidth < bar.x + chart.slotWidth / 2);
+        }
       }
     }
   });

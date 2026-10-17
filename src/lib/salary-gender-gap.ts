@@ -65,7 +65,7 @@ export function buildSalaryGenderGapGeometry(points: SalaryGenderGapPoint[], ava
   const span = Math.max(highest - lowest, highest * 0.12, 1);
   const step = niceStep(span / 4);
   const min = Math.max(0, Math.floor((lowest - span * 0.14) / step) * step);
-  const margin = { top: 38, left: 80, right: 24, bottom: 44 };
+  const margin = { top: 38, left: availableWidth < 440 ? 72 : 80, right: 24, bottom: 54 };
   const plotHeight = 330;
   // Fast luft til begge lønnsverdiene. Skalaen endres ikke ved hover eller trykk.
   const labelHeadroom = 80 / plotHeight;
@@ -73,9 +73,9 @@ export function buildSalaryGenderGapGeometry(points: SalaryGenderGapPoint[], ava
     (highest - labelHeadroom * min) / (1 - labelHeadroom)) / step) * step;
   const height = margin.top + plotHeight + margin.bottom;
   const labelWidth = Math.max(...gaps.map((gap) => formatGenderGapPercent(gap.percent).length * 7.5 + 14));
-  // Tilpass stolpene til innholdsbredden; reserver bare plassen etikettene trenger.
+  // Hele perioden får plass. Tette etiketter begrenses til valgt år i komponenten.
   const minimumSlotWidth = Math.max(48, labelWidth);
-  const width = Math.max(280, availableWidth, margin.left + margin.right + points.length * minimumSlotWidth);
+  const width = Math.max(280, availableWidth);
   const plotWidth = width - margin.left - margin.right;
   const slotWidth = plotWidth / points.length;
   const barWidth = Math.min(36, slotWidth * 0.4);
@@ -91,13 +91,14 @@ export function buildSalaryGenderGapGeometry(points: SalaryGenderGapPoint[], ava
       point, gap, x, highY, lowY,
       baseHeight: baseline - lowY,
       gapHeight: lowY - highY,
-      measureX: x + barWidth / 2 + 9,
+      measureX: x + barWidth / 2 + Math.min(9, slotWidth * 0.15),
       // Pilspissene krymper ved små forskjeller; de forlenger aldri målelinjen.
       arrowSize: Math.min(3.5, (lowY - highY) / 3),
       percentY: highY - 14,
     };
   });
-  return { width, height, margin, min, max, ticks, plotWidth, plotHeight, baseline, slotWidth, barWidth, bars, y };
+  return { width, height, margin, min, max, ticks, plotWidth, plotHeight, baseline, slotWidth, barWidth, bars, y,
+    compactLabels: slotWidth < minimumSlotWidth };
 }
 
 /** Plasserer to verdier over valgt stolpe, innenfor den synlige delen ved scrolling. */

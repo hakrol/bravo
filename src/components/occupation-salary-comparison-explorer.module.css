@@ -1,6 +1,8 @@
 .chart {
   --label-width: 13rem;
-  --value-space: 5.5rem;
+  --value-space: 6rem;
+  min-width: 0;
+  container-type: inline-size;
 }
 
 .row {
@@ -15,8 +17,14 @@
   text-align: left;
 }
 
+.row > a,
+.row > span {
+  overflow-wrap: anywhere;
+}
+
 .track {
   position: relative;
+  min-width: 0;
   height: 32px;
   margin-right: var(--value-space);
 }
@@ -62,7 +70,7 @@
   to { transform: scaleX(1); }
 }
 
-@media (max-width: 639px) {
+@container (max-width: 600px) {
   .row {
     grid-template-columns: minmax(0, 1fr);
     gap: 9px;
@@ -74,6 +82,7 @@
   .bar { height: 24px; }
   .gridline { top: 0; bottom: 0; }
   .axis { margin-left: 8px; margin-right: calc(var(--value-space) + 8px); }
+  .minorTick { display: none; }
 
   .tooltip {
     position: relative;

@@ -2,7 +2,74 @@ import { BlogChart, type BlogChartDatum } from "@/components/blog-chart";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
 import { BlogSalaryDevelopmentChart, type BlogSalaryDevelopmentSeries } from "@/components/blog-salary-development-chart";
 import { EditorialDivergingBarChart } from "@/components/editorial-diverging-bar-chart";
+import { OccupationSalaryComparisonExplorer } from "@/components/occupation-salary-comparison-explorer";
+import { RealWageGrowthExplorer } from "@/components/real-wage-growth-explorer";
+import { SalaryGenderGapExplorer } from "@/components/salary-gender-gap-explorer";
+import growthSnapshot from "@/content/blog/data/rorlegger-interaktiv-lonnsutvikling-2025.json";
 import rorleggerLonn2025Snapshot from "@/content/blog/data/rorlegger-lonn-2025.json";
+import type { OccupationSalaryComparisonDataset } from "@/lib/occupation-salary-comparison";
+import type { RealWageDataset } from "@/lib/real-wage-growth";
+import type { SalaryGenderGapDataset } from "@/lib/salary-gender-gap";
+
+const genderDataset = {
+  title: "Slik har lønnsforskjellen blant rørleggere utviklet seg",
+  source: growthSnapshot.source,
+  points: growthSnapshot.points.map(({ year }) => ({
+    year,
+    women: growthSnapshot.womenPoints.find((point) => point.year === year)!.value,
+    men: growthSnapshot.menPoints.find((point) => point.year === year)!.value,
+  })),
+} satisfies SalaryGenderGapDataset;
+
+const realWagePoints = growthSnapshot.realWageSalaryPoints.map((point) => ({
+  ...point,
+  median: growthSnapshot.points.find(({ year }) => year === point.year)!.value,
+  cpi: growthSnapshot.inflation.points.find(({ year }) => year === point.year)!.value,
+}));
+
+const realWageDataset = {
+  title: "Slik har kjøpekraften til rørleggere utviklet seg",
+  source: "SSB tabell 11418 og 14700 · Gjennomsnittlig månedslønn · KPI for november",
+  baseline: realWagePoints[0],
+  points: realWagePoints.slice(1),
+} satisfies RealWageDataset;
+
+const currentCpi = growthSnapshot.inflation.points.at(-1)!;
+const previousCpi = growthSnapshot.inflation.points.at(-2)!;
+const comparisonDataset = {
+  year: rorleggerLonn2025Snapshot.comparison.year,
+  source: "SSB tabell 11418, 14700 og 11658",
+  salaryPopulation: "Median månedslønn per heltidsekvivalent, alle sektorer, begge kjønn, heltid og deltid samlet, november 2025.",
+  employmentPopulation: "Lønnstakere (personer), begge kjønn, alle aldre, heltid og deltid samlet, 4. kvartal 2025. Ikke antall arbeidsforhold eller årsverk.",
+  inflation: {
+    year: currentCpi.year,
+    annualGrowth: (currentCpi.value / previousCpi.value - 1) * 100,
+    source: `${growthSnapshot.inflation.source} · november til november`,
+  },
+  points: rorleggerLonn2025Snapshot.rows.map((row) => ({
+    occupationCode: row.code,
+    occupationName: row.label,
+    href: row.href,
+    year: rorleggerLonn2025Snapshot.comparison.year,
+    medianMonthlySalary: row.value,
+    nominalGrowth: (row.value / rorleggerLonn2025Snapshot.comparison.previousYearRows.find(({ code }) => code === row.code)!.value - 1) * 100,
+    employees: row.employees,
+    employeesPeriodLabel: "4. kv. 2025",
+    source: rorleggerLonn2025Snapshot.source,
+  })),
+} satisfies OccupationSalaryComparisonDataset;
+
+export function RorleggerOccupationSalaryComparisonExplorer() {
+  return <OccupationSalaryComparisonExplorer dataset={comparisonDataset} selectedOccupationCode="7126" />;
+}
+
+export function RorleggerSalaryGenderGapExplorer() {
+  return <SalaryGenderGapExplorer dataset={genderDataset} />;
+}
+
+export function RorleggerRealWageGrowthExplorer() {
+  return <RealWageGrowthExplorer dataset={realWageDataset} />;
+}
 
 type RorleggerSalarySnapshot = {
   source: string;
