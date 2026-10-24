@@ -1,4 +1,4 @@
-const BOOKBEAT_ALLOWED_EXACT_PATHS = new Set([
+const USCORE_ALLOWED_EXACT_PATHS = new Set([
   "/blogg",
   "/nyheter",
   "/forklarer",
@@ -39,7 +39,7 @@ const BOOKBEAT_ALLOWED_EXACT_PATHS = new Set([
   "/verktoy",
 ]);
 
-const BOOKBEAT_ALLOWED_DYNAMIC_PATHS = [
+const USCORE_ALLOWED_DYNAMIC_PATHS = [
   /^\/blogg\/kategori\/[^/]+$/,
   /^\/nyheter\/[^/]+$/,
   /^\/yrkesgrupper\/[^/]+$/,
@@ -65,12 +65,12 @@ function normalizePathname(pathname: string) {
   return normalizedPathname;
 }
 
-export function shouldShowBookbeat(pathname: string) {
+export function shouldShowUscore(pathname: string) {
   const normalizedPathname = normalizePathname(pathname);
 
-  if (BOOKBEAT_ALLOWED_EXACT_PATHS.has(normalizedPathname)) {
+  if (USCORE_ALLOWED_EXACT_PATHS.has(normalizedPathname)) {
     return true;
   }
 
-  return BOOKBEAT_ALLOWED_DYNAMIC_PATHS.some((pattern) => pattern.test(normalizedPathname));
+  return USCORE_ALLOWED_DYNAMIC_PATHS.some((pattern) => pattern.test(normalizedPathname));
 }

@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PrintButton } from "@/components/print-button";
@@ -158,7 +158,7 @@ export default function SjekklisteForLonnssamtalePage() {
             ))}
           </div>
         </section>
-        <BookbeatAd placement="calculator-after-tool" className="mt-10" />
+        <UscoreAd placement="calculator-after-tool" className="mt-10" />
       </article>
     </div>
   );

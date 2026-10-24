@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 import type { Metadata } from "next";
 import { OccupationSalaryGapRanking } from "@/components/occupation-salary-gap-ranking";
 import { getOccupationSalaryGapRanking } from "@/lib/occupation-salary-gap-ranking";
@@ -60,7 +60,7 @@ export default async function OccupationSalaryGapPage() {
           </p>
         </section>
       </div>
-      <BookbeatAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+      <UscoreAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </main>
   );
 }

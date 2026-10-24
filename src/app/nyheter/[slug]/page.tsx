@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -112,11 +112,11 @@ export default async function NewsArticlePage({ params }: NewsArticlePageProps) 
         ) : null}
 
         <div className="mx-auto mt-10 max-w-3xl">
-          {!post.isTest ? <BookbeatAd placement="blog-before-content" className="mb-10 sm:mb-12" /> : null}
+          {!post.isTest ? <UscoreAd placement="blog-before-content" className="mb-10 sm:mb-12" /> : null}
           <BlogProse>{post.content}</BlogProse>
         </div>
 
-        {!post.isTest ? <BookbeatAd placement="blog-after-content" className="mx-auto mt-10 max-w-3xl" /> : null}
+        {!post.isTest ? <UscoreAd placement="blog-after-content" className="mx-auto mt-10 max-w-3xl" /> : null}
         <footer className="mx-auto mt-12 max-w-3xl border-t border-black/10 pt-7">
           <Link className="font-bold text-[var(--primary-strong)] hover:underline" href="/nyheter">
             ← Tilbake til alle lønnsnyheter

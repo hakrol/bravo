@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -165,9 +165,9 @@ export default async function ForklarerPostPage({ params }: ForklarerPostPagePro
 
         <div className="grid min-w-0 gap-12 lg:grid-cols-[minmax(0,42rem)_12rem] lg:items-start lg:gap-10">
           <div className="w-full max-w-3xl min-w-0">
-            <BookbeatAd placement="blog-before-content" className="mb-10 sm:mb-12" />
+            <UscoreAd placement="blog-before-content" className="mb-10 sm:mb-12" />
             <BlogProse>{post.content}</BlogProse>
-            <BookbeatAd placement="blog-after-content" className="mt-10" />
+            <UscoreAd placement="blog-after-content" className="mt-10" />
           </div>
 
           {sidebarItems.length > 0 ? (
