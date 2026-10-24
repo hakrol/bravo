@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 ﻿import Link from "next/link";
 import type { BlogPostPreview } from "@/lib/blog-shared";
 import type { NewsPostPreview } from "@/lib/nyheter";
@@ -96,7 +96,7 @@ export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = tru
         ]}
       />
       {showAd ? (
-        <BookbeatAd className="blog-sidebar-ad" placement="blog-sidebar" />
+        <UscoreAd className="blog-sidebar-ad" placement="blog-sidebar" />
       ) : null}
     </aside>
   );

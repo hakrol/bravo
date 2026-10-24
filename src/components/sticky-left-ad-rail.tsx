@@ -1,12 +1,12 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
-import type { BookbeatPlacement } from "@/lib/bookbeat";
+import { UscoreAd } from "@/components/uscore-ad";
+import type { UscorePlacement } from "@/lib/uscore";
 
 export function StickyLeftAdRail({ placement = "blog-left-sidebar" }: {
-  placement?: Extract<BookbeatPlacement, "blog-left-sidebar" | "occupation-left-sidebar">;
+  placement?: Extract<UscorePlacement, "blog-left-sidebar" | "occupation-left-sidebar">;
 } = {}) {
   return (
     <div className="sticky-left-ad-rail">
-      <BookbeatAd placement={placement} />
+      <UscoreAd placement={placement} />
     </div>
   );
 }

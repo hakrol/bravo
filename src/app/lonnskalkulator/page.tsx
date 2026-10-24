@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +55,7 @@ export default function LonnskalkulatorPage() {
         </header>
 
         <SalaryCalculatorDashboard />
-        <BookbeatAd placement="calculator-after-tool" />
+        <UscoreAd placement="calculator-after-tool" />
         <SalaryCalculatorGuide />
         <CalculatorCrossLinks currentHref="/lonnskalkulator" />
       </div>

@@ -1,4 +1,4 @@
-import { BookbeatAd } from "@/components/bookbeat-ad";
+import { UscoreAd } from "@/components/uscore-ad";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import Link from "next/link";
 import { OccupationAgeTimeSeriesChart } from "@/components/occupation-age-time-series";
@@ -377,7 +377,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
       />
 
       <section className="px-4 pb-6 pt-2 sm:px-6 lg:px-8">
-        <BookbeatAd
+        <UscoreAd
           placement="occupation-mobile-before-content"
           className="mb-6 sm:hidden"
         />
@@ -526,7 +526,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            {hasEstimate ? <BookbeatAd placement="occupation-after-salary-overview" /> : null}
+            {hasEstimate ? <UscoreAd placement="occupation-after-salary-overview" /> : null}
 
             <section
               aria-label="Lønnsutvikling"
@@ -574,7 +574,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </section>
 
             {hasPurchasingPowerData && salarySupplementCards.length > 0 ? (
-              <BookbeatAd placement="occupation-between-real-salary-and-overtime" />
+              <UscoreAd placement="occupation-between-real-salary-and-overtime" />
             ) : null}
 
             {salarySupplementCards.length > 0 ? (
@@ -598,7 +598,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             ) : null}
 
             {salarySupplementCards.length > 0 && laborMarket ? (
-              <BookbeatAd placement="occupation-between-overtime-and-labor-market" />
+              <UscoreAd placement="occupation-between-overtime-and-labor-market" />
             ) : null}
 
             {laborMarket ? (
@@ -681,7 +681,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
               </section>
             ) : null}
 
-            {hasEstimate ? <BookbeatAd placement="occupation-before-faq" /> : null}
+            {hasEstimate ? <UscoreAd placement="occupation-before-faq" /> : null}
 
             <OccupationFaq items={faqItems} occupationLabel={occupationText.titleLabel} />
 
@@ -803,7 +803,7 @@ export async function OccupationDetailPage({ detail }: OccupationDetailPageProps
             </div>
 
             {hasEstimate ? (
-              <BookbeatAd className="mx-auto mt-4 xl:sticky xl:top-[var(--occupation-sidebar-ad-top,152px)]" placement="occupation-sidebar" />
+              <UscoreAd className="mx-auto mt-4 xl:sticky xl:top-[var(--occupation-sidebar-ad-top,152px)]" placement="occupation-sidebar" />
             ) : null}
           </aside>
         </div>

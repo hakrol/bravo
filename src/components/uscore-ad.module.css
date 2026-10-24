@@ -1,0 +1,199 @@
+.label {
+  margin: 0 0 8px;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  min-width: 0;
+  container: uscore-ad / inline-size;
+}
+
+.banner {
+  box-sizing: border-box;
+  display: grid;
+  align-items: center;
+  margin-inline: auto;
+  max-width: 100%;
+  border: 1px solid #b9ddce;
+  border-radius: 12px;
+  background: linear-gradient(130deg, #f3fae9, #e2faf0);
+  color: #182f2b;
+  text-decoration: none;
+  font-family: inherit;
+  text-align: left;
+}
+
+.banner:hover {
+  border-color: #008568;
+}
+
+.banner:focus-visible {
+  outline: 3px solid #008568;
+  outline-offset: 4px;
+}
+
+.logo {
+  grid-area: logo;
+  display: block;
+  width: 92px;
+  height: auto;
+}
+
+.copy {
+  grid-area: copy;
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+}
+
+.headline {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+  overflow-wrap: break-word;
+}
+
+.description {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.illustration {
+  grid-area: image;
+  display: block;
+  width: 120px;
+  height: auto;
+  justify-self: center;
+}
+
+.cta {
+  grid-area: cta;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: #006c53;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.banner:hover .cta {
+  background: #00533f;
+}
+
+.compact {
+  width: 300px;
+  min-height: 250px;
+  padding: 14px;
+  grid-template-areas: "logo logo" "copy image" "cta cta";
+  grid-template-columns: minmax(0, 1fr) 120px;
+  grid-template-rows: 38px 1fr auto;
+  gap: 8px;
+}
+
+.horizontal {
+  display: none;
+  width: 980px;
+  min-height: 120px;
+  padding: 16px 22px;
+  grid-template-areas: "logo copy cta";
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  gap: 22px;
+}
+
+.horizontal .headline {
+  font-size: 24px;
+}
+
+.horizontal .description {
+  font-size: 14px;
+}
+
+.horizontal .illustration {
+  display: none;
+}
+
+.horizontal .cta {
+  min-height: 44px;
+  padding-inline: 18px;
+  white-space: nowrap;
+}
+
+.vertical {
+  width: 160px;
+  min-height: 600px;
+  padding: 22px 12px;
+  grid-template-areas: "logo" "copy" "image" "cta";
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto 1fr auto;
+  gap: 24px;
+}
+
+.vertical .logo {
+  width: 120px;
+  justify-self: center;
+}
+
+.vertical .headline {
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.vertical .description {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vertical .illustration {
+  width: 134px;
+}
+
+.vertical .cta {
+  min-height: 44px;
+  gap: 6px;
+  padding-inline: 6px;
+  font-size: 13px;
+}
+
+@container uscore-ad (min-width: 640px) {
+  .compact {
+    display: none;
+  }
+
+  .horizontal {
+    display: grid;
+  }
+}
+
+@container uscore-ad (min-width: 880px) {
+  .horizontal {
+    grid-template-areas: "logo copy image cta";
+    grid-template-columns: 92px minmax(0, 1fr) 86px auto;
+  }
+
+  .horizontal .illustration {
+    display: block;
+    width: 86px;
+  }
+}
+
+@container uscore-ad (max-width: 279px) {
+  .compact {
+    grid-template-areas: "logo" "copy" "cta";
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .compact .illustration {
+    display: none;
+  }
+}
