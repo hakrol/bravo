@@ -6,7 +6,6 @@ import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
 import { BlogSidebar } from "@/components/blog-sidebar";
 import { getAllNewsPosts } from "@/lib/nyheter";
-import { BlogLonnsjekkCallout } from "@/components/blog-lonnsjekk-callout";
 import { HomeExploreOccupationsSection } from "@/components/home-explore-occupations-section";
 import { HomeLatestBlogSection } from "@/components/home-latest-blog-section";
 import {
@@ -159,9 +158,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <UscoreAd placement="blog-left-sidebar" />
             </div>
             <div className="blog-post-main">
-              <div className="blog-post-lonnsjekk-callout-wrap mx-auto max-w-3xl">
-                <BlogLonnsjekkCallout className="blog-post-lonnsjekk-callout" />
-              </div>
               <div className="mx-auto mb-10 w-full max-w-3xl sm:mb-12">
                 <UscoreAd placement="blog-before-content" />
               </div>
