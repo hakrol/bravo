@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DevelopmentDiagramTabs } from "@/components/development-diagram-tabs";
 import { isDevAreaAvailable } from "@/lib/dev-area";
+import { getWorkforceGrowthWorkshopDatasets } from "@/lib/workforce-growth-workshop";
 
 export const metadata: Metadata = {
   title: "Utvikling-diagram",
@@ -14,10 +15,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DevelopmentDiagramPage() {
+export default async function DevelopmentDiagramPage() {
   if (process.env.NODE_ENV !== "development" || !isDevAreaAvailable()) {
     notFound();
   }
+
+  const workforceDatasets = await getWorkforceGrowthWorkshopDatasets();
 
   return (
     <div className="min-h-screen bg-slate-50 px-5 py-8 sm:px-6 sm:py-10">
@@ -39,7 +42,7 @@ export default function DevelopmentDiagramPage() {
             Velg et diagram for å jobbe med utforming og interaksjon.
           </p>
         </header>
-        <DevelopmentDiagramTabs />
+        <DevelopmentDiagramTabs workforceDatasets={workforceDatasets} />
       </div>
     </div>
   );

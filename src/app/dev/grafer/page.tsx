@@ -4,6 +4,7 @@ import Link from "next/link";
 import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
 import { DevelopmentRealWage } from "@/components/development-real-wage";
 import { DevelopmentDiagramTabs } from "@/components/development-diagram-tabs";
+import { getWorkforceGrowthWorkshopDatasets } from "@/lib/workforce-growth-workshop";
 
 export const metadata: Metadata = {
   title: "Grafverksted",
@@ -45,7 +46,8 @@ const salaryDistributionRows: SalaryDistributionRow[] = [
   },
 ];
 
-export default function DevGraferPage() {
+export default async function DevGraferPage() {
+  const workforceDatasets = await getWorkforceGrowthWorkshopDatasets();
   return (
     <div className="min-h-screen bg-[#f7f8f5] px-5 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
@@ -70,7 +72,7 @@ export default function DevGraferPage() {
           </p>
         </section>
 
-        <DevelopmentDiagramTabs />
+        <DevelopmentDiagramTabs workforceDatasets={workforceDatasets} />
 
         <DevelopmentSalaryGenderGap />
 

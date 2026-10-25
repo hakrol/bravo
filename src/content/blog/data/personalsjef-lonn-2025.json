@@ -74,6 +74,22 @@
         ]
       }
     },
+    "workforceHistory": {
+      "tableId": "11658",
+      "sourceUrl": "https://www.ssb.no/statbank/table/11658/",
+      "updated": "2026-08-13T06:00:00Z",
+      "localSource": "src/lib/generated/occupation-workforce-timeseries.json",
+      "query": {
+        "valueCodes[Kjonn]": ["0", "1", "2"],
+        "valueCodes[Alder]": "999D",
+        "valueCodes[Yrke]": "1212",
+        "valueCodes[ContentsCode]": "Lonsstakere",
+        "valueCodes[Tid]": [
+          "2016K2", "2017K2", "2018K2", "2019K2", "2020K2", "2021K2",
+          "2022K2", "2023K2", "2024K2", "2025K2", "2026K2"
+        ]
+      }
+    },
     "workforce": {
       "tableId": "11658",
       "sourceUrl": "https://www.ssb.no/statbank/table/11658/",
@@ -380,6 +396,25 @@
     ]
   },
   "workforce": {
+    "history": {
+      "occupationCode": "1212",
+      "occupationLabel": "Personalsjefer",
+      "quarter": 2,
+      "updated": "2026-08-13T06:00:00Z",
+      "points": [
+        { "year": 2016, "men": 828, "women": 1345, "reportedTotal": 2173 },
+        { "year": 2017, "men": 842, "women": 1325, "reportedTotal": 2167 },
+        { "year": 2018, "men": 793, "women": 1365, "reportedTotal": 2158 },
+        { "year": 2019, "men": 759, "women": 1396, "reportedTotal": 2155 },
+        { "year": 2020, "men": 724, "women": 1369, "reportedTotal": 2093 },
+        { "year": 2021, "men": 720, "women": 1354, "reportedTotal": 2074 },
+        { "year": 2022, "men": 778, "women": 1430, "reportedTotal": 2208 },
+        { "year": 2023, "men": 818, "women": 1430, "reportedTotal": 2248 },
+        { "year": 2024, "men": 840, "women": 1463, "reportedTotal": 2303 },
+        { "year": 2025, "men": 818, "women": 1528, "reportedTotal": 2346 },
+        { "year": 2026, "men": 846, "women": 1506, "reportedTotal": 2352 }
+      ]
+    },
     "salaryYear": {
       "period": "2025K4",
       "all": 2337,

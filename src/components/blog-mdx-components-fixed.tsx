@@ -13,6 +13,7 @@ import {
   PersonalsjefRealWageGrowthExplorer,
   PersonalsjefSalaryGenderGapExplorer,
   PersonalsjefSalaryRangeExplorer,
+  PersonalsjefWorkforceGrowthExplorer,
 } from "@/components/blog-personalsjef-salary-charts";
 import { EngineerSalaryExplorer } from "@/components/blog-engineer-salary-charts";
 import {
@@ -323,6 +324,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     PersonalsjefRealWageGrowthExplorer,
     PersonalsjefSalaryGenderGapExplorer,
     PersonalsjefSalaryRangeExplorer,
+    PersonalsjefWorkforceGrowthExplorer,
     EngineerSalaryExplorer,
     VekterOccupationSalaryComparisonExplorer,
     VekterRealWageGrowthExplorer,

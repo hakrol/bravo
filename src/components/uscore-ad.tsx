@@ -46,7 +46,7 @@ export function UscoreAd({ placement = "blog-after-content", className = "" }: U
           alt=""
           width={480}
           height={481}
-          sizes="160px"
+          sizes={format === "160x600" ? "250px" : format === "980x120" ? "220px" : "160px"}
           className={styles.illustration}
         />
         <span className={styles.cta}>
