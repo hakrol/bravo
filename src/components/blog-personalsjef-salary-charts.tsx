@@ -3,12 +3,15 @@ import { OccupationSalaryComparisonExplorer } from "@/components/occupation-sala
 import { RealWageGrowthExplorer } from "@/components/real-wage-growth-explorer";
 import { SalaryGenderGapExplorer } from "@/components/salary-gender-gap-explorer";
 import { SalaryRangeExplorer } from "@/components/salary-range-explorer";
+import { WorkforceGrowthExplorer } from "@/components/workforce-growth-explorer";
 import type { OccupationSalaryComparisonDataset } from "@/lib/occupation-salary-comparison";
 import type { RealWageDataset } from "@/lib/real-wage-growth";
 import type { SalaryGenderGapDataset } from "@/lib/salary-gender-gap";
 import type { SalaryRangeDataset } from "@/lib/salary-range";
+import type { WorkforceGrowthDataset } from "@/lib/workforce-growth";
 
 const rangeDataset = snapshot.range satisfies SalaryRangeDataset;
+const workforceDataset = snapshot.workforce.history satisfies WorkforceGrowthDataset;
 
 const genderDataset = {
   title: "Slik har lønnsforskjellen blant personalsjefer utviklet seg",
@@ -42,6 +45,10 @@ const comparisonDataset = {
 
 export function PersonalsjefSalaryRangeExplorer() {
   return <SalaryRangeExplorer dataset={rangeDataset} />;
+}
+
+export function PersonalsjefWorkforceGrowthExplorer() {
+  return <WorkforceGrowthExplorer dataset={workforceDataset} />;
 }
 
 export function PersonalsjefSalaryGenderGapExplorer() {

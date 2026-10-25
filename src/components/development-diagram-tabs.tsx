@@ -6,19 +6,21 @@ import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gend
 import { DevelopmentRealWage } from "@/components/development-real-wage";
 import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
 import { DevelopmentSalaryRange } from "@/components/development-salary-range";
+import { DevelopmentWorkforceGrowth } from "@/components/development-workforce-growth";
+import type { WorkforceGrowthDataset } from "@/lib/workforce-growth";
 import { salaryGrowthTestSnapshot } from "@/lib/development-diagram-data";
 
 type DevelopmentDiagram = {
   id: string;
   label: string;
-  Component: ComponentType;
+  Component?: ComponentType;
 };
 
 function SalaryGrowthTestDiagram() {
   return <SalaryGrowthExplorer snapshot={salaryGrowthTestSnapshot} />;
 }
 
-// Legg til én oppføring per nytt diagram. Bruk testdata i utviklingsvisningen.
+// Én oppføring per diagram. Lønnstakerdiagrammet får faktiske SSB-data fra serveren.
 const diagrams: DevelopmentDiagram[] = [
   {
     id: "lonnsutvikling",
@@ -45,9 +47,13 @@ const diagrams: DevelopmentDiagram[] = [
     label: "Interaktivt lønnsspenn",
     Component: DevelopmentSalaryRange,
   },
+  {
+    id: "lonnstakere",
+    label: "Interaktiv lønnstakerutvikling",
+  },
 ];
 
-export function DevelopmentDiagramTabs() {
+export function DevelopmentDiagramTabs({ workforceDatasets = [] }: { workforceDatasets?: WorkforceGrowthDataset[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const activeDiagram = diagrams[activeIndex];
@@ -119,7 +125,9 @@ export function DevelopmentDiagramTabs() {
           tabIndex={0}
           className="pt-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0b376d]"
         >
-          {activeIndex === index ? <ActiveDiagram /> : null}
+          {activeIndex === index ? diagram.id === "lonnstakere"
+            ? <DevelopmentWorkforceGrowth datasets={workforceDatasets} />
+            : ActiveDiagram ? <ActiveDiagram /> : null : null}
         </div>
       ))}
     </div>

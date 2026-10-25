@@ -142,6 +142,43 @@ Stilene ligger i `src/components/salary-range-explorer.module.css`, med egne sli
 
 Utviklingswrapperen tilbyr 10, 5 og 1 år samt manglende data. Testdata inneholder både overlappende og kryssende kjønnsserier. `src/lib/salary-range.test.ts` dekker inntasting, enheter, kvartilgrenser, sammenligning, datavalidering, hull og diagramgeometri. Faktiske historiske kvartiler og artikkelspesifikke snapshots legges til når diagrammet skal brukes i blogg.
 
+## Interaktiv lønnstakerutvikling
+
+Fanen «Interaktiv lønnstakerutvikling» finnes på `/utvikling-diagram` og `/dev/grafer`.
+Den bruker faktiske, genererte data fra SSB-tabell 11658 for programvareutviklere,
+elektrikere, spesialsykepleiere og butikkmedarbeidere. Yrkesvelgeren bytter datasett
+uten nettverkskall i nettleseren. Dataene leses fra eksisterende yrkesvisningsmodeller
+på serveren i `src/lib/workforce-growth-workshop.ts`. Ingen statistikk kopieres til et
+nytt snapshot. Eksisterende diagrammer og produksjonssperrer er beholdt.
+
+`WorkforceGrowthExplorer` i `src/components/workforce-growth-explorer.tsx` tar et
+`WorkforceGrowthDataset` fra `src/lib/workforce-growth.ts`. Datasettet har yrkeskode,
+yrkesnavn, valgfri oppdateringsdato og kvartal, samt `points` med `year`, `men`, `women`
+og valgfri `reportedTotal`. `buildWorkforceGrowthDataset` tilpasser eksisterende
+`OccupationWorkforceTimeSeriesPoint[]`: siste registrerte kvartal velges, og bare
+samme kvartal sammenlignes bakover. Tallene er personer i kvartalets midtmåned,
+ikke summer av kvartalstall eller årsgjennomsnitt. Kvartalet står ved diagrammet.
+
+Totalstolpen består bare av menn + kvinner. En separat, avvikende SSB-total vises
+og forklares i tooltip og kildetekst, men inngår aldri i stabelen eller andelene.
+Manglende kjønnstall utledes ikke fra kildetotalen. Null er gyldig; andeler ved
+total null og prosentvis vekst fra null vises som manglende beregning. Ugyldige
+antall behandles som manglende. Manglende kalenderår gir hull og bryter beregningen
+av årsvekst. Duplikate år og ugyldige årstall/kvartaler avvises. Nøkkeltallene gjelder
+siste innsendte år og sammenligner med første innsendte år, uten å erstatte manglende
+endepunkter med eldre tall. Prosentpoeng beregnes fra uavrundede andeler.
+
+«Alle | Menn | Kvinner» filtrerer faktisk stolpehøyde og skala. Y-aksen starter alltid
+på null. Hele historikken vises; mobil tynner bare ut årsetiketter. Lange tidsserier
+kan scrolles når minst 22 piksler per år ellers ikke får plass. Hover åpner detaljer,
+touch/penn kan åpne og lukke med trykk, og scrolling åpner ingen tooltip. Tastatur
+støtter fokus på hvert år, piltaster, Home/End, Enter/mellomrom og Escape. På smale
+flater ligger detaljene under plottet. Redusert bevegelse slår av stolpeoverganger.
+
+`src/lib/workforce-growth.test.ts` dekker summer, andeler, årsvekst, nullverdier,
+avvikende totaler, hull, kvartalsvalg, datavalidering, filteravhengig skala og norsk
+tallformatering. Komponenten gjør ingen API-kall og krever ingen nye pakker.
+
 ## Regler for kode i dev-området
 
 - Følg fortsatt prosjektreglene i `AGENTS.md`.
