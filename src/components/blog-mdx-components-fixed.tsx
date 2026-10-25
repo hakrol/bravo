@@ -8,6 +8,12 @@ import {
   ArealPlannerGenderSalaryCards,
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
+import {
+  PersonalsjefOccupationSalaryComparisonExplorer,
+  PersonalsjefRealWageGrowthExplorer,
+  PersonalsjefSalaryGenderGapExplorer,
+  PersonalsjefSalaryRangeExplorer,
+} from "@/components/blog-personalsjef-salary-charts";
 import { EngineerSalaryExplorer } from "@/components/blog-engineer-salary-charts";
 import {
   VekterOccupationSalaryComparisonExplorer,
@@ -313,6 +319,10 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    PersonalsjefOccupationSalaryComparisonExplorer,
+    PersonalsjefRealWageGrowthExplorer,
+    PersonalsjefSalaryGenderGapExplorer,
+    PersonalsjefSalaryRangeExplorer,
     EngineerSalaryExplorer,
     VekterOccupationSalaryComparisonExplorer,
     VekterRealWageGrowthExplorer,

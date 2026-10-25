@@ -5,6 +5,7 @@ import { SalaryGrowthExplorer } from "@/components/salary-growth-explorer";
 import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
 import { DevelopmentRealWage } from "@/components/development-real-wage";
 import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
+import { DevelopmentSalaryRange } from "@/components/development-salary-range";
 import { salaryGrowthTestSnapshot } from "@/lib/development-diagram-data";
 
 type DevelopmentDiagram = {
@@ -38,6 +39,11 @@ const diagrams: DevelopmentDiagram[] = [
     id: "yrkessammenligning",
     label: "Interaktiv yrkessammenligning",
     Component: DevelopmentOccupationComparison,
+  },
+  {
+    id: "lonnsspenn",
+    label: "Interaktivt lønnsspenn",
+    Component: DevelopmentSalaryRange,
   },
 ];
 
@@ -77,7 +83,7 @@ export function DevelopmentDiagramTabs() {
       <div
         role="tablist"
         aria-label="Diagrammer"
-        className="flex gap-2 overflow-x-auto border-b border-slate-200 pb-3"
+        className="flex flex-wrap gap-2 border-b border-slate-200 pb-3"
       >
         {diagrams.map((diagram, index) => (
           <button
@@ -93,7 +99,7 @@ export function DevelopmentDiagramTabs() {
             tabIndex={activeIndex === index ? 0 : -1}
             onClick={() => setActiveIndex(index)}
             onKeyDown={(event) => handleTabKeyDown(event, index)}
-            className={`shrink-0 rounded-md px-4 py-3 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b376d] ${
+            className={`max-w-full rounded-md px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0b376d] ${
               activeIndex === index
                 ? "bg-[#0b376d] text-white"
                 : "bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-950"
