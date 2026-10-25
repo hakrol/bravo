@@ -1,0 +1,448 @@
+{
+  "snapshotDate": "2026-10-25",
+  "provenance": {
+    "comparisonSalary": {
+      "tableId": "11418",
+      "sourceUrl": "https://www.ssb.no/statbank/table/11418/",
+      "localSources": [
+        "src/lib/generated/occupation-latest-median.json",
+        "src/lib/generated/occupation-previous-median.json"
+      ],
+      "updated": "2026-08-28T06:00:00Z",
+      "filters": {
+        "MaaleMetode": "01",
+        "Yrke": ["1212", "1221", "1420", "1411", "1412", "5222", "5223"],
+        "Sektor": "ALLE",
+        "Kjonn": "0",
+        "AvtaltVanlig": "0",
+        "ContentsCode": "Manedslonn",
+        "Tid": ["2024", "2025"]
+      }
+    },
+    "salary": {
+      "tableId": "11418",
+      "sourceUrl": "https://www.ssb.no/statbank/table/11418/",
+      "localSource": "src/lib/generated/occupation-median-timeseries.json",
+      "updated": "2026-08-28T06:00:00Z",
+      "filters": {
+        "MaaleMetode": "01",
+        "Sektor": "ALLE",
+        "Kjonn": [
+          "0",
+          "1",
+          "2"
+        ],
+        "AvtaltVanlig": "0",
+        "ContentsCode": "Manedslonn"
+      },
+      "occupationCode": "5222",
+      "years": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
+    },
+    "workforce": {
+      "tableId": "11658",
+      "sourceUrl": "https://www.ssb.no/statbank/table/11658/",
+      "localSource": "src/lib/generated/occupation-workforce-timeseries.json",
+      "updated": "2026-08-13T06:00:00Z",
+      "filters": {
+        "Kjonn": [
+          "0",
+          "1",
+          "2"
+        ],
+        "Alder": "999D",
+        "ContentsCode": "Lonsstakere"
+      },
+      "historyPeriods": [
+        "2016K2",
+        "2017K2",
+        "2018K2",
+        "2019K2",
+        "2020K2",
+        "2021K2",
+        "2022K2",
+        "2023K2",
+        "2024K2",
+        "2025K2",
+        "2026K2"
+      ],
+      "comparisonPeriod": "2025K4"
+    },
+    "inflation": {
+      "tableId": "14700",
+      "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+      "localSource": "src/lib/generated/inflation-quarter-series.json",
+      "updated": "2026-08-10T06:00:00Z",
+      "filters": {
+        "VareTjenesteGrp": "00",
+        "ContentsCode": "KpiIndMnd"
+      },
+      "periods": [
+        "2016M11",
+        "2017M11",
+        "2018M11",
+        "2019M11",
+        "2020M11",
+        "2021M11",
+        "2022M11",
+        "2023M11",
+        "2024M11",
+        "2025M11"
+      ]
+    }
+  },
+  "salaryGrowth": {
+    "title": "Slik har lønnen til butikksjefer utviklet seg",
+    "subtitle": "Median månedslønn fra 2016 til 2025",
+    "source": "SSB tabell 11418",
+    "note": "SSB-yrke 5222 Butikkavdelingssjefer. Alle sektorer, heltid og deltid samlet, omregnet til heltidsekvivalenter. Månedslønn inkluderer bonus og uregelmessige tillegg, men ikke overtid. November hvert år. Inflasjonsjustering bruker KPI for november og viser lønnen i 2025-kroner.",
+    "points": [
+      {
+        "year": 2016,
+        "value": 35230
+      },
+      {
+        "year": 2017,
+        "value": 35730
+      },
+      {
+        "year": 2018,
+        "value": 36650
+      },
+      {
+        "year": 2019,
+        "value": 37680
+      },
+      {
+        "year": 2020,
+        "value": 38660
+      },
+      {
+        "year": 2021,
+        "value": 39950
+      },
+      {
+        "year": 2022,
+        "value": 41150
+      },
+      {
+        "year": 2023,
+        "value": 43400
+      },
+      {
+        "year": 2024,
+        "value": 45730
+      },
+      {
+        "year": 2025,
+        "value": 47680
+      }
+    ],
+    "womenPoints": [
+      {
+        "year": 2016,
+        "value": 34500
+      },
+      {
+        "year": 2017,
+        "value": 35030
+      },
+      {
+        "year": 2018,
+        "value": 35980
+      },
+      {
+        "year": 2019,
+        "value": 37000
+      },
+      {
+        "year": 2020,
+        "value": 37810
+      },
+      {
+        "year": 2021,
+        "value": 38990
+      },
+      {
+        "year": 2022,
+        "value": 40240
+      },
+      {
+        "year": 2023,
+        "value": 42420
+      },
+      {
+        "year": 2024,
+        "value": 44730
+      },
+      {
+        "year": 2025,
+        "value": 46640
+      }
+    ],
+    "menPoints": [
+      {
+        "year": 2016,
+        "value": 37460
+      },
+      {
+        "year": 2017,
+        "value": 37820
+      },
+      {
+        "year": 2018,
+        "value": 38640
+      },
+      {
+        "year": 2019,
+        "value": 39870
+      },
+      {
+        "year": 2020,
+        "value": 40910
+      },
+      {
+        "year": 2021,
+        "value": 41870
+      },
+      {
+        "year": 2022,
+        "value": 43700
+      },
+      {
+        "year": 2023,
+        "value": 45440
+      },
+      {
+        "year": 2024,
+        "value": 48000
+      },
+      {
+        "year": 2025,
+        "value": 50090
+      }
+    ],
+    "inflation": {
+      "source": "SSB tabell 14700",
+      "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+      "referenceMonth": "november",
+      "updated": "2026-08-10T06:00:00Z",
+      "points": [
+        {
+          "year": 2016,
+          "value": 76.2
+        },
+        {
+          "year": 2017,
+          "value": 77
+        },
+        {
+          "year": 2018,
+          "value": 79.7
+        },
+        {
+          "year": 2019,
+          "value": 81
+        },
+        {
+          "year": 2020,
+          "value": 81.6
+        },
+        {
+          "year": 2021,
+          "value": 85.8
+        },
+        {
+          "year": 2022,
+          "value": 91.4
+        },
+        {
+          "year": 2023,
+          "value": 95.7
+        },
+        {
+          "year": 2024,
+          "value": 98
+        },
+        {
+          "year": 2025,
+          "value": 100.9
+        }
+      ]
+    }
+  },
+  "workforce": {
+    "occupationCode": "5222",
+    "occupationLabel": "Butikkavdelingssjefer",
+    "quarter": 2,
+    "updated": "2026-08-13T06:00:00Z",
+    "points": [
+      {
+        "year": 2016,
+        "men": 2023,
+        "women": 3361,
+        "reportedTotal": 5384
+      },
+      {
+        "year": 2017,
+        "men": 2181,
+        "women": 3624,
+        "reportedTotal": 5805
+      },
+      {
+        "year": 2018,
+        "men": 2149,
+        "women": 3452,
+        "reportedTotal": 5601
+      },
+      {
+        "year": 2019,
+        "men": 2074,
+        "women": 3231,
+        "reportedTotal": 5305
+      },
+      {
+        "year": 2020,
+        "men": 2006,
+        "women": 3200,
+        "reportedTotal": 5206
+      },
+      {
+        "year": 2021,
+        "men": 2178,
+        "women": 3260,
+        "reportedTotal": 5438
+      },
+      {
+        "year": 2022,
+        "men": 2269,
+        "women": 3227,
+        "reportedTotal": 5496
+      },
+      {
+        "year": 2023,
+        "men": 2155,
+        "women": 3115,
+        "reportedTotal": 5270
+      },
+      {
+        "year": 2024,
+        "men": 2172,
+        "women": 3069,
+        "reportedTotal": 5241
+      },
+      {
+        "year": 2025,
+        "men": 2224,
+        "women": 3173,
+        "reportedTotal": 5397
+      },
+      {
+        "year": 2026,
+        "men": 2235,
+        "women": 3138,
+        "reportedTotal": 5373
+      }
+    ]
+  },
+  "comparison": {
+    "year": 2025,
+    "source": "SSB tabell 11418, 11658 og 14700",
+    "salaryPopulation": "Median månedslønn per heltidsekvivalent, alle sektorer, begge kjønn, heltid og deltid samlet, november 2025.",
+    "employmentPopulation": "Lønnstakere (personer), begge kjønn, alle aldre, heltid og deltid samlet, 4. kvartal 2025.",
+    "inflation": {
+      "year": 2025,
+      "annualGrowth": 2.95918367346939,
+      "source": "SSB tabell 14700 · november til november"
+    },
+    "points": [
+      {
+        "occupationCode": "1212",
+        "occupationName": "Personalsjefer",
+        "href": "/yrke/personalsjefer-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 96670,
+        "nominalGrowth": 7.999106245112286,
+        "employees": 2337,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "1221",
+        "occupationName": "Salgs- og markedssjefer",
+        "href": "/yrke/salgs-og-markedssjefer-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 89170,
+        "nominalGrowth": 4.905882352941182,
+        "employees": 16092,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "1420",
+        "occupationName": "Varehandelssjefer",
+        "href": "/yrke/varehandelssjefer-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 55390,
+        "nominalGrowth": 3.4746870913506367,
+        "employees": 34373,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "1411",
+        "occupationName": "Hotellsjefer",
+        "href": "/yrke/hotellsjefer-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 52610,
+        "nominalGrowth": 3.339226085248481,
+        "employees": 773,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "1412",
+        "occupationName": "Restaurantsjefer",
+        "href": "/yrke/restaurantsjefer-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 50770,
+        "nominalGrowth": 4.2291110654896436,
+        "employees": 3865,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "5222",
+        "occupationName": "Butikkavdelingssjefer",
+        "href": "/yrke/butikkavdelingssjefer-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 47680,
+        "nominalGrowth": 4.264159195276629,
+        "employees": 5461,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "5223",
+        "occupationName": "Butikkmedarbeidere",
+        "href": "/yrke/butikkmedarbeidere-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 42020,
+        "nominalGrowth": 4.293869446512777,
+        "employees": 165565,
+        "employeesPeriodLabel": "4. kv. 2025",
+        "source": "SSB tabell 11418 og 11658"
+      }
+    ]
+  }
+}

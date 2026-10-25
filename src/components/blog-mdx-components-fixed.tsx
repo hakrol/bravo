@@ -9,6 +9,10 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  StoreManagerOccupationSalaryComparisonExplorer,
+  StoreManagerWorkforceGrowthExplorer,
+} from "@/components/blog-store-manager-interactive-charts";
+import {
   PersonalsjefOccupationSalaryComparisonExplorer,
   PersonalsjefRealWageGrowthExplorer,
   PersonalsjefSalaryGenderGapExplorer,
@@ -320,6 +324,8 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    StoreManagerOccupationSalaryComparisonExplorer,
+    StoreManagerWorkforceGrowthExplorer,
     PersonalsjefOccupationSalaryComparisonExplorer,
     PersonalsjefRealWageGrowthExplorer,
     PersonalsjefSalaryGenderGapExplorer,
