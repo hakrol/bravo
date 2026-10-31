@@ -18,6 +18,18 @@ Les `AGENTS.MD`, `PROJECT.MD` og `src/content/blog/README.md` fra prosjektroten 
 - Ikke legg inn tabeller med mindre brukeren eksplisitt ber om det. Dette gjelder også nøkkeltallstabeller, sammenligningstabeller og søkbare yrkestabeller. De fem faste diagrammene skal fortsatt brukes.
 - Ikke legg inn en oppsummering eller et eget kildeavsnitt. Kilder skal lenkes naturlig i teksten der de aktuelle opplysningene brukes. Behold relevante kildehenvisninger i diagrammene.
 
+## Variasjon i hovedoverskriften
+
+Når et nytt innlegg ikke har en bestilt hovedoverskrift, velg tilfeldig mellom de fem malene nedenfor til innleggets synlige `title`. Ikke velg automatisk den første malen. Se på tittelen i det sist opprettede yrkeslønnsinnlegget i repoet, og utelat malen som ble brukt der hvis den kan gjenkjennes. Trekk med lik sannsynlighet blant de gjenværende malene. Hvis forrige mal er ukjent, trekk blant alle fem.
+
+1. Hva tjener en [yrke] i [statistikkår]?
+2. Lønn som [yrke]: Dette viser tallene
+3. [Yrke] i Norge: Lønn og lønnsutvikling
+4. Hvor mye får en [yrke] i lønn?
+5. Lønnen til en [yrke]: Nivå, forskjeller og utvikling
+
+Erstatt plassholderne med det aktuelle yrket og statistikkåret for hovedtallet, ikke publiseringsåret. Tilpass artikkel, bøyning og stor forbokstav til naturlig bokmål. Tittelen skal samsvare med innholdet. En konkret overskrift fra brukeren har forrang. Ved oppdatering beholdes eksisterende tittel med mindre bestillingen omfatter en ny overskrift.
+
 ## Metode og statistikkutvalg holdes internt
 
 Ikke legg inn standardavsnitt om hvem statistikken omfatter eller hvordan datagrunnlaget er avgrenset og bearbeidet. Dette regnes også som tekniske forklaringer, selv om teksten ikke inneholder yrkeskoder eller faguttrykk. Regelen gjelder brødtekst, ingress, diagramforklaringer og FAQ.
