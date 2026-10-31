@@ -1,0 +1,545 @@
+{
+  "provenance": {
+    "retrievedAt": "2026-10-31",
+    "salaryTable": "11658",
+    "salarySourceUrl": "https://www.ssb.no/statbank/table/11658/",
+    "salaryUpdated": "2026-08-13T06:00:00Z",
+    "latestAvailableSalaryPeriod": "2026K2",
+    "salaryDefinitionUrl": "https://www.ssb.no/arbeid-og-lonn/sysselsetting/statistikk/antall-arbeidsforhold-og-lonn",
+    "salaryFilters": {
+      "Yrke": "5153",
+      "Alder": "999D",
+      "Kjonn": [
+        "0",
+        "1",
+        "2"
+      ],
+      "ContentsCode": "MedianMndLonn",
+      "Tid": "2. kvartal hvert år"
+    },
+    "salaryPopulation": "Lønnstakere i alle aldre, begge kjønn og alle sektorer. Heltid og deltid samlet, lønn omregnet til heltid. Mai er midtmåneden i 2. kvartal hvert år.",
+    "salaryConcept": "Samlet månedslønn før skatt: avtalt månedslønn, uregelmessige tillegg og bonus. Overtid er ikke inkludert.",
+    "occupationMapping": {
+      "styrk98": "5163121",
+      "styrk08": "5153",
+      "title": "Vaktmestre",
+      "source": "src/lib/ssb/426.csv",
+      "descriptionUrl": "https://utdanning.no/yrker/beskrivelse/byggdrifter"
+    },
+    "cpiTable": "14700",
+    "cpiSourceUrl": "https://www.ssb.no/statbank/table/14700/",
+    "cpiUpdated": "2026-10-09T06:00:00Z",
+    "cpiFilters": {
+      "VareTjenesteGrp": "00",
+      "ContentsCode": "KpiIndMnd",
+      "Tid": "mai hvert år"
+    },
+    "cpiBase": "2025=100",
+    "workforceContentsCode": "Lonsstakere",
+    "workforcePopulation": "Personer med hovedarbeidsforhold som vaktmester i mai i 2. kvartal, heltid og deltid samlet. Selvstendig næringsdrivende er ikke inkludert.",
+    "comparabilityNotes": [
+      "SSB opplyser at forbedret lønnsrapportering fra 1. kvartal 2020 har påvirket lønnsnivåer i ulik grad etter yrke, særlig i bergverksdrift og utvinning.",
+      "Forbedret yrkesrapportering fra 4. kvartal 2024 til 1. kvartal 2025 kan påvirke yrkesfordelte lønns- og persontall; justeringer kan også forekomme i 2. kvartal. Serien følger samme kvartal og definisjon, men er ikke en panelanalyse av de samme personene."
+    ],
+    "faqResearch": {
+      "checkedAt": "2026-10-31",
+      "basis": "Undersøkte søkeresultater og spørsmål hos Utdanning.no og Delta. Search Console og målte søkevolumer var ikke tilgjengelige.",
+      "queries": [
+        "vaktmester lønn utdanning hva gjør fagbrev byggdrifter",
+        "vaktmester hva gjør hvor jobber fagbrev videreutdanning byggdrifter"
+      ],
+      "sources": [
+        "https://utdanning.no/yrker/beskrivelse/byggdrifter",
+        "https://www.delta.no/yrke/service-og-drift/utdanning-og-oppl%C3%A6ring/utdanning-for-vaktmestre-og-byggdriftere"
+      ]
+    }
+  },
+  "current": {
+    "period": "2. kvartal 2026",
+    "medianMonthlySalary": 48680,
+    "medianContractedMonthlySalary": 47580,
+    "averageMonthlySalary": 51630,
+    "annualConversionFactor": 12,
+    "annualizedMedian": 584160
+  },
+  "salaryGrowth": {
+    "title": "Slik har lønnen til vaktmestere utviklet seg",
+    "subtitle": "Median månedslønn fra 2017 til 2026 · 2. kvartal hvert år",
+    "source": "SSB tabell 11658",
+    "note": "Samlet månedslønn i mai i 2. kvartal hvert år. Alle aldre og sektorer, heltid og deltid samlet, lønn omregnet til heltid. Tallene er ikke årsgjennomsnitt. Bedre yrkesrapportering rundt 2025 kan påvirke nivåendringer.",
+    "points": [
+      {
+        "year": 2017,
+        "value": 34590
+      },
+      {
+        "year": 2018,
+        "value": 35580
+      },
+      {
+        "year": 2019,
+        "value": 36600
+      },
+      {
+        "year": 2020,
+        "value": 37830
+      },
+      {
+        "year": 2021,
+        "value": 38450
+      },
+      {
+        "year": 2022,
+        "value": 40020
+      },
+      {
+        "year": 2023,
+        "value": 42500
+      },
+      {
+        "year": 2024,
+        "value": 44280
+      },
+      {
+        "year": 2025,
+        "value": 46800
+      },
+      {
+        "year": 2026,
+        "value": 48680
+      }
+    ],
+    "womenPoints": [
+      {
+        "year": 2017,
+        "value": 33530
+      },
+      {
+        "year": 2018,
+        "value": 34270
+      },
+      {
+        "year": 2019,
+        "value": 35400
+      },
+      {
+        "year": 2020,
+        "value": 36290
+      },
+      {
+        "year": 2021,
+        "value": 36840
+      },
+      {
+        "year": 2022,
+        "value": 38660
+      },
+      {
+        "year": 2023,
+        "value": 40900
+      },
+      {
+        "year": 2024,
+        "value": 42470
+      },
+      {
+        "year": 2025,
+        "value": 45220
+      },
+      {
+        "year": 2026,
+        "value": 47360
+      }
+    ],
+    "menPoints": [
+      {
+        "year": 2017,
+        "value": 34680
+      },
+      {
+        "year": 2018,
+        "value": 35710
+      },
+      {
+        "year": 2019,
+        "value": 36680
+      },
+      {
+        "year": 2020,
+        "value": 38000
+      },
+      {
+        "year": 2021,
+        "value": 38630
+      },
+      {
+        "year": 2022,
+        "value": 40180
+      },
+      {
+        "year": 2023,
+        "value": 42630
+      },
+      {
+        "year": 2024,
+        "value": 44430
+      },
+      {
+        "year": 2025,
+        "value": 46990
+      },
+      {
+        "year": 2026,
+        "value": 48730
+      }
+    ],
+    "inflation": {
+      "source": "SSB tabell 14700",
+      "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+      "referenceMonth": "mai",
+      "updated": "2026-10-09T06:00:00Z",
+      "points": [
+        {
+          "year": 2017,
+          "value": 76.6
+        },
+        {
+          "year": 2018,
+          "value": 78.2
+        },
+        {
+          "year": 2019,
+          "value": 80.3
+        },
+        {
+          "year": 2020,
+          "value": 81.2
+        },
+        {
+          "year": 2021,
+          "value": 83.4
+        },
+        {
+          "year": 2022,
+          "value": 88.3
+        },
+        {
+          "year": 2023,
+          "value": 94.1
+        },
+        {
+          "year": 2024,
+          "value": 96.9
+        },
+        {
+          "year": 2025,
+          "value": 99.9
+        },
+        {
+          "year": 2026,
+          "value": 103
+        }
+      ]
+    }
+  },
+  "genderSalary": {
+    "occupationLabel": "Vaktmestere",
+    "period": "2. kvartal 2026",
+    "source": "SSB tabell 11658",
+    "womenMonthlyMedian": 47360,
+    "menMonthlyMedian": 48730,
+    "monthlyHours": 162.5
+  },
+  "genderGap": {
+    "title": "Slik har lønnsforskjellen blant vaktmestere utviklet seg",
+    "source": "SSB tabell 11658 · 2. kvartal hvert år",
+    "points": [
+      {
+        "year": 2017,
+        "men": 34680,
+        "women": 33530
+      },
+      {
+        "year": 2018,
+        "men": 35710,
+        "women": 34270
+      },
+      {
+        "year": 2019,
+        "men": 36680,
+        "women": 35400
+      },
+      {
+        "year": 2020,
+        "men": 38000,
+        "women": 36290
+      },
+      {
+        "year": 2021,
+        "men": 38630,
+        "women": 36840
+      },
+      {
+        "year": 2022,
+        "men": 40180,
+        "women": 38660
+      },
+      {
+        "year": 2023,
+        "men": 42630,
+        "women": 40900
+      },
+      {
+        "year": 2024,
+        "men": 44430,
+        "women": 42470
+      },
+      {
+        "year": 2025,
+        "men": 46990,
+        "women": 45220
+      },
+      {
+        "year": 2026,
+        "men": 48730,
+        "women": 47360
+      }
+    ]
+  },
+  "realWage": {
+    "title": "Slik har kjøpekraften til vaktmestere utviklet seg",
+    "source": "SSB tabell 11658 (2. kvartal) og 14700 (KPI for mai)",
+    "baseline": {
+      "year": 2016,
+      "women": 32670,
+      "men": 33720,
+      "median": 33640,
+      "cpi": 74.9
+    },
+    "points": [
+      {
+        "year": 2017,
+        "women": 33530,
+        "men": 34680,
+        "median": 34590,
+        "cpi": 76.6
+      },
+      {
+        "year": 2018,
+        "women": 34270,
+        "men": 35710,
+        "median": 35580,
+        "cpi": 78.2
+      },
+      {
+        "year": 2019,
+        "women": 35400,
+        "men": 36680,
+        "median": 36600,
+        "cpi": 80.3
+      },
+      {
+        "year": 2020,
+        "women": 36290,
+        "men": 38000,
+        "median": 37830,
+        "cpi": 81.2
+      },
+      {
+        "year": 2021,
+        "women": 36840,
+        "men": 38630,
+        "median": 38450,
+        "cpi": 83.4
+      },
+      {
+        "year": 2022,
+        "women": 38660,
+        "men": 40180,
+        "median": 40020,
+        "cpi": 88.3
+      },
+      {
+        "year": 2023,
+        "women": 40900,
+        "men": 42630,
+        "median": 42500,
+        "cpi": 94.1
+      },
+      {
+        "year": 2024,
+        "women": 42470,
+        "men": 44430,
+        "median": 44280,
+        "cpi": 96.9
+      },
+      {
+        "year": 2025,
+        "women": 45220,
+        "men": 46990,
+        "median": 46800,
+        "cpi": 99.9
+      },
+      {
+        "year": 2026,
+        "women": 47360,
+        "men": 48730,
+        "median": 48680,
+        "cpi": 103
+      }
+    ]
+  },
+  "comparison": {
+    "year": 2026,
+    "source": "SSB tabell 11658 · 2. kvartal 2026. Prisvekst: SSB tabell 14700, mai 2025–mai 2026",
+    "salaryPopulation": "Alle aldre og sektorer, begge kjønn. Heltid og deltid samlet, omregnet til heltid. Median samlet månedslønn i 2. kvartal.",
+    "employmentPopulation": "Antall lønnstakere i 2. kvartal 2026, alle aldre og begge kjønn.",
+    "inflation": {
+      "year": 2026,
+      "annualGrowth": 3.1031031031030887,
+      "source": "SSB tabell 14700, mai 2025–mai 2026"
+    },
+    "points": [
+      {
+        "occupationCode": "5153",
+        "occupationName": "Vaktmestre",
+        "href": "/yrke/vaktmestre-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 48680,
+        "previousMedianMonthlySalary": 46800,
+        "nominalGrowth": 4.017094017094025,
+        "employees": 22832,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "9112",
+        "occupationName": "Renholdere i bedrifter",
+        "href": "/yrke/renholdere-i-bedrifter-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 41450,
+        "previousMedianMonthlySalary": 40310,
+        "nominalGrowth": 2.8280823616968487,
+        "employees": 60326,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "6113",
+        "occupationName": "Gartnere",
+        "href": "/yrke/gartnere-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 43680,
+        "previousMedianMonthlySalary": 42080,
+        "nominalGrowth": 3.802281368821303,
+        "employees": 6914,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "7115",
+        "occupationName": "Tømrere og snekkere",
+        "href": "/yrke/tomrere-og-snekkere-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 49190,
+        "previousMedianMonthlySalary": 47090,
+        "nominalGrowth": 4.459545551072419,
+        "employees": 44400,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "7126",
+        "occupationName": "Rørleggere og VVS-montører",
+        "href": "/yrke/rorleggere-og-vvs-montorer-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 54910,
+        "previousMedianMonthlySalary": 53040,
+        "nominalGrowth": 3.5256410256410353,
+        "employees": 20483,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "7411",
+        "occupationName": "Elektrikere",
+        "href": "/yrke/elektrikere-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 56640,
+        "previousMedianMonthlySalary": 54720,
+        "nominalGrowth": 3.5087719298245723,
+        "employees": 34159,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      }
+    ]
+  },
+  "workforce": {
+    "occupationCode": "5153",
+    "occupationLabel": "Vaktmestere",
+    "quarter": 2,
+    "updated": "2026-08-13T06:00:00Z",
+    "points": [
+      {
+        "year": 2017,
+        "men": 19153,
+        "women": 2058,
+        "reportedTotal": 21211
+      },
+      {
+        "year": 2018,
+        "men": 19422,
+        "women": 2221,
+        "reportedTotal": 21643
+      },
+      {
+        "year": 2019,
+        "men": 19203,
+        "women": 2208,
+        "reportedTotal": 21411
+      },
+      {
+        "year": 2020,
+        "men": 18705,
+        "women": 2292,
+        "reportedTotal": 20997
+      },
+      {
+        "year": 2021,
+        "men": 18738,
+        "women": 2447,
+        "reportedTotal": 21185
+      },
+      {
+        "year": 2022,
+        "men": 19571,
+        "women": 2607,
+        "reportedTotal": 22178
+      },
+      {
+        "year": 2023,
+        "men": 19773,
+        "women": 2517,
+        "reportedTotal": 22290
+      },
+      {
+        "year": 2024,
+        "men": 20027,
+        "women": 2674,
+        "reportedTotal": 22701
+      },
+      {
+        "year": 2025,
+        "men": 20130,
+        "women": 2767,
+        "reportedTotal": 22897
+      },
+      {
+        "year": 2026,
+        "men": 20012,
+        "women": 2820,
+        "reportedTotal": 22832
+      }
+    ]
+  }
+}

@@ -9,6 +9,13 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  CaretakerGenderSalaryExplorer,
+  CaretakerOccupationSalaryComparisonExplorer,
+  CaretakerRealWageGrowthExplorer,
+  CaretakerSalaryGenderGapExplorer,
+  CaretakerWorkforceGrowthExplorer,
+} from "@/components/blog-caretaker-salary-charts";
+import {
   ChemistGenderSalaryExplorer,
   ChemistOccupationSalaryComparisonExplorer,
   ChemistRealWageGrowthExplorer,
@@ -332,6 +339,11 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    CaretakerGenderSalaryExplorer,
+    CaretakerOccupationSalaryComparisonExplorer,
+    CaretakerRealWageGrowthExplorer,
+    CaretakerSalaryGenderGapExplorer,
+    CaretakerWorkforceGrowthExplorer,
     ChemistGenderSalaryExplorer,
     ChemistOccupationSalaryComparisonExplorer,
     ChemistRealWageGrowthExplorer,
