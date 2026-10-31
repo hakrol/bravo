@@ -9,6 +9,13 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  DentistGenderSalaryExplorer,
+  DentistOccupationSalaryComparisonExplorer,
+  DentistRealWageGrowthExplorer,
+  DentistSalaryGenderGapExplorer,
+  DentistWorkforceGrowthExplorer,
+} from "@/components/blog-dentist-salary-charts";
+import {
   CaretakerGenderSalaryExplorer,
   CaretakerOccupationSalaryComparisonExplorer,
   CaretakerRealWageGrowthExplorer,
@@ -339,6 +346,11 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    DentistGenderSalaryExplorer,
+    DentistOccupationSalaryComparisonExplorer,
+    DentistRealWageGrowthExplorer,
+    DentistSalaryGenderGapExplorer,
+    DentistWorkforceGrowthExplorer,
     CaretakerGenderSalaryExplorer,
     CaretakerOccupationSalaryComparisonExplorer,
     CaretakerRealWageGrowthExplorer,

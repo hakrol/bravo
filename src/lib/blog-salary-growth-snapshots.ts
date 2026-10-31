@@ -5,6 +5,7 @@ import engineerSnapshot from "@/content/blog/data/sivilingeniorer-lonn-2025.json
 import storeManagerSnapshot from "@/content/blog/data/butikksjef-interaktive-diagrammer-2025.json";
 import chemistSnapshot from "@/content/blog/data/kjemiker-lonn-2026.json";
 import caretakerSnapshot from "@/content/blog/data/vaktmester-lonn-2026.json";
+import dentistSnapshot from "@/content/blog/data/tannlege-lonn-2026.json";
 import type { SalaryGrowthSnapshot } from "@/lib/salary-growth-snapshot";
 
 // Registrer faktiske bloggdata her. Testdata brukes bare av utviklingsvisningen.
@@ -16,6 +17,7 @@ const snapshots = {
   "butikksjef-lonnsutvikling-2025": storeManagerSnapshot.salaryGrowth,
   "kjemiker-lonnsutvikling-2026": chemistSnapshot.salaryGrowth,
   "vaktmester-lonnsutvikling-2026": caretakerSnapshot.salaryGrowth,
+  "tannlege-lonnsutvikling-2026": dentistSnapshot.salaryGrowth,
 } satisfies Record<string, SalaryGrowthSnapshot>;
 
 export type BlogSalaryGrowthSnapshotId = keyof typeof snapshots;
