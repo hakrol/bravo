@@ -2,6 +2,37 @@
 
 Legg nye innlegg som `.mdx`-filer i denne mappen.
 
+## Arbeidsflyt og fellesregler
+
+Dette er felleskilden for alle bloggtypene. De aktive skillene ligger i `.agents/skills/`. Start med `blogginnlegg` hvis typen ikke er valgt; les ellers den valgte type-skillen direkte. Skillene er `blogg-yrkeslonn`, `blogg-sammenligning`, `blogg-rangering`, `blogg-lonnsoversikt` og `blogg-lonnsraad`.
+
+Bestill innlegg direkte i samtalen, eventuelt med en brief fra `bloggbrief`. Det finnes ingen temakø eller automatisk skriveflyt. En brief er en artikkelbestilling, ikke dokumentasjon for fakta.
+
+- Følg `AGENTS.MD` og bruk `PROJECT.MD` som produkt- og redaksjonsgrunnlag. Bestillingen bestemmer konkret vinkel, overskrifter og ønskede elementer innenfor prosjektets regler. Skillene kan ikke overstyre disse eller gi tillatelse til publisering.
+- Behold bestilte overskrifter og deres rekkefølge. Legg bare til seksjoner når de gir nødvendig forklaring. Avklar vesentlig motstrid fremfor å finne på et datagrunnlag.
+- Skriv på naturlig norsk bokmål med konkrete subjekter, aktiv form og lite fagterminologi. Bruk du-språk når det hjelper leseren. Varier rytmen naturlig og unngå generiske SEO-avsnitt, overdrevne løfter og fet tekst som poengmarkering.
+- Gi et relevant, konkret hovedsvar tidlig. En hook skal bygge på artikkelens spørsmål eller et dokumentert funn. Les [introeksemplene](../../../.agents/skills/blogginnlegg/references/introeksempler.md) som stilreferanse, ikke som faktakilde.
+- Skill fakta, tolkning, råd og regneeksempler. Ikke utled årsaker fra lønnsforskjeller alene. Ikke presenter estimater som observerte tall.
+- Bruk interne lenker naturlig i teksten og verifiser at målsidene finnes. Lenke til konkrete eksterne kilder der opplysningene brukes. Tidsaktuelle fakta, satser og rettslige påstander må kontrolleres mot relevante primærkilder.
+- Endre innhold i MDX, datagrunnlag i snapshots og gjenbrukbare mønstre i eksisterende komponenter. Ikke endre bloggdesign som en automatisk del av en skriveoppgave. Les relevant lokal Next.js-dokumentasjon før tekniske endringer som omfattes av `AGENTS.MD`.
+
+### Data og kilder
+
+- Følg `src/lib/ssb/docs.md`, bruk eksisterende spørringer i `src/lib/ssb/queries.ts`, og la alle SSB-kall gå gjennom `src/lib/ssb.ts`. Ikke konstruer API-kall i MDX eller UI-komponenter.
+- Skill mellom 7-sifret STYRK98-kode i Yrkeskatalogen og 4-sifret STYRK-08-gruppe i statistikken. Yrke bestemmes av arbeidsoppgaver, ikke utdanning eller stillingstittel alene. Følg prosjektets omkodingsregler.
+- Bruk `src/lib/utdanning/yrkesbeskrivelser.json` og `src/lib/utdanning/docs.md` for yrkesoppgaver, arbeidssted og utdanningsvei. Koble helst via `styrk98[].yrkeskode_styrk98` mot `src/lib/ssb/426.csv`. Ikke presenter Utdanning.no-beskrivelser som SSB-data.
+- Oppgi kilde, statistikkperiode, lønnsbegrep, enhet og vesentlige populasjonsavgrensninger. Skriv «1. kvartal 2025», ikke `2025K1`, i publisert tekst.
+- Frys periodebundne data under `src/content/blog/data/`. Tekst, tabeller og diagrammer skal stemme med samme snapshot; historiske innlegg skal ikke lese direkte fra skiftende `latest`-data.
+- Manglende eller undertrykte tall er ikke null. Forklar vesentlige datamangler. Ikke beregn startlønn eller årsaksforklaringer fra tall som ikke dokumenterer dem.
+
+### Ferdigkontroll
+
+Et innlegg er klart for gjennomgang når MDX-filen og nødvendige snapshots finnes i samme arbeidskopi, frontmatter er komplett, bestillingen er fulgt, kilder og lenker er kontrollert og tallene stemmer mellom alle visninger. Bruk `title`, `description`, `seoTitle`, `seoDescription`, `slug`, `coverImage` og `coverImageAlt` bevisst. Kontroller eksisterende format og komponentstøtte i `src/lib/blog.ts` og `src/components/blog-mdx-components-fixed.tsx`.
+
+Forklar bestilte elementer som ikke kan leveres og hvorfor. Kontroller MDX/frontmatter og eventuelle berørte typer og komponenter med relevante eksisterende valideringer. Rapporter hva som er kontrollert og hva som gjenstår. Ikke publiser automatisk. Bruk `draft: true` når brukeren ber om et upublisert utkast; eksisterende innlasting skjuler slike innlegg utenfor utviklingsmodus.
+
+## Frontmatter
+
 Hvert innlegg skal ha frontmatter øverst:
 
 ```md
@@ -96,9 +127,9 @@ seoTitle: "Hvor mye mer kan man be om i lønn? Konkrete tall og realistiske niv�
 seoDescription: "Se hva som er normalt lønnshopp ved årlig justering, økt ansvar og jobbskifte, og lær hvordan du beregner et realistisk lønnskrav."
 ```
 
-## Fast bilderegel for automatiserte innlegg
+## Bilder som brukeren legger inn selv
 
-Automatiserte yrke/lønn-innlegg skal ikke lage eller generere egne hero-bilder. Sett likevel `coverImage` til en full artikkelspesifikk sti under `/blogg/<slug>/`, slik at bildet kan legges inn manuelt senere.
+Opprett eller generer hero-bilder bare når dette inngår i bestillingen. Når brukeren legger inn bildet selv, sett `coverImage` til en full artikkelspesifikk sti under `/blogg/<slug>/`. For yrkesinnlegg brukes `<yrke>-lonn.png`; for andre innlegg brukes `cover.png`. Ikke opprett selve bildefilen.
 
 ```md
 coverImage: "/blogg/hva-er-lonnen-til-en-lege/lege-lonn.png"
@@ -108,7 +139,7 @@ coverImageAiGenerated: false
 
 Når `coverImage` settes til en sti under `/blogg/<slug>/`, skal den tilsvarende mappen `public/blogg/<slug>/` opprettes samtidig. Selve bildefilen skal fortsatt ikke opprettes eller genereres hvis brukeren skal legge inn bildet selv.
 
-Bruk et beskrivende filnavn basert på yrket, for eksempel `lege-lonn.png`, `psykolog-lonn.png` eller `vernepleier-lonn.png`. Ikke opprett bildefilen eller generer bilde hvis brukeren skal legge inn bildet selv.
+Bruk for eksempel `lege-lonn.png`, `psykolog-lonn.png` eller `vernepleier-lonn.png` for yrkesinnlegg. Opprett mappen også når bildet skal legges inn senere. En tom mappe følger ikke med Git; bruk en `.gitkeep` når den skal følge endringen. Oppgi manglende bilde ved levering, og merk bare faktisk genererte bilder med `coverImageAiGenerated: true`.
 
 ## Fast navngivningsregel for egne bilder
 
@@ -119,7 +150,7 @@ Legg alle blogg-bilder i:
 Bruk denne faste navngivningen:
 
 - `cover.jpg`, `cover.png` eller `cover.svg`
-  Brukes som hero-bilde i toppen av innlegget og i bloggkort.
+  Brukes som hero-bilde i toppen av innlegget og i bloggkort for andre innlegg enn yrkesinnlegg. Yrkesinnlegg bruker `<yrke>-lonn.*`.
 
 - `inline-1.jpg`, `inline-2.jpg`, `inline-3.jpg`
   Brukes til vanlige bilder inne i innlegget, i den rekkefølgen de kommer.
@@ -135,7 +166,7 @@ Anbefalt praksis:
 - Hold deg til små bokstaver.
 - Bruk bindestrek, ikke mellomrom eller underscore.
 - Ha én mappe per innlegg, basert på `slug`.
-- Oppdater `coverImage` i frontmatter til å peke på `cover.*`.
+- Oppdater `coverImage` til det faktiske filnavnet etter regelen for innleggstypen. Ikke gi eksisterende bilder nye navn uten behov.
 - Hvis SEO er viktig for et hero-bilde, kan du bruke et beskrivende filnavn som fortsatt følger slug-format, for eksempel `cover-hvor-mye-mer-kan-man-be-om-i-lonn.jpg`.
 - Unngå filnavn med mellomrom, parenteser eller kopisuffiks som `(1)`.
 
@@ -197,7 +228,7 @@ Bruk felles bloggkomponenter i MDX når mønsteret skal kunne gjenbrukes i flere
   Brukes når et innlegg naturlig bør peke videre til Lønnsjekk. Tekst og CTA er standardisert i komponenten, så bruk den uten egne `title`-, `description`-, `href`- eller `cta`-props.
 
 - `FAQ` og `FAQItem`
-  Brukes når briefen ber om en FAQ-seksjon eller når innlegget bør svare kort på konkrete tilleggsspørsmål. Bruk spørsmålene fra `daily-brief.md` når de er oppgitt. FAQ skal alltid stå helt nederst i innlegget, uten egen Markdown-overskrift over komponenten. Komponenten viser selv overskriften `Ofte stilte spørsmål`.
+  Brukes når bestillingen ber om en FAQ-seksjon eller når innlegget bør svare kort på konkrete tilleggsspørsmål. Bruk bestilte spørsmål når de er oppgitt. FAQ skal alltid stå helt nederst i innlegget, etter eventuell oppsummering og kildeavsnitt, uten egen Markdown-overskrift over komponenten. Komponenten viser selv overskriften `Ofte stilte spørsmål`.
 
 Eksempel:
 
@@ -221,6 +252,21 @@ Eksempel på FAQ:
 ## Diagrammer i blogginnlegg
 
 Diagrammer skal være enkle, redaksjonelle og kildebelagte.
+
+Bestilte diagrammer og tabeller er konkrete leveranser. Brukeren kan bestille en diagramtype uten å angi komponent, plassering eller snapshot-ID. Velg relevant eksisterende komponent og forklar eventuelle databegrensninger. Datadrevne innlegg skal som hovedregel ha minst ett relevant visuelt dataelement; et lønnskort eller en søkbar datatabell teller også. Lønnsråd har ikke et slikt minstekrav. Ikke legg diagrammer rett etter hverandre uten forklarende tekst mellom, og ikke legg inn generiske nøkkeltallstabeller som bare gjentar brødteksten.
+
+| Bestilt type | Implementasjon og bruk |
+| --- | --- |
+| Interaktiv lønnsutvikling | `BlogSalaryGrowthExplorer` med registrert `snapshotId`, som beskrevet nedenfor. Også standardvalget ved eldre betegnelser som «Lønnsutviklingsdiagram» eller «Femårs lønnsutvikling»; respekter bestilt periode. |
+| Interaktiv lønn etter kjønn | `BlogGenderSalaryExplorer` rundt `SalaryGenderExplorer`, med sammenlignbare medianverdier fra et frosset snapshot. Vises i egen fane på `/utvikling-diagram`. Erstatter kjønnsdelte lønnskort i nye yrkesinnlegg; se type-skillen for krav og unntak. |
+| Redaksjonelt stolpediagram | Artikkelwrapper rundt `EditorialDivergingBarChart`, med rader og kilde fra snapshot. Bruk til rangering og sammenligning; ikke den gamle horisontale `BlogChart`-varianten. |
+| Boblediagram | Artikkelwrapper rundt `BlogChart` med `type="bubble"`. Lønn bestemmer `value`, antall lønnstakere bestemmer `size`. Oppgi kilde for begge; ikke legg yrkesspesifikke unntak i den generiske komponenten. |
+| Søkbar yrkesliste | `BlogOccupationSalaryTable` med registrert `snapshotId`. Bruk når leseren bør kunne søke i et større utvalg. |
+| Lønnsfordeling utvikling | Artikkelwrapper rundt `BlogSalaryDistributionDevelopmentChart` med P25, median og P75 fra snapshot. Bruk maksimalt ti nyeste komplette år; manglende kvartiler skal ikke erstattes med null. Oppgi perioden som faktisk vises. |
+
+Hold generiske diagrammer gjenbrukbare. Legg artikkelspesifikke valg i snapshots og små wrappers når komponenten trenger det. Ikke lag nye varianter når eksisterende løsning dekker behovet. Eldre diagramkomponenter kan fortsatt brukes av eksisterende innlegg; nye lønnsutviklingsvisninger følger standarden under.
+
+«Interaktiv lønn etter kjønn» sammenligner kvinner og menn i én periode. Lag en liten artikkelwrapper som importerer yrkets snapshot og sender `occupationLabel`, `period`, `source`, `womenMonthlyMedian`, `menMonthlyMedian` og eventuelt `monthlyHours` til `BlogGenderSalaryExplorer`. Registrer artikkelwrapperen i `src/components/blog-mdx-components-fixed.tsx`. Bruk samme lønnsbegrep og populasjonsavgrensning for begge kjønn. Komponenten tar median månedslønn som grunnlag, omregner årslønn med faktor 12 og estimerer timelønn med standard 162,5 timer per måned eller et eksplisitt positivt timetall fra snapshotet. Manglende eller undertrykte tall angis som `null`, aldri null kroner eller anslag. Testdata i `src/lib/development-gender-salary-data.ts` brukes bare i diagramverkstedet. «Interaktiv lønnsforskjell» er et eget diagram for utviklingen over tid.
 
 Datadrevne innlegg som handler om en bestemt periode skal bruke snapshots. Hvis et innlegg for eksempel handler om 2025-tall, skal tallgrunnlaget lagres som en egen fil under `src/content/blog/data/` og hentes via en eksplisitt kortkode eller `snapshotId`. Ikke bruk `latest`-datasett direkte i historiske blogginnlegg, fordi de vil endre seg når nye SSB-data synkes.
 

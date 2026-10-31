@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bloggbrief"
+  short_description: "Bestill ett innlegg med riktig type og avgrensning"
+  default_prompt: "Bruk $bloggbrief til å lage en kort bestilling til et blogginnlegg."

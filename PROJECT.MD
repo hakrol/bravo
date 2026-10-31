@@ -34,14 +34,17 @@ Lønnsjekk skal være konkret, forståelig og handlingsrettet. Resultatet skal h
 
 ### Blogg
 
-Bloggen støtter produktet med praktiske guider om lønn, lønnssamtale, lønnsforhandling og bruk av lønnsdata. Blogginnleggene skal være konkrete, rådgivende og skrevet på Norsk Bokmål med direkte `du`-språk.
+Bloggen støtter produktet med datadrevne artikler og praktiske guider om lønn. Blogginnleggene skal være konkrete, forklarende og skrevet på Norsk Bokmål. Bruk direkte `du`-språk når leseren får råd.
 
-Eksisterende bloggretning handler særlig om:
+Bloggen har fem hovedtyper:
 
-- når man bør be om høyere lønn
-- hvordan man ber om mer lønn
-- hvor mye mer man realistisk kan be om
-- hvordan ansvar, resultater, marked og timing påvirker lønnskrav
+- Yrkeslønn: hva ett yrke tjener, lønnsspenn, lønnsutvikling og relevante arbeidsmarkedsdata.
+- Sammenligning: lønnsforskjeller mellom to eller noen få yrker på sammenlignbart grunnlag.
+- Rangering: hvilke yrker eller grupper som ligger høyest eller lavest på et tydelig definert mål.
+- Lønnsoversikt: lønnsnivå, fordeling og utvikling i Norge eller større grupper.
+- Lønnsråd: når og hvordan man ber om høyere lønn, realistiske lønnskrav og hvordan ansvar, resultater, marked og timing påvirker forhandlingen.
+
+Velg én hovedintensjon per innlegg. Begrepsforklaringer under `/forklarer` og aktuelle nyheter under `/nyheter` er egne innholdstyper. Blogginnlegg bestilles direkte, uten temakø eller automatisk skriving.
 
 Bloggen skal ikke være generisk karriereråd. Den skal koble praktiske råd med datagrunnlag, realistiske vurderinger og konkrete formuleringer leseren kan bruke.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogg: lønnsoversikt"
+  short_description: "Forklar lønnsnivå og utvikling i større grupper"
+  default_prompt: "Bruk $blogg-lonnsoversikt til å skrive om gjennomsnittslønnen i Norge."

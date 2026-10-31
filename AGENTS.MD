@@ -15,13 +15,15 @@ Before changing App Router, metadata, routing, server actions, caching, or data 
 - Read `PROJECT.MD` when work affects product positioning, page content, UX copy, blog strategy, information architecture, or feature prioritization.
 - Use `PROJECT.MD` as the source of truth for target audience, value proposition, product purpose, and editorial direction.
 - For blogginnlegg, les og følg `src/content/blog/README.md`. Standarddiagrammet «Interaktiv lønnsutvikling» settes inn med `<BlogSalaryGrowthExplorer snapshotId="..." />`. Gjenbruk komponenten og registrer et eget datasett for yrket; ikke kopier designet eller bruk utviklingssidens testdata.
+- Bloggskills ligger i `.agents/skills/`. Bruk `blogginnlegg` til å velge én hovedtype: `blogg-yrkeslonn`, `blogg-sammenligning`, `blogg-rangering`, `blogg-lonnsoversikt` eller `blogg-lonnsraad`. Direkte bruk av en type-skill er også støttet. Les alltid fellesreglene i `src/content/blog/README.md`.
+- Bruk `bloggbrief` for bestillinger og `forklaringsinnlegg` for begrepsforklaringer under `/forklarer`. Blogginnlegg bestilles direkte; prosjektet bruker ikke temakø eller automatisk bloggskriving.
 
 
 ## Execution model
 
 - Default to code generation, not autonomous execution
 - Do not run commands unless explicitly instructed
-- Når oppgaven eksplisitt er en bloggautomatisering, skal Codex faktisk opprette/endre relevante filer i repoet. Kommandoer skal likevel begrenses til nødvendige inspeksjons-, format- og valideringskommandoer.
+- Når brukeren ber om å opprette eller oppdatere et blogginnlegg, skal relevante filer faktisk opprettes/endres i repoet. Begrens kommandoer til nødvendige inspeksjons-, format- og valideringskommandoer.
 
 ## Tech stack
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogg: sammenligning"
+  short_description: "Sammenlign lønnen til to eller noen få yrker"
+  default_prompt: "Bruk $blogg-sammenligning til å sammenligne lønnen til elektrikere og rørleggere."

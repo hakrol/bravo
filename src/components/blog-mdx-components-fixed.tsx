@@ -9,6 +9,13 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  ChemistGenderSalaryExplorer,
+  ChemistOccupationSalaryComparisonExplorer,
+  ChemistRealWageGrowthExplorer,
+  ChemistSalaryGenderGapExplorer,
+  ChemistWorkforceGrowthExplorer,
+} from "@/components/blog-chemist-salary-charts";
+import {
   StoreManagerOccupationSalaryComparisonExplorer,
   StoreManagerWorkforceGrowthExplorer,
 } from "@/components/blog-store-manager-interactive-charts";
@@ -92,6 +99,7 @@ import {
   FortrykkereSalaryEditorialChart,
 } from "@/components/blog-fortrykkere-salary-chart";
 import { BlogGenderSalaryCards } from "@/components/blog-gender-salary-cards";
+import { BlogGenderSalaryExplorer } from "@/components/blog-gender-salary-explorer";
 import {
   GlassWorkerGenderSalaryCards,
   GlassWorkerSalaryBubbleChart,
@@ -324,6 +332,11 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    ChemistGenderSalaryExplorer,
+    ChemistOccupationSalaryComparisonExplorer,
+    ChemistRealWageGrowthExplorer,
+    ChemistSalaryGenderGapExplorer,
+    ChemistWorkforceGrowthExplorer,
     StoreManagerOccupationSalaryComparisonExplorer,
     StoreManagerWorkforceGrowthExplorer,
     PersonalsjefOccupationSalaryComparisonExplorer,
@@ -379,6 +392,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     GlassWorkerSalaryBubbleChart,
     GlassWorkerSalaryEditorialChart,
     BlogGenderSalaryCards,
+    BlogGenderSalaryExplorer,
     BlogPsychologistSalaryChart,
     DoctorSalaryBubbleChart,
     DoctorSalaryEditorialChart,
