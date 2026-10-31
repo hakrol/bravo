@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forklaringsinnlegg"
+  short_description: "Forklar lønnsbegreper i nettstedets begrepsordbok"
+  default_prompt: "Bruk $forklaringsinnlegg til å forklare begrepet medianlønn."

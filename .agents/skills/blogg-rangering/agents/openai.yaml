@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogg: rangering"
+  short_description: "Lag etterprøvbare topplister om lønn og yrker"
+  default_prompt: "Bruk $blogg-rangering til å skrive om de best betalte sivilingeniøryrkene."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogg: lønnsråd"
+  short_description: "Skriv praktiske råd om lønnssamtale og forhandling"
+  default_prompt: "Bruk $blogg-lonnsraad til å skrive om hvordan man ber om høyere lønn."

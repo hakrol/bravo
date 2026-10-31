@@ -2,6 +2,8 @@
 
 import { useRef, useState, type ComponentType, type KeyboardEvent } from "react";
 import { SalaryGrowthExplorer } from "@/components/salary-growth-explorer";
+import { SalaryGenderExplorer } from "@/components/salary-gender-explorer";
+import { genderSalaryTestSnapshot } from "@/lib/development-gender-salary-data";
 import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
 import { DevelopmentRealWage } from "@/components/development-real-wage";
 import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
@@ -20,8 +22,17 @@ function SalaryGrowthTestDiagram() {
   return <SalaryGrowthExplorer snapshot={salaryGrowthTestSnapshot} />;
 }
 
+function GenderSalaryTestDiagram() {
+  return <SalaryGenderExplorer {...genderSalaryTestSnapshot} />;
+}
+
 // Én oppføring per diagram. Lønnstakerdiagrammet får faktiske SSB-data fra serveren.
 const diagrams: DevelopmentDiagram[] = [
+  {
+    id: "lonn-etter-kjonn",
+    label: "Interaktiv lønn etter kjønn",
+    Component: GenderSalaryTestDiagram,
+  },
   {
     id: "lonnsutvikling",
     label: "Interaktiv lønnsutvikling",

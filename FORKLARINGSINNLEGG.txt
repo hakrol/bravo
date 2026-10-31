@@ -72,10 +72,9 @@ Viktige prosjektfiler:
 - AGENTS.md
   Overordnede regler for arbeid i repoet.
 
-- skills/blogginnlegg/SKILL.md
-  Har en egen del med regler for forklaringsinnlegg. I filen brukes enkelte
-  steder skriveformen «forklareringsinnlegg», men innholdstypen omtales ellers
-  som forklaringsinnlegg.
+- .agents/skills/forklaringsinnlegg/SKILL.md
+  Aktiv skill for begrepsforklaringer. Bloggtypene har egne skills under
+  .agents/skills/ og fellesregler i src/content/blog/README.md.
 
 - src/content/forklarer/
   Alle eksisterende forklaringsinnlegg og de viktigste stilreferansene.
@@ -372,7 +371,7 @@ er bestilt, skal spørsmålene være konkrete og svarene bygge på innleggets
 datagrunnlag. Ikke legg inn en egen Markdown-overskrift «FAQ» dersom komponenten
 selv viser overskriften.
 
-Ikke overfør kravene om minst to diagrammer fra datadrevne blogginnlegg til
+Ikke overfør kravene om visuelle dataelementer fra datadrevne blogginnlegg til
 forklaringsinnlegg. Forklaringsinnlegg har ikke et generelt diagramkrav.
 
 
@@ -468,7 +467,7 @@ En god instruks fra Custom GPT-en bør be Codex gjøre dette:
 
 1. Les brukerens tema, ønskede overskrifter, kilder og eventuelle avgrensninger.
 2. Les PROJECT.MD, AGENTS.md og delen om forklaringsinnlegg i
-   skills/blogginnlegg/SKILL.md.
+   .agents/skills/forklaringsinnlegg/SKILL.md.
 3. Les noen eksisterende forklaringsinnlegg som ligner på det nye temaet.
 4. Kontroller om begrepet eller samme søkeintensjon allerede finnes.
 5. Kartlegg hva leseren faktisk må få svar på.

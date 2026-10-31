@@ -1,0 +1,546 @@
+{
+  "provenance": {
+    "retrievedAt": "2026-10-31",
+    "salaryTable": "11658",
+    "salarySourceUrl": "https://www.ssb.no/statbank/table/11658/",
+    "salaryUpdated": "2026-08-13T06:00:00Z",
+    "latestAvailableSalaryPeriod": "2026K2",
+    "salaryDefinitionUrl": "https://www.ssb.no/arbeid-og-lonn/sysselsetting/statistikk/antall-arbeidsforhold-og-lonn",
+    "salaryFilters": {
+      "Yrke": "2113",
+      "Alder": "999D",
+      "Kjonn": [
+        "0",
+        "1",
+        "2"
+      ],
+      "ContentsCode": "MedianMndLonn",
+      "Tid": "2. kvartal hvert år"
+    },
+    "salaryPopulation": "Lønnstakere i alle aldre, begge kjønn og alle sektorer. Heltid og deltid samlet, lønn omregnet til heltid. Midtmåneden mai i 2. kvartal hvert år.",
+    "salaryConcept": "Samlet månedslønn før skatt: avtalt månedslønn, uregelmessige tillegg og bonus. Overtid er ikke inkludert.",
+    "occupationMapping": {
+      "styrk98": "2113102",
+      "styrk08": "2113",
+      "title": "Kjemikere",
+      "source": "src/lib/ssb/426.csv",
+      "descriptionUrl": "https://utdanning.no/yrker/beskrivelse/kjemiker"
+    },
+    "cpiTable": "14700",
+    "cpiSourceUrl": "https://www.ssb.no/statbank/table/14700/",
+    "cpiUpdated": "2026-10-09T06:00:00Z",
+    "cpiFilters": {
+      "VareTjenesteGrp": "00",
+      "ContentsCode": "KpiIndMnd",
+      "Tid": "mai hvert år"
+    },
+    "cpiBase": "2025=100",
+    "workforceContentsCode": "Lonsstakere",
+    "workforcePopulation": "Antall personer med hovedarbeidsforhold som kjemiker i midtmåneden mai i 2. kvartal, heltid og deltid samlet. Selvstendig næringsdrivende er ikke inkludert.",
+    "comparabilityNotes": [
+      "SSB opplyser at bedre innrapportering fra 4. kvartal 2024 til 1. kvartal 2025 har medført større endringer i yrkesfordelte tabeller. Justeringer kan også forekomme i 2. kvartal. Endringer over 2024–2025 må tolkes med dette forbeholdet.",
+      "Bedre lønnsrapportering fra 1. kvartal 2020 har påvirket lønnsnivået i ulik grad etter yrke, særlig i bergverksdrift og utvinning. Historiske nivåendringer er ikke nødvendigvis individuell lønnsvekst."
+    ],
+    "faqResearch": {
+      "checkedAt": "2026-10-31",
+      "basis": "Undersøkte søkeresultater og spørsmål hos Utdanning.no og NTNU. Search Console og målte søkevolumer var ikke tilgjengelige.",
+      "queries": [
+        "kjemiker hva gjør hvor jobber utdanning opptakskrav kjemi bachelor",
+        "kjemiker lønn utdanning master bachelor forskjell kjemiingeniør"
+      ],
+      "sources": [
+        "https://utdanning.no/yrker/beskrivelse/kjemiker",
+        "https://www.ntnu.no/studier/kjemi",
+        "https://www.ntnu.no/studier/bkj/opptak"
+      ]
+    }
+  },
+  "current": {
+    "period": "2. kvartal 2026",
+    "medianMonthlySalary": 77500,
+    "medianContractedMonthlySalary": 76940,
+    "averageMonthlySalary": 80170,
+    "annualConversionFactor": 12,
+    "annualizedMedian": 930000
+  },
+  "salaryGrowth": {
+    "title": "Slik har lønnen til kjemikere utviklet seg",
+    "subtitle": "Median månedslønn fra 2017 til 2026 · 2. kvartal hvert år",
+    "source": "SSB tabell 11658",
+    "note": "Samlet månedslønn i mai, midtmåneden i 2. kvartal. Alle aldre og sektorer, heltid og deltid samlet, omregnet til heltid. Samme kvartal sammenlignes hvert år. Tallene er ikke årsgjennomsnitt. Bedre yrkesrapportering rundt 2025 kan påvirke nivåendringer.",
+    "points": [
+      {
+        "year": 2017,
+        "value": 56820
+      },
+      {
+        "year": 2018,
+        "value": 57430
+      },
+      {
+        "year": 2019,
+        "value": 59170
+      },
+      {
+        "year": 2020,
+        "value": 60730
+      },
+      {
+        "year": 2021,
+        "value": 61510
+      },
+      {
+        "year": 2022,
+        "value": 63240
+      },
+      {
+        "year": 2023,
+        "value": 64750
+      },
+      {
+        "year": 2024,
+        "value": 67800
+      },
+      {
+        "year": 2025,
+        "value": 72310
+      },
+      {
+        "year": 2026,
+        "value": 77500
+      }
+    ],
+    "womenPoints": [
+      {
+        "year": 2017,
+        "value": 53790
+      },
+      {
+        "year": 2018,
+        "value": 54550
+      },
+      {
+        "year": 2019,
+        "value": 56120
+      },
+      {
+        "year": 2020,
+        "value": 58080
+      },
+      {
+        "year": 2021,
+        "value": 58820
+      },
+      {
+        "year": 2022,
+        "value": 60420
+      },
+      {
+        "year": 2023,
+        "value": 62190
+      },
+      {
+        "year": 2024,
+        "value": 65760
+      },
+      {
+        "year": 2025,
+        "value": 70300
+      },
+      {
+        "year": 2026,
+        "value": 74500
+      }
+    ],
+    "menPoints": [
+      {
+        "year": 2017,
+        "value": 60240
+      },
+      {
+        "year": 2018,
+        "value": 60570
+      },
+      {
+        "year": 2019,
+        "value": 62880
+      },
+      {
+        "year": 2020,
+        "value": 64580
+      },
+      {
+        "year": 2021,
+        "value": 66370
+      },
+      {
+        "year": 2022,
+        "value": 67170
+      },
+      {
+        "year": 2023,
+        "value": 68930
+      },
+      {
+        "year": 2024,
+        "value": 71740
+      },
+      {
+        "year": 2025,
+        "value": 75000
+      },
+      {
+        "year": 2026,
+        "value": 80170
+      }
+    ],
+    "inflation": {
+      "source": "SSB tabell 14700",
+      "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+      "referenceMonth": "mai",
+      "updated": "2026-10-09T06:00:00Z",
+      "points": [
+        {
+          "year": 2017,
+          "value": 76.6
+        },
+        {
+          "year": 2018,
+          "value": 78.2
+        },
+        {
+          "year": 2019,
+          "value": 80.3
+        },
+        {
+          "year": 2020,
+          "value": 81.2
+        },
+        {
+          "year": 2021,
+          "value": 83.4
+        },
+        {
+          "year": 2022,
+          "value": 88.3
+        },
+        {
+          "year": 2023,
+          "value": 94.1
+        },
+        {
+          "year": 2024,
+          "value": 96.9
+        },
+        {
+          "year": 2025,
+          "value": 99.9
+        },
+        {
+          "year": 2026,
+          "value": 103
+        }
+      ]
+    }
+  },
+  "genderSalary": {
+    "occupationLabel": "Kjemikere",
+    "period": "2. kvartal 2026",
+    "source": "SSB tabell 11658",
+    "womenMonthlyMedian": 74500,
+    "menMonthlyMedian": 80170,
+    "monthlyHours": 162.5
+  },
+  "genderGap": {
+    "title": "Slik har lønnsforskjellen blant kjemikere utviklet seg",
+    "source": "SSB tabell 11658 · 2. kvartal hvert år",
+    "points": [
+      {
+        "year": 2017,
+        "men": 60240,
+        "women": 53790
+      },
+      {
+        "year": 2018,
+        "men": 60570,
+        "women": 54550
+      },
+      {
+        "year": 2019,
+        "men": 62880,
+        "women": 56120
+      },
+      {
+        "year": 2020,
+        "men": 64580,
+        "women": 58080
+      },
+      {
+        "year": 2021,
+        "men": 66370,
+        "women": 58820
+      },
+      {
+        "year": 2022,
+        "men": 67170,
+        "women": 60420
+      },
+      {
+        "year": 2023,
+        "men": 68930,
+        "women": 62190
+      },
+      {
+        "year": 2024,
+        "men": 71740,
+        "women": 65760
+      },
+      {
+        "year": 2025,
+        "men": 75000,
+        "women": 70300
+      },
+      {
+        "year": 2026,
+        "men": 80170,
+        "women": 74500
+      }
+    ]
+  },
+  "realWage": {
+    "title": "Slik har kjøpekraften til kjemikere utviklet seg",
+    "source": "SSB tabell 11658 (2. kvartal) og 14700 (KPI for mai)",
+    "baseline": {
+      "year": 2016,
+      "women": 52660,
+      "men": 57760,
+      "median": 55000,
+      "cpi": 74.9
+    },
+    "points": [
+      {
+        "year": 2017,
+        "women": 53790,
+        "men": 60240,
+        "median": 56820,
+        "cpi": 76.6
+      },
+      {
+        "year": 2018,
+        "women": 54550,
+        "men": 60570,
+        "median": 57430,
+        "cpi": 78.2
+      },
+      {
+        "year": 2019,
+        "women": 56120,
+        "men": 62880,
+        "median": 59170,
+        "cpi": 80.3
+      },
+      {
+        "year": 2020,
+        "women": 58080,
+        "men": 64580,
+        "median": 60730,
+        "cpi": 81.2
+      },
+      {
+        "year": 2021,
+        "women": 58820,
+        "men": 66370,
+        "median": 61510,
+        "cpi": 83.4
+      },
+      {
+        "year": 2022,
+        "women": 60420,
+        "men": 67170,
+        "median": 63240,
+        "cpi": 88.3
+      },
+      {
+        "year": 2023,
+        "women": 62190,
+        "men": 68930,
+        "median": 64750,
+        "cpi": 94.1
+      },
+      {
+        "year": 2024,
+        "women": 65760,
+        "men": 71740,
+        "median": 67800,
+        "cpi": 96.9
+      },
+      {
+        "year": 2025,
+        "women": 70300,
+        "men": 75000,
+        "median": 72310,
+        "cpi": 99.9
+      },
+      {
+        "year": 2026,
+        "women": 74500,
+        "men": 80170,
+        "median": 77500,
+        "cpi": 103
+      }
+    ]
+  },
+  "comparison": {
+    "year": 2026,
+    "source": "SSB tabell 11658 · 2. kvartal 2026. Prisvekst: SSB tabell 14700, mai 2025–mai 2026",
+    "salaryPopulation": "Alle aldre og sektorer, begge kjønn. Heltid og deltid samlet, omregnet til heltid. Median samlet månedslønn i 2. kvartal.",
+    "employmentPopulation": "Lønnstakere, antall personer i 2. kvartal 2026, alle aldre og begge kjønn.",
+    "inflation": {
+      "year": 2026,
+      "annualGrowth": 3.1031031031030887,
+      "source": "SSB tabell 14700, mai 2025–mai 2026"
+    },
+    "points": [
+      {
+        "occupationCode": "2113",
+        "occupationName": "Kjemikere",
+        "href": "/yrke/kjemikere-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 77500,
+        "previousMedianMonthlySalary": 72310,
+        "nominalGrowth": 7.177430507536986,
+        "employees": 952,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "2111",
+        "occupationName": "Fysikere og astronomer",
+        "href": "/yrke/fysikere-og-astronomer-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 76440,
+        "previousMedianMonthlySalary": 72280,
+        "nominalGrowth": 5.755395683453246,
+        "employees": 532,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "2114",
+        "occupationName": "Geologer og geofysikere",
+        "href": "/yrke/geologer-og-geofysikere-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 93940,
+        "previousMedianMonthlySalary": 90320,
+        "nominalGrowth": 4.0079716563330425,
+        "employees": 2853,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "2131",
+        "occupationName": "Biologer, botanikere, zoologer mv.",
+        "href": "/yrke/biologer-botanikere-zoologer-mv-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 67970,
+        "previousMedianMonthlySalary": 65000,
+        "nominalGrowth": 4.56923076923077,
+        "employees": 1930,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "2145",
+        "occupationName": "Sivilingeniører (kjemi)",
+        "href": "/yrke/sivilingeniorer-kjemi-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 71600,
+        "previousMedianMonthlySalary": 70270,
+        "nominalGrowth": 1.8926995873061125,
+        "employees": 872,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      },
+      {
+        "occupationCode": "3116",
+        "occupationName": "Kjemiingeniører",
+        "href": "/yrke/kjemiingeniorer-lonn",
+        "year": 2026,
+        "medianMonthlySalary": 64830,
+        "previousMedianMonthlySalary": 62950,
+        "nominalGrowth": 2.9864972200158935,
+        "employees": 2681,
+        "employeesPeriodLabel": "2. kvartal 2026",
+        "source": "SSB tabell 11658"
+      }
+    ]
+  },
+  "workforce": {
+    "occupationCode": "2113",
+    "occupationLabel": "Kjemikere",
+    "quarter": 2,
+    "updated": "2026-08-13T06:00:00Z",
+    "points": [
+      {
+        "year": 2017,
+        "men": 308,
+        "women": 373,
+        "reportedTotal": 681
+      },
+      {
+        "year": 2018,
+        "men": 329,
+        "women": 402,
+        "reportedTotal": 731
+      },
+      {
+        "year": 2019,
+        "men": 339,
+        "women": 419,
+        "reportedTotal": 758
+      },
+      {
+        "year": 2020,
+        "men": 360,
+        "women": 430,
+        "reportedTotal": 790
+      },
+      {
+        "year": 2021,
+        "men": 371,
+        "women": 454,
+        "reportedTotal": 825
+      },
+      {
+        "year": 2022,
+        "men": 409,
+        "women": 515,
+        "reportedTotal": 924
+      },
+      {
+        "year": 2023,
+        "men": 408,
+        "women": 552,
+        "reportedTotal": 960
+      },
+      {
+        "year": 2024,
+        "men": 390,
+        "women": 550,
+        "reportedTotal": 940
+      },
+      {
+        "year": 2025,
+        "men": 397,
+        "women": 531,
+        "reportedTotal": 928
+      },
+      {
+        "year": 2026,
+        "men": 424,
+        "women": 528,
+        "reportedTotal": 952
+      }
+    ]
+  }
+}

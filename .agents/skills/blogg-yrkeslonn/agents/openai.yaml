@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogg: yrkeslønn"
+  short_description: "Forklar hva ett yrke tjener med kildebelagte tall"
+  default_prompt: "Bruk $blogg-yrkeslonn til å skrive et innlegg om hva en elektriker tjener."

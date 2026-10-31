@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blogginnlegg"
+  short_description: "Velg riktig innleggstype for Lønnsinnsikt"
+  default_prompt: "Bruk $blogginnlegg til å skrive eller oppdatere et innlegg og velge riktig innleggstype."
