@@ -9,6 +9,20 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  KindergartenAssistantGenderSalaryExplorer,
+  KindergartenAssistantOccupationSalaryComparisonExplorer,
+  KindergartenAssistantRealWageGrowthExplorer,
+  KindergartenAssistantSalaryGenderGapExplorer,
+  KindergartenAssistantWorkforceGrowthExplorer,
+} from "@/components/blog-kindergarten-assistant-salary-charts";
+import {
+  KindergartenTeacherGenderSalaryExplorer,
+  KindergartenTeacherOccupationSalaryComparisonExplorer,
+  KindergartenTeacherRealWageGrowthExplorer,
+  KindergartenTeacherSalaryGenderGapExplorer,
+  KindergartenTeacherWorkforceGrowthExplorer,
+} from "@/components/blog-kindergarten-teacher-salary-charts";
+import {
   DentistGenderSalaryExplorer,
   DentistOccupationSalaryComparisonExplorer,
   DentistRealWageGrowthExplorer,
@@ -346,6 +360,16 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    KindergartenAssistantGenderSalaryExplorer,
+    KindergartenAssistantOccupationSalaryComparisonExplorer,
+    KindergartenAssistantRealWageGrowthExplorer,
+    KindergartenAssistantSalaryGenderGapExplorer,
+    KindergartenAssistantWorkforceGrowthExplorer,
+    KindergartenTeacherGenderSalaryExplorer,
+    KindergartenTeacherOccupationSalaryComparisonExplorer,
+    KindergartenTeacherRealWageGrowthExplorer,
+    KindergartenTeacherSalaryGenderGapExplorer,
+    KindergartenTeacherWorkforceGrowthExplorer,
     DentistGenderSalaryExplorer,
     DentistOccupationSalaryComparisonExplorer,
     DentistRealWageGrowthExplorer,

@@ -1,0 +1,645 @@
+{
+  "capturedAt": "2026-11-01",
+  "statisticsYear": 2025,
+  "sources": {
+    "salary": {
+      "table": "11418",
+      "url": "https://www.ssb.no/statbank/table/11418/",
+      "updated": "2026-08-28T06:00:00Z",
+      "unit": "kr per måned",
+      "query": {
+        "valueCodes[MaaleMetode]": [
+          "01",
+          "02"
+        ],
+        "valueCodes[Yrke]": [
+          "5311",
+          "2342"
+        ],
+        "valueCodes[Sektor]": "*",
+        "valueCodes[Kjonn]": [
+          "0",
+          "1",
+          "2"
+        ],
+        "valueCodes[AvtaltVanlig]": "0",
+        "valueCodes[ContentsCode]": [
+          "Manedslonn",
+          "AvtaltManedslonn"
+        ],
+        "valueCodes[Tid]": [
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "notes": [
+        "For 2015-tallene er referansemåneden september, og altså ikke november som er referansemåneden for årene etter 2015. I tillegg er metoden for å beregne arbeidstid annerledes for 2015-tallene enn for årene etter 2015. Man kan likevel sammenligne 2015 og 2016, men endringer må tolkes med forsiktighet. [Mer informasjon om lønnsstatistikken finnes under Om statistikken](https://www.ssb.no/lonnansatt)",
+        ": = Vises ikke av konfidensialitetshensyn. Tall publiseres ikke for å unngå å identifisere personer eller virksomheter."
+      ]
+    },
+    "inflation": {
+      "table": "14700",
+      "url": "https://www.ssb.no/statbank/table/14700/",
+      "updated": "2026-10-09T06:00:00Z",
+      "unit": "KPI (2025=100)",
+      "query": {
+        "valueCodes[VareTjenesteGrp]": "00",
+        "valueCodes[ContentsCode]": "KpiIndMnd",
+        "valueCodes[Tid]": [
+          "2016M11",
+          "2017M11",
+          "2018M11",
+          "2019M11",
+          "2020M11",
+          "2021M11",
+          "2022M11",
+          "2023M11",
+          "2024M11",
+          "2025M11"
+        ]
+      },
+      "notes": [
+        "På undergruppenivå er det etter teksten føyd til kode (T) tjeneste, (IV) ikke varig vare, (HV) halvveis varig vare, eller (V) varig vare.",
+        "Denne tabellen erstatter [tabell 03013](https://www.ssb.no/statbank/table/03013).\n\nF.o.m. 2026 er referanseår 2025=100. Endringstall beregnet fra serier med 2025=100 kan avvike fra endringstall publisert før 2026 med annet referanseår. \nAvvikene skyldes i all hovedsak avrundingseffekter. [Se den avsluttede tabellen 03013](https://www.ssb.no/statbank/table/03013) for publiserte endringstall for perioden 2017 t.o.m. 2025 med 2015=100, eller [tabell 11446](https://www.ssb.no/statbank/table/11446) for publiserte endringstall t.o.m. 2016 med 1998=100. Fra januar 2026 gjelder FNs konsumklassifisering COICOP2018.",
+        "F.o.m. 2026 er referanseår 2025=100. Endringstall beregnet fra serier med 2025=100 kan avvike fra endringstall publisert før 2026 med annet referanseår. \nAvvikene skyldes i all hovedsak avrundingseffekter. [Se den avsluttede tabellen 03013](https://www.ssb.no/statbank/table/03013) for publiserte endringstall for perioden 2017 t.o.m. 2025 med 2015=100, eller [tabell 11446](https://www.ssb.no/statbank/table/11446) for publiserte endringstall t.o.m. 2016 med 1998=100. Fra januar 2026 gjelder FNs konsumklassifisering COICOP2018."
+      ]
+    },
+    "workforce": {
+      "table": "11658",
+      "url": "https://www.ssb.no/statbank/table/11658/",
+      "updated": "2026-08-13T06:00:00Z",
+      "unit": "personer",
+      "query": {
+        "valueCodes[Yrke]": [
+          "5311",
+          "2342"
+        ],
+        "valueCodes[Alder]": "999D",
+        "valueCodes[Kjonn]": [
+          "0",
+          "1",
+          "2"
+        ],
+        "valueCodes[ContentsCode]": "Lonsstakere",
+        "valueCodes[Tid]": [
+          "2017K2",
+          "2018K2",
+          "2019K2",
+          "2020K2",
+          "2021K2",
+          "2022K2",
+          "2023K2",
+          "2024K2",
+          "2025K2",
+          "2026K2"
+        ]
+      },
+      "notes": [
+        "Gjennomsnittlig avtalt månedslønn og gjennomsnittlig månedslønn er oppgitt i norske kroner, avrundet til nærmeste tier. Lønn publiseres både i antall arbeidsforhold og lønn og den årlige lønnsstatistikken.",
+        "Alle ett-tall og to-tall i tabellen er endret til '0' eller '3' for å ivareta personvernet. Når tallene aggregeres til høyere regionalt nivå, vil summen kunne avvike noe fra det faktiske tallet.",
+        "I 1. kvartal 2020 har endringer hos opplysningspliktige bidratt til mer korrekt rapportering av lønn. Endringene har resultert i et høyere lønnsnivå, hovedsakelig innenfor næringshovedområde 05-09 Bergverksdrift og utvinning hvor endringene isolert sett har medført en økning på 0,8 prosent for gjennomsnittlig avtalt månedslønn og 0,6 prosent for gjennomsnittlig månedslønn. Innenfor næringshovedområdet er endringene mest merkbare i 06 Utvinning av råolje og naturgass, med en økning på 1,6 prosent for gjennomsnittlig avtalt månedslønn, og 1,2 prosent for gjennomsnittlig månedslønn. Grupperinger etter andre kjennetegn (yrke, arbeidssted etc.) vil også i ulik grad være påvirket av endringene.",
+        "Lønnsbegrepet gjennomsnittlig månedslønn inneholdt feil og ble oppdatert med nye tall for alle kvartaler 30. november 2021. Lønnsbegrepet gjennomsnittlig avtalt månedslønn var ikke berørt av feilen.  \nDenne oppdateringen medførte en følgefeil i indeks for gjennomsnittlig månedslønn i tabell 11654 og tabell 12314. Følgefeilen gjorde at flere av kvartalstallene ikke ble sammenlignet med de oppdaterte tallene for gjennomsnittlig månedslønn for gitt basisperiode, men i stedet de gamle tallene. Tallene ble på nytt oppdatert 9. juni 2022 i tabell 11654 og 14. september 2022 i tabell 12314.",
+        "Fra 4. kvartal 2024 til 1. kvartal 2025 har kvalitetsforbedringer i innrapporteringen medført større endringer i tabellene med yrke. SSB har vurdert endringene i yrkesrapportering til å i hovedsak være korrekt. Etter tilbakemelding fra SSB, kan det imidlertid forekomme noen justeringer i rapporteringen til 2. kvartal. Store endringer mellom disse periodene bør tolkes med forsiktighet."
+      ]
+    }
+  },
+  "occupationCheck": {
+    "occupationCode": "5311",
+    "label": "Barnehage- og skolefritidsassistenter mv.",
+    "styrk98": [
+      "5131101",
+      "5131109",
+      "5131115",
+      "5131106",
+      "5131133"
+    ],
+    "mappingSource": "src/lib/ssb/426.csv",
+    "descriptionSource": "https://utdanning.no/yrker/beskrivelse/barnehageassistent",
+    "tasks": "Delta i lek, aktiviteter og pedagogisk arbeid; hjelpe med måltider, stell og påkledning.",
+    "scope": "Omfatter også SFO-assistenter og barne- og ungdomsarbeidere/fagarbeidere. Gruppen er ikke et rent utvalg av ufaglærte barnehageassistenter.",
+    "separateSfoSalary": false,
+    "separateTradeCertificateSalary": false,
+    "referenceOccupation": "2342"
+  },
+  "population": {
+    "salary": "Alle sektorer, begge kjønn og hvert kjønn, heltid og deltid samlet; deltidslønn er omregnet til heltidsekvivalenter.",
+    "salaryConcept": "Median månedslønn i november. Inkluderer avtalt lønn, uregelmessige tillegg og bonus; overtid inngår ikke.",
+    "comparison": "Samme statistikkår, arbeidstidsutvalg og lønnsbegrep for assistentgruppen, barnehagelærere og sektorene.",
+    "workforce": "Lønnstakere (personer), alle aldre, 2. kvartal hvert år."
+  },
+  "headline": {
+    "medianMonthly": 41610,
+    "meanMonthly": 40970,
+    "basicMonthlyMedian": 41580,
+    "annualizedMedian": 499320,
+    "estimatedHourly": 256.0615384615385,
+    "monthlyHours": 162.5,
+    "conversion": "Årsbeløp er månedslønn × 12, ikke observert årsinntekt. Timebeløp er månedslønn / 162,5 timer, ikke observert eller avtalt timelønn."
+  },
+  "sectorComparison": {
+    "year": 2025,
+    "measure": "Median månedslønn",
+    "points": [
+      {
+        "code": "6500",
+        "label": "Kommuneforvaltningen",
+        "value": 41680,
+        "jobs": 79883
+      },
+      {
+        "code": "A+B+D+E",
+        "label": "Privat sektor og offentlige eide foretak",
+        "value": 41610,
+        "jobs": 37679
+      },
+      {
+        "code": "6100",
+        "label": "Statsforvaltningen",
+        "value": 55320,
+        "jobs": 1365
+      }
+    ],
+    "jobsSource": {
+      "table": "11418",
+      "unit": "Arbeidsforhold med lønn, ikke personer",
+      "query": {
+        "valueCodes[MaaleMetode]": "10",
+        "valueCodes[Yrke]": "5311",
+        "valueCodes[Sektor]": "*",
+        "valueCodes[Kjonn]": "0",
+        "valueCodes[AvtaltVanlig]": "0",
+        "valueCodes[ContentsCode]": "Manedslonn",
+        "valueCodes[Tid]": "2025"
+      }
+    },
+    "note": "Sektorgruppene er ikke bestemte tariffområder. Tallene gjelder hele assistentgruppen, ikke ellers like jobber i barnehage. Ingen kontroll for ansiennitet eller stillingsfordeling."
+  },
+  "salaryGrowth": {
+    "title": "Slik har lønnen til barnehage- og skolefritidsassistenter mv. utviklet seg",
+    "subtitle": "Median månedslønn fra 2016 til 2025",
+    "source": "SSB tabell 11418",
+    "note": "November hvert år; 2015 er utelatt fordi referansemåneden var september og arbeidstidsmetoden avvek. KPI i november; siste lønnsårs prisnivå brukes ved inflasjonsjustering.",
+    "points": [
+      {
+        "year": 2016,
+        "value": 31920
+      },
+      {
+        "year": 2017,
+        "value": 32580
+      },
+      {
+        "year": 2018,
+        "value": 33020
+      },
+      {
+        "year": 2019,
+        "value": 33760
+      },
+      {
+        "year": 2020,
+        "value": 34010
+      },
+      {
+        "year": 2021,
+        "value": 35200
+      },
+      {
+        "year": 2022,
+        "value": 35920
+      },
+      {
+        "year": 2023,
+        "value": 38340
+      },
+      {
+        "year": 2024,
+        "value": 39980
+      },
+      {
+        "year": 2025,
+        "value": 41610
+      }
+    ],
+    "womenPoints": [
+      {
+        "year": 2016,
+        "value": 31940
+      },
+      {
+        "year": 2017,
+        "value": 32600
+      },
+      {
+        "year": 2018,
+        "value": 33020
+      },
+      {
+        "year": 2019,
+        "value": 33790
+      },
+      {
+        "year": 2020,
+        "value": 34100
+      },
+      {
+        "year": 2021,
+        "value": 35240
+      },
+      {
+        "year": 2022,
+        "value": 35950
+      },
+      {
+        "year": 2023,
+        "value": 38340
+      },
+      {
+        "year": 2024,
+        "value": 39980
+      },
+      {
+        "year": 2025,
+        "value": 41610
+      }
+    ],
+    "menPoints": [
+      {
+        "year": 2016,
+        "value": 29170
+      },
+      {
+        "year": 2017,
+        "value": 29880
+      },
+      {
+        "year": 2018,
+        "value": 30640
+      },
+      {
+        "year": 2019,
+        "value": 31770
+      },
+      {
+        "year": 2020,
+        "value": 32230
+      },
+      {
+        "year": 2021,
+        "value": 33770
+      },
+      {
+        "year": 2022,
+        "value": 34840
+      },
+      {
+        "year": 2023,
+        "value": 37650
+      },
+      {
+        "year": 2024,
+        "value": 39460
+      },
+      {
+        "year": 2025,
+        "value": 41170
+      }
+    ],
+    "inflation": {
+      "source": "SSB tabell 14700",
+      "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+      "referenceMonth": "November",
+      "updated": "2026-10-09T06:00:00Z",
+      "points": [
+        {
+          "year": 2016,
+          "value": 76.2
+        },
+        {
+          "year": 2017,
+          "value": 77
+        },
+        {
+          "year": 2018,
+          "value": 79.7
+        },
+        {
+          "year": 2019,
+          "value": 81
+        },
+        {
+          "year": 2020,
+          "value": 81.6
+        },
+        {
+          "year": 2021,
+          "value": 85.8
+        },
+        {
+          "year": 2022,
+          "value": 91.4
+        },
+        {
+          "year": 2023,
+          "value": 95.7
+        },
+        {
+          "year": 2024,
+          "value": 98
+        },
+        {
+          "year": 2025,
+          "value": 100.9
+        }
+      ]
+    }
+  },
+  "genderSalary": {
+    "occupationLabel": "barnehage- og skolefritidsassistenter mv.",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 41610,
+    "menMonthlyMedian": 41170,
+    "monthlyHours": 162.5
+  },
+  "genderGap": {
+    "title": "Lønnsforskjell mellom kvinner og menn blant barnehage- og skolefritidsassistenter mv.",
+    "source": "SSB tabell 11418",
+    "points": [
+      {
+        "year": 2016,
+        "women": 31940,
+        "men": 29170
+      },
+      {
+        "year": 2017,
+        "women": 32600,
+        "men": 29880
+      },
+      {
+        "year": 2018,
+        "women": 33020,
+        "men": 30640
+      },
+      {
+        "year": 2019,
+        "women": 33790,
+        "men": 31770
+      },
+      {
+        "year": 2020,
+        "women": 34100,
+        "men": 32230
+      },
+      {
+        "year": 2021,
+        "women": 35240,
+        "men": 33770
+      },
+      {
+        "year": 2022,
+        "women": 35950,
+        "men": 34840
+      },
+      {
+        "year": 2023,
+        "women": 38340,
+        "men": 37650
+      },
+      {
+        "year": 2024,
+        "women": 39980,
+        "men": 39460
+      },
+      {
+        "year": 2025,
+        "women": 41610,
+        "men": 41170
+      }
+    ]
+  },
+  "realWage": {
+    "title": "Kjøpekraft for barnehage- og skolefritidsassistenter mv.",
+    "source": "SSB tabell 11418 og 14700. Median månedslønn og KPI i november",
+    "baseline": {
+      "year": 2016,
+      "women": 31940,
+      "men": 29170,
+      "median": 31920,
+      "cpi": 76.2
+    },
+    "points": [
+      {
+        "year": 2017,
+        "women": 32600,
+        "men": 29880,
+        "median": 32580,
+        "cpi": 77
+      },
+      {
+        "year": 2018,
+        "women": 33020,
+        "men": 30640,
+        "median": 33020,
+        "cpi": 79.7
+      },
+      {
+        "year": 2019,
+        "women": 33790,
+        "men": 31770,
+        "median": 33760,
+        "cpi": 81
+      },
+      {
+        "year": 2020,
+        "women": 34100,
+        "men": 32230,
+        "median": 34010,
+        "cpi": 81.6
+      },
+      {
+        "year": 2021,
+        "women": 35240,
+        "men": 33770,
+        "median": 35200,
+        "cpi": 85.8
+      },
+      {
+        "year": 2022,
+        "women": 35950,
+        "men": 34840,
+        "median": 35920,
+        "cpi": 91.4
+      },
+      {
+        "year": 2023,
+        "women": 38340,
+        "men": 37650,
+        "median": 38340,
+        "cpi": 95.7
+      },
+      {
+        "year": 2024,
+        "women": 39980,
+        "men": 39460,
+        "median": 39980,
+        "cpi": 98
+      },
+      {
+        "year": 2025,
+        "women": 41610,
+        "men": 41170,
+        "median": 41610,
+        "cpi": 100.9
+      }
+    ]
+  },
+  "comparison": {
+    "year": 2025,
+    "source": "SSB tabell 11418 og 11658",
+    "salaryPopulation": "Median månedslønn i november 2025, inkludert bonus og uregelmessige tillegg, uten overtid.",
+    "employmentPopulation": "Lønnstakere i 2. kvartal 2025, personer.",
+    "inflation": {
+      "year": 2025,
+      "annualGrowth": 2.95918367346939,
+      "source": "SSB tabell 14700, november 2024–2025"
+    },
+    "points": [
+      {
+        "occupationCode": "5311",
+        "occupationName": "Barnehage- og skolefritidsassistenter mv.",
+        "href": "/yrke/barnehage-og-skolefritidsassistenter-mv-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 41610,
+        "previousMedianMonthlySalary": 39980,
+        "nominalGrowth": 4.077038519259624,
+        "employees": 95069,
+        "employeesPeriodLabel": "2. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "2342",
+        "occupationName": "Førskole-/barnehagelærere",
+        "href": "/yrke/forskole-barnehagelaerere-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 53550,
+        "previousMedianMonthlySalary": 51430,
+        "nominalGrowth": 4.122107719230028,
+        "employees": 34304,
+        "employeesPeriodLabel": "2. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      }
+    ]
+  },
+  "workforce": {
+    "occupationCode": "5311",
+    "occupationLabel": "Barnehage- og skolefritidsassistenter mv.",
+    "quarter": 2,
+    "updated": "2026-08-13T06:00:00Z",
+    "points": [
+      {
+        "year": 2017,
+        "men": 14582,
+        "women": 75624,
+        "reportedTotal": 90206
+      },
+      {
+        "year": 2018,
+        "men": 14832,
+        "women": 75479,
+        "reportedTotal": 90311
+      },
+      {
+        "year": 2019,
+        "men": 15408,
+        "women": 75297,
+        "reportedTotal": 90705
+      },
+      {
+        "year": 2020,
+        "men": 14573,
+        "women": 70881,
+        "reportedTotal": 85454
+      },
+      {
+        "year": 2021,
+        "men": 16212,
+        "women": 75870,
+        "reportedTotal": 92082
+      },
+      {
+        "year": 2022,
+        "men": 16128,
+        "women": 75054,
+        "reportedTotal": 91182
+      },
+      {
+        "year": 2023,
+        "men": 16448,
+        "women": 76344,
+        "reportedTotal": 92792
+      },
+      {
+        "year": 2024,
+        "men": 17168,
+        "women": 77866,
+        "reportedTotal": 95034
+      },
+      {
+        "year": 2025,
+        "men": 17544,
+        "women": 77525,
+        "reportedTotal": 95069
+      },
+      {
+        "year": 2026,
+        "men": 18070,
+        "women": 78405,
+        "reportedTotal": 96475
+      }
+    ]
+  },
+  "editorialResearch": {
+    "checkedAt": "2026-11-01",
+    "existingSnapshotCheck": "Barnehagelærernes serie i barnehagelaerer-lonn-2025.json er kontrollert mot ny nedlasting fra tabell 11418; alle verdier samsvarer.",
+    "titleSelection": "Mal 5 trukket med lik sannsynlighet blant 1, 3, 4 og 5; mal 2 var brukt i forrige yrkesinnlegg.",
+    "seo": {
+      "ownSearchDataAvailable": false,
+      "searchVolumeAvailable": false,
+      "basis": "Undersøkte søkeresultater og spørsmål om lønn, utdanningskrav, fagbrev, ABLU og politiattest. Ingen målte søkevolum.",
+      "queries": [
+        "barnehageassistent lønn spørsmål fagbrev utdanning SFO startlønn",
+        "barnehageassistent vanlige spørsmål utdanning fagbrev på jobb politiattest startlønn",
+        "site.udir.no fagbrev på jobb ansatt praksis ett år",
+        "site.udir.no arbeidsplassbasert barnehagelærerutdanning assistenter fire år"
+      ],
+      "faqIntents": [
+        "Utdanningskrav",
+        "Hvordan finne startlønn",
+        "Fagbrev mens man er i jobb",
+        "Utdanning til barnehagelærer ved siden av jobb",
+        "Politiattest ved midlertidig ansettelse"
+      ],
+      "sources": [
+        "https://utdanning.no/yrker/beskrivelse/barnehageassistent",
+        "https://pbl.no/tariff-og-loenn/finn-riktig-tariffloenn",
+        "https://www.udir.no/regelverk-og-tilsyn/skole-og-opplaring/retten-til-videregaende-opplaring/kandidat-fagbrev-jobb/",
+        "https://www.udir.no/kvalitet-og-kompetanse/kompetanseutvikling/arbeidsplassbasert-barnehagelarerutdanning/",
+        "https://www.udir.no/regelverkstolkninger/barnehage/lov-om-barnehager-barnehageloven/kapittel-vi-personalet/-30.-politiattest"
+      ]
+    },
+    "notes": [
+      "Lønn 2016–2025; reallønnsendringer 2017–2025 med 2016 som beregningsgrunnlag.",
+      "Lønnstakere: 2. kvartal 2017–2026. SSBs merknad om forbedret yrkesrapportering rundt 2025 er bevart i sources.workforce.notes.",
+      "Alle sektorverdier er observert, uten justering for ulik sammensetning. Arbeidsforholdstall ble undersøkt internt, men brukes ikke som lønnstakertall."
+    ]
+  }
+}
