@@ -7,6 +7,7 @@ description: Skriv eller oppdater praktiske blogginnlegg om lønnssamtale, lønn
 
 Les `AGENTS.MD`, `PROJECT.MD` og `src/content/blog/README.md` fra prosjektroten før arbeidet. Følg fellesreglene der.
 
+- Lenke naturlig i brødteksten til ett relevant forklarer-innlegg under `/forklarer` og ett annet relevant blogginnlegg under `/blogg`. Bruk beskrivende lenketekst og kontroller at begge målsidene finnes; en separat lenkeliste oppfyller ikke kravet.
 - Gjør rådene konkrete for situasjonen: årlig lønnssamtale, endret ansvar, jobbskifte eller jobbtilbud. Forklar hva leseren kan forberede, si og følge opp.
 - Gi et kort, konkret hovedsvar tidlig. Ved spørsmål om hva leseren bør si, vis en brukbar formulering før lange forklaringer. La eksempler og råd tilføre noe nytt fremfor å gjenta hovedsvaret.
 - Bruk direkte du-språk og norske arbeidslivsforhold. Skill rettigheter, tariffbestemmelser, arbeidsgiverpraksis og råd fra hverandre. Verifiser rettslige og tidsaktuelle påstander mot relevante primærkilder.

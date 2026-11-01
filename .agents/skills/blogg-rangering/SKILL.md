@@ -7,6 +7,7 @@ description: Skriv eller oppdater lønnsbaserte topplister og rangeringer for L�
 
 Les `AGENTS.MD`, `PROJECT.MD` og `src/content/blog/README.md` fra prosjektroten før arbeidet. Følg fellesreglene der.
 
+- Lenke naturlig i brødteksten til ett relevant forklarer-innlegg under `/forklarer` og ett annet relevant blogginnlegg under `/blogg`. Bruk beskrivende lenketekst og kontroller at begge målsidene finnes; en separat lenkeliste oppfyller ikke kravet.
 - Definer utvalget før sortering: hvilke yrker eller grupper som inngår, kilde, periode, populasjon, måleenhet og rangeringsmål. Skill yrkesgruppe fra utdanningsgruppe, særlig ved titler som «sivilingeniør».
 - Bruk samme mål og avgrensning for alle plasseringer. Ikke bland median og gjennomsnitt, lærlinger og øvrige ansatte eller ulike år uten at artikkelens metode uttrykkelig håndterer dette.
 - Ved lønnsvekst: angi start- og sluttår og om rangeringen bruker kroner, prosent eller reallønn. Bruk et sammenlignbart utvalg over hele perioden.
