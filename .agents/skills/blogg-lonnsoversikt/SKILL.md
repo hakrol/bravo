@@ -7,6 +7,7 @@ description: Skriv eller oppdater overordnede lønnsanalyser for Norge eller st�
 
 Les `AGENTS.MD`, `PROJECT.MD` og `src/content/blog/README.md` fra prosjektroten før arbeidet. Følg fellesreglene der.
 
+- Lenke naturlig i brødteksten til ett relevant forklarer-innlegg under `/forklarer` og ett annet relevant blogginnlegg under `/blogg`. Bruk beskrivende lenketekst og kontroller at begge målsidene finnes; en separat lenkeliste oppfyller ikke kravet.
 - Svar tidlig med hovedtallet og oppgi hvem det gjelder, periode, enhet og lønnsbegrep. «Lønn i Norge» er ikke automatisk det samme som inntekt for alle innbyggere.
 - Bruk publisert aggregat for den aktuelle populasjonen. Ikke beregn nasjonal gjennomsnittslønn som et uvektet gjennomsnitt av yrkesgjennomsnitt. Medianer kan heller ikke gjennomsnittsberegnes til en samlet median.
 - Forklar median og gjennomsnitt når skillet påvirker hva leseren oppfatter som vanlig lønn. Vis gjerne begge, tydelig merket, hvis kilden gir grunnlag for det.

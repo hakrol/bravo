@@ -7,6 +7,7 @@ description: Skriv eller oppdater blogginnlegg som sammenligner lønnen til to e
 
 Les `AGENTS.MD`, `PROJECT.MD` og `src/content/blog/README.md` fra prosjektroten før arbeidet. Følg fellesreglene der.
 
+- Lenke naturlig i brødteksten til ett relevant forklarer-innlegg under `/forklarer` og ett annet relevant blogginnlegg under `/blogg`. Bruk beskrivende lenketekst og kontroller at begge målsidene finnes; en separat lenkeliste oppfyller ikke kravet.
 - Presenter hovedforskjellen tidlig, med beløp, periode og lønnsbegrep. Ikke utrop en vinner dersom tallene ikke er sammenlignbare.
 - Bruk samme statistikkår, lønnsbegrep, måleenhet, arbeidstidsavgrensning, kjønn og sektor for alle yrker. Forklar eventuelle uunngåelige forskjeller og begrens konklusjonen deretter.
 - Kontroller at yrkestitlene svarer til statistikkgruppene. Forklar brede grupper og overlapp; ikke sammenlign utdanningstitler som om de automatisk var egne yrkeskoder.

@@ -7,6 +7,7 @@ description: Skriv eller oppdater blogginnlegg om hva ett yrke tjener, som elekt
 
 Les `AGENTS.MD`, `PROJECT.MD` og `src/content/blog/README.md` fra prosjektroten før arbeidet. Følg fellesreglene der uten å gå via inngangsskillen.
 
+- Lenke naturlig i brødteksten til ett relevant forklarer-innlegg under `/forklarer` og ett annet relevant blogginnlegg under `/blogg`. Bruk beskrivende lenketekst og kontroller at begge målsidene finnes; en separat lenkeliste oppfyller ikke kravet.
 - Svar tidlig med kildebelagt hovedtall, lønnsbegrep, enhet og statistikkår. Ikke bruk publiseringsåret som om det var dataåret.
 - Kontroller internt om yrkestittelen har egne SSB-tall eller inngår i en bredere gruppe. Bruk kontrollen til å velge riktige data; ikke legg inn en standardforklaring av statistikkgruppen i innlegget.
 - Bruk yrkeskoder og Utdanning.no internt etter datakildereglene i README. Innlegget skal ikke inneholde yrkeskoder, forklaringer om kodeverk eller tekniske forklaringer om datahenting, snapshots, komponenter eller implementasjon. Forklar arbeidsoppgaver og utdanningsvei bare når de hjelper leseren. Oppgi fortsatt kilder, statistikkår og lønnsbegrep, men følg regelen under om metode og statistikkutvalg.
