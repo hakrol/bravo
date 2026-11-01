@@ -6,10 +6,14 @@ import storeManagerSnapshot from "@/content/blog/data/butikksjef-interaktive-dia
 import chemistSnapshot from "@/content/blog/data/kjemiker-lonn-2026.json";
 import caretakerSnapshot from "@/content/blog/data/vaktmester-lonn-2026.json";
 import dentistSnapshot from "@/content/blog/data/tannlege-lonn-2026.json";
+import kindergartenTeacherSnapshot from "@/content/blog/data/barnehagelaerer-lonn-2025.json";
+import kindergartenAssistantSnapshot from "@/content/blog/data/barnehageassistent-lonn-2025.json";
 import type { SalaryGrowthSnapshot } from "@/lib/salary-growth-snapshot";
 
 // Registrer faktiske bloggdata her. Testdata brukes bare av utviklingsvisningen.
 const snapshots = {
+  "barnehageassistent-lonnsutvikling-2025": kindergartenAssistantSnapshot.salaryGrowth,
+  "barnehagelaerer-lonnsutvikling-2025": kindergartenTeacherSnapshot.salaryGrowth,
   ...engineerSnapshot.salaryGrowthSnapshots,
   "arealplanlegger-lonnsutvikling-2025": arealPlannerSnapshot,
   "rorlegger-lonnsutvikling-2025": rorleggerSnapshot,
