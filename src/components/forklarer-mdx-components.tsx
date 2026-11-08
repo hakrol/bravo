@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { BlogFAQ, BlogFAQItem } from "@/components/blog-faq";
 import { BlogMdxImage } from "@/components/blog-mdx-image";
 import { BlogTableOfContents } from "@/components/blog-table-of-contents";
+import { OvertimePayCalculator, RealWageCalculator } from "@/components/forklarer-calculators";
 import type { BlogTableOfContentsItem } from "@/lib/blog-shared";
 
 function slugifyHeading(value: string) {
@@ -72,6 +73,8 @@ export function buildForklarerMdxComponents(tableOfContents: BlogTableOfContents
       );
     },
     img: BlogMdxImage,
+    RealWageCalculator,
+    OvertimePayCalculator,
     Example: ({ children, title, ...props }) => (
       <div className="blog-example" {...props}>
         {title ? <p className="blog-example-title">{title}</p> : null}

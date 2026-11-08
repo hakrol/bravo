@@ -9,6 +9,14 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  CleanerGenderSalaryExplorer,
+  CleanerOccupationSalaryComparisonExplorer,
+  CleanerRealWageGrowthExplorer,
+  CleanerSalaryRangeExplorer,
+  CleanerSalaryGenderGapExplorer,
+  CleanerWorkforceGrowthExplorer,
+} from "@/components/blog-cleaner-salary-charts";
+import {
   KindergartenAssistantGenderSalaryExplorer,
   KindergartenAssistantOccupationSalaryComparisonExplorer,
   KindergartenAssistantRealWageGrowthExplorer,
@@ -360,6 +368,12 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    CleanerGenderSalaryExplorer,
+    CleanerOccupationSalaryComparisonExplorer,
+    CleanerRealWageGrowthExplorer,
+    CleanerSalaryRangeExplorer,
+    CleanerSalaryGenderGapExplorer,
+    CleanerWorkforceGrowthExplorer,
     KindergartenAssistantGenderSalaryExplorer,
     KindergartenAssistantOccupationSalaryComparisonExplorer,
     KindergartenAssistantRealWageGrowthExplorer,
