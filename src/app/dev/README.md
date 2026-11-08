@@ -92,23 +92,23 @@ Ved hover, trykk eller tastaturfokus vises også ♂ og ♀ med lønnen over val
 
 ## Interaktiv reallønn
 
-### Ny linjevariant
+### Stolper med én valgt kjønnsserie
 
-Fanen «Interaktiv reallønn – linje» finnes på `/dev/grafer` og `/utvikling-diagram`.
+Fanen «Interaktiv reallønn – stolper» finnes på `/dev/grafer` og `/utvikling-diagram`.
 `src/components/real-wage-line-explorer.tsx` bruker samme kortstil som de øvrige interaktive diagrammene.
 Den viser én serie om gangen: «Begge kjønn» som standard, «Menn» eller «Kvinner».
 Samlet gjennomsnittslønn for begge kjønn oppgis separat i `both`; den beregnes ikke som et uvektet snitt av kjønnene.
 Beregninger og typer ligger i `src/lib/real-wage-line.ts`, og fiktive testdata i
 `src/lib/development-real-wage-line-data.ts`.
 
-Linjen er grønn over null og rød under null, med fargeskifte nøyaktig ved nullkryssingen.
-Arealet mellom linjen og nullinjen fylles lysegrønt over null og lyserødt under null.
-Nullpunkter er grå. Manglende data eller kalenderår bryter både linjen og fyllet.
+Hvert år vises med én stolpe fra null til årets reallønnsvekst.
+Positive stolper har lysegrønt fyll og grønn kant; negative stolper har lyserødt fyll og rød kant.
+Nullvekst vises som en grå strek ved null. Manglende data vises som —, og kalenderår som mangler beholder tom plass.
 Reallønnsveksten beregnes mot foregående kalenderår med samme formel som stolpevarianten.
-Hover nær et punkt viser en infoboks med samme stil og plassering som stolpevariantens tooltip.
+Hover over en stolpe viser en infoboks med samme stil og plassering som den eksisterende stolpevariantens tooltip.
 Infoboksen viser år, kjønn, reallønnsendring, nominell lønnsvekst og KPI-vekst.
-Den lukkes når pekeren forlater punktet; museklikk låser den ikke.
-Touch og penn kan åpne boksen ved trykk på et punkt; trykk utenfor lukker den.
+Den lukkes når pekeren forlater stolpen; museklikk låser den ikke.
+Touch og penn kan åpne boksen ved trykk på en stolpe; trykk utenfor lukker den.
 På mobil ligger boksen under plottet. Tastaturfokus og venstre/høyre piltast, Home og End
 viser også infoboksen, og Escape lukker den.
 

@@ -50,8 +50,8 @@ const diagrams: DevelopmentDiagram[] = [
     Component: DevelopmentRealWage,
   },
   {
-    id: "reallonn-linje",
-    label: "Interaktiv reallønn – linje",
+    id: "reallonn-stolper",
+    label: "Interaktiv reallønn – stolper",
     Component: DevelopmentRealWageLine,
   },
   {
