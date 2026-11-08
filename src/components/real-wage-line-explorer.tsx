@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { formatRealWagePercent, realWageColors } from "@/lib/real-wage-growth";
 import {
-  prepareRealWageLine, realWageLineGroups, splitRealWageLine,
+  prepareRealWageLine, realWageLineGroups,
   type RealWageLineDataset, type RealWageLineGroup,
 } from "@/lib/real-wage-line";
 
@@ -24,7 +24,6 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [previewYear, setPreviewYear] = useState<number | null>(null);
   const points = useMemo(() => prepareRealWageLine(dataset, group), [dataset, group]);
-  const runs = useMemo(() => splitRealWageLine(points), [points]);
   const active = points.find((point) => point.year === (previewYear ?? selectedYear));
   const groupLabel = realWageLineGroups.find((option) => option.key === group)!.label;
 
@@ -74,8 +73,9 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
     const max = Math.ceil((high + step * 0.5) / step) * step;
     const firstYear = points[0]?.year ?? 0;
     const lastYear = points.at(-1)?.year ?? firstYear;
-    const x = (year: number) => margin.left + (lastYear === firstYear ? plotWidth / 2
-      : (year - firstYear) / (lastYear - firstYear) * plotWidth);
+    const slotWidth = plotWidth / (lastYear - firstYear + 1);
+    const barWidth = Math.min(38, slotWidth * 0.62);
+    const x = (year: number) => margin.left + (year - firstYear + 0.5) * slotWidth;
     const y = (value: number) => margin.top + (max - value) / (max - min) * plotHeight;
     const ticks = Array.from({ length: Math.round((max - min) / step) + 1 }, (_, index) => min + index * step);
     // Behold endepunktene og reserver minst 44 px mellom årsetikettene.
@@ -83,18 +83,22 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
     for (const point of points) {
       if ([...labeledYears].every((year) => Math.abs(x(year) - x(point.year)) >= 44)) labeledYears.add(point.year);
     }
-    return { margin, plotHeight, plotWidth, height: margin.top + plotHeight + margin.bottom, x, y, ticks, labeledYears };
+    return { margin, plotHeight, barWidth, height: margin.top + plotHeight + margin.bottom, x, y, ticks, labeledYears };
   }, [points, width]);
 
-  function pointerYear(event: MouseEvent<SVGSVGElement>, hitRadius: number) {
+  function pointerYear(event: MouseEvent<SVGSVGElement>, hitPadding: number) {
     if (!points.length) return null;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width * width;
     const y = (event.clientY - rect.top) / rect.height * geometry.height;
-    const distance = (point: typeof points[number]) => Math.hypot(geometry.x(point.year) - x,
-      (point.realGrowth === null ? geometry.margin.top + geometry.plotHeight - 8 : geometry.y(point.realGrowth)) - y);
+    const distance = (point: typeof points[number]) => {
+      const endY = point.realGrowth === null ? geometry.margin.top + geometry.plotHeight - 8 : geometry.y(point.realGrowth);
+      const baselineY = point.realGrowth === null ? endY : geometry.y(0);
+      return Math.hypot(Math.max(0, Math.abs(geometry.x(point.year) - x) - geometry.barWidth / 2),
+        Math.max(0, Math.min(endY, baselineY) - y, y - Math.max(endY, baselineY)));
+    };
     const closest = points.reduce((candidate, point) => distance(point) < distance(candidate) ? point : candidate);
-    return distance(closest) <= hitRadius ? closest.year : null;
+    return distance(closest) <= hitPadding ? closest.year : null;
   }
 
   function handleKeyDown(event: KeyboardEvent<SVGSVGElement>) {
@@ -145,12 +149,12 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
       <div ref={containerRef} className="relative w-full">
         {points.length ? (
           <svg id={`${id}-chart`} viewBox={`0 0 ${width} ${geometry.height}`} height={geometry.height}
-            role="group" tabIndex={0} aria-label={`Årlig reallønnsvekst. ${groupLabel}. Bruk venstre og høyre piltast for å velge år, Home og End for første og siste år.`}
+            role="group" tabIndex={0} aria-label={`Stolpediagram for årlig reallønnsvekst. ${groupLabel}. Bruk venstre og høyre piltast for å velge år, Home og End for første og siste år.`}
             aria-describedby={active ? `${id}-tooltip` : undefined} onKeyDown={handleKeyDown}
             onPointerMove={(event) => {
               if (event.pointerType === "mouse" || event.pointerType === "pen" && event.buttons === 0) {
                 setSelectedYear(null);
-                setPreviewYear(pointerYear(event, 18));
+                setPreviewYear(pointerYear(event, 6));
               }
             }}
             onPointerLeave={() => setPreviewYear(null)}
@@ -158,7 +162,7 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
             onPointerCancel={() => { pointerTypeRef.current = null; setPreviewYear(null); }}
             onClick={(event) => {
               if (pointerTypeRef.current === "touch" || pointerTypeRef.current === "pen") {
-                setSelectedYear(pointerYear(event, 28));
+                setSelectedYear(pointerYear(event, 14));
                 setPreviewYear(null);
               }
               pointerTypeRef.current = null;
@@ -167,20 +171,8 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
               if (event.currentTarget.matches(":focus-visible")) setPreviewYear(points.at(-1)?.year ?? null);
             }}
             onBlur={() => setPreviewYear(null)}
-            className="block w-full touch-pan-y cursor-crosshair outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0b376d]">
-            <defs>
-              <clipPath id={`${id}-positive`}><rect x={geometry.margin.left} y={geometry.margin.top} width={geometry.plotWidth} height={zeroY - geometry.margin.top} /></clipPath>
-              <clipPath id={`${id}-negative`}><rect x={geometry.margin.left} y={zeroY} width={geometry.plotWidth} height={bottom - zeroY} /></clipPath>
-            </defs>
+            className="block w-full touch-pan-y cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0b376d]">
             <g aria-hidden="true" pointerEvents="none">
-              {runs.map((run) => {
-                const line = run.map((point, index) => `${index === 0 ? "M" : "L"} ${geometry.x(point.year)} ${geometry.y(point.realGrowth)}`).join(" ");
-                const area = `M ${geometry.x(run[0].year)} ${zeroY} ${line.replace(/^M/, "L")} L ${geometry.x(run.at(-1)!.year)} ${zeroY} Z`;
-                return <g key={run[0].year}>
-                  <path d={area} fill="#dcfce7" clipPath={`url(#${id}-positive)`} />
-                  <path d={area} fill="#fee2e2" clipPath={`url(#${id}-negative)`} />
-                </g>;
-              })}
               {geometry.ticks.map((tick) => <g key={tick}>
                 <line x1={geometry.margin.left} x2={width - geometry.margin.right} y1={geometry.y(tick)} y2={geometry.y(tick)}
                   stroke={tick === 0 ? "#0b376d" : "#dbe3e8"} strokeWidth={tick === 0 ? 1.5 : 1} strokeDasharray={tick === 0 ? undefined : "3 5"} />
@@ -188,21 +180,19 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
                   fill={tick === 0 ? "#0b376d" : "#64748b"} fontWeight={tick === 0 ? 700 : 400}>{axisFormat.format(tick)} %</text>
               </g>)}
               <line x1={geometry.margin.left} x2={geometry.margin.left} y1={geometry.margin.top} y2={bottom} stroke="#94a3b8" />
-              {runs.map((run) => {
-                const d = run.map((point, index) => `${index === 0 ? "M" : "L"} ${geometry.x(point.year)} ${geometry.y(point.realGrowth)}`).join(" ");
-                return <g key={run[0].year}>
-                  <path d={d} fill="none" stroke={realWageColors.positive} strokeWidth="3" strokeLinejoin="round" clipPath={`url(#${id}-positive)`} />
-                  <path d={d} fill="none" stroke={realWageColors.negative} strokeWidth="3" strokeLinejoin="round" clipPath={`url(#${id}-negative)`} />
-                  {run.slice(1).map((point, index) => point.realGrowth === 0 && run[index].realGrowth === 0 ? (
-                    <line key={point.year} x1={geometry.x(run[index].year)} x2={geometry.x(point.year)} y1={zeroY} y2={zeroY} stroke={realWageColors.neutral} strokeWidth="3" />
-                  ) : null)}
-                </g>;
-              })}
               {active ? <line x1={geometry.x(active.year)} x2={geometry.x(active.year)} y1={geometry.margin.top} y2={bottom} stroke="#94a3b8" strokeDasharray="3 5" /> : null}
               {points.map((point) => <g key={point.year}>
-                {point.realGrowth !== null ? <circle cx={geometry.x(point.year)} cy={geometry.y(point.realGrowth)} r={point.year === active?.year ? 6 : 4}
-                  fill={valueColor(point.realGrowth)} stroke="white" strokeWidth="1.5" /> : (
+                {point.realGrowth === null ? (
                   <text x={geometry.x(point.year)} y={bottom - 8} textAnchor="middle" fill="#64748b" fontSize="13">—</text>
+                ) : point.realGrowth === 0 ? (
+                  <line x1={geometry.x(point.year) - geometry.barWidth / 2} x2={geometry.x(point.year) + geometry.barWidth / 2}
+                    y1={zeroY} y2={zeroY} stroke={realWageColors.neutral} strokeWidth="3" />
+                ) : (
+                  <rect data-real-wage-bar={point.year} x={geometry.x(point.year) - geometry.barWidth / 2}
+                    y={Math.min(zeroY, geometry.y(point.realGrowth))} width={geometry.barWidth}
+                    height={Math.abs(geometry.y(point.realGrowth) - zeroY)}
+                    fill={point.realGrowth > 0 ? "#dcfce7" : "#fee2e2"}
+                    stroke={valueColor(point.realGrowth)} strokeWidth={point.year === active?.year ? 2.5 : 1.5} />
                 )}
                 {geometry.labeledYears.has(point.year) ? <text x={geometry.x(point.year)} y={bottom + 26} textAnchor="middle" fontSize="12" fill="#64748b">{point.year}</text> : null}
               </g>)}
@@ -225,7 +215,7 @@ export function RealWageLineExplorer({ dataset }: { dataset: RealWageLineDataset
       </div>
 
       <figcaption className="border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-xs leading-relaxed text-slate-600 sm:px-7">
-        <p className="m-0">Grønn linje og lysegrønt areal viser økt kjøpekraft, rød linje og lyserødt areal viser redusert kjøpekraft. Hold pekeren over et punkt eller trykk på det for detaljer.</p>
+        <p className="m-0">Lysegrønne stolper over null viser økt kjøpekraft. Lyserøde stolper under null viser redusert kjøpekraft. Hold pekeren over en stolpe eller trykk på den for detaljer.</p>
         <p className="mb-0 mt-2 font-bold text-slate-700">Kilde: {dataset.source}.</p>
       </figcaption>
     </figure>
