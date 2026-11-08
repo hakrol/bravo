@@ -92,6 +92,28 @@ Ved hover, trykk eller tastaturfokus vises også ♂ og ♀ med lønnen over val
 
 ## Interaktiv reallønn
 
+### Ny linjevariant
+
+Fanen «Interaktiv reallønn – linje» finnes på `/dev/grafer` og `/utvikling-diagram`.
+`src/components/real-wage-line-explorer.tsx` bruker samme kortstil som de øvrige interaktive diagrammene.
+Den viser én serie om gangen: «Begge kjønn» som standard, «Menn» eller «Kvinner».
+Samlet gjennomsnittslønn for begge kjønn oppgis separat i `both`; den beregnes ikke som et uvektet snitt av kjønnene.
+Beregninger og typer ligger i `src/lib/real-wage-line.ts`, og fiktive testdata i
+`src/lib/development-real-wage-line-data.ts`.
+
+Linjen er grønn over null og rød under null, med fargeskifte nøyaktig ved nullkryssingen.
+Arealet mellom linjen og nullinjen fylles lysegrønt over null og lyserødt under null.
+Nullpunkter er grå. Manglende data eller kalenderår bryter både linjen og fyllet.
+Reallønnsveksten beregnes mot foregående kalenderår med samme formel som stolpevarianten.
+Hover nær et punkt viser en infoboks med samme stil og plassering som stolpevariantens tooltip.
+Infoboksen viser år, kjønn, reallønnsendring, nominell lønnsvekst og KPI-vekst.
+Den lukkes når pekeren forlater punktet; museklikk låser den ikke.
+Touch og penn kan åpne boksen ved trykk på et punkt; trykk utenfor lukker den.
+På mobil ligger boksen under plottet. Tastaturfokus og venstre/høyre piltast, Home og End
+viser også infoboksen, og Escape lukker den.
+
+### Eksisterende stolpevariant
+
 Diagrammet vises på `/dev/grafer` og som egen fane på `/utvikling-diagram`. `src/components/real-wage-growth-explorer.tsx` tar et `RealWageDataset` fra `src/lib/real-wage-growth.ts`. Komponentens input er årlige gjennomsnittlige nominelle månedslønninger for `women` og `men`, samt årlig KPI-indeks i `cpi`, i `points`. Det valgfrie feltet `median` er samlet nominell median månedslønn for begge kjønn. Denne må oppgis separat og beregnes ikke fra gjennomsnittslønningene. Tooltipen viser reallønnsendring, nominell lønnsvekst, årlig prisvekst (KPI) og «Median månedslønn», i denne rekkefølgen. Gjennomsnittlig nominell månedslønn vises ikke i tooltipen. Manglende median vises som «Mangler data» og påvirker ingen vekstberegninger. Bruk samme KPI-definisjon og indeksbasis gjennom hele datasettet.
 
 `baseline` kan gi året før første visningsår. Ti årlige endringer trenger elleve år med sammenlignbare lønns- og KPI-tall. Testdata i `src/lib/development-real-wage-data.ts` bruker 2015 som grunnlag og viser 2016–2025. `src/components/development-real-wage.tsx` tilbyr 10, 5 og 1 år samt manglende data.

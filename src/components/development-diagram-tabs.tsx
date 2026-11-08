@@ -6,6 +6,7 @@ import { SalaryGenderExplorer } from "@/components/salary-gender-explorer";
 import { genderSalaryTestSnapshot } from "@/lib/development-gender-salary-data";
 import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
 import { DevelopmentRealWage } from "@/components/development-real-wage";
+import { DevelopmentRealWageLine } from "@/components/development-real-wage-line";
 import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
 import { DevelopmentSalaryRange } from "@/components/development-salary-range";
 import { DevelopmentWorkforceGrowth } from "@/components/development-workforce-growth";
@@ -47,6 +48,11 @@ const diagrams: DevelopmentDiagram[] = [
     id: "reallonn",
     label: "Interaktiv reallønn",
     Component: DevelopmentRealWage,
+  },
+  {
+    id: "reallonn-linje",
+    label: "Interaktiv reallønn – linje",
+    Component: DevelopmentRealWageLine,
   },
   {
     id: "yrkessammenligning",
