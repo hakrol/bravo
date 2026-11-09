@@ -10,6 +10,8 @@ import { DevelopmentRealWageLine } from "@/components/development-real-wage-line
 import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
 import { DevelopmentSalaryRange } from "@/components/development-salary-range";
 import { DevelopmentWorkforceGrowth } from "@/components/development-workforce-growth";
+import { OccupationQuadrantExplorer } from "@/components/occupation-quadrant-explorer";
+import { occupationQuadrantTestDataset } from "@/lib/development-occupation-quadrant-data";
 import type { WorkforceGrowthDataset } from "@/lib/workforce-growth";
 import { salaryGrowthTestSnapshot } from "@/lib/development-diagram-data";
 
@@ -25,6 +27,10 @@ function SalaryGrowthTestDiagram() {
 
 function GenderSalaryTestDiagram() {
   return <SalaryGenderExplorer {...genderSalaryTestSnapshot} />;
+}
+
+function OccupationQuadrantTestDiagram() {
+  return <OccupationQuadrantExplorer dataset={occupationQuadrantTestDataset} />;
 }
 
 // Én oppføring per diagram. Lønnstakerdiagrammet får faktiske SSB-data fra serveren.
@@ -63,6 +69,11 @@ const diagrams: DevelopmentDiagram[] = [
     id: "lonnsspenn",
     label: "Interaktivt lønnsspenn",
     Component: DevelopmentSalaryRange,
+  },
+  {
+    id: "plottdiagram",
+    label: "Interaktivt plottdiagram",
+    Component: OccupationQuadrantTestDiagram,
   },
   {
     id: "lonnstakere",

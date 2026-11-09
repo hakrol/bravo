@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { InteractiveChartTooltip } from "@/components/interactive-chart-tooltip";
 import {
   buildOccupationComparisonScale, occupationComparisonInsight, prepareOccupationComparison,
   salaryDifference, sortOccupationComparison,
@@ -139,10 +140,10 @@ export function OccupationSalaryComparisonExplorer({ dataset, selectedOccupation
                   </span>
                 </button>
                 </div>
-                {inFocus ? <div ref={tooltipRef} id={`${id}-tooltip`} role="tooltip"
-                  className={`${styles.tooltip} ${index >= sorted.length / 2 ? styles.tooltipAbove : ""} rounded-[6px] border border-slate-200 bg-white px-4 py-3 text-xs leading-5 text-slate-600 shadow-[0_12px_32px_rgba(15,23,42,0.12)]`}>
+                {inFocus ? <InteractiveChartTooltip ref={tooltipRef} id={`${id}-tooltip`}
+                  className={`${styles.tooltip} ${index >= sorted.length / 2 ? styles.tooltipAbove : ""}`}>
                   <OccupationDetails point={point} reference={reference} />
-                </div> : null}
+                </InteractiveChartTooltip> : null}
               </li>
             );
           })}

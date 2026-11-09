@@ -8,6 +8,11 @@ export const metadata: Metadata = {
 
 const devAreas = [
   {
+    href: "/dev/interaktivt-plottdiagram",
+    title: "Interaktivt plottdiagram",
+    description: "Kvadrantdiagram med medianlønn og antall lønnstakere for norske yrker.",
+  },
+  {
     href: "/utvikling-diagram",
     title: "Utvikling-diagram",
     description: "Nye diagrammer samlet i faner, med samme komponenter som i blogginnleggene.",

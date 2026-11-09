@@ -1,0 +1,32 @@
+.chart {
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.tooltip {
+  color: #000;
+  font-size: 14px;
+  line-height: 1.5;
+  position: absolute;
+  z-index: 20;
+  width: 290px;
+  max-width: calc(100% - 24px);
+}
+
+.point {
+  transition: opacity 120ms ease;
+}
+
+@container (max-width: 520px) {
+  .tooltip {
+    position: relative;
+    inset: auto !important;
+    width: auto;
+    max-width: none;
+    margin: 0 12px 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .point { transition: none; }
+}

@@ -1,0 +1,617 @@
+{
+  "capturedAt": "2026-11-08",
+  "statisticsYear": 2025,
+  "sources": {
+    "salary": {
+      "table": "11418",
+      "url": "https://www.ssb.no/statbank/table/11418/",
+      "localFile": "src/lib/generated/occupation-median-timeseries.json",
+      "updated": "2026-08-28T06:00:00Z",
+      "filters": {
+        "MaaleMetode": "01",
+        "Yrke": "3355",
+        "Sektor": "ALLE",
+        "Kjonn": [
+          "0",
+          "1",
+          "2"
+        ],
+        "AvtaltVanlig": "0",
+        "ContentsCode": "Manedslonn",
+        "Tid": [
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      }
+    },
+    "inflation": {
+      "table": "14700",
+      "url": "https://www.ssb.no/statbank/table/14700/",
+      "localFile": "src/lib/generated/inflation-quarter-series.json",
+      "updated": "2026-08-10T06:00:00Z",
+      "filters": {
+        "VareTjenesteGrp": "00",
+        "ContentsCode": "KpiIndMnd",
+        "Tid": [
+          "2016M11",
+          "2017M11",
+          "2018M11",
+          "2019M11",
+          "2020M11",
+          "2021M11",
+          "2022M11",
+          "2023M11",
+          "2024M11",
+          "2025M11"
+        ]
+      }
+    },
+    "workforce": {
+      "table": "11658",
+      "url": "https://www.ssb.no/statbank/table/11658/",
+      "localFile": "src/lib/generated/occupation-workforce-timeseries.json",
+      "updated": "2026-08-13T06:00:00Z",
+      "filters": {
+        "Yrke": "3355",
+        "Kjonn": [
+          "0",
+          "1",
+          "2"
+        ],
+        "Alder": "999D",
+        "ContentsCode": "Lonsstakere",
+        "Tid": [
+          "2016K4",
+          "2017K4",
+          "2018K4",
+          "2019K4",
+          "2020K4",
+          "2021K4",
+          "2022K4",
+          "2023K4",
+          "2024K4",
+          "2025K4"
+        ]
+      }
+    }
+  },
+  "occupationCheck": {
+    "occupationCode": "3355",
+    "label": "Politibetjenter mv.",
+    "styrk98": [
+      "3450105",
+      "3450106",
+      "3450101",
+      "3450109",
+      "3450108",
+      "3450107",
+      "3450104",
+      "3450103",
+      "3450102"
+    ],
+    "mappingSource": "src/lib/ssb/426.csv",
+    "descriptionSource": "https://utdanning.no/yrker/beskrivelse/politibetjent"
+  },
+  "population": {
+    "salary": "Alle sektorer, heltid og deltid samlet, heltidsekvivalenter. Median månedslønn i november, med uregelmessige tillegg og bonus, uten overtid.",
+    "realWage": "Endring i median månedslønn separat per kjønn, justert med KPI i november; ikke gjennomsnittslønn.",
+    "workforce": "Lønnstakere (personer), alle aldre, 4. kvartal hvert år. Ikke arbeidsforhold eller årsverk."
+  },
+  "headline": {
+    "medianMonthly": 63920,
+    "annualizedMedian": 767040,
+    "monthlyHours": 162.5,
+    "estimatedHourly": 393.3538461538462
+  },
+  "salaryGrowth": {
+    "title": "Slik har lønnen til politibetjenter utviklet seg",
+    "subtitle": "Median månedslønn fra 2016 til 2025",
+    "source": "SSB tabell 11418",
+    "note": "November hvert år. 2015 er utelatt på grunn av annen referansemåned og arbeidstidsmetode. KPI i november; inflasjonsjustering bruker prisnivået i 2025.",
+    "points": [
+      {
+        "year": 2016,
+        "value": 46700
+      },
+      {
+        "year": 2017,
+        "value": 47180
+      },
+      {
+        "year": 2018,
+        "value": 48560
+      },
+      {
+        "year": 2019,
+        "value": 50760
+      },
+      {
+        "year": 2020,
+        "value": 51880
+      },
+      {
+        "year": 2021,
+        "value": 52800
+      },
+      {
+        "year": 2022,
+        "value": 55480
+      },
+      {
+        "year": 2023,
+        "value": 60760
+      },
+      {
+        "year": 2024,
+        "value": 61320
+      },
+      {
+        "year": 2025,
+        "value": 63920
+      }
+    ],
+    "womenPoints": [
+      {
+        "year": 2016,
+        "value": 43800
+      },
+      {
+        "year": 2017,
+        "value": 44010
+      },
+      {
+        "year": 2018,
+        "value": 45730
+      },
+      {
+        "year": 2019,
+        "value": 47810
+      },
+      {
+        "year": 2020,
+        "value": 49290
+      },
+      {
+        "year": 2021,
+        "value": 50230
+      },
+      {
+        "year": 2022,
+        "value": 52950
+      },
+      {
+        "year": 2023,
+        "value": 58010
+      },
+      {
+        "year": 2024,
+        "value": 58490
+      },
+      {
+        "year": 2025,
+        "value": 61140
+      }
+    ],
+    "menPoints": [
+      {
+        "year": 2016,
+        "value": 47990
+      },
+      {
+        "year": 2017,
+        "value": 48550
+      },
+      {
+        "year": 2018,
+        "value": 50020
+      },
+      {
+        "year": 2019,
+        "value": 52280
+      },
+      {
+        "year": 2020,
+        "value": 53160
+      },
+      {
+        "year": 2021,
+        "value": 54110
+      },
+      {
+        "year": 2022,
+        "value": 56900
+      },
+      {
+        "year": 2023,
+        "value": 62370
+      },
+      {
+        "year": 2024,
+        "value": 63060
+      },
+      {
+        "year": 2025,
+        "value": 65750
+      }
+    ],
+    "inflation": {
+      "source": "SSB tabell 14700",
+      "sourceUrl": "https://www.ssb.no/statbank/table/14700/",
+      "referenceMonth": "November",
+      "updated": "2026-08-10T06:00:00Z",
+      "points": [
+        {
+          "year": 2016,
+          "value": 76.2
+        },
+        {
+          "year": 2017,
+          "value": 77
+        },
+        {
+          "year": 2018,
+          "value": 79.7
+        },
+        {
+          "year": 2019,
+          "value": 81
+        },
+        {
+          "year": 2020,
+          "value": 81.6
+        },
+        {
+          "year": 2021,
+          "value": 85.8
+        },
+        {
+          "year": 2022,
+          "value": 91.4
+        },
+        {
+          "year": 2023,
+          "value": 95.7
+        },
+        {
+          "year": 2024,
+          "value": 98
+        },
+        {
+          "year": 2025,
+          "value": 100.9
+        }
+      ]
+    }
+  },
+  "genderSalary": {
+    "occupationLabel": "politibetjenter",
+    "period": "2025",
+    "source": "SSB tabell 11418",
+    "womenMonthlyMedian": 61140,
+    "menMonthlyMedian": 65750,
+    "monthlyHours": 162.5
+  },
+  "comparison": {
+    "year": 2025,
+    "source": "SSB tabell 11418, 11658 og 14700",
+    "salaryPopulation": "Median månedslønn, alle sektorer, begge kjønn, heltid og deltid samlet.",
+    "employmentPopulation": "Lønnstakere (personer), alle aldre, 4. kvartal 2025.",
+    "inflation": {
+      "year": 2025,
+      "annualGrowth": 2.95918367346939,
+      "source": "SSB tabell 14700, november mot november"
+    },
+    "points": [
+      {
+        "occupationCode": "3355",
+        "occupationName": "Politibetjenter mv.",
+        "href": "/yrke/politibetjenter-mv-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 63920,
+        "nominalGrowth": 4.24005218525767,
+        "employees": 12145,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "5411",
+        "occupationName": "Brannkonstabler",
+        "href": "/yrke/brannkonstabler-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 60510,
+        "nominalGrowth": 2.6289009497964644,
+        "employees": 4307,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "5413",
+        "occupationName": "Fengselsbetjenter",
+        "href": "/yrke/fengselsbetjenter-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 55900,
+        "nominalGrowth": 9.094457455113192,
+        "employees": 3687,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "0-9",
+        "occupationName": "Alle yrker samlet",
+        "href": "/yrker",
+        "year": 2025,
+        "medianMonthlySalary": 55800,
+        "nominalGrowth": 4.318564217610765,
+        "employees": 2839036,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "3351",
+        "occupationName": "Tollere",
+        "href": "/yrke/tollere-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 53680,
+        "nominalGrowth": 4.659777734451165,
+        "employees": 1145,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "5414",
+        "occupationName": "Vektere",
+        "href": "/yrke/vektere-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 43450,
+        "nominalGrowth": 4.0967896502156265,
+        "employees": 10460,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      },
+      {
+        "occupationCode": "5419",
+        "occupationName": "Andre sikkerhetsarbeidere",
+        "href": "/yrke/andre-sikkerhetsarbeidere-lonn",
+        "year": 2025,
+        "medianMonthlySalary": 42340,
+        "nominalGrowth": 3.2179424670892187,
+        "employees": 3309,
+        "employeesPeriodLabel": "4. kvartal 2025",
+        "source": "SSB tabell 11418 og 11658"
+      }
+    ]
+  },
+  "genderGap": {
+    "title": "Lønnsforskjell mellom kvinner og menn blant politibetjenter",
+    "source": "SSB tabell 11418",
+    "points": [
+      {
+        "year": 2016,
+        "women": 43800,
+        "men": 47990
+      },
+      {
+        "year": 2017,
+        "women": 44010,
+        "men": 48550
+      },
+      {
+        "year": 2018,
+        "women": 45730,
+        "men": 50020
+      },
+      {
+        "year": 2019,
+        "women": 47810,
+        "men": 52280
+      },
+      {
+        "year": 2020,
+        "women": 49290,
+        "men": 53160
+      },
+      {
+        "year": 2021,
+        "women": 50230,
+        "men": 54110
+      },
+      {
+        "year": 2022,
+        "women": 52950,
+        "men": 56900
+      },
+      {
+        "year": 2023,
+        "women": 58010,
+        "men": 62370
+      },
+      {
+        "year": 2024,
+        "women": 58490,
+        "men": 63060
+      },
+      {
+        "year": 2025,
+        "women": 61140,
+        "men": 65750
+      }
+    ]
+  },
+  "realWage": {
+    "title": "Kjøpekraft for politibetjenter",
+    "source": "SSB tabell 11418 og 14700. Median månedslønn og KPI i november",
+    "baseline": {
+      "year": 2016,
+      "women": 43800,
+      "men": 47990,
+      "median": 46700,
+      "cpi": 76.2
+    },
+    "points": [
+      {
+        "year": 2017,
+        "women": 44010,
+        "men": 48550,
+        "median": 47180,
+        "cpi": 77
+      },
+      {
+        "year": 2018,
+        "women": 45730,
+        "men": 50020,
+        "median": 48560,
+        "cpi": 79.7
+      },
+      {
+        "year": 2019,
+        "women": 47810,
+        "men": 52280,
+        "median": 50760,
+        "cpi": 81
+      },
+      {
+        "year": 2020,
+        "women": 49290,
+        "men": 53160,
+        "median": 51880,
+        "cpi": 81.6
+      },
+      {
+        "year": 2021,
+        "women": 50230,
+        "men": 54110,
+        "median": 52800,
+        "cpi": 85.8
+      },
+      {
+        "year": 2022,
+        "women": 52950,
+        "men": 56900,
+        "median": 55480,
+        "cpi": 91.4
+      },
+      {
+        "year": 2023,
+        "women": 58010,
+        "men": 62370,
+        "median": 60760,
+        "cpi": 95.7
+      },
+      {
+        "year": 2024,
+        "women": 58490,
+        "men": 63060,
+        "median": 61320,
+        "cpi": 98
+      },
+      {
+        "year": 2025,
+        "women": 61140,
+        "men": 65750,
+        "median": 63920,
+        "cpi": 100.9
+      }
+    ]
+  },
+  "workforce": {
+    "occupationCode": "3355",
+    "occupationLabel": "Politibetjenter mv.",
+    "quarter": 4,
+    "updated": "2026-08-13T06:00:00Z",
+    "points": [
+      {
+        "year": 2016,
+        "men": 7062,
+        "women": 3168,
+        "reportedTotal": 10230
+      },
+      {
+        "year": 2017,
+        "men": 7230,
+        "women": 3389,
+        "reportedTotal": 10619
+      },
+      {
+        "year": 2018,
+        "men": 7267,
+        "women": 3564,
+        "reportedTotal": 10831
+      },
+      {
+        "year": 2019,
+        "men": 7307,
+        "women": 3690,
+        "reportedTotal": 10997
+      },
+      {
+        "year": 2020,
+        "men": 7549,
+        "women": 3902,
+        "reportedTotal": 11451
+      },
+      {
+        "year": 2021,
+        "men": 7860,
+        "women": 4260,
+        "reportedTotal": 12120
+      },
+      {
+        "year": 2022,
+        "men": 7792,
+        "women": 4449,
+        "reportedTotal": 12241
+      },
+      {
+        "year": 2023,
+        "men": 7476,
+        "women": 4315,
+        "reportedTotal": 11791
+      },
+      {
+        "year": 2024,
+        "men": 7484,
+        "women": 4473,
+        "reportedTotal": 11957
+      },
+      {
+        "year": 2025,
+        "men": 7481,
+        "women": 4664,
+        "reportedTotal": 12145
+      }
+    ]
+  },
+  "seoResearch": {
+    "checkedAt": "2026-11-08",
+    "basis": "Undersøkte søkeresultater og Politihøgskolens spørsmål og svar. Ingen tilgang til Search Console eller målte søkevolumer.",
+    "queries": [
+      "politi lønn utdanning opptak bachelor politiutdanning krav",
+      "site.politihogskolen.no Ofte stilte spørsmål lønn",
+      "site.politihogskolen.no aldersgrense førstegangstjeneste"
+    ],
+    "faqIntents": [
+      "Utdanningens lengde",
+      "Søknadsfrist",
+      "Førstegangstjeneste",
+      "Aldersgrense ved opptak",
+      "Sivile stillinger uten politiutdanning"
+    ],
+    "sources": [
+      "https://www.politihogskolen.no/studier/politiutdanning/",
+      "https://www.politihogskolen.no/studier/politiutdanning/soknad-og-opptak/faq/index.html"
+    ]
+  },
+  "notes": [
+    "Lønnsdata 2016–2025. Reallønnsendringer 2017–2025 med 2016 som beregningsgrunnlag.",
+    "Sammenligningen bruker samme yrkesutvalg som innleggets tidligere snapshot. Vekst og lønnstakere er kontrollert mot lokale SSB-data.",
+    "Lønnstakere viser 4. kvartal 2016–2025 for å samsvare med artikkelens statistikkår. Nyere kvartaler er ikke brukt."
+  ]
+}
