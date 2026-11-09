@@ -9,10 +9,12 @@ import dentistSnapshot from "@/content/blog/data/tannlege-lonn-2026.json";
 import kindergartenTeacherSnapshot from "@/content/blog/data/barnehagelaerer-lonn-2025.json";
 import kindergartenAssistantSnapshot from "@/content/blog/data/barnehageassistent-lonn-2025.json";
 import cleanerSnapshot from "@/content/blog/data/renholder-lonn-2025.json";
+import policeSnapshot from "@/content/blog/data/politi-interaktive-diagrammer-2025.json";
 import type { SalaryGrowthSnapshot } from "@/lib/salary-growth-snapshot";
 
 // Registrer faktiske bloggdata her. Testdata brukes bare av utviklingsvisningen.
 const snapshots = {
+  "politi-lonnsutvikling-2025": policeSnapshot.salaryGrowth,
   "renholder-lonnsutvikling-2025": cleanerSnapshot.salaryGrowth,
   "barnehageassistent-lonnsutvikling-2025": kindergartenAssistantSnapshot.salaryGrowth,
   "barnehagelaerer-lonnsutvikling-2025": kindergartenTeacherSnapshot.salaryGrowth,

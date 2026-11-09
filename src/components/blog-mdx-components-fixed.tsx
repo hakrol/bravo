@@ -9,6 +9,13 @@ import {
 } from "@/components/blog-areal-planner-salary-chart";
 import { BlogSalaryGrowthExplorer } from "@/components/blog-salary-growth-explorer";
 import {
+  PoliceGenderSalaryExplorer,
+  PoliceOccupationSalaryComparisonExplorer,
+  PoliceRealWageGrowthExplorer,
+  PoliceSalaryGenderGapExplorer,
+  PoliceWorkforceGrowthExplorer,
+} from "@/components/blog-police-interactive-charts";
+import {
   CleanerGenderSalaryExplorer,
   CleanerOccupationSalaryComparisonExplorer,
   CleanerRealWageGrowthExplorer,
@@ -368,6 +375,11 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
     BilpleieSalaryEditorialChart,
     ArealPlannerGenderSalaryCards,
     BlogSalaryGrowthExplorer,
+    PoliceGenderSalaryExplorer,
+    PoliceOccupationSalaryComparisonExplorer,
+    PoliceRealWageGrowthExplorer,
+    PoliceSalaryGenderGapExplorer,
+    PoliceWorkforceGrowthExplorer,
     CleanerGenderSalaryExplorer,
     CleanerOccupationSalaryComparisonExplorer,
     CleanerRealWageGrowthExplorer,
