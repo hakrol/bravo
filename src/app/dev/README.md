@@ -92,6 +92,56 @@ Ved hover, trykk eller tastaturfokus vises også ♂ og ♀ med lønnen over val
 
 ## Interaktiv reallønn
 
+### Interaktiv reallønn - stolpe per kvartal
+
+Egen fane på `/dev/grafer` og `/utvikling-diagram`, med faktiske lokalt lagrede data.
+`src/lib/quarterly-real-wage-workshop.ts` leser det sentrale SSB-lageret på serveren.
+`src/lib/quarterly-real-wage.ts` henter den publiserte serien for diagrammets faste yrke
+fra tabell 11658 og KPI fra tabell 14700. «Alle yrker» bruker den nasjonale totalen (`Yrke=0-9`).
+Yrket settes når datasettet bygges, for eksempel med `getQuarterlyRealWageWorkshopDataset("3313")`.
+Diagrammet har ingen yrkesvelger. Ved bruk i et blogginnlegg sendes artikkelens faste, kildebelagte snapshot
+til `QuarterlyRealWageExplorer`; periodebundne blogginnlegg skal fortsatt følge snapshot-reglene i `src/content/blog/README.md`.
+Store JSON-stat-uttrekk sendes ikke til klienten.
+Oppslag bruker dimensjonsrekkefølge og størrelser i JSON-stat, inkludert SSBs null-/konfidensialitetsmarkeringer.
+
+`src/components/quarterly-real-wage-explorer.tsx` viser én kombinasjon av kjønn og alder for det faste yrket.
+Utviklingssidens standard er «Alle yrker», «Begge kjønn» og «Alle aldre». Kjønn og alder velges med klikkbare knapper,
+med alle alternativene synlige og aktivt valg markert. Knappene bruker de hentede gruppene:
+«Begge kjønn», «Kvinner», «Menn» og «Alle aldre», «Under 40 år», «40-54 år», «55 år eller eldre».
+Totalene hentes direkte fra SSB; kjønn og aldersgrupper summeres eller gjennomsnittsberegnes ikke.
+Alle 12 kjønns-/aldersserier for det faste yrket sendes med datasettet. Bytte av kjønn og alder gjør ingen nettverkskall.
+Yrkeslisten, klientinnlastingen for yrkesbytte og den tidligere dev-API-ruten er fjernet.
+
+Hele perioden fra 2016K1 til siste lagrede lønnskvartal beholdes, også på mobil.
+Hver stolpe viser endringen fra **foregående kvartal**, ikke fra samme kvartal året før.
+Grunnlaget er gjennomsnittlig månedslønn (`GjMdTotal`) i heltidsekvivalenter.
+Lønn gjelder kvartalets midtmåned og matches derfor med KPI i februar, mai, august og november.
+Formelen er `((lønn / forrige lønn) / (KPI / forrige KPI) - 1) * 100`.
+Serien er ikke sesongjustert; sammensetningsendringer kan påvirke gjennomsnittslønnen.
+2016K1 vises som startpunkt uten vekst, fordi lønn for 2015K4 mangler.
+Andre manglende lønns-/KPI-tall gir også —; de blir aldri til 0 %, og ingen beregning hopper over et kvartal.
+
+Under plottet vises «Reallønnsutvikling siste 5 år» for valgt kjønn og alder.
+`calculateFiveYearQuarterlyRealWageGrowth` sammenligner siste kvartal i datasettet med samme kvartal fem år tidligere,
+altså 20 kvartaler tilbake (for eksempel 2021K3–2026K3).
+Dette er samlet nivåendring: `((sluttlønn / startlønn) / (slutt-KPI / start-KPI) - 1) * 100`, ikke en sum av kvartalsprosentene.
+Start- og sluttperiode vises. Endepunktene må ha gyldig lønn og KPI; ellers står det «Mangler data» uten å flytte perioden.
+Mellomliggende datagap påvirker ikke denne nivåbaserte sammenligningen.
+
+Stolpene er helt mørkegrønne (`#15803d`) eller mørkerøde (`#b91c1c`), uten separat kantfarge.
+Nullvekst vises som en grå strek. År og kvartaler merkes separat langs x-aksen.
+På smale flater kan hele historikken scrolles horisontalt.
+Infoboksen følger eksisterende diagramstil og viser kvartal, yrke, kjønn, alder, reallønnsvekst,
+nominell lønnsvekst, prisvekst og gjennomsnittlig månedslønn.
+Hover, touch/penn, piltaster, Home/End, Enter/mellomrom og Escape støttes.
+På mobil ligger boksen under plottet. Scrolling skal ikke åpne en boks.
+Produksjonssperrene og de øvrige diagrammene er beholdt.
+De to forklaringsavsnittene under diagrammet er fjernet fra visningen; kilde og oppdateringsdatoer beholdes.
+
+`src/lib/quarterly-real-wage.test.ts` kontrollerer kvartalsoverganger, formelen,
+datagap, nullvekst, ugyldige tall, faste yrker i ulike JSON-stat-deler, koblingen mellom lønn og KPI
+og eksakt femårsperiode for valgt kjønn og alder.
+
 ### Stolper med én valgt kjønnsserie
 
 Fanen «Interaktiv reallønn – stolper» finnes på `/dev/grafer` og `/utvikling-diagram`.

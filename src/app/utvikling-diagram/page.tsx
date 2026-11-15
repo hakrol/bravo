@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { DevelopmentDiagramTabs } from "@/components/development-diagram-tabs";
 import { isDevAreaAvailable } from "@/lib/dev-area";
 import { getWorkforceGrowthWorkshopDatasets } from "@/lib/workforce-growth-workshop";
+import { getQuarterlyRealWageWorkshopDataset } from "@/lib/quarterly-real-wage-workshop";
 
 export const metadata: Metadata = {
   title: "Utvikling-diagram",
@@ -20,7 +21,10 @@ export default async function DevelopmentDiagramPage() {
     notFound();
   }
 
-  const workforceDatasets = await getWorkforceGrowthWorkshopDatasets();
+  const [workforceDatasets, quarterlyRealWageDataset] = await Promise.all([
+    getWorkforceGrowthWorkshopDatasets(),
+    getQuarterlyRealWageWorkshopDataset(),
+  ]);
 
   return (
     <div className="min-h-screen bg-slate-50 px-5 py-8 sm:px-6 sm:py-10">
@@ -42,7 +46,7 @@ export default async function DevelopmentDiagramPage() {
             Velg et diagram for å jobbe med utforming og interaksjon.
           </p>
         </header>
-        <DevelopmentDiagramTabs workforceDatasets={workforceDatasets} />
+        <DevelopmentDiagramTabs workforceDatasets={workforceDatasets} quarterlyRealWageDataset={quarterlyRealWageDataset} />
       </div>
     </div>
   );

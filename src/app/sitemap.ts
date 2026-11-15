@@ -13,6 +13,12 @@ import { getAbsoluteUrl } from "@/lib/site-config";
 const staticRoutes = [
   { path: "/", filePath: "src/app/page.tsx", priority: 1, changeFrequency: "weekly" as const },
   {
+    path: "/reallonn-norge",
+    filePath: "src/app/reallonn-norge/page.tsx",
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/lonnsjekk",
     filePath: "src/app/lonnsjekk/page.tsx",
     priority: 0.8,

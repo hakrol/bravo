@@ -1,6 +1,8 @@
-import type { OccupationQuadrantDataset, OccupationQuadrantGender } from "@/lib/occupation-quadrant";
+import type { OccupationQuadrantDataset, OccupationQuadrantGender, OccupationQuadrantSeries } from "@/lib/occupation-quadrant";
 import { getOccupationDetailHref } from "@/lib/occupation-detail-pages";
 
+// KUN UTVIKLING: Datasett og testscenarioer i denne filen skal ikke brukes i blogginnlegg.
+// Bloggdiagrammer bruker OccupationQuadrantExplorer med et eget, kildebelagt datasett.
 /** Fiktive lønninger og persontall for å utvikle masteren med nærliggende yrker. */
 const examples = [
   { code: "7421", name: "Serviceelektronikere",
@@ -40,4 +42,35 @@ export const occupationQuadrantTestDataset: OccupationQuadrantDataset = {
   ...testSeries("all"),
   men: testSeries("men"),
   women: testSeries("women"),
+};
+
+const closeOccupationCodes = ["7412", "7413", "7127"];
+
+/** Tre svært nære punkter for alle kjønn; de øvrige fem yrkene beholder testverdiene. */
+function closePointSeries(series: OccupationQuadrantSeries, gender: OccupationQuadrantGender): OccupationQuadrantSeries {
+  const base = {
+    all: { employees: 6400, salary: 62000 },
+    men: { employees: 5400, salary: 63500 },
+    women: { employees: 1000, salary: 59000 },
+  }[gender];
+  return {
+    ...series,
+    points: series.points.map((point) => {
+      const index = closeOccupationCodes.indexOf(point.code);
+      return index < 0 ? point : {
+        ...point,
+        employees: base.employees + index * (gender === "all" ? 4 : 2),
+        salary: base.salary + index * 10,
+      };
+    }).sort((a, b) => a.employees - b.employees || a.code.localeCompare(b.code)),
+  };
+}
+
+export const occupationQuadrantClosePointsTestDataset: OccupationQuadrantDataset = {
+  ...occupationQuadrantTestDataset,
+  subtitle: "Test med automatikere, energimontører og kuldemontører tett på hverandre.",
+  testDataNote: "Kun utvikling: Tre punkter ligger svært tett for å teste navn, antallsmarkør og infobokser. Alle tall er fiktive.",
+  ...closePointSeries(occupationQuadrantTestDataset, "all"),
+  men: closePointSeries(occupationQuadrantTestDataset.men!, "men"),
+  women: closePointSeries(occupationQuadrantTestDataset.women!, "women"),
 };
