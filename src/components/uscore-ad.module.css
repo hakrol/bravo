@@ -102,9 +102,10 @@
 }
 
 .horizontal {
+  position: relative;
   display: none;
   width: 980px;
-  height: 120px;
+  height: auto;
   min-height: 120px;
   overflow: hidden;
   padding: 16px 22px;
@@ -123,6 +124,7 @@
 }
 
 .horizontal .illustration {
+  position: absolute;
   display: none;
 }
 
@@ -161,7 +163,10 @@
 
 .vertical .illustration {
   width: 250px;
+  height: 100%;
   max-width: none;
+  min-height: 0;
+  object-fit: contain;
 }
 
 .vertical .cta {
