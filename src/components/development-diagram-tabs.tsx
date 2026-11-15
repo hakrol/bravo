@@ -7,12 +7,13 @@ import { genderSalaryTestSnapshot } from "@/lib/development-gender-salary-data";
 import { DevelopmentSalaryGenderGap } from "@/components/development-salary-gender-gap";
 import { DevelopmentRealWage } from "@/components/development-real-wage";
 import { DevelopmentRealWageLine } from "@/components/development-real-wage-line";
+import { QuarterlyRealWageExplorer } from "@/components/quarterly-real-wage-explorer";
 import { DevelopmentOccupationComparison } from "@/components/development-occupation-comparison";
 import { DevelopmentSalaryRange } from "@/components/development-salary-range";
 import { DevelopmentWorkforceGrowth } from "@/components/development-workforce-growth";
-import { OccupationQuadrantExplorer } from "@/components/occupation-quadrant-explorer";
-import { occupationQuadrantTestDataset } from "@/lib/development-occupation-quadrant-data";
+import { DevelopmentOccupationQuadrant } from "@/components/development-occupation-quadrant";
 import type { WorkforceGrowthDataset } from "@/lib/workforce-growth";
+import { quarterlyRealWageTitle, type QuarterlyRealWageDataset } from "@/lib/quarterly-real-wage";
 import { salaryGrowthTestSnapshot } from "@/lib/development-diagram-data";
 
 type DevelopmentDiagram = {
@@ -27,10 +28,6 @@ function SalaryGrowthTestDiagram() {
 
 function GenderSalaryTestDiagram() {
   return <SalaryGenderExplorer {...genderSalaryTestSnapshot} />;
-}
-
-function OccupationQuadrantTestDiagram() {
-  return <OccupationQuadrantExplorer dataset={occupationQuadrantTestDataset} />;
 }
 
 // Én oppføring per diagram. Lønnstakerdiagrammet får faktiske SSB-data fra serveren.
@@ -61,6 +58,10 @@ const diagrams: DevelopmentDiagram[] = [
     Component: DevelopmentRealWageLine,
   },
   {
+    id: "reallonn-kvartal",
+    label: quarterlyRealWageTitle,
+  },
+  {
     id: "yrkessammenligning",
     label: "Interaktiv yrkessammenligning",
     Component: DevelopmentOccupationComparison,
@@ -73,7 +74,7 @@ const diagrams: DevelopmentDiagram[] = [
   {
     id: "plottdiagram",
     label: "Interaktivt plottdiagram",
-    Component: OccupationQuadrantTestDiagram,
+    Component: DevelopmentOccupationQuadrant,
   },
   {
     id: "lonnstakere",
@@ -81,7 +82,10 @@ const diagrams: DevelopmentDiagram[] = [
   },
 ];
 
-export function DevelopmentDiagramTabs({ workforceDatasets = [] }: { workforceDatasets?: WorkforceGrowthDataset[] }) {
+export function DevelopmentDiagramTabs({ workforceDatasets = [], quarterlyRealWageDataset }: {
+  workforceDatasets?: WorkforceGrowthDataset[];
+  quarterlyRealWageDataset?: QuarterlyRealWageDataset;
+}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const activeDiagram = diagrams[activeIndex];
@@ -155,6 +159,9 @@ export function DevelopmentDiagramTabs({ workforceDatasets = [] }: { workforceDa
         >
           {activeIndex === index ? diagram.id === "lonnstakere"
             ? <DevelopmentWorkforceGrowth datasets={workforceDatasets} />
+            : diagram.id === "reallonn-kvartal"
+              ? quarterlyRealWageDataset ? <QuarterlyRealWageExplorer dataset={quarterlyRealWageDataset} />
+                : <p className="text-sm text-slate-600">Kvartalsdata er ikke tilgjengelige.</p>
             : ActiveDiagram ? <ActiveDiagram /> : null : null}
         </div>
       ))}

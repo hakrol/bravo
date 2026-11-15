@@ -4,9 +4,11 @@ import { cache } from "react";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import type {
-  GeneratedSsbDatasetKey,
+  GeneratedSsbNormalizedDatasetKey,
+  GeneratedSsbQuarterlySalaryDatasetKey,
   GeneratedSsbManifest,
   SsbNormalizedDataset,
+  SsbQuarterlySalaryDataset,
 } from "./types";
 
 const GENERATED_DIR = path.join(process.cwd(), "src", "lib", "generated");
@@ -22,7 +24,7 @@ export const getGeneratedSsbManifest = cache(async (): Promise<GeneratedSsbManif
 });
 
 export const getStoredDataset = cache(
-  async (key: GeneratedSsbDatasetKey): Promise<SsbNormalizedDataset> => {
+  async (key: GeneratedSsbNormalizedDatasetKey): Promise<SsbNormalizedDataset> => {
     const manifest = await getGeneratedSsbManifest();
     const entry = manifest.datasets.find((dataset) => dataset.key === key);
 
@@ -31,5 +33,18 @@ export const getStoredDataset = cache(
     }
 
     return readJsonFile<SsbNormalizedDataset>(path.join(GENERATED_DIR, entry.fileName));
+  },
+);
+
+export const getStoredQuarterlySalaryDataset = cache(
+  async (key: GeneratedSsbQuarterlySalaryDatasetKey): Promise<SsbQuarterlySalaryDataset> => {
+    const manifest = await getGeneratedSsbManifest();
+    const entry = manifest.datasets.find((dataset) => dataset.key === key);
+
+    if (!entry || entry.format !== "json-stat2") {
+      throw new Error(`Fant ikke kompakt kvartalsdatasett for ${key}. Kjør npm run ssb:sync.`);
+    }
+
+    return readJsonFile<SsbQuarterlySalaryDataset>(path.join(GENERATED_DIR, entry.fileName));
   },
 );

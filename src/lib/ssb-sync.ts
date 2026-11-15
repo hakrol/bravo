@@ -6,6 +6,7 @@ import type {
   JsonStat2Dataset,
   JsonStatDimension,
   SsbNormalizedDataset,
+  SsbQuarterlySalaryDataset,
   SsbObservation,
   SsbPostBody,
   SsbQueryParams,
@@ -25,6 +26,7 @@ type DatasetSpec = {
   fileName: string;
   tableId: string;
   tableKey?: SsbSalaryTableKey;
+  format?: "json-stat2";
   buildQuery: (metadata: SsbTableMetadata) => SsbQueryParams | Promise<SsbQueryParams>;
 };
 
@@ -324,6 +326,30 @@ async function main() {
       tableId: queries.SSB_INFLATION_TABLE_ID,
       buildQuery: (metadata) => queries.buildInflationQuarterQuery(metadata),
     },
+    {
+      key: "occupationQuarterlySalaryTimeSeries",
+      fileName: "occupation-quarterly-salary-timeseries.json",
+      tableId: "11658",
+      format: "json-stat2",
+      buildQuery: (metadata) => queries.buildOccupationTimeSeriesQuery(metadata, "*", {
+        Alder: ["999D", "0-39", "40-54", "55+"],
+        Kjonn: ["0", "1", "2"],
+        ContentsCode: ["GjAvtaltMdlonn", "GjMdTotal", "MedianAvtMndLonn", "MedianMndLonn"],
+      }),
+    },
+    {
+      key: "norwayQuarterlySalaryTimeSeries",
+      fileName: "norway-quarterly-salary-timeseries.json",
+      tableId: "11652",
+      format: "json-stat2",
+      buildQuery: (metadata) => queries.buildLatestQueryFromMetadata(metadata, {
+        Region: "Ialt",
+        Alder: ["999A", "-24", "25-39", "40-54", "55-66", "67+"],
+        Kjonn: ["0", "1", "2"],
+        ContentsCode: ["GjAvtaltMdlonn", "GjMdTotal", "MedianAvtMndLonn", "MedianMndLonn"],
+        Tid: "*",
+      }),
+    },
   ];
 
   await mkdir(GENERATED_DIR, { recursive: true });
@@ -337,7 +363,7 @@ async function main() {
     const metadata = await getCachedMetadata(metadataCache, client, spec.tableId);
     const info = await getCachedInfo(infoCache, client, spec.tableId);
     const rawQuery = await spec.buildQuery(metadata);
-    const dataset = await fetchNormalizedDataset({
+    const fetchOptions = {
       client,
       queries,
       tableId: spec.tableId,
@@ -345,7 +371,10 @@ async function main() {
       title: info.label,
       metadata,
       query: rawQuery,
-    });
+    };
+    const dataset = spec.format === "json-stat2"
+      ? await fetchQuarterlySalaryDataset(fetchOptions)
+      : await fetchNormalizedDataset(fetchOptions);
 
     await writeFile(
       path.join(GENERATED_DIR, spec.fileName),
@@ -360,8 +389,10 @@ async function main() {
       tableKey: spec.tableKey,
       title: dataset.title,
       updated: dataset.updated,
-      rowCount: dataset.rows.length,
+      rowCount: "rows" in dataset ? dataset.rows.length
+        : dataset.chunks.reduce((count, chunk) => count + chunk.value.length, 0),
       dimensions: dataset.dimensions,
+      ...(spec.format ? { format: spec.format } : {}),
     });
   }
 
@@ -416,7 +447,7 @@ async function getCachedInfo(
   return info;
 }
 
-async function fetchNormalizedDataset(options: {
+type DatasetFetchOptions = {
   client: typeof import("./client");
   queries: ReturnType<typeof buildSsbSyncHelpers>;
   tableId: string;
@@ -424,17 +455,43 @@ async function fetchNormalizedDataset(options: {
   title: string;
   metadata: SsbTableMetadata;
   query: SsbQueryParams;
-}): Promise<SsbNormalizedDataset> {
+};
+
+async function fetchNormalizedDataset(options: DatasetFetchOptions): Promise<SsbNormalizedDataset> {
+  const chunks = await fetchDatasetChunks(options);
+  return mergeNormalizedDatasets(
+    chunks.map((chunk) => options.queries.normalizeDataset(chunk, options)),
+    options,
+  );
+}
+
+async function fetchQuarterlySalaryDataset(
+  options: DatasetFetchOptions,
+): Promise<SsbQuarterlySalaryDataset> {
+  const chunks = await fetchDatasetChunks(options);
+  const cellCount = chunks.reduce((count, chunk) => count + chunk.value.length, 0);
+  if (cellCount !== estimateCellCount(options.metadata, options.query)) {
+    throw new Error(`Ufullstendig kvartalsuttrekk fra tabell ${options.tableId}.`);
+  }
+
+  return {
+    tableId: options.tableId,
+    title: options.title,
+    updated: chunks[0].updated,
+    source: chunks[0].source,
+    format: "json-stat2",
+    dimensions: chunks[0].id ?? Object.keys(chunks[0].dimension),
+    chunks,
+  };
+}
+
+async function fetchDatasetChunks(options: DatasetFetchOptions): Promise<JsonStat2Dataset[]> {
   const estimatedCells = estimateCellCount(options.metadata, options.query);
 
   if (queryRequiresGetTransport(options.query)) {
     const dataset = await options.client.getTableData(options.tableId, options.query, "no");
 
-    return options.queries.normalizeDataset(dataset, {
-      tableId: options.tableId,
-      tableKey: options.tableKey,
-      title: options.title,
-    });
+    return [dataset];
   }
 
   if (estimatedCells <= options.client.SSB_MAX_CELLS) {
@@ -445,11 +502,7 @@ async function fetchNormalizedDataset(options: {
       "no",
     );
 
-    return options.queries.normalizeDataset(dataset, {
-      tableId: options.tableId,
-      tableKey: options.tableKey,
-      title: options.title,
-    });
+    return [dataset];
   }
 
   const splitDimension = pickSplitDimension(options.metadata, options.query);
@@ -461,22 +514,18 @@ async function fetchNormalizedDataset(options: {
   }
 
   const splitQueries = splitQuery(options.metadata, options.query, splitDimension);
-  const chunks: SsbNormalizedDataset[] = [];
+  const chunks: JsonStat2Dataset[] = [];
 
   for (const query of splitQueries) {
     chunks.push(
-      await fetchNormalizedDataset({
+      ...await fetchDatasetChunks({
         ...options,
         query,
       }),
     );
   }
 
-  return mergeNormalizedDatasets(chunks, {
-    tableId: options.tableId,
-    tableKey: options.tableKey,
-    title: options.title,
-  });
+  return chunks;
 }
 
 function queryRequiresGetTransport(query: SsbQueryParams) {

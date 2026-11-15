@@ -178,7 +178,22 @@ export type SsbNormalizedDataset = {
   rows: SsbObservation[];
 };
 
-export type GeneratedSsbDatasetKey =
+/** Kompakte kvartalsuttrekk. Nullverdier og SSBs statusmarkeringer beholdes. */
+export type SsbQuarterlySalaryDataset = {
+  tableId: string;
+  title: string;
+  updated?: string;
+  source?: string;
+  format: "json-stat2";
+  dimensions: string[];
+  chunks: JsonStat2Dataset[];
+};
+
+export type GeneratedSsbQuarterlySalaryDatasetKey =
+  | "occupationQuarterlySalaryTimeSeries"
+  | "norwayQuarterlySalaryTimeSeries";
+
+export type GeneratedSsbNormalizedDatasetKey =
   | "occupationLatestAverage"
   | "occupationLatestMedian"
   | "occupationPreviousMedian"
@@ -199,6 +214,10 @@ export type GeneratedSsbDatasetKey =
   | "apprenticeshipDistributionLatest"
   | "inflationQuarterSeries";
 
+export type GeneratedSsbDatasetKey =
+  | GeneratedSsbNormalizedDatasetKey
+  | GeneratedSsbQuarterlySalaryDatasetKey;
+
 export type GeneratedSsbDatasetManifestEntry = {
   key: GeneratedSsbDatasetKey;
   fileName: string;
@@ -208,6 +227,7 @@ export type GeneratedSsbDatasetManifestEntry = {
   updated?: string;
   rowCount: number;
   dimensions: string[];
+  format?: "json-stat2";
 };
 
 export type GeneratedSsbManifest = {

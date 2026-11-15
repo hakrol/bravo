@@ -50,15 +50,21 @@ Scriptet oppdaterer datasett i:
 - `src/lib/generated/occupation-average-timeseries.json`
 - `src/lib/generated/occupation-median-timeseries.json`
 - `src/lib/generated/occupation-distribution-latest.json`
+- `src/lib/generated/occupation-sector-salary-latest.json`
+- `src/lib/generated/occupation-sector-work-relations-latest.json`
+- `src/lib/generated/occupation-contracted-distribution-latest.json`
 - `src/lib/generated/occupation-supplement-timeseries.json`
+- `src/lib/generated/occupation-supplement-median-latest.json`
 - `src/lib/generated/occupation-workforce-timeseries.json`
 - `src/lib/generated/occupation-age-timeseries.json`
-- `src/lib/generated/occupation-contract-latest.json`
+- `src/lib/generated/occupation-working-hours-timeseries.json`
 - `src/lib/generated/apprenticeship-latest-median.json`
 - `src/lib/generated/apprenticeship-previous-median.json`
 - `src/lib/generated/apprenticeship-median-timeseries.json`
 - `src/lib/generated/apprenticeship-distribution-latest.json`
 - `src/lib/generated/inflation-quarter-series.json`
+- `src/lib/generated/occupation-quarterly-salary-timeseries.json`
+- `src/lib/generated/norway-quarterly-salary-timeseries.json`
 
 I tillegg oppdateres:
 
@@ -67,6 +73,50 @@ I tillegg oppdateres:
 - alle JSON-filer i `src/lib/generated/occupation-detail-view-models/`
 - `src/lib/generated/apprenticeship-detail-view-models/index.json`
 - alle JSON-filer i `src/lib/generated/apprenticeship-detail-view-models/`
+
+## Kvartalsgrunnlag for reallønn og alder
+
+Synken henter hele den tilgjengelige historikken for følgende nye uttrekk:
+
+| Fil | Tabell | Utvalg |
+| --- | --- | --- |
+| `occupation-quarterly-salary-timeseries.json` | 11658 | Alle yrkeskoder, inkludert «Alle yrker». Alle aldre, under 40 år, 40–54 år og 55 år eller eldre. |
+| `norway-quarterly-salary-timeseries.json` | 11652 | Hele landet (`Region=Ialt`). Alle aldre, under 25 år, 25–39 år, 40–54 år, 55–66 år og 67 år eller eldre. |
+
+Begge uttrekk inneholder begge kjønn samlet, menn og kvinner, og fire lønnsmål:
+
+- `GjAvtaltMdlonn`: gjennomsnittlig avtalt månedslønn
+- `GjMdTotal`: gjennomsnittlig månedslønn
+- `MedianAvtMndLonn`: median avtalt månedslønn
+- `MedianMndLonn`: median månedslønn
+
+Disse filene bruker kompakt JSON-stat2 (`format: "json-stat2"`) med en `chunks`-liste.
+Store uttrekk deles etter SSBs cellegrense. Koder, dimensjonsrekkefølge, nullverdier,
+statusmarkeringer og kildeinformasjon beholdes i hver del. `rowCount` i manifestet
+er samlet antall observasjoner, inkludert nullverdier. Bruk
+`getStoredQuarterlySalaryDataset` i `src/lib/ssb-store.ts` for å lese disse filene.
+De øvrige datasettene beholder formatet med `rows` og leses med `getStoredDataset`.
+
+De nye datasettene inneholder nominell lønn. Reallønn må beregnes med KPI.
+`inflation-quarter-series.json` inneholder månedlig KPI, selv om filnavnet sier
+«quarter». Lønnstallene gjelder midtmåneden i kvartalet; valg av KPI-periode må
+derfor være tydelig når en ny reallønnsvisning lages. Eksisterende sider bruker
+kvartalsgjennomsnitt av KPI. Denne synken endrer ikke beregningsmetoden deres.
+
+Ikke bland disse kvartalstallene med den årlige medianserien fra tabell 11418.
+`occupation-age-timeseries.json` inneholder gjennomsnittsalder, ikke lønn etter alder.
+Bruk SSBs samlede observasjon for landstall; ikke beregn landets median fra yrkesmedianer.
+
+### Kontroll etter kvartalssynk
+
+1. Kontroller siste periode i selve observasjonene, ikke bare tabelltittel eller oppdateringsdato.
+2. Kontroller alle fire lønnsmål, alle aldersgrupper og alle tre kjønnsvalg i begge nye filer.
+3. Kontroller at delene samlet dekker alle valgte yrker og perioder uten overlapp eller hull.
+4. Behold manglende og skjermede tall som `null` med tilhørende status. Ikke erstatt dem med null kroner.
+5. Kontroller faktisk tidsdekning per lønnsmål og aldersgruppe; tabellens startår garanterer ikke tall i alle kombinasjoner.
+6. Sammenlign et utvalg verdier med SSB, samt «alle aldre»/avtalt gjennomsnittslønn mot den eksisterende kvartalsfilen.
+7. Kontroller at KPI dekker kvartalets referansemåned og alle tre måneder dersom kvartalsgjennomsnitt brukes.
+8. Kjør TypeScript- og lintkontroll, og kontroller genererte yrkes- og lærlingvisninger før eventuell publisering.
 
 ## Yrkeskort på `/yrker`
 

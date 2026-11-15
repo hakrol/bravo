@@ -52,6 +52,7 @@ Når et vedtak kommer, kontroller samme dag:
 
 - **Februar, mai, august og november:** SSBs tabell 11658 oppdateres normalt 5–6 uker etter utløpet av kvartalet. Kontroller den konkrete datoen i SSBs kalender og kjør `npm run ssb:sync` etter publisering.
 - Etter synk skal du kontrollere at perioden faktisk er ny. En vellykket synk betyr ikke nødvendigvis at SSB har publisert en ny periode.
+- Ved innhenting av 3. kvartal 2026 og senere skal synken også hente kvartalsvis median og gjennomsnitt, både månedslønn og avtalt månedslønn, fordelt på kjønn og alder. Tabell 11658 dekker yrker og tre aldersgrupper; tabell 11652 dekker hele landet med fem aldersgrupper. Se uttrekk og kontrollpunkter i `src/lib/ssb-dataflyt.md`, avsnittet «Kvartalsgrunnlag for reallønn og alder».
 - Test minst ett høytlønnet yrke, ett lavtlønnet yrke, ett lite yrke, ett lærlingyrke og kjønnsdelte visninger.
 
 ### Årlig
@@ -68,7 +69,8 @@ Når et vedtak kommer, kontroller samme dag:
 | Datasett | Frekvens | Bruk i prosjektet | Kontroll |
 | --- | --- | --- | --- |
 | SSB 11418 – yrkesfordelt månedslønn | Årlig, med mulige revisjoner | Median, fordelinger, kjønn, sektor, tillegg og rangeringer | Hovedkontroll tidlig i februar, deretter kontroll ved SSB-revisjoner. |
-| SSB 11658 – lønnstakere, jobber og lønn per yrke | Kvartalsvis | Gjennomsnittslønn, antall lønnstakere, jobber, alder og arbeidstid | Ved hver kvartalspublisering. Neste bekreftede dato er 5. november 2026. |
+| SSB 11658 – lønnstakere, jobber og lønn per yrke | Kvartalsvis | Median og gjennomsnitt for månedslønn og avtalt månedslønn etter alder og kjønn, samt lønnstakere, jobber, gjennomsnittsalder og arbeidstid | Ved hver kvartalspublisering. Neste bekreftede dato ved kalenderkontrollen var 5. november 2026. |
+| SSB 11652 – lønn etter kjønn og alder for hele landet | Kvartalsvis | Median og gjennomsnitt for månedslønn og avtalt månedslønn, med fem aldersgrupper | Ved hver kvartalspublisering, sammen med det nye aldersfordelte lønnsuttrekket fra 11658. |
 | SSB 12851 – lærlinglønn per yrke | Årlig | Lærlingesider og lærlingrangeringer | Start kontroll ved den årlige lønnspubliseringen og følg ukentlig til tabellen har ny periode. |
 | SSB 14700 – KPI | Månedlig | Kjøpekraft og inflasjonsjustering | Rundt den 10. hver måned. |
 | NAVs grunnbeløp | Årlig, virkning fra 1. mai | Artikler, terskler og sammenligninger der G er riktig mål | Etter trygdeoppgjøret i mai. |
@@ -106,6 +108,7 @@ Når et vedtak kommer, kontroller samme dag:
 - [SSB: Konsumprisindeksen](https://www.ssb.no/priser-og-prisindekser/konsumpriser/statistikk/konsumprisindeksen)
 - [SSB Statistikkbanken: tabell 11418](https://www.ssb.no/statbank/table/11418)
 - [SSB Statistikkbanken: tabell 11658](https://www.ssb.no/statbank/table/11658)
+- [SSB Statistikkbanken: tabell 11652](https://www.ssb.no/statbank/table/11652)
 - [SSB Statistikkbanken: tabell 12851](https://www.ssb.no/statbank/table/12851)
 - [SSB Statistikkbanken: tabell 14700](https://www.ssb.no/statbank/table/14700)
 - [Arbeidstilsynet: Minstelønn](https://www.arbeidstilsynet.no/lonn-og-ansettelse/lonn/minstelonn/)

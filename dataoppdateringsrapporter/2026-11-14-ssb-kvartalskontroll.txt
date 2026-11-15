@@ -1,0 +1,32 @@
+Kontroll av SSB-synk, 14. november 2026
+Forventet siste kvartal: 2026K3
+
+occupation-quarterly-salary-timeseries.json: 1203312 observasjoner, 258620 nullverdier, 2 del(er).
+Periode: 2016K1-2026K3. Alle aldersgrupper, kjønn og fire lønnsmål kontrollert.
+  GjAvtaltMdlonn: samlet observasjon fra 2016K1 til 2026K3.
+  GjMdTotal: samlet observasjon fra 2016K1 til 2026K3.
+  MedianAvtMndLonn: samlet observasjon fra 2016K1 til 2026K3.
+  MedianMndLonn: samlet observasjon fra 2016K1 til 2026K3.
+672 observasjoner og tilhørende status samsvarer med nytt kontrolluttrekk fra SSB.
+
+norway-quarterly-salary-timeseries.json: 3096 observasjoner, 0 nullverdier, 1 del(er).
+Periode: 2016K1-2026K3. Alle aldersgrupper, kjønn og fire lønnsmål kontrollert.
+  GjAvtaltMdlonn: samlet observasjon fra 2016K1 til 2026K3.
+  GjMdTotal: samlet observasjon fra 2016K1 til 2026K3.
+  MedianAvtMndLonn: samlet observasjon fra 2016K1 til 2026K3.
+  MedianMndLonn: samlet observasjon fra 2016K1 til 2026K3.
+144 observasjoner og tilhørende status samsvarer med nytt kontrolluttrekk fra SSB.
+
+75207 observasjoner samsvarer med eksisterende serie for gjennomsnittlig avtalt månedslønn.
+KPI oppdatert til 2026M10; alle måneder i 3. kvartal 2025 og 2026 finnes.
+occupation-detail-view-models: indeks lest, felt: version, generatedAt, sourceGeneratedAt, pages.
+apprenticeship-detail-view-models: indeks lest, felt: version, generatedAt, sourceGeneratedAt, pages.
+
+Lint av endrede kodefiler: bestått.
+Målrettet TypeScript-kontroll av synk, lager, typer og spørringer med importer: 0 feil.
+Full tsc-kontroll stoppet i eksisterende genererte .next/dev/types-filer med syntaksfeil.
+Ingen publisering eller deploy utført.
+
+406 unike yrkesmodeller og 51 lærlingmodeller lest og kontrollert mot indeksene.
+Yrkesindeksen har 407 oppføringer; en modell har også en alternativ URL.
+43140 lønnsverdier i yrkesmodellenes tidsserier samsvarer med de oppdaterte kildefilene.
