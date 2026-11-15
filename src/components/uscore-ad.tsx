@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { getUscoreTrackingUrl, type UscoreAdFormat, type UscorePlacement } from "@/lib/uscore";
+import { observeUscoreAd } from "@/lib/uscore-analytics";
 import { shouldShowUscore } from "@/lib/uscore-routes";
 import styles from "./uscore-ad.module.css";
 
@@ -14,6 +16,18 @@ type UscoreAdProps = {
 export function UscoreAd({ placement = "blog-after-content", className = "" }: UscoreAdProps) {
   const pathname = usePathname();
   const sidebar = placement.endsWith("sidebar");
+  const adRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const banners = adRef.current?.querySelectorAll<HTMLAnchorElement>("a[data-ad-format]");
+    const cleanups = Array.from(banners ?? [], (element) => observeUscoreAd(element, {
+      page_path: pathname,
+      ad_placement: placement,
+      ad_format: element.dataset.adFormat as UscoreAdFormat,
+    }));
+
+    return () => cleanups.forEach((cleanup) => cleanup());
+  }, [pathname, placement]);
 
   if (!shouldShowUscore(pathname)) return null;
 
@@ -25,7 +39,7 @@ export function UscoreAd({ placement = "blog-after-content", className = "" }: U
         href={getUscoreTrackingUrl(pathname, placement, format)}
         rel="sponsored noopener noreferrer"
         target="_blank"
-        aria-label="Sjekk kredittscoren din gratis hos uScore (åpnes i en ny fane)"
+        aria-label="Kredittsjekk deg selv gratis hos uScore (åpnes i en ny fane)"
         data-ad-format={format}
         className={`${styles.banner} ${variant}`}
       >
@@ -38,8 +52,8 @@ export function UscoreAd({ placement = "blog-after-content", className = "" }: U
           className={styles.logo}
         />
         <span className={styles.copy}>
-          <span className={styles.headline}>Hva er kredittscoren din?</span>
-          <span className={styles.description}>Sjekk kredittscoren din gratis hos uScore.</span>
+          <span className={styles.headline}>Kredittsjekk deg selv – helt gratis</span>
+          <span className={styles.description}>Se kredittscoren din og få oversikt over registrert gjeld hos uScore.</span>
         </span>
         <Image
           src="/annonser/uscore/uscore-hovedillustrasjon.png"
@@ -50,7 +64,7 @@ export function UscoreAd({ placement = "blog-after-content", className = "" }: U
           className={styles.illustration}
         />
         <span className={styles.cta}>
-          Sjekk gratis <span aria-hidden="true">↗</span>
+          Sjekk gratis nå
         </span>
       </a>
     );
@@ -58,6 +72,7 @@ export function UscoreAd({ placement = "blog-after-content", className = "" }: U
 
   return (
     <aside
+      ref={adRef}
       aria-label="Annonse for uScore"
       data-ad-placement={placement}
       className={`not-prose w-full min-w-0 print:hidden ${sidebar ? "hidden xl:block" : ""} ${className}`}
