@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { CalculatorCrossLinks } from "@/components/calculator-cross-links";
@@ -67,7 +67,7 @@ export default async function NurseSalaryCalculatorPage() {
         </header>
 
         <NurseSalaryCalculator ssbBenchmarks={ssbBenchmarks} />
-        <UscoreAd placement="calculator-after-tool" className="my-4" />
+        <RentesjekkAd placement="calculator-after-tool" className="my-4" />
         <CalculatorCrossLinks currentHref="/sykepleier-lonn-kalkulator" />
       </div>
     </main>

@@ -1,12 +1,12 @@
-import { UscoreAd } from "@/components/uscore-ad";
-import type { UscorePlacement } from "@/lib/uscore";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
+import type { RentesjekkPlacement } from "@/lib/rentesjekk";
 
 export function StickyLeftAdRail({ placement = "blog-left-sidebar" }: {
-  placement?: Extract<UscorePlacement, "blog-left-sidebar" | "occupation-left-sidebar">;
+  placement?: Extract<RentesjekkPlacement, "blog-left-sidebar" | "occupation-left-sidebar">;
 } = {}) {
   return (
     <div className="sticky-left-ad-rail">
-      <UscoreAd placement={placement} />
+      <RentesjekkAd placement={placement} />
     </div>
   );
 }

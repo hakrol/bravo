@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import type { Metadata } from "next";
 import { DictionaryFilter, type DictionaryEntry } from "@/components/dictionary-filter";
 import { getAllForklarerPosts } from "@/lib/forklarer";
@@ -584,7 +584,7 @@ export default async function OrdbokPage() {
           <DictionaryFilter entries={dictionaryEntries} />
         </div>
       </section>
-      <UscoreAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+      <RentesjekkAd placement="overview-between-sections" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </main>
   );
 }

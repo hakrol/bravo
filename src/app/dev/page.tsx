@@ -8,6 +8,11 @@ export const metadata: Metadata = {
 
 const devAreas = [
   {
+    href: "/dev/rentesjekk",
+    title: "Rentesjekk-annonser",
+    description: "Forhåndsvisning av bred, kompakt og vertikal annonse.",
+  },
+  {
     href: "/dev/interaktivt-plottdiagram",
     title: "Interaktivt plottdiagram",
     description: "Kvadrantdiagram med medianlønn og antall lønnstakere for norske yrker.",

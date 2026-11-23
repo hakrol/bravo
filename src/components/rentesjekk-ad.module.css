@@ -1,0 +1,245 @@
+.label {
+  margin: 0 0 8px;
+  color: #526b69;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+  min-width: 0;
+  container: rentesjekk-ad / inline-size;
+}
+
+.banner {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid #bbd1cc;
+  border-radius: 16px;
+  background: #f3f7f4;
+  color: #203c39;
+  font-family: inherit;
+  text-align: left;
+}
+
+.mainLink {
+  display: grid;
+  min-width: 0;
+  align-items: center;
+  padding: 22px;
+  gap: 18px;
+  color: inherit;
+  text-decoration: none;
+  background: radial-gradient(ellipse at 90% 15%, #e1eeda, transparent 65%);
+}
+
+.mainLink:hover .cta {
+  background: #bd4707;
+}
+
+.mainLink:focus-visible,
+.details a:focus-visible {
+  outline: 3px solid #254d47;
+  outline-offset: -3px;
+}
+
+.logo {
+  grid-area: logo;
+  display: block;
+  width: 170px;
+  max-width: 100%;
+  height: auto;
+}
+
+.copy {
+  grid-area: copy;
+  display: grid;
+  min-width: 0;
+  gap: 10px;
+}
+
+.headline {
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.7px;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.illustration {
+  grid-area: image;
+  display: block;
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  justify-self: center;
+}
+
+.cta {
+  grid-area: cta;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 11px 15px;
+  border-radius: 9px;
+  background: #c94b06;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.details {
+  display: grid;
+  gap: 12px;
+  padding: 16px 22px;
+  border-top: 1px solid #d2dfda;
+  background: #fff;
+  color: #425c57;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.details p {
+  margin: 0;
+}
+
+.costExample strong {
+  font-weight: 700;
+}
+
+.competition {
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e8e3;
+}
+
+.deadline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 7px;
+}
+
+.countdown {
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #eaf1ec;
+  font-variant-numeric: tabular-nums;
+}
+
+.details a {
+  color: #254d47;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.compact {
+  width: 360px;
+}
+
+.compact .mainLink {
+  grid-template-areas: "logo" "copy" "image" "cta";
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.compact .illustration {
+  max-width: 220px;
+  margin-block: -7px;
+}
+
+.horizontal {
+  display: none;
+  width: 980px;
+}
+
+.horizontal .mainLink {
+  grid-template-areas: "logo image" "copy image" "cta image";
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 16px 24px;
+  padding: 24px 28px;
+}
+
+.horizontal .cta {
+  justify-self: start;
+}
+
+.horizontal .details {
+  padding-inline: 28px;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+  width: 160px;
+  min-height: 600px;
+}
+
+.vertical .mainLink {
+  flex: 1;
+  grid-template-areas: "logo" "copy" "image" "cta";
+  grid-template-columns: minmax(0, 1fr);
+  padding: 18px 13px;
+  gap: 16px;
+}
+
+.vertical .headline {
+  font-size: 21px;
+  letter-spacing: -0.4px;
+}
+
+.vertical .description {
+  font-size: 13px;
+}
+
+.vertical .illustration {
+  min-height: 100px;
+  object-fit: contain;
+}
+
+.vertical .cta {
+  padding-inline: 8px;
+  font-size: 13px;
+}
+
+.vertical .cta > span {
+  display: none;
+}
+
+.vertical .details {
+  padding: 14px 13px;
+}
+
+@container rentesjekk-ad (min-width: 640px) {
+  .compact {
+    display: none;
+  }
+
+  .horizontal {
+    display: block;
+  }
+}
+
+@container rentesjekk-ad (min-width: 880px) {
+  .horizontal .mainLink {
+    grid-template-columns: minmax(0, 1fr) 240px;
+  }
+
+  .horizontal .headline {
+    font-size: 32px;
+  }
+}

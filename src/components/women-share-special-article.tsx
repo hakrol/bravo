@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import Image from "next/image";
@@ -40,7 +40,7 @@ export function WomenShareSpecialArticle({ data }: WomenShareSpecialArticleProps
         <NarrativeBreak data={data} />
         <MethodSection data={data} />
       </article>
-      <UscoreAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+      <RentesjekkAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </main>
   );
 }

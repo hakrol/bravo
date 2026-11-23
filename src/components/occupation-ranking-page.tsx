@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import Link from "next/link";
 import type {
   OccupationRankingData,
@@ -173,7 +173,7 @@ export function OccupationRankingPage({ data, variant }: OccupationRankingPagePr
         </div>
       </section>
       {rows.length > 0 ? (
-        <UscoreAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+        <RentesjekkAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
       ) : null}
     </main>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
@@ -358,7 +358,7 @@ export function TopOccupationsSpecial({ data }: TopOccupationsSpecialProps) {
         </div>
       </section>
 
-      <UscoreAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
+      <RentesjekkAd placement="statistics-after-content" className="mx-auto my-10 w-full max-w-5xl px-5 sm:px-6" />
     </main>
   );
 }

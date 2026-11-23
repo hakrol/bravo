@@ -16,9 +16,9 @@ Originalfilene er lagret uten bildeendringer. Logoen er hentet fra sidens inneby
 | gronn-bakgrunn.png | 2100 × 1000 px | 11 KiB | Grønn bakgrunn fra sidens toppseksjon. |
 | uscore-logo.svg | viewBox 0 0 835 344 | Vektor | uScore-logo med transparent bakgrunn. |
 
-## Aktiv annonse
+## Tidligere annonse (arkiv)
 
-Alle tidligere BookBeat-plasseringer bruker nå `src/components/uscore-ad.tsx`. Annonsene er bygd med tekst, logo og hovedillustrasjon. Originalbildene over er uendret.
+uScore-annonsen ble erstattet av Rentesjekk 23. november 2026. Aktive annonser styres nå av `src/components/rentesjekk-ad.tsx`; se `public/annonser/rentesjekk/README.md`. Beskrivelsen nedenfor gjelder den tidligere uScore-annonsen. Annonsene er bygd med tekst, logo og hovedillustrasjon. Originalbildene over er uendret.
 
 - Kompakt: 300 × 250 px, med tilpasning til smalere beholdere.
 - Horisontal: opptil 980 × 120 px, fra 640 px tilgjengelig bredde. Mobilillustrasjonen vises fra 880 px.

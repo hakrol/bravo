@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ArticleBreadcrumbs } from "@/components/article-breadcrumbs";
 import { notFound } from "next/navigation";
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import { BlogPostHeader } from "@/components/blog-post-header";
 import { BlogProse } from "@/components/blog-prose";
 import { BlogSidebar } from "@/components/blog-sidebar";
@@ -155,17 +155,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <BlogPostHeader post={post} />
           <div className="blog-post-layout">
             <div className="blog-left-ad-rail">
-              <UscoreAd placement="blog-left-sidebar" />
+              <RentesjekkAd placement="blog-left-sidebar" />
             </div>
             <div className="blog-post-main">
               <div className="mx-auto mb-10 w-full max-w-3xl sm:mb-12">
-                <UscoreAd placement="blog-before-content" />
+                <RentesjekkAd placement="blog-before-content" />
               </div>
               <div className="blog-post-content mx-auto max-w-3xl">
                 <BlogProse>{post.content}</BlogProse>
               </div>
               <div className="mx-auto mt-10 w-full max-w-3xl sm:mt-12">
-                <UscoreAd key={post.slug} />
+                <RentesjekkAd key={post.slug} />
               </div>
             </div>
             <BlogSidebar relatedPosts={relatedPosts} salaryTips={salaryTips} latestNews={latestNews} />

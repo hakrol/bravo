@@ -1,27 +1,28 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
-import type { UscoreAdFormat, UscorePlacement } from "@/lib/uscore";
+import { getRentesjekkCampaign, RENTESJEKK_VARIANT, type RentesjekkAdFormat, type RentesjekkPlacement } from "@/lib/rentesjekk";
 
-type UscoreAdDetails = {
+type RentesjekkAdDetails = {
   page_path: string;
-  ad_placement: UscorePlacement;
-  ad_format: UscoreAdFormat;
+  ad_placement: RentesjekkPlacement;
+  ad_format: RentesjekkAdFormat;
 };
 
 // Count each rendered banner once, after 50% is in view for one continuous second.
-export function observeUscoreAd(element: HTMLAnchorElement, details: UscoreAdDetails) {
+export function observeRentesjekkAd(element: HTMLAnchorElement, details: RentesjekkAdDetails) {
   if (!process.env.NEXT_PUBLIC_GA_ID) return () => {};
 
-  function track(event: "uscore_ad_view" | "uscore_ad_click") {
+  function track(event: "rentesjekk_ad_view" | "rentesjekk_ad_click") {
     sendGAEvent("event", event, {
       ...details,
-      ad_variant: "credit-check-free-v2",
+      ad_variant: RENTESJEKK_VARIANT,
+      ad_campaign: getRentesjekkCampaign(Date.now()).id,
     });
   }
 
   function onClick(event: MouseEvent) {
-    if (event.type === "click" || event.button === 1) track("uscore_ad_click");
+    if (event.type === "click" || event.button === 1) track("rentesjekk_ad_click");
   }
 
   element.addEventListener("click", onClick);
@@ -43,7 +44,7 @@ export function observeUscoreAd(element: HTMLAnchorElement, details: UscoreAdDet
       timer = setTimeout(() => {
         if (document.visibilityState !== "visible") return;
         viewed = true;
-        track("uscore_ad_view");
+        track("rentesjekk_ad_view");
         observer?.disconnect();
       }, 1000);
     },
