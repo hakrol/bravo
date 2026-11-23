@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import { StickyLeftAdRail } from "@/components/sticky-left-ad-rail";
 import { siteConfig } from "@/lib/site-config";
 
@@ -214,7 +214,7 @@ export default function MinimumWageOverviewPage() {
           </div>
         </section>
 
-        <UscoreAd placement="overview-between-sections" />
+        <RentesjekkAd placement="overview-between-sections" />
 
         <section className="mx-auto w-full max-w-3xl">
           <header>

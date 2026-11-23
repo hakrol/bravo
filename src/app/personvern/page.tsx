@@ -152,16 +152,18 @@ export default function PersonvernPage() {
               <h2 className="text-2xl font-extrabold text-slate-950">Annonser og affiliatelenker</h2>
               <div className="mt-4 grid gap-4">
                 <p>
-                  Nettstedet viser uScore-annonser med affiliatelenker gjennom Adtraction.
+                  Nettstedet viser annonser for Rentesjekk, en tjeneste fra Zen Finans AS, med affiliatelenker gjennom Adtraction.
                   Vi kan motta provisjon når du gjennomfører en kvalifiserende handling gjennom en annonselenke.
                   Bannerbildene lastes fra vårt eget nettsted, uten AdSense-script.
                 </p>
                 <p>
-                  Når du klikker på en annonse, følger du en sporingslenke til uScore.
+                  Når du klikker på en annonse, følger du en sporingslenke til Rentesjekk.
                   Lenken inneholder identifikatorer for nettstedet, siden, annonseplasseringen
                   og bannerformatet, slik at konverteringer kan knyttes til annonsen.
                   Vi legger ikke inn lønn, skjemasvar eller andre brukeropplysninger i lenken.
-                  Adtraction og uScore behandler opplysninger etter sine egne personvernvilkår.
+                  Adtraction og Zen Finans AS (Rentesjekk) behandler opplysninger etter sine egne personvernvilkår.
+                  I Google Analytics måler vi annonsevisninger og klikk med sidesti, plassering, format,
+                  annonsevariant og kampanje, innenfor nettstedets samtykkeoppsett.
                 </p>
               </div>
             </section>
@@ -193,7 +195,7 @@ export default function PersonvernPage() {
                   nettstedets lenke for personvern- og informasjonskapselvalg. Tilbaketrekking
                   påvirker ikke lovligheten av behandling som allerede har skjedd.
                 </p>
-                <p>uScore-bannerne velges ut fra annonseplasseringen og tilgjengelig bredde, uten personlig tilpasning. Du kan slette eller blokkere informasjonskapsler i nettleseren, men dette erstatter ikke nettstedets samtykkevalg og kan påvirke enkelte funksjoner.</p>
+                <p>Rentesjekk-bannerne velges ut fra annonseplasseringen og tilgjengelig bredde, uten personlig tilpasning. Du kan slette eller blokkere informasjonskapsler i nettleseren, men dette erstatter ikke nettstedets samtykkevalg og kan påvirke enkelte funksjoner.</p>
               </div>
             </section>
 
@@ -205,11 +207,11 @@ export default function PersonvernPage() {
                 <p>
                   Vi bruker Vercel til drift, besøksstatistikk og ytelsesmåling, Google
                   Analytics til bruksanalyse, Resend til levering av kontakthenvendelser,
-                  Gmail til mottak og oppfølging av e-post, og Adtraction og uScore til affiliatemarkedsføring.
+                  Gmail til mottak og oppfølging av e-post, og Adtraction og Zen Finans AS (Rentesjekk) til affiliatemarkedsføring.
                   Leverandørene behandler opplysninger etter egne personvernvilkår og, der de
                   er databehandlere for oss, etter avtale og våre instrukser.
                 </p>
-                <p>Ved klikk på affiliatelenker kan Adtraction og uScore behandle tekniske opplysninger for sporing og provisjonsberegning. Se leverandørenes personvernvilkår for nærmere informasjon.</p>
+                <p>Ved klikk på affiliatelenker kan Adtraction og Zen Finans AS (Rentesjekk) behandle tekniske opplysninger for sporing og provisjonsberegning. Se leverandørenes personvernvilkår for nærmere informasjon.</p>
                 <p>
                   Enkelte leverandører kan behandle opplysninger utenfor Norge og EØS. Slik
                   overføring skal skje på et gyldig overføringsgrunnlag, for eksempel en

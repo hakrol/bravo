@@ -1,4 +1,4 @@
-const USCORE_ALLOWED_EXACT_PATHS = new Set([
+const RENTESJEKK_ALLOWED_EXACT_PATHS = new Set([
   "/blogg",
   "/nyheter",
   "/forklarer",
@@ -39,7 +39,7 @@ const USCORE_ALLOWED_EXACT_PATHS = new Set([
   "/verktoy",
 ]);
 
-const USCORE_ALLOWED_DYNAMIC_PATHS = [
+const RENTESJEKK_ALLOWED_DYNAMIC_PATHS = [
   /^\/blogg\/kategori\/[^/]+$/,
   /^\/nyheter\/[^/]+$/,
   /^\/yrkesgrupper\/[^/]+$/,
@@ -65,12 +65,16 @@ function normalizePathname(pathname: string) {
   return normalizedPathname;
 }
 
-export function shouldShowUscore(pathname: string) {
+export function shouldShowRentesjekk(pathname: string) {
   const normalizedPathname = normalizePathname(pathname);
 
-  if (USCORE_ALLOWED_EXACT_PATHS.has(normalizedPathname)) {
+  if (process.env.NODE_ENV === "development" && normalizedPathname === "/dev/rentesjekk") {
     return true;
   }
 
-  return USCORE_ALLOWED_DYNAMIC_PATHS.some((pattern) => pattern.test(normalizedPathname));
+  if (RENTESJEKK_ALLOWED_EXACT_PATHS.has(normalizedPathname)) {
+    return true;
+  }
+
+  return RENTESJEKK_ALLOWED_DYNAMIC_PATHS.some((pattern) => pattern.test(normalizedPathname));
 }

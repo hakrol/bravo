@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 ﻿import Link from "next/link";
 import type { BlogPostPreview } from "@/lib/blog-shared";
 import type { NewsPostPreview } from "@/lib/nyheter";
@@ -96,7 +96,7 @@ export function BlogSidebar({ relatedPosts, salaryTips, latestNews, showAd = tru
         ]}
       />
       {showAd ? (
-        <UscoreAd className="blog-sidebar-ad" placement="blog-sidebar" />
+        <RentesjekkAd className="blog-sidebar-ad" placement="blog-sidebar" />
       ) : null}
     </aside>
   );

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { MDXComponents } from "mdx/types";
 import { Fragment } from "react";
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import { BlogChart } from "@/components/blog-chart";
 import { BilpleieSalaryEditorialChart } from "@/components/blog-bilpleie-salary-chart";
 import {
@@ -303,7 +303,7 @@ export function buildBlogMdxComponentsFixed(tableOfContents: BlogTableOfContents
           {shouldRenderTableOfContents ? <BlogTableOfContents items={tableOfContents} /> : null}
           {shouldRenderMidArticleAd ? (
             <div className="not-prose my-10 sm:my-12">
-              <UscoreAd placement="blog-mid-content" />
+              <RentesjekkAd placement="blog-mid-content" />
             </div>
           ) : null}
           <h2 id={id} {...props}>

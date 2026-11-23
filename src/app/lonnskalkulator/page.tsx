@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +55,7 @@ export default function LonnskalkulatorPage() {
         </header>
 
         <SalaryCalculatorDashboard />
-        <UscoreAd placement="calculator-after-tool" />
+        <RentesjekkAd placement="calculator-after-tool" />
         <SalaryCalculatorGuide />
         <CalculatorCrossLinks currentHref="/lonnskalkulator" />
       </div>

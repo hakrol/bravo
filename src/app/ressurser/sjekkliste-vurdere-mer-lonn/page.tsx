@@ -1,4 +1,4 @@
-import { UscoreAd } from "@/components/uscore-ad";
+import { RentesjekkAd } from "@/components/rentesjekk-ad";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PrintButton } from "@/components/print-button";
@@ -159,7 +159,7 @@ export default function SjekklisteVurdereMerLonnPage() {
             ))}
           </div>
         </section>
-        <UscoreAd placement="calculator-after-tool" className="mt-10" />
+        <RentesjekkAd placement="calculator-after-tool" className="mt-10" />
       </article>
     </div>
   );
