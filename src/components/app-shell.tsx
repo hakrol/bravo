@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { MainFooter } from "@/components/main-footer";
 import { MainHeader } from "@/components/main-header";
+import { RentesjekkBar } from "@/components/rentesjekk-bar";
 
 type AppShellProps = Readonly<{
   children: React.ReactNode;
@@ -16,11 +17,12 @@ function isImmersiveSpecialPath(pathname: string | null) {
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const headerRegionRef = useRef<HTMLElement>(null);
+  const adBarRegionRef = useRef<HTMLDivElement>(null);
   const mainRegionRef = useRef<HTMLElement>(null);
   const footerRegionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const regions = [headerRegionRef.current, mainRegionRef.current, footerRegionRef.current].filter(
+    const regions = [adBarRegionRef.current, headerRegionRef.current, mainRegionRef.current, footerRegionRef.current].filter(
       (region): region is HTMLElement => region !== null,
     );
 
@@ -65,6 +67,9 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <>
+      <div ref={adBarRegionRef} className="sticky top-0 z-[60] print:hidden">
+        <RentesjekkBar key={pathname === "/dev/rentesjekk" ? "preview" : "site"} />
+      </div>
       <MainHeader regionRef={headerRegionRef} />
       <main ref={mainRegionRef} className="flex-1">
         {children}

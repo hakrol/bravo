@@ -14,6 +14,7 @@
   --accent: #b45309;
   --nav-underline: #d98b2b;
   --site-header-height: 68px;
+  --site-ad-bar-height: 0px;
   --accent-soft: rgba(180, 83, 9, 0.14);
   --shadow: 0 24px 80px rgba(27, 36, 48, 0.08);
   --radius: 5px;
@@ -45,15 +46,16 @@ body {
 
 .site-header {
   height: var(--site-header-height);
+  top: var(--site-ad-bar-height);
 }
 
 .occupation-section-nav {
-  top: 0;
+  top: var(--site-ad-bar-height);
 }
 
 @media (min-width: 64rem) {
   .occupation-section-nav {
-    top: var(--site-header-height);
+    top: calc(var(--site-header-height) + var(--site-ad-bar-height));
   }
 }
 
@@ -1010,7 +1012,7 @@ a.blog-meta-chip:focus-visible {
 
   .blog-sidebar-ad {
     position: sticky;
-    top: 5rem;
+    top: calc(5rem + var(--site-ad-bar-height));
   }
 }
 
@@ -1027,7 +1029,7 @@ a.blog-meta-chip:focus-visible {
   .blog-left-ad-rail > [data-ad-placement="blog-left-sidebar"],
   .sticky-left-ad-rail > [data-ad-placement="blog-left-sidebar"] {
     position: sticky;
-    top: 5rem;
+    top: calc(5rem + var(--site-ad-bar-height));
   }
 
   .sticky-left-ad-rail > [data-ad-placement="occupation-left-sidebar"] {
