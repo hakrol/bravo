@@ -16,6 +16,7 @@ export default function RentesjekkPreviewPage() {
           <p className="max-w-2xl text-slate-600">
             De samme annonsene brukes på nettstedets eksisterende annonseflater.
             Visninger og klikk på denne forhåndsvisningssiden sendes ikke til GA4.
+            Annonsebaren ligger sticky helt øverst, over hovedmenyen. Last siden på nytt for å vise den igjen etter lukking.
           </p>
         </header>
         <section className="space-y-4">

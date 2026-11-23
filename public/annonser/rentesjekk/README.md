@@ -57,6 +57,16 @@ Kostnadseksemplet og konkurranseopplysningene er hentet 23. november 2026 fra:
 
 Rentesjekks forbrukslånseksempel: 100 000 kr over 5 år, nominell rente 11,70 %, effektiv rente 14,13 %, etablering 990 kr, kostnad 37 412 kr og totalt 137 412 kr. Opplysningene må vedlikeholdes dersom annonsøren endrer betingelsene.
 
+## Annonsebar
+
+`src/components/rentesjekk-bar.tsx` og `src/components/rentesjekk-bar.module.css` styrer en lukkbar bar helt øverst, over hovedmenyen. `src/components/app-shell.tsx` plasserer den i en egen sticky-region med egen tilgjengelighets- og samtykkehåndtering. Den tar plass i sideflyten og dytter menyen og innholdet ned. `ResizeObserver` holder `--site-ad-bar-height` oppdatert, slik at menyen, yrkessidenes seksjonslenker og faste sideannonser får riktig avstand også ved linjebryting og lukking.
+
+Baren viser «Sjekk om du kan få bedre rente hos opptil 15 banker.», en enkel tekstlenke «Sjekk renten», reklamemerking, et lite lukkekryss og et kort, lesbart kostnadseksempel. Formuleringen om opptil 15 banker er kontrollert mot https://rentesjekk.no/ 23. november 2026. Baren har ikke konkurransebudskap eller nedtelling. På mobil brytes innholdet over flere linjer. Baren skjules ved utskrift.
+
+Den vises på sider som allerede tillater Rentesjekk-annonser og på `/dev/rentesjekk`. Spesialsiden med egen helskjermsopplevelse bruker fortsatt sin eksisterende visning uten vanlig hovedmeny. Lukking huskes med `rentesjekk-bar-dismissed-v1` i `sessionStorage`, uten å legge til identifikatorer eller sende lukking som et annonseklikk. Hvis lagring er blokkert, fungerer lukkeknappen fortsatt mens appen er åpen.
+
+På forhåndsvisningssiden brukes ikke øktlagringen, og siden kan lastes på nytt for å få tilbake en lukket bar. Barens visninger og klikk i forhåndsvisningen sendes ikke til GA4. På vanlige sider gjenbrukes annonsemålingen med `ad_placement=site-top-bar` og `ad_format=top-bar`; disse verdiene sendes også som EPI2 og EPI4 i affiliatelenken.
+
 ## GA4 og Adtraction
 
 - `rentesjekk_ad_view`: minst 50 % av annonsens hovedlenke er synlig i ett sammenhengende sekund i en synlig fane. Én visning per rendret format. Et formatskifte kan gi en ny formatvisning.

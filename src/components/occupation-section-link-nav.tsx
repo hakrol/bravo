@@ -15,7 +15,11 @@ function getDesktopHeaderOffset() {
 }
 
 function getStickyOffset() {
-  return SECTION_NAV_OFFSET +
+  const adBarHeight = Number.parseFloat(window
+    .getComputedStyle(document.documentElement)
+    .getPropertyValue("--site-ad-bar-height")) || 0;
+
+  return adBarHeight + SECTION_NAV_OFFSET +
     (window.matchMedia(DESKTOP_QUERY).matches ? getDesktopHeaderOffset() : 0);
 }
 
@@ -61,11 +65,13 @@ export function OccupationSectionLinkNav({
     const observer = new ResizeObserver(updateAdOffset);
     observer.observe(nav);
     window.addEventListener("resize", updateAdOffset);
+    window.addEventListener("site-ad-bar-resize", updateAdOffset);
     updateAdOffset();
 
     return () => {
       observer.disconnect();
       window.removeEventListener("resize", updateAdOffset);
+      window.removeEventListener("site-ad-bar-resize", updateAdOffset);
       page.style.removeProperty("--occupation-sidebar-ad-top");
     };
   }, [items.length]);
@@ -115,11 +121,13 @@ export function OccupationSectionLinkNav({
 
     updateActiveSection();
     window.addEventListener("resize", updateActiveSection);
+    window.addEventListener("site-ad-bar-resize", updateActiveSection);
     window.addEventListener("scroll", updateActiveSection, { passive: true });
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener("resize", updateActiveSection);
+      window.removeEventListener("site-ad-bar-resize", updateActiveSection);
       window.removeEventListener("scroll", updateActiveSection);
     };
   }, [items]);

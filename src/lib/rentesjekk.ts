@@ -21,9 +21,9 @@ export type RentesjekkPlacement =
   | "occupation-mobile-before-content" | "occupation-after-salary-overview" | "occupation-between-real-salary-and-overtime"
   | "occupation-between-overtime-and-labor-market" | "occupation-before-faq"
   | "occupation-sidebar" | "occupation-left-sidebar" | "minimum-wage-mid-content" | "minimum-wage-before-faq"
-  | "calculator-after-tool" | "overview-between-sections" | "statistics-after-content";
+  | "calculator-after-tool" | "overview-between-sections" | "statistics-after-content" | "site-top-bar";
 
-export type RentesjekkAdFormat = "300x250" | "980x120" | "160x600";
+export type RentesjekkAdFormat = "300x250" | "980x120" | "160x600" | "top-bar";
 
 export function getRentesjekkTrackingUrl(pathname: string, placement: RentesjekkPlacement, format: RentesjekkAdFormat) {
   const url = new URL(RENTESJEKK_TRACKING_URL);
